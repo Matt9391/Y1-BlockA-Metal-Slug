@@ -17,6 +17,9 @@
       <Filter>template code</Filter>
     </ClInclude>
     <ClInclude Include="..\game.h" />
+    <ClInclude Include="..\json.hpp">
+      <Filter>template code</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
