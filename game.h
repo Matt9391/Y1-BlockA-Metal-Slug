@@ -1,33 +1,28 @@
+// Template, 2024 IGAD Edition
+// Get the latest version from: https://github.com/jbikker/tmpl8
+// IGAD/NHTV/BUAS/UU - Jacco Bikker - 2006-2024
+
 #pragma once
 
-#include <bitset>
-#include <SDL_scancode.h>
+namespace Tmpl8
+{
 
-namespace Tmpl8 {
-
-class Surface;
-class Game
+class Game : public TheApp
 {
 public:
-	void SetTarget( Surface* surface ) { screen = surface; }
+	// game flow methods
 	void Init();
-	void Shutdown();
 	void Tick( float deltaTime );
-	void MouseUp( int button ) { /* implement if you want to detect mouse button presses */ }
-	void MouseDown( int button ) { /* implement if you want to detect mouse button presses */ }
-	void MouseMove( int x, int y ) { /* implement if you want to detect mouse movement */ }
-	void KeyDown(SDL_Scancode key) { keys.set(key); } // Handle key down events.
-	void KeyUp(SDL_Scancode key) { keys.reset(key); } // Handle key up events.
-    bool GetKey(SDL_Scancode key) const { return held.test(key); } // returns true if the key is currently held down
-    bool GetKeyPressed(SDL_Scancode key) const { return pressed.test(key); } // returns true if the key was pressed since the last Tick
-    bool GetKeyReleased(SDL_Scancode key) const { return released.test(key); } // returns true if the key was released since the last Tick
-	void ProcessInput(); // Call this once in Tick to update the keyboard state.
-private:
-	Surface* screen;
-    std::bitset<SDL_NUM_SCANCODES> keys; // store key states here
-    std::bitset<SDL_NUM_SCANCODES> held; // store key states from the previous tick here
-    std::bitset<SDL_NUM_SCANCODES> pressed; // store key press events here (set to true on key down, reset to false after processing in Tick)
-    std::bitset<SDL_NUM_SCANCODES> released; // store key release events here (set to true on key up, reset to false after processing in Tick)
+	void Shutdown() { /* implement if you want to do something on exit */ }
+	// input handling
+	void MouseUp( int ) { /* implement if you want to detect mouse button presses */ }
+	void MouseDown( int ) { /* implement if you want to detect mouse button presses */ }
+	void MouseMove( int x, int y ) { mousePos.x = x, mousePos.y = y; }
+	void MouseWheel( float ) { /* implement if you want to handle the mouse wheel */ }
+	void KeyUp( int ) { /* implement if you want to handle keys */ }
+	void KeyDown( int ) { /* implement if you want to handle keys */ }
+	// data members
+	int2 mousePos;
 };
 
-}; // namespace Tmpl8
+} // namespace Tmpl8
