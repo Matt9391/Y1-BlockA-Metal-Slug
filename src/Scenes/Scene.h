@@ -1,0 +1,19 @@
+#pragma once
+
+class Tmpl8::Surface;
+
+class Scene
+{
+public:
+	Scene(Surface* screen);
+
+	virtual void init() = 0;
+	virtual void exit() = 0;
+
+	virtual void update(float dt) = 0;
+	virtual void display() = 0;
+
+protected:
+	Surface* screen;
+};
+

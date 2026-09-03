@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib;src;src\Managers;src\DataStructures;src\Scenes</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
@@ -119,10 +119,12 @@
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
   </ItemDefinitionGroup>
-  <!-- END Custom section -->
+  <!-- Source files -->
   <ItemGroup>
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="src\Managers\InputManager.cpp" />
+    <ClCompile Include="src\Managers\SceneManager.cpp" />
+    <ClCompile Include="src\Scenes\Scene.cpp" />
     <ClCompile Include="template\opencl.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\scene.cpp">
@@ -139,10 +141,14 @@
     </ClCompile>
     <ClCompile Include="template\tmpl8math.cpp" />
   </ItemGroup>
+  <!-- Header files -->
   <ItemGroup>
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="src\Managers\InputManager.h" />
+    <ClInclude Include="src\Managers\SceneManager.h" />
+    <ClInclude Include="src\DataStructures\TypeScene.h" />
+    <ClInclude Include="src\Scenes\Scene.h" />
     <ClInclude Include="template\common.h" />
     <ClInclude Include="template\opencl.h" />
     <ClInclude Include="template\opengl.h" />
@@ -152,6 +158,7 @@
     <ClInclude Include="template\surface.h" />
     <ClInclude Include="template\tmpl8math.h" />
   </ItemGroup>
+  <!-- Other files -->
   <ItemGroup>
     <None Include="cl\kernels.cl" />
     <None Include="README.md" />

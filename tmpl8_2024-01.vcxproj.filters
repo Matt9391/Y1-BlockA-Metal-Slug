@@ -1,11 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{11111111-1111-1111-1111-111111111111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\DataStructures">
+      <UniqueIdentifier>{22222222-2222-2222-2222-222222222222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Managers">
+      <UniqueIdentifier>{33333333-3333-3333-3333-333333333333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scenes">
+      <UniqueIdentifier>{44444444-4444-4444-4444-444444444444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="template">
+      <UniqueIdentifier>{55555555-5555-5555-5555-555555555555}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="src\Managers\InputManager.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\SceneManager.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
     <ClCompile Include="template\opencl.cpp">
       <Filter>template</Filter>
     </ClCompile>
     <ClCompile Include="template\opengl.cpp">
+      <Filter>template</Filter>
+    </ClCompile>
+    <ClCompile Include="template\scene.cpp">
       <Filter>template</Filter>
     </ClCompile>
     <ClCompile Include="template\sprite.cpp">
@@ -20,13 +46,21 @@
     <ClCompile Include="template\tmpl8math.cpp">
       <Filter>template</Filter>
     </ClCompile>
-    <ClCompile Include="template\scene.cpp">
-      <Filter>template</Filter>
+    <ClCompile Include="src\Scenes\Scene.cpp">
+      <Filter>src\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="src\Managers\InputManager.h">
+      <Filter>src\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\SceneManager.h">
+      <Filter>src\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\TypeScene.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
     <ClInclude Include="template\common.h">
       <Filter>template</Filter>
     </ClInclude>
@@ -39,6 +73,9 @@
     <ClInclude Include="template\precomp.h">
       <Filter>template</Filter>
     </ClInclude>
+    <ClInclude Include="template\scene.h">
+      <Filter>template</Filter>
+    </ClInclude>
     <ClInclude Include="template\sprite.h">
       <Filter>template</Filter>
     </ClInclude>
@@ -48,31 +85,16 @@
     <ClInclude Include="template\tmpl8math.h">
       <Filter>template</Filter>
     </ClInclude>
-    <ClInclude Include="cl\tools.cl">
-      <Filter>kernels</Filter>
+    <ClInclude Include="cl\tools.cl" />
+    <ClInclude Include="src\Scenes\Scene.h">
+      <Filter>src\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="template\scene.h">
-      <Filter>template</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md">
-      <Filter>template</Filter>
-    </None>
-    <None Include="cl\kernels.cl">
-      <Filter>kernels</Filter>
-    </None>
+    <None Include="cl\kernels.cl" />
+    <None Include="README.md" />
     <None Include="template\LICENSE">
       <Filter>template</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="template">
-      <UniqueIdentifier>{c65d8edd-a382-4ee7-9af9-5d04810e2884}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="kernels">
-      <UniqueIdentifier>{96ad1716-f468-46c6-8f16-5accbc19d76c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>
