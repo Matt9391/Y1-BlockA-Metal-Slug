@@ -49,6 +49,9 @@
     <ClCompile Include="src\Scenes\Scene.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\GameScene.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -87,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="src\Scenes\Scene.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\GameScene.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
