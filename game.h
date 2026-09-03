@@ -3,6 +3,7 @@
 // IGAD/NHTV/BUAS/UU - Jacco Bikker - 2006-2024
 
 #pragma once
+#include "InputManager.h"
 
 namespace Tmpl8
 {
@@ -19,10 +20,13 @@ public:
 	void MouseDown( int ) { /* implement if you want to detect mouse button presses */ }
 	void MouseMove( int x, int y ) { mousePos.x = x, mousePos.y = y; }
 	void MouseWheel( float ) { /* implement if you want to handle the mouse wheel */ }
-	void KeyUp( int ) { /* implement if you want to handle keys */ }
-	void KeyDown( int ) { /* implement if you want to handle keys */ }
+	void KeyUp(int key) { inputManager.removeKeyPressed(key); }
+	void KeyDown(int key) { inputManager.addKeyPressed(key); }
 	// data members
 	int2 mousePos;
+	
+	InputManager inputManager;
+
 };
 
 } // namespace Tmpl8
