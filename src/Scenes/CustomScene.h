@@ -2,10 +2,10 @@
 
 class Tmpl8::Surface;
 
-class Scene
+class CustomScene
 {
 public:
-	Scene(Surface* screen);
+	CustomScene(Surface* screen);
 
 	virtual void init() = 0;
 	virtual void exit() = 0;

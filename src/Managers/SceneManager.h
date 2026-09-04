@@ -1,22 +1,25 @@
 #pragma once
+#include <CustomScene.h>
 
-class Scene;
 enum TypeScene;
+class Tmpl8::Surface;
 
 class SceneManager
 {
 public:
-	SceneManager(TypeScene firstScene);
+	SceneManager();
 
-	Scene& getCurrentScene();
+	void init(Surface* screen, TypeScene firstScene);
+
+	CustomScene& getCurrentScene();
 	
 	void changeScene(TypeScene nextScene);
 
 
 private:
-	Scene* currentScene;
-	Scene* menuScene;
-	Scene* gameScene;
+	CustomScene* currentScene;
+	CustomScene* menuScene;
+	CustomScene* gameScene;
 
 };
 

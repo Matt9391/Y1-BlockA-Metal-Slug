@@ -16,6 +16,9 @@
     <Filter Include="template">
       <UniqueIdentifier>{55555555-5555-5555-5555-555555555555}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Entities">
+      <UniqueIdentifier>{22b5eaaa-5b2d-4cb9-b2ce-96dc9f78178c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -46,11 +49,20 @@
     <ClCompile Include="template\tmpl8math.cpp">
       <Filter>template</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scenes\Scene.cpp">
+    <ClCompile Include="src\Scenes\CustomScene.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="src\Scenes\GameScene.cpp">
       <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\ResourceManager.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Entity.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Player.cpp">
+      <Filter>src\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,11 +101,26 @@
       <Filter>template</Filter>
     </ClInclude>
     <ClInclude Include="cl\tools.cl" />
-    <ClInclude Include="src\Scenes\Scene.h">
+    <ClInclude Include="src\Scenes\CustomScene.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\GameScene.h">
       <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\ResourceManager.h">
+      <Filter>src\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\ResourceID.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Entity.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\vec2.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Player.h">
+      <Filter>src\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

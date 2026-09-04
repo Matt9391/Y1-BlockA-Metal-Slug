@@ -1,7 +1,9 @@
 #pragma once
-#include "Scene.h"
+#include "CustomScene.h"
+#include <Player.h>
 
-class GameScene : Scene
+
+class GameScene : public CustomScene
 {
 public:
 	GameScene(Surface* screen);
@@ -11,5 +13,8 @@ public:
 	
 	void update(float dt) override;
 	void display() override;
+
+private:
+	Player player;
 };
 

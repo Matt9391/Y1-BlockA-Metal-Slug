@@ -4,6 +4,7 @@
 
 #pragma once
 #include "InputManager.h"
+#include <SceneManager.h>
 
 namespace Tmpl8
 {
@@ -11,9 +12,10 @@ namespace Tmpl8
 class Game : public TheApp
 {
 public:
+	Game();
 	// game flow methods
 	void Init();
-	void Tick( float deltaTime );
+	void Tick( float dt );
 	void Shutdown() { /* implement if you want to do something on exit */ }
 	// input handling
 	void MouseUp( int ) { /* implement if you want to detect mouse button presses */ }
@@ -26,6 +28,7 @@ public:
 	int2 mousePos;
 	
 	InputManager inputManager;
+	SceneManager sceneManager;
 
 };
 

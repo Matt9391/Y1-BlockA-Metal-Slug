@@ -5,7 +5,13 @@
 #include "precomp.h"
 #include "game.h"
 #include <iostream>
+#include <TypeScene.h>
 
+
+Game::Game() :
+	sceneManager()
+{
+}
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -13,15 +19,15 @@
 
 void Game::Init()
 {
-	
+	sceneManager.init(screen, TypeScene::GAMEPLAY);
 }
 
 // -----------------------------------------------------------
 // Main application tick function - Executed once per frame
 // -----------------------------------------------------------
-void Game::Tick(float /* deltaTime */)
+void Game::Tick(float dt)
 {
-	screen->Clear(0x000000);
-	
+	sceneManager.getCurrentScene().display();
+	screen->Box(100,100,screen->width,screen->height,0xffff0000);
 }
 
