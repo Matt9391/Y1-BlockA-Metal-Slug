@@ -18,6 +18,6 @@ public:
 private:
 	bool initalized;
 
-	Sprite* sprites[ResourceID::COUNTS];
+	Sprite* sprites[ResourceID::ID_COUNTS];
 
 };

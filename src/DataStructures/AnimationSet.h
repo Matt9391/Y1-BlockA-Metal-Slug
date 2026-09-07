@@ -14,4 +14,10 @@ struct AnimationSet {
 		layers[1] = secondLayer;
 	}
 
+	AnimationSet() {
+		this->layerCount = -1;
+		layers[0] = AnimationLayer();
+		layers[1] = AnimationLayer();
+	}
+
 };

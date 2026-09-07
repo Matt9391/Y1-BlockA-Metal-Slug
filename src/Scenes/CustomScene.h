@@ -12,7 +12,7 @@ public:
 	virtual void exit() = 0;
 
 	virtual void update(float dt) = 0;
-	virtual void display() = 0;
+	virtual void display(float dt) = 0;
 
 protected:
 	Surface* screen;

@@ -11,11 +11,11 @@ class Entity
 public:
 	Entity(vec2 pos);
 
-	virtual void getSprites(ResourceManager& resourceManager) = 0;
+	virtual void loadGFX(ResourceManager& resourceManager) = 0;
 
 	virtual void update(float dt);
 
-	virtual void display(Surface* screen);
+	virtual void display(float dt, Surface* screen);
 
 protected:
 

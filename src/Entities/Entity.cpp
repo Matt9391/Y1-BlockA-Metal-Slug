@@ -11,6 +11,6 @@ void Entity::update(float dt) {
 
 }
 
-void Entity::display(Surface* screen) {
+void Entity::display(float dt, Surface* screen) {
 
 }

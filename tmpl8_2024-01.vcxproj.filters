@@ -137,6 +137,9 @@
     <ClInclude Include="src\Components\Animator.h">
       <Filter>src\Components</Filter>
     </ClInclude>
+    <ClInclude Include="src\DataStructures\PlayerAnimations.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cl\kernels.cl" />

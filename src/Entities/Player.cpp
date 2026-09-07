@@ -5,23 +5,28 @@
 #include <ResourceManager.h>
 
 Player::Player(vec2 pos) :
-	Entity(pos),
-	bodySprite(nullptr)
+	Entity(pos)
 	{
-		
+	
 	}
 
-void Player::getSprites(ResourceManager& resourceManager) {
-	std::cout << resourceManager.getSprite(ResourceID::PLAYER_IDLE_BODY) << std::endl;
-	bodySprite = resourceManager.getSprite(ResourceID::PLAYER_IDLE_BODY);
+void Player::loadGFX(ResourceManager& resourceManager) {
+	animationSets[0] = AnimationSet(
+		2,
+		AnimationLayer(resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_LEGS), 1, 100, vec2(0, 7)),
+		AnimationLayer(resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_BODY), 4, 100)
+	);
+
+	std::cout << resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_BODY) << std::endl;
+	animator.setAnimation(&animationSets[0]);
 }
 
 void Player::update(float dt) {
 
 }
 
-void Player::display(Surface* screen) {
+void Player::display(float dt, Surface* screen) {
 	screen->Clear(0xFF00ff00);
 	//std::cout << bodySprite << std::endl;
-	bodySprite->Draw(screen, pos.x, pos.y);
+	animator.playAnimation(dt, screen);
 }

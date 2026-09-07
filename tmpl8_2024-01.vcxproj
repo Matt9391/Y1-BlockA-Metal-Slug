@@ -153,6 +153,7 @@
     <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
+    <ClInclude Include="src\DataStructures\PlayerAnimations.h" />
     <ClInclude Include="src\DataStructures\ResourceID.h" />
     <ClInclude Include="src\DataStructures\vec2.h" />
     <ClInclude Include="src\Entities\Entity.h" />

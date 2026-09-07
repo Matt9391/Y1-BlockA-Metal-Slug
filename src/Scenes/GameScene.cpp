@@ -11,14 +11,14 @@ GameScene::GameScene(Surface* screen, ResourceManager& resourceManager) :
 	}
 
 void GameScene::init() {
-	player.getSprites(resourceManager);
+	player.loadGFX(resourceManager);
 
 };
 void GameScene::exit() {};
 
 void GameScene::update(float dt) {};
-void GameScene::display() {
+void GameScene::display(float dt) {
 
-	player.display(screen); //player which as entity
+	player.display(dt, screen); //player which as entity
 
 };

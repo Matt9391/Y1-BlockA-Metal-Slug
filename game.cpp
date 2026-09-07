@@ -30,7 +30,7 @@ void Game::Init()
 // -----------------------------------------------------------
 void Game::Tick(float dt)
 {
-	sceneManager.getCurrentScene().display();
+	sceneManager.getCurrentScene().display(dt);
 	screen->Box(100,100,screen->width,screen->height,0xffff0000);
 }
 

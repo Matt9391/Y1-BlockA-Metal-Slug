@@ -10,6 +10,8 @@ class Animator
 public:
 	Animator(vec2 pos);
 
+	void setAnimation(AnimationSet* animationSet);
+
 	void playAnimation(float dt, Surface* screen);
 private:
 	AnimationSet* animationSet;

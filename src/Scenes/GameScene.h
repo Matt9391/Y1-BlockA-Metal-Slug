@@ -12,7 +12,7 @@ public:
 	void exit() override;
 	
 	void update(float dt) override;
-	void display() override;
+	void display(float dt) override;
 
 private:
 	Player player;
