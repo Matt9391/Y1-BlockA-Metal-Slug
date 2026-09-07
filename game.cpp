@@ -9,7 +9,8 @@
 
 
 Game::Game() :
-	sceneManager()
+	sceneManager(),
+	resourceManager()
 {
 }
 
@@ -19,8 +20,10 @@ Game::Game() :
 
 void Game::Init()
 {
-	sceneManager.init(screen, TypeScene::GAMEPLAY);
+	resourceManager.init();
+	sceneManager.init(screen, resourceManager, TypeScene::GAMEPLAY);
 }
+
 
 // -----------------------------------------------------------
 // Main application tick function - Executed once per frame

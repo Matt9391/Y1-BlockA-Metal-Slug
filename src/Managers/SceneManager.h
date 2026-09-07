@@ -9,7 +9,7 @@ class SceneManager
 public:
 	SceneManager();
 
-	void init(Surface* screen, TypeScene firstScene);
+	void init(Surface* screen, ResourceManager& resourceManager, TypeScene firstScene);
 
 	CustomScene& getCurrentScene();
 	

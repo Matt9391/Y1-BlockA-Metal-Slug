@@ -6,7 +6,7 @@
 class GameScene : public CustomScene
 {
 public:
-	GameScene(Surface* screen);
+	GameScene(Surface* screen, ResourceManager& resourceManager);
 	
 	void init() override;
 	void exit() override;

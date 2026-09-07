@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "TypeScene.h"
 #include <GameScene.h>
+#include <ResourceManager.h>
 
 
 SceneManager::SceneManager() :
@@ -11,8 +12,8 @@ SceneManager::SceneManager() :
 	{
 	}
 
-void SceneManager::init(Surface* screen, TypeScene firstScene) {
-	gameScene = new GameScene(screen);
+void SceneManager::init(Surface* screen, ResourceManager& resourceManager, TypeScene firstScene) {
+	gameScene = new GameScene(screen, resourceManager);
 	changeScene(firstScene);
 }
 
@@ -28,5 +29,7 @@ void SceneManager::changeScene(TypeScene nextScene) {
 	else {
 		currentScene = gameScene;
 	}
+
+	currentScene->init();
 }
 

@@ -5,6 +5,7 @@
 #pragma once
 #include "InputManager.h"
 #include <SceneManager.h>
+#include <ResourceManager.h>
 
 namespace Tmpl8
 {
@@ -29,6 +30,7 @@ public:
 	
 	InputManager inputManager;
 	SceneManager sceneManager;
+	ResourceManager resourceManager;
 
 };
 

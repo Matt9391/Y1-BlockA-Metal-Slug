@@ -11,9 +11,12 @@ class ResourceManager
 public:
 	ResourceManager();
 
-	Sprite* getSprite(ResourceID resourceId);
+	void init();
+
+	Sprite* getSprite(ResourceID resourceId) const;
 
 private:
+	bool initalized;
 
 	Sprite* sprites[ResourceID::COUNTS];
 
