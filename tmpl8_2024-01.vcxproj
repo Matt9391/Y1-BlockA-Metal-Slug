@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib;src;src\Managers;src\DataStructures;src\Scenes;src\Entities</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib;src;src\Managers;src\DataStructures;src\Scenes;src\Entities;src\Components</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
@@ -122,6 +122,7 @@
   <!-- Source files -->
   <ItemGroup>
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
     <ClCompile Include="src\Entities\Player.cpp" />
     <ClCompile Include="src\Managers\InputManager.cpp" />
@@ -149,6 +150,9 @@
   <ItemGroup>
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="src\Components\Animator.h" />
+    <ClInclude Include="src\DataStructures\AnimationLayer.h" />
+    <ClInclude Include="src\DataStructures\AnimationSet.h" />
     <ClInclude Include="src\DataStructures\ResourceID.h" />
     <ClInclude Include="src\DataStructures\vec2.h" />
     <ClInclude Include="src\Entities\Entity.h" />

@@ -19,6 +19,9 @@
     <Filter Include="src\Entities">
       <UniqueIdentifier>{22b5eaaa-5b2d-4cb9-b2ce-96dc9f78178c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Components">
+      <UniqueIdentifier>{701d5ceb-33f1-4312-91a7-2e219b35839a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -63,6 +66,9 @@
     </ClCompile>
     <ClCompile Include="src\Entities\Player.cpp">
       <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Animator.cpp">
+      <Filter>src\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,15 @@
     </ClInclude>
     <ClInclude Include="src\Entities\Player.h">
       <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\AnimationLayer.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\AnimationSet.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Animator.h">
+      <Filter>src\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

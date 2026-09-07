@@ -1,6 +1,6 @@
 #pragma once
 
 enum ResourceID {
-	PLAYER_IDLE,
+	PLAYER_IDLE_BODY,
 	COUNTS
 };
