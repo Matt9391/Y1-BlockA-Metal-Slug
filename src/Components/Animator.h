@@ -2,7 +2,7 @@
 
 #include <vec2.h>
 
-class AnimationSet;
+struct AnimationSet;
 class Tmpl8::Surface;
 
 class Animator
@@ -10,7 +10,7 @@ class Animator
 public:
 	Animator(vec2 pos);
 
-	void setAnimation(AnimationSet* animationSet);
+	void setAnimation(AnimationSet* newAnimationSet);
 
 	void playAnimation(float dt, Surface* screen);
 private:

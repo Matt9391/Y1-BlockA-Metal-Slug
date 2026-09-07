@@ -29,8 +29,8 @@ public:
 	int2 mousePos;
 	
 	InputManager inputManager;
-	SceneManager sceneManager;
 	ResourceManager resourceManager;
+	SceneManager sceneManager;
 
 };
 

@@ -13,8 +13,8 @@ Animator::Animator(vec2 pos):
 	}
 
 
-void Animator::setAnimation(AnimationSet* animationSet) {
-	this->animationSet = animationSet;
+void Animator::setAnimation(AnimationSet* newAnimationSet) {
+	this->animationSet = newAnimationSet;
 }
 
 
@@ -37,6 +37,7 @@ void Animator::playAnimation(float dt, Surface* screen) {
 		}
 
 		l.sprite->SetFrame(l.currentFrame);
-		l.sprite->Draw(screen, pos.x + l.offset.x, pos.y + l.offset.y);
+		//l.sprite->Draw(screen, pos.x + l.offset.x, pos.y + l.offset.y);
+		l.sprite->DrawScaled(pos.x + l.offset.x, pos.y + l.offset.y, l.sprite->GetWidth() * 3, l.sprite->GetHeight() * 3, screen);
 	}
 }
