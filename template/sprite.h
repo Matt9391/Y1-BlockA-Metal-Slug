@@ -17,6 +17,7 @@ public:
 	// methods
 	void Draw( Surface* target, int x, int y );
 	void DrawScaled( int x, int y, int width, int height, Surface* target );
+	void DrawScaled(Surface* target, int x, int y, int scaleFactor);
 	void SetFlags( unsigned int f ) { flags = f; }
 	void SetFrame( unsigned int i ) { currentFrame = i; }
 	unsigned int GetFlags() const { return flags; }

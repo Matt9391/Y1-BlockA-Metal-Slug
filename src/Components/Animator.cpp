@@ -7,7 +7,7 @@
 Animator::Animator(vec2 pos):
 	animationSet(nullptr),
 	pos(pos),
-	timeElapsed(0.f)
+	timeElapsed{ 0.f }
 	{
 
 	}
@@ -49,14 +49,15 @@ void Animator::playAnimation(float dt, Surface* screen) {
 			throw runtime_error("Impossible to read sprite data");
 		}
 
-		this->timeElapsed += dt;
-		if (timeElapsed >= l.frameDuration) {
-			timeElapsed = 0.f;
+		this->timeElapsed[i] += dt;
+		if (timeElapsed[i] >= l.frameDuration) {
+			timeElapsed[i] = 0.f;
 			l.currentFrame = ++l.currentFrame % l.nFrames;
 		}
 
 		l.sprite->SetFrame(l.currentFrame);
 		l.sprite->Draw(screen, pos.x + l.offset.x, pos.y + l.offset.y);
+		l.sprite->DrawScaled(screen, pos.x + l.offset.x, 50 +  pos.y + l.offset.y, 6);
 		//l.sprite->DrawScaled(pos.x + l.offset.x, pos.y + l.offset.y, l.sprite->GetWidth() * 3, l.sprite->GetHeight() * 3, screen);
 	}
 }

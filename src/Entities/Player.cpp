@@ -13,8 +13,8 @@ Player::Player(vec2 pos) :
 void Player::loadGFX(ResourceManager& resourceManager) {
 	animationSets[0] = AnimationSet(
 		2,
-		AnimationLayer(resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_LEGS), ResourceID::ID_PLAYER_IDLE_LEGS, 1, 100, vec2(0, 7)),
-		AnimationLayer(resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_BODY), ResourceID::ID_PLAYER_IDLE_BODY, 4, 100)
+		AnimationLayer(resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_LEGS), ResourceID::ID_PLAYER_IDLE_LEGS, 100, vec2(0, 52)),
+		AnimationLayer(resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_BODY), ResourceID::ID_PLAYER_IDLE_BODY, 200)
 	);
 
 	std::cout << resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_BODY) << std::endl;

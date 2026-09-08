@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vec2.h>
+#include <AnimationSet.h>
 
-struct AnimationSet;
 class Tmpl8::Surface;
 
 class Animator
@@ -17,6 +17,6 @@ private:
 	AnimationSet* animationSet;
 	vec2 pos;
 
-	float timeElapsed;
+	float timeElapsed[MAX_LAYERS];
 };
 
