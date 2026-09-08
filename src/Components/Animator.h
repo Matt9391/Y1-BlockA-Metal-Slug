@@ -10,7 +10,7 @@ class Animator
 public:
 	Animator(vec2 pos);
 
-	void setAnimation(AnimationSet* newAnimationSet);
+	bool setAnimation(AnimationSet* newAnimationSet, bool reset = false);
 
 	void playAnimation(float dt, Surface* screen);
 private:

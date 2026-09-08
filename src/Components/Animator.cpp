@@ -13,21 +13,40 @@ Animator::Animator(vec2 pos):
 	}
 
 
-void Animator::setAnimation(AnimationSet* newAnimationSet) {
+//Added bool return value so you its possible to check whether the animation has been set or not
+bool Animator::setAnimation(AnimationSet* newAnimationSet, bool reset) {
+	if (this->animationSet == nullptr || reset) {
+		this->animationSet = newAnimationSet;
+
+		for (int i = 0; i < animationSet->layerCount; i++) {
+			animationSet->layers[i].currentFrame = 0;
+		}
+
+		return true;
+	}
+
+	if (*this->animationSet == *newAnimationSet) return false;
+
 	this->animationSet = newAnimationSet;
+
+	for (int i = 0; i < animationSet->layerCount; i++) {
+		animationSet->layers[i].currentFrame = 0;
+	}
+
+	return true;
 }
 
 
 void Animator::playAnimation(float dt, Surface* screen) {
 	if (animationSet == nullptr) {
-		throw new runtime_error("Impossible to run animation before setting one");
+		throw runtime_error("Impossible to run animation before setting one");
 	}
 	
 	for (int i = 0; i < animationSet->layerCount; i++) {
 		AnimationLayer& l = animationSet->layers[i];
 		
 		if (l.sprite == nullptr) {
-			throw new runtime_error("Impossible to read sprite data");
+			throw runtime_error("Impossible to read sprite data");
 		}
 
 		this->timeElapsed += dt;
@@ -37,7 +56,7 @@ void Animator::playAnimation(float dt, Surface* screen) {
 		}
 
 		l.sprite->SetFrame(l.currentFrame);
-		//l.sprite->Draw(screen, pos.x + l.offset.x, pos.y + l.offset.y);
-		l.sprite->DrawScaled(pos.x + l.offset.x, pos.y + l.offset.y, l.sprite->GetWidth() * 3, l.sprite->GetHeight() * 3, screen);
+		l.sprite->Draw(screen, pos.x + l.offset.x, pos.y + l.offset.y);
+		//l.sprite->DrawScaled(pos.x + l.offset.x, pos.y + l.offset.y, l.sprite->GetWidth() * 3, l.sprite->GetHeight() * 3, screen);
 	}
 }

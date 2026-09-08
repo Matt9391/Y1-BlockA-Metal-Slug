@@ -11,4 +11,7 @@ struct vec2 {
 	vec2 operator- (const vec2& other) const { return vec2( this->x - other.x, this->y - other.y ); }
 	vec2 operator* (const float& value) const { return vec2( this->x * value, this->y * value ); }
 	vec2 operator/ (const float& value) const { return vec2( this->x / value, this->y / value ); }
+
+	bool operator== (const vec2& other) const { return this->x == other.x && this->y == other.y; }
+
 };

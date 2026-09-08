@@ -1,6 +1,7 @@
 #pragma once
 
 enum ResourceID {
+	ID_NULL = -1,
 	ID_PLAYER_IDLE_BODY,
 	ID_PLAYER_IDLE_LEGS,
 	ID_COUNTS
