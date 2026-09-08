@@ -10,6 +10,7 @@ class ResourceManager
 {
 public:
 	ResourceManager();
+	~ResourceManager();
 
 	void init();
 

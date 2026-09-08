@@ -8,6 +8,7 @@ class SceneManager
 {
 public:
 	SceneManager();
+	~SceneManager();
 
 	void init(Surface* screen, ResourceManager& resourceManager, TypeScene firstScene);
 

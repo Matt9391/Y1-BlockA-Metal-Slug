@@ -12,6 +12,12 @@ SceneManager::SceneManager() :
 	{
 	}
 
+SceneManager::~SceneManager() {
+	delete currentScene;
+	delete menuScene;
+	delete gameScene;
+}
+
 void SceneManager::init(Surface* screen, ResourceManager& resourceManager, TypeScene firstScene) {
 	gameScene = new GameScene(screen, resourceManager);
 	changeScene(firstScene);
