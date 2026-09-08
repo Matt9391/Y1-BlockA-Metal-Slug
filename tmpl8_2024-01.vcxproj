@@ -121,8 +121,11 @@
   </ItemDefinitionGroup>
   <!-- Source files -->
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\RepositoryGithub\Y1-BlockA-Metal-Slug\src\Components\Map.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Components\Animator.cpp" />
+    <ClCompile Include="src\Components\Map.cpp" />
+    <ClCompile Include="src\Components\MapLayer.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
     <ClCompile Include="src\Entities\Player.cpp" />
     <ClCompile Include="src\Managers\InputManager.cpp" />
@@ -148,11 +151,15 @@
   </ItemGroup>
   <!-- Header files -->
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\RepositoryGithub\Y1-BlockA-Metal-Slug\src\Components\Map.h" />
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="game.h" />
     <ClInclude Include="src\Components\Animator.h" />
+    <ClInclude Include="src\Components\Map.h" />
+    <ClInclude Include="src\Components\MapLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
+    <ClInclude Include="src\DataStructures\MapLayerNames.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimations.h" />
     <ClInclude Include="src\DataStructures\ResourceID.h" />
     <ClInclude Include="src\DataStructures\vec2.h" />
