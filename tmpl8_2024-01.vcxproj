@@ -125,6 +125,7 @@
     <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Components\Map.cpp" />
     <ClCompile Include="src\Components\MapLayer.cpp" />
+    <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
     <ClCompile Include="src\Entities\Player.cpp" />
     <ClCompile Include="src\Managers\InputManager.cpp" />
@@ -155,11 +156,15 @@
     <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\Components\Map.h" />
     <ClInclude Include="src\Components\MapLayer.h" />
+    <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
     <ClInclude Include="src\DataStructures\MapLayerNames.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimations.h" />
+    <ClInclude Include="src\DataStructures\PlayerAnimationSet.h" />
+    <ClInclude Include="src\DataStructures\RenderSet.h" />
     <ClInclude Include="src\DataStructures\ResourceID.h" />
+    <ClInclude Include="src\DataStructures\ResourceIDFrames.h" />
     <ClInclude Include="src\DataStructures\vec2.h" />
     <ClInclude Include="src\Entities\Entity.h" />
     <ClInclude Include="src\Entities\Player.h" />

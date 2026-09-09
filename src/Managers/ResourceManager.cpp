@@ -1,5 +1,6 @@
 #include "precomp.h"
 #include "ResourceManager.h"
+#include <ResourceIDFrames.h>
 
 ResourceManager::ResourceManager() :
 	sprites{},
@@ -15,8 +16,8 @@ ResourceManager::~ResourceManager() {
 
 
 void ResourceManager::init() {
-	sprites[ResourceID::ID_PLAYER_IDLE_BODY] = new Sprite(new Surface("assets/playerAnimation/Pistol/idleBody.png"), 4);
-	sprites[ResourceID::ID_PLAYER_IDLE_LEGS] = new Sprite(new Surface("assets/playerAnimation/Pistol/idleLegs.png"), 1);
+	sprites[ResourceID::ID_PLAYER_IDLE_BODY] = new Sprite(new Surface("assets/playerAnimation/Pistol/idleBody.png"), ResourceIDFrames::IDF_PLAYER_IDLE_BODY);
+	sprites[ResourceID::ID_PLAYER_IDLE_LEGS] = new Sprite(new Surface("assets/playerAnimation/Pistol/idleLegs.png"), ResourceIDFrames::IDF_PLAYER_IDLE_LEGS);
 
 	initalized = true;
 }

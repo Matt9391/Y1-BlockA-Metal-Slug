@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include <SceneManager.h>
 #include <ResourceManager.h>
+#include <Renderer.h>
 
 namespace Tmpl8
 {
@@ -31,6 +32,7 @@ public:
 	InputManager inputManager;
 	ResourceManager resourceManager;
 	SceneManager sceneManager;
+	Renderer renderer;
 
 };
 

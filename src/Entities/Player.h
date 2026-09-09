@@ -10,13 +10,14 @@ class Player : public Entity
 {
 public:
 	Player(vec2 pos);
+	~Player() override;
 
-	void loadGFX(ResourceManager& resourceManager) override;
+	void loadGFX() override;
 
 	void update(float dt) override;
 	void display(float dt, Surface* screen) override;
 
 private:
-	AnimationSet animationSets[PlayerAnimations::PA_COUNTS];
+	
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <vec2.h>
 #include <Animator.h>
+#include <RenderSet.h>
 
 
 class Tmpl8::Surface;
@@ -10,8 +11,11 @@ class Entity
 {
 public:
 	Entity(vec2 pos);
+	virtual ~Entity() = default;
 
-	virtual void loadGFX(ResourceManager& resourceManager) = 0;
+	virtual void loadGFX() = 0;
+
+	RenderSet getRenderSet() const;
 
 	virtual void update(float dt);
 
@@ -23,6 +27,8 @@ protected:
 	vec2 velocity;
 	//Collider collider;
 	Animator animator;
-
+	AnimationSet* animationSets;
+	//Current Animation Set Index
+	int currentASIndex;
 };
 

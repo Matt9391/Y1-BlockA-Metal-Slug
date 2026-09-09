@@ -76,6 +76,9 @@
     <ClCompile Include="src\Components\MapLayer.cpp">
       <Filter>src\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\Components\Renderer.cpp">
+      <Filter>src\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -154,6 +157,18 @@
     </ClInclude>
     <ClInclude Include="src\Components\MapLayer.h">
       <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\PlayerAnimationSet.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\RenderSet.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Renderer.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\ResourceIDFrames.h">
+      <Filter>src\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,30 +3,36 @@
 #include <vec2.h>
 #include <iostream>
 #include <ResourceManager.h>
+#include <PlayerAnimationSet.h>
+#include <ResourceIDFrames.h>
 
 Player::Player(vec2 pos) :
 	Entity(pos)
 	{
-	
+		animationSets = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
 	}
 
-void Player::loadGFX(ResourceManager& resourceManager) {
-	animationSets[0] = AnimationSet(
+Player::~Player() {
+	delete[] animationSets;
+}
+
+void Player::loadGFX() {
+	animationSets[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
 		2,
-		AnimationLayer(resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_LEGS), ResourceID::ID_PLAYER_IDLE_LEGS, 100, vec2(0, 52)),
-		AnimationLayer(resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_BODY), ResourceID::ID_PLAYER_IDLE_BODY, 200)
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS, ResourceIDFrames::IDF_PLAYER_IDLE_LEGS, 100, vec2(0, 52)),
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_BODY, ResourceIDFrames::IDF_PLAYER_IDLE_BODY, 200)
 	);
 
-	std::cout << resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_BODY) << std::endl;
-	animator.setAnimation(&animationSets[0]);
+	animator.setAnimation(&animationSets[PlayerAnimationSet::PAS_IDLE]);
+	this->currentASIndex = PlayerAnimationSet::PAS_IDLE;
 }
 
 void Player::update(float dt) {
-
+	animator.playAnimation(dt);
 }
 
 void Player::display(float dt, Surface* screen) {
-	screen->Clear(0xFF00ff00);
+	
 	//std::cout << bodySprite << std::endl;
-	animator.playAnimation(dt, screen);
+	
 }

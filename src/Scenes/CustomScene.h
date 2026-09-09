@@ -1,12 +1,12 @@
 #pragma once
-#include <ResourceManager.h>
+#include <Renderer.h>
 
 class Tmpl8::Surface;
 
 class CustomScene
 {
 public:
-	CustomScene(Surface* screen, ResourceManager& resourceManager);
+	CustomScene(Surface* screen, Renderer& renderer);
 
 	virtual void init() = 0;
 	virtual void exit() = 0;
@@ -16,6 +16,6 @@ public:
 
 protected:
 	Surface* screen;
-	ResourceManager& resourceManager;
+	Renderer& renderer;
 };
 

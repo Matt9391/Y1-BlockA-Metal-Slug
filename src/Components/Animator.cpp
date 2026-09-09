@@ -37,27 +37,21 @@ bool Animator::setAnimation(AnimationSet* newAnimationSet, bool reset) {
 }
 
 
-void Animator::playAnimation(float dt, Surface* screen) {
+void Animator::playAnimation(float dt) {
 	if (animationSet == nullptr) {
 		throw runtime_error("Impossible to run animation before setting one");
 	}
 	
 	for (int i = 0; i < animationSet->layerCount; i++) {
 		AnimationLayer& l = animationSet->layers[i];
-		
-		if (l.sprite == nullptr) {
-			throw runtime_error("Impossible to read sprite data");
-		}
 
 		this->timeElapsed[i] += dt;
 		if (timeElapsed[i] >= l.frameDuration) {
 			timeElapsed[i] = 0.f;
-			l.currentFrame = ++l.currentFrame % l.nFrames;
+			l.currentFrame = 0;
+			//l.currentFrame = ++l.currentFrame % l.nFrames;
 		}
 
-		l.sprite->SetFrame(l.currentFrame);
-		l.sprite->Draw(screen, pos.x + l.offset.x, pos.y + l.offset.y);
-		l.sprite->DrawScaled(screen, pos.x + l.offset.x, 50 +  pos.y + l.offset.y, 6);
-		//l.sprite->DrawScaled(pos.x + l.offset.x, pos.y + l.offset.y, l.sprite->GetWidth() * 3, l.sprite->GetHeight() * 3, screen);
+
 	}
 }

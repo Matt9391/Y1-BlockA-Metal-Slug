@@ -6,7 +6,6 @@ class Tmpl8::Sprite;
 
 struct AnimationLayer {
 	ResourceID resourceId;
-	Sprite* sprite;
 
 	int nFrames;
 	int currentFrame;
@@ -14,9 +13,8 @@ struct AnimationLayer {
 	float frameDuration;
 	vec2 offset;
 
-	AnimationLayer(Sprite* sprite, ResourceID resourceId, float frameDuration, vec2 offset = vec2(0, 0)) {
-		this->sprite = sprite;
-		this->nFrames = sprite->Frames();
+	AnimationLayer(ResourceID resourceId, int nFrames, float frameDuration, vec2 offset = vec2(0, 0)) {
+		this->nFrames = nFrames;
 		this->frameDuration = frameDuration;
 		this->currentFrame = 0;
 		this->offset = offset;
@@ -24,7 +22,6 @@ struct AnimationLayer {
 	}
 
 	AnimationLayer() {
-		this->sprite = nullptr;
 		this->nFrames = -1;
 		this->frameDuration = -1;
 		this->currentFrame = -1;

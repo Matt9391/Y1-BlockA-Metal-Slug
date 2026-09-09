@@ -12,7 +12,7 @@ public:
 
 	bool setAnimation(AnimationSet* newAnimationSet, bool reset = false);
 
-	void playAnimation(float dt, Surface* screen);
+	void playAnimation(float dt);
 private:
 	AnimationSet* animationSet;
 	vec2 pos;
