@@ -121,7 +121,6 @@
   </ItemDefinitionGroup>
   <!-- Source files -->
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\RepositoryGithub\Y1-BlockA-Metal-Slug\src\Components\Map.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Components\Map.cpp" />
@@ -151,7 +150,6 @@
   </ItemGroup>
   <!-- Header files -->
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\RepositoryGithub\Y1-BlockA-Metal-Slug\src\Components\Map.h" />
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="game.h" />
     <ClInclude Include="src\Components\Animator.h" />

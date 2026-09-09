@@ -1,6 +1,7 @@
 #pragma once
 #include "CustomScene.h"
 #include <Player.h>
+#include <Map.h>
 
 
 class GameScene : public CustomScene
@@ -16,5 +17,6 @@ public:
 
 private:
 	Player player;
+	Map map;
 };
 

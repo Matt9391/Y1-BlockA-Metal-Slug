@@ -4,32 +4,18 @@
 #include <ResourceID.h>
 
 class MapLayer {
-	
-	MapLayer() {
-		this->resourceId = ResourceID::ID_NULL;
-		this->layerName = nullptr;
-		this->data = nullptr;
-		this->firstgid = -1;
-		this->offset = vec2(0, 0);
-	}
+public:
 
-	~MapLayer() {
-		delete[] data;
-	}
+	MapLayer();
+	~MapLayer();
 
-
-	void setMapLayer(ResourceID resourceId, char* layerName, int* data, int firstgid, vec2 offset) {
-		this->resourceId = resourceId;
-		this->layerName = layerName;
-		this->data = data;
-		this->firstgid = firstgid;
-		this->offset = offset;
-	}
+	void setMapLayer(const ResourceID resourceId, const char* layerName, const int* data,const int firstgid,const vec2& offset, const vec2& tiles);
 
 
 private:
 	ResourceID resourceId;
 	vec2 offset;
+	vec2 tiles;
 	char* layerName;
 	int* data;
 	int firstgid;

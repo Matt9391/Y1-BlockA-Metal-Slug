@@ -8,8 +8,6 @@ class Map
 {
 public:
 	Map();
-
-	bool defineDataFromJson(const char* fileName);
 	bool loadDataFromJson(const char* fileName);
 
 private:
