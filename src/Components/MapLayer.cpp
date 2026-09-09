@@ -21,10 +21,12 @@ void MapLayer::setMapLayer(const ResourceID resourceId, const char* layerName, c
 	this->offset = offset;
 	this->tiles = tiles;	
 
+	//delete current pointer and create new one for the filename
 	delete[] this->layerName;
 	this->layerName = new char[strlen(layerName) + 1];
 	strcpy(this->layerName, layerName);
 
+	//delete current data array if allocated before allocate it again
 	delete[] this->data;
 
 	int dataSize = tiles.x * tiles.y;
