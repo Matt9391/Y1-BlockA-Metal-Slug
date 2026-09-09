@@ -17,6 +17,7 @@ void Renderer::clearRenderSets() {
 	for (int i = 0; i < MAXRENDERSETS; i++) {
 		renderSets[i] = RenderSet();
 	}
+	renderSetCount = 0;
 }
 
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager) {
@@ -24,7 +25,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager) {
 	for (int i = 0; i < renderSetCount; i++) {
 		RenderSet& rs = this->renderSets[i];
 
-		for (int j = 1; j < rs.animationSet.layerCount; j++) {
+		for (int j = 0; j < rs.animationSet.layerCount; j++) {
 			AnimationLayer& layer = rs.animationSet.layers[j];
 			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
 			std::cout << layer.currentFrame << std::endl;

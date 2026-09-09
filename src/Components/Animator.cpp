@@ -48,8 +48,8 @@ void Animator::playAnimation(float dt) {
 		this->timeElapsed[i] += dt;
 		if (timeElapsed[i] >= l.frameDuration) {
 			timeElapsed[i] = 0.f;
-			l.currentFrame = 0;
-			//l.currentFrame = ++l.currentFrame % l.nFrames;
+			//l.currentFrame = 0;
+			l.currentFrame = ++l.currentFrame % l.nFrames;
 		}
 
 
