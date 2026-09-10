@@ -4,7 +4,8 @@
 
 Map::Map() :
 	tiles(0,0),
-	tileSize(0)
+	tileSize(0),
+	pos(0,0)
 	{
 		loadDataFromJson("assets/gameMap.tmj");
 	}
@@ -27,7 +28,7 @@ bool Map::loadDataFromJson(const char* fileName) {
 		//data (tiles) of current layer
 		nlohmann::json mapData = layer.at("data");
 
-		std::string layerName = layer.at("name").get<std::string>();
+		MapLayerNames layerName = static_cast<MapLayerNames>(i);
 
 		//size of the array of tiles
 		int dataSize = static_cast<int>(mapData.size());
@@ -40,9 +41,9 @@ bool Map::loadDataFromJson(const char* fileName) {
 
 		//the third layer is always the collison layer, design choice
 		if (i == MLN_COLLISION_LAYER) {
-			this->layers[i].setMapLayer(
+			this->layers[i] = MapLayer(
 				ResourceID::ID_COLLISION_TILESET, //collision tileset
-				layerName.c_str(),
+				layerName,
 				layerData,
 				data.at("tilesets").at(1).at("firstgid").get<int>(), //firstGid for collision tileset
 				vec2(layer.value("offsetx", 0), layer.value("offsety", 0)), //return 0 if there's no offset
@@ -50,9 +51,9 @@ bool Map::loadDataFromJson(const char* fileName) {
 			);
 		}
 		else {
-			this->layers[i].setMapLayer(
+			this->layers[i] = MapLayer(
 				ResourceID::ID_MAP_TILESET, //map tileset
-				layerName.c_str(),
+				layerName,
 				layerData,
 				data.at("tilesets").at(0).at("firstgid").get<int>(), //firstGid for map tileset
 				vec2(layer.value("offsetx", 0), layer.value("offsety", 0)), //return 0 if there's no offset
@@ -60,9 +61,14 @@ bool Map::loadDataFromJson(const char* fileName) {
 			);
 		}
 
+		printf("index: %d\n", i);
 		delete[] layerData;
 	}
 
 	return true;
 }
 
+
+MapRenderSet Map::getMapRenderSet() {
+	return MapRenderSet(this->pos, this->tileSize, this->layers);
+}

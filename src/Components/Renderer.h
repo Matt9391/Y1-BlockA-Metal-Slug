@@ -1,6 +1,7 @@
 #pragma once
 
 #include <RenderSet.h>
+#include <MapRenderSet.h>
 #include <ResourceManager.h>
 
 class Tmpl8::Surface;
@@ -10,6 +11,7 @@ public:
 	Renderer();
 
 	void addRenderSet(RenderSet rs);
+	void addMapRenderSet(const MapRenderSet& mrs);
 
 	void clearRenderSets();
 
@@ -18,5 +20,6 @@ public:
 private:
 	static const int MAXRENDERSETS = 10;
 	RenderSet renderSets[MAXRENDERSETS];
+	MapRenderSet mapRenderSet;
 	int renderSetCount;
 };

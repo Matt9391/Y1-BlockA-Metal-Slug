@@ -13,6 +13,7 @@ GameScene::GameScene(Surface* screen, Renderer& renderer) :
 
 void GameScene::init() {
 	player.loadGFX();
+	renderer.addMapRenderSet(map.getMapRenderSet());
 };
 void GameScene::exit() {};
 

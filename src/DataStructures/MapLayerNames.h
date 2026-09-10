@@ -1,6 +1,7 @@
 #pragma once
 
 enum MapLayerNames {
+	MLN_NULL_LAYER = -1,
 	MLN_FIRST_LAYER,
 	MLN_SECOND_LAYER,
 	MLN_THIRD_LAYER_OVER_PLAYER,

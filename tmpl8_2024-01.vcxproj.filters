@@ -170,6 +170,9 @@
     <ClInclude Include="src\DataStructures\ResourceIDFrames.h">
       <Filter>src\DataStructures</Filter>
     </ClInclude>
+    <ClInclude Include="src\DataStructures\MapRenderSet.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cl\kernels.cl" />

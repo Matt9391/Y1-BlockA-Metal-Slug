@@ -160,6 +160,7 @@
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
     <ClInclude Include="src\DataStructures\MapLayerNames.h" />
+    <ClInclude Include="src\DataStructures\MapRenderSet.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimations.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimationSet.h" />
     <ClInclude Include="src\DataStructures\RenderSet.h" />

@@ -1,9 +1,10 @@
 #include "precomp.h"
 #include "MapLayer.h"
+#include <MapLayerNames.h>
 
 MapLayer::MapLayer() {
 	this->resourceId = ResourceID::ID_NULL;
-	this->layerName = nullptr;
+	this->layerName = MapLayerNames::MLN_NULL_LAYER;
 	this->data = nullptr;
 	this->firstgid = -1;
 	this->offset = vec2(0, 0);
@@ -12,20 +13,18 @@ MapLayer::MapLayer() {
 
 MapLayer::~MapLayer() {
 	delete[] data;
-	delete[] this->layerName;
 }
 
-void MapLayer::setMapLayer(const ResourceID resourceId, const char* layerName, const int* data, const int firstgid, const vec2& offset, const vec2& tiles) {
+MapLayer::MapLayer(const ResourceID resourceId, MapLayerNames layerName, const int* data, const int firstgid, const vec2& offset, const vec2& tiles) :
+data(nullptr)
+{
 	this->resourceId = resourceId;
 	this->firstgid = firstgid;
 	this->offset = offset;
 	this->tiles = tiles;	
+	this->layerName = layerName;
 
-	//delete current pointer and create new one for the filename
-	delete[] this->layerName;
-	this->layerName = new char[strlen(layerName) + 1];
-	strcpy(this->layerName, layerName);
-
+	
 	//delete current data array if allocated before allocate it again
 	delete[] this->data;
 
@@ -35,5 +34,23 @@ void MapLayer::setMapLayer(const ResourceID resourceId, const char* layerName, c
 
 	for(int i = 0; i < dataSize; i++){
 		this->data[i] = data[i];
+	}
+}
+
+void MapLayer::operator=(const MapLayer& other) {
+	this->resourceId = other.resourceId;
+	this->firstgid = other.firstgid;
+	this->offset = other.offset;
+	this->tiles = other.tiles;
+	this->layerName = other.layerName;
+
+	delete[] this->data;
+
+	int dataSize = tiles.x * tiles.y;
+
+	this->data = new int[dataSize];
+
+	for (int i = 0; i < dataSize; i++) {
+		this->data[i] = other.data[i];
 	}
 }

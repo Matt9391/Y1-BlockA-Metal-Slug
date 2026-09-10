@@ -2,21 +2,22 @@
 
 #include <vec2.h>
 #include <ResourceID.h>
+#include <MapLayerNames.h>
 
-class MapLayer {
+struct MapLayer {
 public:
 
 	MapLayer();
 	~MapLayer();
 
-	void setMapLayer(const ResourceID resourceId, const char* layerName, const int* data,const int firstgid,const vec2& offset, const vec2& tiles);
+	MapLayer(const ResourceID resourceId, MapLayerNames layerName, const int* data,const int firstgid,const vec2& offset, const vec2& tiles);
 
+	void operator=(const MapLayer& other);
 
-private:
 	ResourceID resourceId;
 	vec2 offset;
 	vec2 tiles;
-	char* layerName;
+	MapLayerNames layerName;
 	int* data;
 	int firstgid;
 };
