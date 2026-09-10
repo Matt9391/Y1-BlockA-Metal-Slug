@@ -15,14 +15,22 @@ public:
 
 	virtual void loadGFX() = 0;
 
-	RenderSet getRenderSet() const;
 	vec2 getPos() const;
+	RenderSet getRenderSet() const;
 
 	virtual void update(float dt);
 
-	virtual void display(float dt, Surface* screen);
-
 protected:
+	Animator& getAnimator();
+	AnimationSet*& getAnimationSets();
+
+	void setPos(const vec2& newPos);
+	void addToPos(const vec2& newPos);
+	
+	int getCurrentASIndex() const;
+	void setCurrentASIndex(int nextASIndex);
+
+private:
 
 	vec2 pos;
 	vec2 velocity;

@@ -16,7 +16,7 @@ void InputManager::removeKeyPressed(char key) {
 	keys[key & 511] = 0;
 }
 
-bool InputManager::isKeyPressed(char key) {
+bool InputManager::isKeyPressed(char key) const {
 	return keys[key & 511] == 1;
 }
 
@@ -26,7 +26,6 @@ void InputManager::getPressedKeys() {
 			printf("k: %c\n", i);
 		}
 	}
-
 
 }
 

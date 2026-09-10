@@ -17,6 +17,7 @@ public:
 	virtual void display(float dt) = 0;
 
 protected:
+	//I still need to move them to private and make get/set but im lazy now
 	Surface* screen;
 	Renderer& renderer;
 	Camera camera;

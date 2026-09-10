@@ -15,7 +15,6 @@ public:
 	void loadGFX() override;
 
 	void update(float dt) override;
-	void display(float dt, Surface* screen) override;
 
 private:
 	

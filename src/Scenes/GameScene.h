@@ -12,14 +12,11 @@ public:
 	void init() override;
 	void exit() override;
 	
-
-	
 	void update(float dt) override;
 	void display(float dt) override;
 
 private:
 	Player player;
 	Map map;
-
 };
 

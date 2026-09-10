@@ -12,7 +12,7 @@ public:
 
 	void init(Surface* screen, Renderer& renderer, TypeScene firstScene);
 
-	CustomScene& getCurrentScene();
+	CustomScene& getCurrentScene() const;
 	
 	void changeScene(TypeScene nextScene);
 
@@ -21,6 +21,5 @@ private:
 	CustomScene* currentScene;
 	CustomScene* menuScene;
 	CustomScene* gameScene;
-
 };
 

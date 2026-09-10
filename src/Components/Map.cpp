@@ -10,6 +10,18 @@ Map::Map() :
 		loadDataFromJson("assets/gameMap.tmj");
 	}
 
+MapRenderSet Map::getMapRenderSet() const {
+	return MapRenderSet(this->pos, this->tileSize, this->layers);
+}
+
+vec2 Map::getTiles() const {
+	return this->tiles;
+}
+
+int Map::getTileSize() const {
+	return this->tileSize;
+}
+
 bool Map::loadDataFromJson(const char* fileName) {
 
 	//File reading
@@ -69,14 +81,4 @@ bool Map::loadDataFromJson(const char* fileName) {
 }
 
 
-MapRenderSet Map::getMapRenderSet() {
-	return MapRenderSet(this->pos, this->tileSize, this->layers);
-}
 
-vec2 Map::getTiles() const {
-	return this->tiles;
-}
-
-int Map::getTileSize() const {
-	return this->tileSize;
-}

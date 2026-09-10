@@ -9,14 +9,16 @@ struct AnimationSet {
 	int layerCount;
 
 	
-	AnimationSet(int layerCount, AnimationLayer firstLayer, AnimationLayer secondLayer = AnimationLayer()) {
-		this->layerCount = layerCount;
+	AnimationSet(int layerCount, AnimationLayer firstLayer, AnimationLayer secondLayer = AnimationLayer()) :
+		layerCount(layerCount)
+	{
 		layers[0] = firstLayer;
 		layers[1] = secondLayer;
 	}
 
-	AnimationSet() {
-		this->layerCount = -1;
+	AnimationSet() :
+	layerCount(-1)
+	{
 		layers[0] = AnimationLayer();
 		layers[1] = AnimationLayer();
 	}

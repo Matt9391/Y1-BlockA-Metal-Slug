@@ -125,7 +125,6 @@
     <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Components\Camera.cpp" />
     <ClCompile Include="src\Components\Map.cpp" />
-    <ClCompile Include="src\Components\MapLayer.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
     <ClCompile Include="src\Entities\Player.cpp" />

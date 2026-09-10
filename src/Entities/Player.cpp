@@ -9,38 +9,33 @@
 Player::Player(vec2 pos) :
 	Entity(pos)
 	{
-		animationSets = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
+		getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
 	}
 
 Player::~Player() {
-	delete[] animationSets;
+	delete[] getAnimationSets();
 }
 
 void Player::loadGFX() {
-	animationSets[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
+	getAnimationSets()[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS, ResourceIDFrames::IDF_PLAYER_IDLE_LEGS, 100, vec2(0, 52)),
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_BODY, ResourceIDFrames::IDF_PLAYER_IDLE_BODY, 200)
 	);
 
-	animator.setAnimation(&animationSets[PlayerAnimationSet::PAS_IDLE]);
-	this->currentASIndex = PlayerAnimationSet::PAS_IDLE;
+	getAnimator().setAnimation(&getAnimationSets()[PlayerAnimationSet::PAS_IDLE]);
+	setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
 }
 
 void Player::update(float dt) {
-	animator.playAnimation(dt);
+	getAnimator().playAnimation(dt);
 
 	if (GetAsyncKeyState('D')) {
 
-		this->pos.x += 1 * dt;	
+		this->addToPos(vec2(1 * dt, 0));
 	}
 	else if(GetAsyncKeyState('A')) {
-		this->pos.x -= 1 * dt;
+		this->addToPos(vec2(-1 * dt, 0));
 	}
 }
 
-void Player::display(float dt, Surface* screen) {
-	
-	//std::cout << bodySprite << std::endl;
-	
-}

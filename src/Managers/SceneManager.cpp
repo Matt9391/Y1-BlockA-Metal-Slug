@@ -23,7 +23,7 @@ void SceneManager::init(Surface* screen, Renderer& renderer, TypeScene firstScen
 	changeScene(firstScene);
 }
 
-CustomScene& SceneManager::getCurrentScene() {
+CustomScene& SceneManager::getCurrentScene() const{
 	return *currentScene;
 }
 

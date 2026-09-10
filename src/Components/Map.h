@@ -9,13 +9,15 @@ class Map
 {
 public:
 	Map();
-	bool loadDataFromJson(const char* fileName);
 
-	MapRenderSet getMapRenderSet();
+	MapRenderSet getMapRenderSet() const;
 	vec2 getTiles() const;
 	int getTileSize() const;
 
 private:
+	bool loadDataFromJson(const char* fileName);
+
+
 	vec2 pos;
 	vec2 tiles;
 	int tileSize;

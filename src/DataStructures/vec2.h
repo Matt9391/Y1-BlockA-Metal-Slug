@@ -12,6 +12,7 @@ struct vec2 {
 	vec2 operator* (const float& value) const { return vec2( this->x * value, this->y * value ); }
 	vec2 operator/ (const float& value) const { return vec2( this->x / value, this->y / value ); }
 
+	vec2& operator+=(const vec2& other) { x += other.x; y += other.y; return *this;	}
 	bool operator== (const vec2& other) const { return this->x == other.x && this->y == other.y; }
 
 };

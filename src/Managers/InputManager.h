@@ -7,7 +7,7 @@ public:
 	void addKeyPressed(char key);
 	void removeKeyPressed(char key);
 
-	bool isKeyPressed(char key);
+	bool isKeyPressed(char key) const;
 
 	void getPressedKeys();
 
