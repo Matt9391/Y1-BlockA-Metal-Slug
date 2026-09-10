@@ -29,6 +29,14 @@ void Player::loadGFX() {
 
 void Player::update(float dt) {
 	animator.playAnimation(dt);
+
+	if (GetAsyncKeyState('D')) {
+
+		this->pos.x += 1 * dt;	
+	}
+	else if(GetAsyncKeyState('A')) {
+		this->pos.x -= 1 * dt;
+	}
 }
 
 void Player::display(float dt, Surface* screen) {

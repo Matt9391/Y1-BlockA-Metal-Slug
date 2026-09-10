@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib;src;src\Managers;src\DataStructures;src\Scenes;src\Entities;src\Components</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib;src;src\Managers;src\DataStructures;src\Scenes;src\Entities;src\Components;src\Utils</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Components\Animator.cpp" />
+    <ClCompile Include="src\Components\Camera.cpp" />
     <ClCompile Include="src\Components\Map.cpp" />
     <ClCompile Include="src\Components\MapLayer.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
@@ -133,6 +134,7 @@
     <ClCompile Include="src\Managers\SceneManager.cpp" />
     <ClCompile Include="src\Scenes\GameScene.cpp" />
     <ClCompile Include="src\Scenes\CustomScene.cpp" />
+    <ClCompile Include="src\Utils\myMath.cpp" />
     <ClCompile Include="template\opencl.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\scene.cpp">
@@ -154,6 +156,7 @@
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="game.h" />
     <ClInclude Include="src\Components\Animator.h" />
+    <ClInclude Include="src\Components\Camera.h" />
     <ClInclude Include="src\Components\Map.h" />
     <ClInclude Include="src\Components\MapLayer.h" />
     <ClInclude Include="src\Components\Renderer.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="src\DataStructures\TypeScene.h" />
     <ClInclude Include="src\Scenes\GameScene.h" />
     <ClInclude Include="src\Scenes\CustomScene.h" />
+    <ClInclude Include="src\Utils\myMath.h" />
     <ClInclude Include="template\common.h" />
     <ClInclude Include="template\opencl.h" />
     <ClInclude Include="template\opengl.h" />

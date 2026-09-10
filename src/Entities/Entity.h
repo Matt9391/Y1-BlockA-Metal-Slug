@@ -16,6 +16,7 @@ public:
 	virtual void loadGFX() = 0;
 
 	RenderSet getRenderSet() const;
+	vec2 getPos() const;
 
 	virtual void update(float dt);
 

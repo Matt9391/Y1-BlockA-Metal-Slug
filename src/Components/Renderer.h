@@ -15,7 +15,7 @@ public:
 
 	void clearRenderSets();
 
-	void render(Surface* screen, const ResourceManager& resourceManager);
+	void render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset);
 
 private:
 	static const int MAXRENDERSETS = 10;

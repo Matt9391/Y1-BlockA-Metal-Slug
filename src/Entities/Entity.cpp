@@ -19,6 +19,10 @@ RenderSet Entity::getRenderSet() const {
 	return RenderSet{ animationSets[currentASIndex], pos };
 }
 
+vec2 Entity::getPos() const {
+	return this->pos;
+}
+
 void Entity::display(float dt, Surface* screen) {
 
 }

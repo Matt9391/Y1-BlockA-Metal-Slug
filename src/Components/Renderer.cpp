@@ -23,7 +23,7 @@ void Renderer::clearRenderSets() {
 	renderSetCount = 0;
 }
 
-void Renderer::render(Surface* screen, const ResourceManager& resourceManager) {
+void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
 
 	for (int i = 0; i < mapRenderSet.layerCount; i++) {
 		MapLayer& layer = mapRenderSet.layers[i];
@@ -39,7 +39,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager) {
 				int destX = mapRenderSet.pos.x + x * 8;
 				int destY = mapRenderSet.pos.y + y * 8;
 
-				drawTile(mapRenderSet.tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX, destY);
+				drawTile(mapRenderSet.tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
 
 			}
 		}
@@ -51,12 +51,10 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager) {
 		for (int j = 0; j < rs.animationSet.layerCount; j++) {
 			AnimationLayer& layer = rs.animationSet.layers[j];
 			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
-			std::cout << layer.currentFrame << std::endl;
-			//if (layer.currentFrame == 0) 
-			//	continue;
+
 			sprite->SetFrame(layer.currentFrame);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
-			sprite->DrawScaled(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y, 6);
+			sprite->DrawScaled(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, 6);
 		}
 
 	}

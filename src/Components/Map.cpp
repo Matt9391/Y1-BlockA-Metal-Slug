@@ -72,3 +72,11 @@ bool Map::loadDataFromJson(const char* fileName) {
 MapRenderSet Map::getMapRenderSet() {
 	return MapRenderSet(this->pos, this->tileSize, this->layers);
 }
+
+vec2 Map::getTiles() const {
+	return this->tiles;
+}
+
+int Map::getTileSize() const {
+	return this->tileSize;
+}

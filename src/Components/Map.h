@@ -12,6 +12,8 @@ public:
 	bool loadDataFromJson(const char* fileName);
 
 	MapRenderSet getMapRenderSet();
+	vec2 getTiles() const;
+	int getTileSize() const;
 
 private:
 	vec2 pos;

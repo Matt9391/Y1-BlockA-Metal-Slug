@@ -22,6 +22,9 @@
     <Filter Include="src\Components">
       <UniqueIdentifier>{701d5ceb-33f1-4312-91a7-2e219b35839a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Utils">
+      <UniqueIdentifier>{8ee8940a-2faa-4413-9233-aa83cfb48c94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -78,6 +81,12 @@
     </ClCompile>
     <ClCompile Include="src\Components\Renderer.cpp">
       <Filter>src\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Camera.cpp">
+      <Filter>src\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utils\myMath.cpp">
+      <Filter>src\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="src\DataStructures\MapRenderSet.h">
       <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Camera.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils\myMath.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

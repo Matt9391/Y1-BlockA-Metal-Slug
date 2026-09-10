@@ -33,10 +33,8 @@ void Game::Tick(float dt)
 	//inputManager.getPressedKeys();
 	screen->Clear(0xFF00ff00);
 	sceneManager.getCurrentScene().update(dt);
-	renderer.render(screen, resourceManager);
+	renderer.render(screen, resourceManager, sceneManager.getCurrentScene().getCameraPos());
 	screen->Box(100,100,screen->width,screen->height,0xff0000);
-	Sprite* spr = resourceManager.getSprite(ResourceID::ID_PLAYER_IDLE_BODY);
-	spr->SetFrame(0);
-	spr->DrawScaled(screen, 300, 300, 6);
+	
 }
 

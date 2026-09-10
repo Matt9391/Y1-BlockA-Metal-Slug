@@ -8,7 +8,7 @@ GameScene::GameScene(Surface* screen, Renderer& renderer) :
 	CustomScene(screen, renderer), //inheritance
 	player(vec2(100,100)) //my own helper class
 	{
-
+		camera.setWorldSize(map.getTiles() * map.getTileSize());
 	}
 
 void GameScene::init() {
@@ -23,9 +23,11 @@ void GameScene::update(float dt) {
     RenderSet rs = player.getRenderSet();
 	renderer.addRenderSet(rs);
 
- 
+	camera.follow(player.getPos());
 
 };
+
+
 void GameScene::display(float dt) {
 
 	//player.display(dt, screen); //player which as entity
