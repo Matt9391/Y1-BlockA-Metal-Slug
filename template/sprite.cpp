@@ -14,21 +14,38 @@ Sprite::Sprite( Surface* surface, unsigned int frameCount ) :
 	currentFrame( 0 ),
 	flags( 0 ),
 	start( new unsigned int* [frameCount] ),
-	surface( surface )
+	reverseStart( new unsigned int* [frameCount]),
+	surface( surface ),
+	reverseSurface(new Surface(surface->width, surface->height))
 {
-	InitializeStartData();
+	InitializeStartData(start, GetBuffer());
+
+	for (int f = 0; f < numFrames; f++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				reverseSurface->pixels[f * width + x + y * surface->width] = 
+					surface->pixels[f * width + (width - 1 - x) + y * surface->width];
+			}
+		}
+	}
+
+	InitializeStartData(reverseStart, GetReverseBuffer());
 }
 
 // destructor
 Sprite::~Sprite()
 {
 	delete surface;
+	delete reverseSurface;
 	for (unsigned int i = 0; i < numFrames; i++) delete start[i];
 	delete start;
 }
 
 // draw sprite to target surface
-void Sprite::Draw( Surface* target, int x, int y )
+void Sprite::Draw( Surface* target, int x, int y, bool flipped)
 {
 	//check if in bounds
 	if (x < -width || x >( target->width + width )) return;
@@ -37,7 +54,15 @@ void Sprite::Draw( Surface* target, int x, int y )
 	int x1 = x, x2 = x + width;
 	int y1 = y, y2 = y + height;
 	//gets the correct index based on the current frame at the top of the sprite
-	uint* src = GetBuffer() + currentFrame * width;
+	uint* src = nullptr;
+	if (flipped) {
+		src = GetReverseBuffer() + currentFrame * width;
+
+	}
+	else {
+		src = GetBuffer() + currentFrame * width;
+	}
+
 	//clip parts out of bounds
 	if (x1 < 0) src += -x1, x1 = 0;
 	if (x2 > target->width) x2 = target->width;
@@ -59,30 +84,45 @@ void Sprite::Draw( Surface* target, int x, int y )
 		for (int j = 0; j < h; j++)
 		{
 			const int line = j + (y1 - y);
-			const int lsx = start[currentFrame][line] + x;
+			int lsx = 0;
+			if (flipped)
+				lsx = reverseStart[currentFrame][line] + x;
+			else
+				lsx = start[currentFrame][line] + x;
 			xs = (lsx > x1) ? lsx - x1 : 0;
 			for (int i = xs; i < w; i++)
 			{
 				const uint c1 = *(src + i);
-				if (c1 & 0xffffff) *(dest + addr + i) = c1;
+				if (c1 & 0xff000000 && c1 & 0xffffff) *(dest + addr + i) = c1;
 			}
 			addr += target->width;
 			src += width * numFrames;
 		}
+
+		
 	}
 }
 
 // draw scaled sprite
-void Sprite::DrawScaled(Surface* target, int x, int y, int scaleFactor)
+void Sprite::DrawScaled(Surface* target, int x, int y, int scaleFactor, bool flipped)
 {
 	//check if in bounds
-	if (x < -width || x >(target->width + width)) return;
-	if (y < -height || y >(target->height + height)) return;
+	if (x < -width * scaleFactor || x > (target->width + width * scaleFactor)) return;
+	if (y < -height * scaleFactor || y >(target->height + height * scaleFactor)) return;
 	//set the starting coordinate and ending coordinate of drawing
 	int x1 = x, x2 = x + (width * scaleFactor);
 	int y1 = y, y2 = y + (height * scaleFactor);
 	//gets the correct index based on the current frame at the top of the sprite
-	uint* src = GetBuffer() + currentFrame * width;
+	uint* src = nullptr;
+
+	if (flipped) {
+		src = GetReverseBuffer() + currentFrame * width;
+
+	}
+	else {
+		src = GetBuffer() + currentFrame * width;
+	}
+
 	//clip parts out of bounds
 	if (x1 < 0) src += -x1 / scaleFactor, x1 = 0;
 	if (x2 > target->width) x2 = target->width;
@@ -108,7 +148,11 @@ void Sprite::DrawScaled(Surface* target, int x, int y, int scaleFactor)
 		{
 			lastLine = line;
 			line = (j + (y1 - y)) / scaleFactor;
-			const int lsx = start[currentFrame][line] * scaleFactor + x;
+			int lsx = 0;
+			if(flipped)
+				lsx = reverseStart[currentFrame][line] * scaleFactor + x;
+			else
+				lsx = start[currentFrame][line] * scaleFactor + x;
 			xs = (lsx > x1) ? lsx - x1 : 0;
 			for (int i = xs; i < w; i++)
 			{
@@ -119,9 +163,9 @@ void Sprite::DrawScaled(Surface* target, int x, int y, int scaleFactor)
 			if(lastLine != line)
 				src += width * numFrames;
 		}
+		
 	}
 }
-
 
 
 
@@ -138,7 +182,7 @@ void Sprite::DrawScaled( int x1, int y1, int w, int h, Surface* target )
 }
 
 // prepare sprite outline data for faster rendering
-void Sprite::InitializeStartData()
+void Sprite::InitializeStartData(unsigned int** start, uint* buffer)
 {
 	for (unsigned int f = 0; f < numFrames; ++f)
 	{
@@ -146,7 +190,7 @@ void Sprite::InitializeStartData()
 		for (int y = 0; y < height; ++y)
 		{
 			start[f][y] = width;
-			uint* addr = GetBuffer() + f * width + y * width * numFrames;
+			uint* addr = buffer + f * width + y * width * numFrames;
 			for (int x = 0; x < width; ++x) if (addr[x])
 			{
 				start[f][y] = x;

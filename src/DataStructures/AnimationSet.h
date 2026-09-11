@@ -4,7 +4,6 @@
 #define MAX_LAYERS 2
 
 struct AnimationSet {
-
 	AnimationLayer layers[MAX_LAYERS];
 	int layerCount;
 

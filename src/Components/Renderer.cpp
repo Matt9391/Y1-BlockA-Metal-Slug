@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include <ResourceManager.h>
 #include <iostream>
+
 void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
 
 Renderer::Renderer() :
@@ -54,7 +55,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 			sprite->SetFrame(layer.currentFrame);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
-			sprite->DrawScaled(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, 6);
+			//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
+			sprite->DrawScaled(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, 6, true);
 		}
 
 	}

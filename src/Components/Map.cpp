@@ -73,7 +73,6 @@ bool Map::loadDataFromJson(const char* fileName) {
 			);
 		}
 
-		printf("index: %d\n", i);
 		delete[] layerData;
 	}
 
