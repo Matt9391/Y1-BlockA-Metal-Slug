@@ -48,7 +48,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 	for (int i = 0; i < renderSetCount; i++) {
 		RenderSet& rs = this->renderSets[i];
-
+		bool flipped = rs.animationSet.flipped;
 		for (int j = 0; j < rs.animationSet.layerCount; j++) {
 			AnimationLayer& layer = rs.animationSet.layers[j];
 			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
@@ -56,7 +56,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			sprite->SetFrame(layer.currentFrame);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
-			sprite->DrawScaled(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, 6, true);
+			sprite->DrawScaled(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, 6, flipped);
 		}
 
 	}

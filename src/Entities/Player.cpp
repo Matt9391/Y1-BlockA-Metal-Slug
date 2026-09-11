@@ -31,11 +31,12 @@ void Player::update(float dt) {
 	getAnimator().playAnimation(dt);
 
 	if (GetAsyncKeyState('D')) {
-
-		this->addToPos(vec2(1 * dt, 0));
+		getAnimator().setAnimation(&getAnimationSets()[PlayerAnimationSet::PAS_IDLE] /*flipped=false*/ /*reset=false*/);
+		//this->addToPos(vec2(1 * dt, 0));
 	}
 	else if(GetAsyncKeyState('A')) {
-		this->addToPos(vec2(-1 * dt, 0));
+		getAnimator().setAnimation(&getAnimationSets()[PlayerAnimationSet::PAS_IDLE], /*flipped=*/true /*reset=false*/);
+		//this->addToPos(vec2(-1 * dt, 0));
 	}
 }
 

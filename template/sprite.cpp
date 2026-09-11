@@ -40,8 +40,9 @@ Sprite::~Sprite()
 {
 	delete surface;
 	delete reverseSurface;
-	for (unsigned int i = 0; i < numFrames; i++) delete start[i];
+	for (unsigned int i = 0; i < numFrames; i++) { delete start[i]; delete reverseStart[i]; }
 	delete start;
+	delete reverseStart;
 }
 
 // draw sprite to target surface
@@ -106,6 +107,7 @@ void Sprite::Draw( Surface* target, int x, int y, bool flipped)
 // draw scaled sprite
 void Sprite::DrawScaled(Surface* target, int x, int y, int scaleFactor, bool flipped)
 {
+
 	//check if in bounds
 	if (x < -width * scaleFactor || x > (target->width + width * scaleFactor)) return;
 	if (y < -height * scaleFactor || y >(target->height + height * scaleFactor)) return;

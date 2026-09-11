@@ -10,7 +10,7 @@ class Animator
 public:
 	Animator(vec2 pos);
 
-	bool setAnimation(AnimationSet* newAnimationSet, bool reset = false);
+	bool setAnimation(AnimationSet* newAnimationSet, bool flipped = false, bool reset = false);
 
 	void playAnimation(float dt);
 private:

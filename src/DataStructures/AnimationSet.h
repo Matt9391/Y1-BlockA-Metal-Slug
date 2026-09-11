@@ -6,17 +6,19 @@
 struct AnimationSet {
 	AnimationLayer layers[MAX_LAYERS];
 	int layerCount;
-
+	bool flipped;
 	
 	AnimationSet(int layerCount, AnimationLayer firstLayer, AnimationLayer secondLayer = AnimationLayer()) :
-		layerCount(layerCount)
+		layerCount(layerCount),
+		flipped(false)
 	{
 		layers[0] = firstLayer;
 		layers[1] = secondLayer;
 	}
 
 	AnimationSet() :
-	layerCount(-1)
+		layerCount(-1),
+		flipped(false)
 	{
 		layers[0] = AnimationLayer();
 		layers[1] = AnimationLayer();

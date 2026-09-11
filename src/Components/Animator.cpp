@@ -14,7 +14,8 @@ Animator::Animator(vec2 pos):
 
 
 //Added bool return value so you its possible to check whether the animation has been set or not
-bool Animator::setAnimation(AnimationSet* newAnimationSet, bool reset) {
+bool Animator::setAnimation(AnimationSet* newAnimationSet, bool flipped,  bool reset) {
+	bool result = false;
 	if (this->animationSet == nullptr || reset) {
 		this->animationSet = newAnimationSet;
 
@@ -22,18 +23,27 @@ bool Animator::setAnimation(AnimationSet* newAnimationSet, bool reset) {
 			animationSet->layers[i].currentFrame = 0;
 		}
 
-		return true;
+		result = true;
 	}
+	else {
 
-	if (*this->animationSet == *newAnimationSet) return false;
+		if (*this->animationSet == *newAnimationSet) {
+			result = false;
+		}
+		else {
 
-	this->animationSet = newAnimationSet;
+			this->animationSet = newAnimationSet;
+			
 
-	for (int i = 0; i < animationSet->layerCount; i++) {
-		animationSet->layers[i].currentFrame = 0;
+			for (int i = 0; i < animationSet->layerCount; i++) {
+				animationSet->layers[i].currentFrame = 0;
+				result = true;
+			}
+		}
 	}
+	this->animationSet->flipped = flipped;
 
-	return true;
+	return result;
 }
 
 
