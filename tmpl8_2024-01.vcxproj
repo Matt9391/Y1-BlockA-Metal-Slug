@@ -124,6 +124,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Components\Camera.cpp" />
+    <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\Map.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\Components\Camera.h" />
+    <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\Map.h" />
     <ClInclude Include="src\Components\MapLayer.h" />
     <ClInclude Include="src\Components\Renderer.h" />

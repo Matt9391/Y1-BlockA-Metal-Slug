@@ -6,7 +6,7 @@
 
 GameScene::GameScene(Surface* screen, Renderer& renderer) :
 	CustomScene(screen, renderer), //inheritance
-	player(vec2(100,100)) //my own helper class
+	player(vec2(200,100)) //my own helper class
 	{
 		camera.setWorldSize(map.getTiles() * map.getTileSize());
 	}

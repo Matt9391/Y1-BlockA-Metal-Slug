@@ -52,11 +52,12 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		for (int j = 0; j < rs.animationSet.layerCount; j++) {
 			AnimationLayer& layer = rs.animationSet.layers[j];
 			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
+			vec2& offset = flipped ? layer.offsetFlipped : layer.offset;
 
 			sprite->SetFrame(layer.currentFrame);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
-			sprite->DrawScaled(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, 6, flipped);
+			sprite->DrawScaled(screen, rs.pos.x + offset.x - cameraOffset.x, rs.pos.y + offset.y - cameraOffset.y, 6, flipped);
 		}
 
 	}
