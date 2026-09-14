@@ -3,6 +3,7 @@
 #include <surface.h>
 #include <Renderer.h>
 #include <iostream>
+#include <CollisionManager.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer) :
 	CustomScene(screen, renderer), //inheritance
@@ -22,7 +23,8 @@ void GameScene::update(float dt) {
 	renderer.clearRenderSets();
     RenderSet rs = player.getRenderSet();
 	renderer.addRenderSet(rs);
-
+	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
+	renderer.addMapRenderSet(map.getMapRenderSet());
 	camera.follow(player.getPos());
 
 };

@@ -1,13 +1,18 @@
 #include "precomp.h"
 #include "Entity.h"
+#include <RigidBody.h>
 
-Entity::Entity(vec2 pos) :
+Entity::Entity(vec2 pos, bool needsRigidBody) :
 	pos(pos),
 	velocity(0,0),
 	animator(pos),
 	animationSets(nullptr),
-	currentASIndex(-1)
-	{ }
+	currentASIndex(-1),
+	collider(this->pos, vec2(30,30)),
+	rigidBody(nullptr)
+	{
+		this->rigidBody = needsRigidBody ? new RigidBody(this->pos, true) : nullptr;
+	}
 
 
 void Entity::update(float dt) {
@@ -43,4 +48,12 @@ int Entity::getCurrentASIndex() const {
 
 void Entity::setCurrentASIndex(int nextASIndex) {
 	this->currentASIndex = nextASIndex;
+}
+
+Collider& Entity::getCollider() {
+	return this->collider;
+}
+
+RigidBody* Entity::getRigidBody() const {
+	return this->rigidBody;
 }

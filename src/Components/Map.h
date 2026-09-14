@@ -14,6 +14,8 @@ public:
 	vec2 getTiles() const;
 	int getTileSize() const;
 
+	MapLayer& getLayer(MapLayerNames layerName);
+
 private:
 	bool loadDataFromJson(const char* fileName);
 

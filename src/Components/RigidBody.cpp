@@ -10,3 +10,7 @@ RigidBody::RigidBody(const vec2& pos, bool hasGravity) :
 	isGrounded(false)
 { }
 
+vec2 RigidBody::getPos() const {
+	return pos;
+}
+

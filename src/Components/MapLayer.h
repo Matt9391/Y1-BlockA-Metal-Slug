@@ -13,26 +13,29 @@ public:
 	MapLayerNames layerName;
 	int* data;
 	int firstgid;
+	int tileSize;
 
 	MapLayer() :
 		resourceId(ResourceID::ID_NULL),
 		layerName(MapLayerNames::MLN_NULL_LAYER),
 		data(nullptr),
 		firstgid(-1),
-		offset(0,0),
-		tiles(0,0) 
+		offset(0, 0),
+		tiles(0, 0),
+		tileSize(0)
 	{}
 	~MapLayer() {
 		delete[] data;
 	}
 
-	MapLayer(const ResourceID resourceId, MapLayerNames layerName, const int* data,const int firstgid,const vec2& offset, const vec2& tiles) :
+	MapLayer(const ResourceID resourceId, MapLayerNames layerName, const int* data,const int firstgid,const vec2& offset, const vec2& tiles, int tileSize) :
 		resourceId(resourceId),
 		layerName(layerName),
 		data(nullptr),
 		firstgid(firstgid),
 		offset(offset),
-		tiles(tiles)
+		tiles(tiles),
+		tileSize(tileSize)
 	{
 		//delete current data array if allocated before allocate it again
 		delete[] this->data;
@@ -52,6 +55,7 @@ public:
 		this->offset = other.offset;
 		this->tiles = other.tiles;
 		this->layerName = other.layerName;
+		this->tileSize = other.tileSize;
 
 		delete[] this->data;
 

@@ -7,6 +7,8 @@ public:
 
 	RigidBody(const vec2& pos, bool hasGravity);
 
+	vec2 getPos() const;
+
 private:
 
 	static const float gravity;

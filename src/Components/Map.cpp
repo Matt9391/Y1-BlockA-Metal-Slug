@@ -22,6 +22,10 @@ int Map::getTileSize() const {
 	return this->tileSize;
 }
 
+MapLayer& Map::getLayer(MapLayerNames layerName) {
+	return this->layers[layerName];
+}
+
 bool Map::loadDataFromJson(const char* fileName) {
 
 	//File reading
@@ -31,8 +35,7 @@ bool Map::loadDataFromJson(const char* fileName) {
 
 	//filling member variables
 	this->tiles = vec2(data.at("width").get<int>(), data.at("height").get<int>());
-	this->tileSize = data.at("tileheight");
-
+	this->tileSize = data.at("tileheight").get<int>();
 	//filling map layers
 	for (int i = 0; i < static_cast<int>(MapLayerNames::MLN_COUNTS); i++) {
 		//current layer
@@ -59,7 +62,8 @@ bool Map::loadDataFromJson(const char* fileName) {
 				layerData,
 				data.at("tilesets").at(1).at("firstgid").get<int>(), //firstGid for collision tileset
 				vec2(layer.value("offsetx", 0), layer.value("offsety", 0)), //return 0 if there's no offset
-				vec2(layer.at("width").get<int>(), layer.at("height").get<int>())
+				vec2(layer.at("width").get<int>(), layer.at("height").get<int>()),
+				this->tileSize
 			);
 		}
 		else {
@@ -69,7 +73,8 @@ bool Map::loadDataFromJson(const char* fileName) {
 				layerData,
 				data.at("tilesets").at(0).at("firstgid").get<int>(), //firstGid for map tileset
 				vec2(layer.value("offsetx", 0), layer.value("offsety", 0)), //return 0 if there's no offset
-				vec2(layer.at("width").get<int>(), layer.at("height").get<int>())
+				vec2(layer.at("width").get<int>(), layer.at("height").get<int>()),
+				this->tileSize
 			);
 		}
 
