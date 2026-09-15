@@ -95,8 +95,9 @@ void Player::loadGFX() {
 void Player::update(float dt) {
 	getAnimator().playAnimation(dt);
 
-	setLastDir(getDir());
-
+	if(getDir() != 0)
+		setLastDir(getDir());
+	setDir(vec2(0, 0));
 	const bool inputRight = inputManager.isKeyPressed('D');
 	const bool inputLeft = inputManager.isKeyPressed('A');
 	const bool isMoving = inputRight || inputLeft;
@@ -105,22 +106,25 @@ void Player::update(float dt) {
 	//Movement
 	if (inputRight) {
 		setDir(vec2(1, 0));
+		std::cout << "RIGHT\n";
 	}
 	else if (inputLeft) {
 		setDir(vec2(-1, 0));
+		std::cout << "LEFT\n";
 	}
 
-	if(isMoving){
-		getRigidBody()->setVelocity(vec2(0.1, 0));
-	}
+
+	//if(isMoving){
+	//}
+	getRigidBody()->setVelocityX(0.1f * getDir().x * dt);
 
 	if (!isGrounded) {
-		getRigidBody()->addVelocity(vec2(0, 0.5f));
+		getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
 	}
 	else {
-		getRigidBody()->setVelocity(vec2(getRigidBody()->getVelocity().x, 0), true);
+		getRigidBody()->setVelocityY(0);
 		if (isJumping) {
-			getRigidBody()->addVelocity(vec2(0, -5));
+			getRigidBody()->addVelocity(vec2(0, -0.3f));
 			setGrounded(false);
 		}
 	}
@@ -137,18 +141,25 @@ void Player::update(float dt) {
 	else if (isJumping) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
 	}
-	else if (getCurrentASIndex() == PlayerAnimationSet::PAS_WALK) {
+	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_WALK) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_AFTER_RUN_STOP);
 	}
-	else if (getCurrentASIndex() == PlayerAnimationSet::PAS_AFTER_RUN_STOP && getAnimator().isAnimationEnded()) {
+	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_AFTER_RUN_STOP && getAnimator().isAnimationEnded()) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
 	}
+	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_FALLING) {
+		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
+	}
+	else if (!isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_JUMPUP && getAnimator().isAnimationEnded()) {
+		setCurrentASIndex(PlayerAnimationSet::PAS_FALLING);
+	}
 
-	const bool flip = getDir().x < 0;
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()],flip);
+	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip);
 
 	//Moving fr
-	//this->addToPos(getRigidBody()->getVelocity());
+	
+	this->addToPos(getRigidBody()->getVelocity());
 
 }
 

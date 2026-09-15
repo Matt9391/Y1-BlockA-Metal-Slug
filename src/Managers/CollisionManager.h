@@ -6,7 +6,7 @@
 
 namespace CollisionManager {
 
-	vec2 resolveMapCollision(Entity& e, MapLayer& layer);
+	bool resolveMapCollision(Entity& e, MapLayer& layer);
 		
 
 

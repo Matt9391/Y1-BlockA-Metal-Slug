@@ -10,7 +10,7 @@ Entity::Entity(vec2 pos, bool needsRigidBody) :
 	animator(pos),
 	animationSets(nullptr),
 	currentASIndex(-1),
-	collider(this->pos, vec2(30,30)),
+	collider(this->pos, vec2(30,40)),
 	rigidBody(nullptr)
 	{
 		this->rigidBody = needsRigidBody ? new RigidBody(this->pos, true) : nullptr;

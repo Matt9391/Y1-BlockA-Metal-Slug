@@ -27,6 +27,13 @@ void RigidBody::setVelocity(vec2 v, bool overwrite) {
 	}
 }
 
+void RigidBody::setVelocityX(float v){
+	this->velocity.x = v;
+}
+void RigidBody::setVelocityY(float v) {
+	this->velocity.y = v;
+}
+
 void RigidBody::addVelocity(vec2 v) {
 	this->velocity += v;
 }

@@ -12,6 +12,8 @@ public:
 	vec2 getVelocity() const;
 	//overwrite is to be able to set only component, if you pass (1,0) it only set the x component without overwriting the y since its 0
 	void setVelocity(vec2 v, bool overwrite = false);
+	void setVelocityX(float v);
+	void setVelocityY(float v);
 	void addVelocity(vec2 v);
 
 	void setGrounded(bool grounded);

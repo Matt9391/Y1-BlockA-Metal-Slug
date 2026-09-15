@@ -5,7 +5,7 @@
 
 namespace CollisionManager {
 
-	vec2 resolveMapCollision(Entity& e, MapLayer& layer) {
+	bool resolveMapCollision(Entity& e, MapLayer& layer) {
 			Collider& collider = e.getCollider();
 			vec2 startPos = vec2(static_cast<int>(e.getPos().x / layer.tileSize),
 								 static_cast<int>(e.getPos().y / layer.tileSize));
@@ -14,6 +14,8 @@ namespace CollisionManager {
 							   static_cast<int>((e.getPos().y + e.getCollider().size.y) / layer.tileSize)); //bottom right
 			//std::cout << "startX: " << startPos.x << "endX: " << endPos.x << std::endl;
 			//std::cout << "startY: " << startPos.y << "endY: " << endPos.y << std::endl;
+
+			bool grounded = false;
 
 			for (int i = startPos.y; i <= endPos.y; i++) {
 				for (int j = startPos.x; j <= endPos.x; j++) {
@@ -44,16 +46,13 @@ namespace CollisionManager {
 						else {
 							e.addToPos(vec2(0, overlapY * dir.y));
 						}
-						e.setGrounded(true);
+						grounded = true;
 					}
-
-				
-					//if (overlapX > 0) 
-					//if (overlapY > 0) e.addToPos(vec2(0,-overlapY));
 				}
 			}
 			
-			
-			return { 0,0 };
+			e.setGrounded(grounded);
+
+			return true;
 	}
 } 

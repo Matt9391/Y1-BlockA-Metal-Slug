@@ -20,11 +20,11 @@ void GameScene::init() {
 void GameScene::exit() {};
 
 void GameScene::update(float dt) {
+	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	player.update(dt);
 	getRenderer().clearRenderSets();
     RenderSet rs = player.getRenderSet();
 	getRenderer().addRenderSet(rs);
-	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	getCamera().follow(player.getPos());
 
 };
