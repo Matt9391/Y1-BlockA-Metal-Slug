@@ -6,8 +6,20 @@
 void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
 
 Renderer::Renderer() :
-	renderSetCount(0)
+	renderSetCount(0),
+	collidersCount(0)
 	{}
+
+void Renderer::addCollider(Collider& c) {
+	colliders[collidersCount++] = &c;
+}
+
+void Renderer::clearColliders() {
+	for (int i = 0; i < MAXCOLLIDERS; i++) {
+		colliders[i] = nullptr;
+	}
+	collidersCount = 0;
+}
 
 void Renderer::addRenderSet(RenderSet rs) {
 	renderSets[renderSetCount++] = rs;
@@ -60,10 +72,15 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
 			int scale = 1;
 			sprite->DrawScaled(screen, rs.pos.x + offset.x * scale - cameraOffset.x, rs.pos.y + offset.y * scale - cameraOffset.y, scale, flipped);
-			screen->Box(rs.pos.x + offset.x - cameraOffset.x, rs.pos.y + offset.y - cameraOffset.y, rs.pos.x + offset.x - cameraOffset.x + 30 * scale, rs.pos.y + offset.y - cameraOffset.y + 38 * scale, 0xFF0000);
 		}
 
 	}
+
+	for (int i = 0; i < collidersCount; i++) {
+		Collider& c = *colliders[i];
+		screen->Box(c.pos.x - cameraOffset.x, c.pos.y - cameraOffset.y, c.pos.x - cameraOffset.x + c.size.x, c.pos.y - cameraOffset.y + c.size.y, 0xFF0000);
+	}
+
 }
 
 
