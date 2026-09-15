@@ -35,12 +35,20 @@ protected:
 	int getCurrentASIndex() const;
 	void setCurrentASIndex(int nextASIndex);
 
+	vec2 getDir() const;
+	vec2 getLastDir() const;
+	
+	void setDir(vec2 dir);
+	void setLastDir(vec2 dir);
+
 	RigidBody* getRigidBody() const;
 
 private:
 
 	vec2 pos;
 	vec2 velocity;
+	vec2 dir;
+	vec2 lastDir;
 	//Collider collider;
 	Animator animator;
 	AnimationSet* animationSets;

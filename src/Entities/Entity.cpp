@@ -5,6 +5,8 @@
 Entity::Entity(vec2 pos, bool needsRigidBody) :
 	pos(pos),
 	velocity(0,0),
+	dir(0,0),
+	lastDir(0,0),
 	animator(pos),
 	animationSets(nullptr),
 	currentASIndex(-1),
@@ -49,6 +51,21 @@ int Entity::getCurrentASIndex() const {
 void Entity::setCurrentASIndex(int nextASIndex) {
 	this->currentASIndex = nextASIndex;
 }
+
+vec2 Entity::getDir() const {
+	return this->dir;
+}
+vec2 Entity::getLastDir() const {
+	return this->lastDir;
+}
+
+void Entity::setDir(vec2 dir){
+	this->dir = dir;
+}
+void Entity::setLastDir(vec2 dir) {
+	this->lastDir = dir;
+}
+
 
 Collider& Entity::getCollider() {
 	return this->collider;

@@ -7,7 +7,8 @@
 Animator::Animator(vec2 pos):
 	animationSet(nullptr),
 	pos(pos),
-	timeElapsed{ 0.f }
+	timeElapsed{ 0.f },
+	animationEnded(false)
 	{
 
 	}
@@ -42,10 +43,14 @@ bool Animator::setAnimation(AnimationSet* newAnimationSet, bool flipped,  bool r
 		}
 	}
 	this->animationSet->flipped = flipped;
+	animationEnded = false;
 
 	return result;
 }
 
+bool Animator::isAnimationEnded() const {
+	return this->animationEnded;
+}
 
 void Animator::playAnimation(float dt) {
 	if (animationSet == nullptr) {
@@ -61,6 +66,7 @@ void Animator::playAnimation(float dt) {
 			l.currentFrame = ++l.currentFrame % l.nFrames;
 		}
 
+		animationEnded = l.currentFrame == (l.nFrames -1);
 
 	}
 }

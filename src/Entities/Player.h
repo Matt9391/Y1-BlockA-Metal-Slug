@@ -19,5 +19,6 @@ public:
 
 private:
 	const InputManager& inputManager; //Const so it can only call const methods
+
 };
 

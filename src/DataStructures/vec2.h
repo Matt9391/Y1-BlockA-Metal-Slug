@@ -14,5 +14,7 @@ struct vec2 {
 
 	vec2& operator+=(const vec2& other) { x += other.x; y += other.y; return *this;	}
 	bool operator== (const vec2& other) const { return this->x == other.x && this->y == other.y; }
+	bool operator== (const float& value) const { return this->x == value && this->y == value; }
+	bool operator!= (const float& value) const { return !(*this == value); }
 
 };

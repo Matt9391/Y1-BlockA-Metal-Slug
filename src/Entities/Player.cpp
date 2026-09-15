@@ -27,8 +27,8 @@ void Player::loadGFX() {
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
 			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
 			100,
-			vec2(1, 8.5f),
-			vec2(-22, 8.5f)),
+			vec2(2, 9),
+			vec2(-23, 9)),
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_BODY,
 			ResourceIDFrames::IDF_PLAYER_IDLE_BODY,
 			200,
@@ -41,20 +41,20 @@ void Player::loadGFX() {
 		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
 			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
 			100,
-			vec2(0, 22),
-			vec2(-22, 22)),
+			vec2(0, 19),
+			vec2(-22, 19)),
 		AnimationLayer(ResourceID::ID_PLAYER_WALK_BODY,
 			ResourceIDFrames::IDF_PLAYER_WALK_BODY,
 			90,
-			vec2(2, 0),
-			vec2(-25, 0))
+			vec2(2, -2),
+			vec2(-25, -2))
 	);
 	
 	getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP] = AnimationSet(
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_AFTER_RUN_STOP_F,
 			ResourceIDFrames::IDF_PLAYER_AFTER_RUN_STOP_F,
-			100,
+			150,
 			vec2(3, 1),
 			vec2(-25, 1))
 	);
@@ -88,28 +88,51 @@ void Player::loadGFX() {
 	);
 
 	//getAnimator().setAnimation(&getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP]);
-	setCurrentASIndex(PlayerAnimationSet::PAS_FALLING);
+	setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 }
 
 void Player::update(float dt) {
 	getAnimator().playAnimation(dt);
 
-	
-	if (inputManager.isKeyPressed('D')) {
-		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()] /*flipped=false*/ /*reset=false*/);
-		//this->addToPos(vec2(0.1 * dt, 0));
+	setLastDir(getDir());
+
+	const bool inputRight = inputManager.isKeyPressed('D');
+	const bool inputLeft = inputManager.isKeyPressed('A');
+	const bool isMoving = inputRight || inputLeft;
+	const bool isJumping = inputManager.isKeyPressed(' ');
+
+	if (inputRight) {
+		setDir(vec2(1, 0));
+		addToPos(vec2(0.5f * dt, 0));
 	}
-	else if(inputManager.isKeyPressed('A')) {
-		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], /*flipped=*/true /*reset=false*/, true);
-		//this->addToPos(vec2(-0.1 * dt, 0));
+	else if (inputLeft) {
+		setDir(vec2(-1, 0));
+		addToPos(vec2(-0.5f * dt, 0));
 	}
-	if (GetAsyncKeyState('S')) {
-		//this->addToPos(vec2(0, 0.1 * dt));
+
+	if (isMoving) {
+		if (isJumping) {
+			setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
+		}
+		else {
+			setCurrentASIndex(PlayerAnimationSet::PAS_WALK);
+		}
 	}
-	else if(GetAsyncKeyState('W')) {
-		//this->addToPos(vec2(0,-0.1 * dt));
+	else if (isJumping) {
+		setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
 	}
+	else if (getCurrentASIndex() == PlayerAnimationSet::PAS_WALK) {
+		setCurrentASIndex(PlayerAnimationSet::PAS_AFTER_RUN_STOP);
+	}
+	else if (getCurrentASIndex() == PlayerAnimationSet::PAS_AFTER_RUN_STOP && getAnimator().isAnimationEnded()) {
+		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
+	}
+
+	const bool flip = getDir().x < 0;
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()],flip);
+
+
 
 }
 

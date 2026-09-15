@@ -12,11 +12,13 @@ public:
 
 	bool setAnimation(AnimationSet* newAnimationSet, bool flipped = false, bool reset = false);
 
+	bool isAnimationEnded() const;
 	void playAnimation(float dt);
 private:
 	AnimationSet* animationSet;
 	vec2 pos;
 
 	float timeElapsed[MAX_LAYERS];
+	bool animationEnded;
 };
 
