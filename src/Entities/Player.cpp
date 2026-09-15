@@ -6,9 +6,13 @@
 #include <PlayerAnimationSet.h>
 #include <ResourceIDFrames.h>
 #include <RigidBody.h>
+#include <InputManager.h>
 
-Player::Player(vec2 pos) :
-	Entity(pos, true)
+	
+Player::Player(vec2 pos, InputManager& inputManager) :
+	Entity(pos, true),
+	inputManager(inputManager)
+
 	{
 		getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
 	}
@@ -91,11 +95,12 @@ void Player::loadGFX() {
 void Player::update(float dt) {
 	getAnimator().playAnimation(dt);
 
-	if (GetAsyncKeyState('D')) {
+	
+	if (inputManager.isKeyPressed('D')) {
 		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()] /*flipped=false*/ /*reset=false*/);
 		//this->addToPos(vec2(0.1 * dt, 0));
 	}
-	else if(GetAsyncKeyState('A')) {
+	else if(inputManager.isKeyPressed('A')) {
 		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], /*flipped=*/true /*reset=false*/, true);
 		//this->addToPos(vec2(-0.1 * dt, 0));
 	}

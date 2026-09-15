@@ -10,7 +10,7 @@ public:
 	SceneManager();
 	~SceneManager();
 
-	void init(Surface* screen, Renderer& renderer, TypeScene firstScene);
+	void init(Surface* screen, Renderer& renderer, InputManager& inputManager, TypeScene firstScene);
 
 	CustomScene& getCurrentScene() const;
 	

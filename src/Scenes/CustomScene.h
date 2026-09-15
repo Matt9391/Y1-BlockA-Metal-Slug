@@ -1,5 +1,6 @@
 #pragma once
 #include <Renderer.h>
+#include <InputManager.h>
 #include <Camera.h>
 
 class Tmpl8::Surface;
@@ -7,7 +8,7 @@ class Tmpl8::Surface;
 class CustomScene
 {
 public:
-	CustomScene(Surface* screen, Renderer& renderer);
+	CustomScene(Surface* screen, Renderer& renderer, InputManager& inputManager);
 
 	virtual void init() = 0;
 	virtual void exit() = 0;
@@ -20,6 +21,7 @@ protected:
 	//I still need to move them to private and make get/set but im lazy now
 	Surface* screen;
 	Renderer& renderer;
+	InputManager& inputManager;
 	Camera camera;
 
 };

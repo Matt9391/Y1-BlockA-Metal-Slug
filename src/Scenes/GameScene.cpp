@@ -4,10 +4,11 @@
 #include <Renderer.h>
 #include <iostream>
 #include <CollisionManager.h>
+#include <InputManager.h>
 
-GameScene::GameScene(Surface* screen, Renderer& renderer) :
-	CustomScene(screen, renderer), //inheritance
-	player(vec2(200,100)) //my own helper class
+GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
+	CustomScene(screen, renderer, inputManager), //inheritance
+	player(vec2(200,250), inputManager) //my own helper class
 	{
 		camera.setWorldSize(map.getTiles() * map.getTileSize());
 	}
@@ -23,7 +24,7 @@ void GameScene::update(float dt) {
 	renderer.clearRenderSets();
     RenderSet rs = player.getRenderSet();
 	renderer.addRenderSet(rs);
-	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
+	//CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	renderer.addMapRenderSet(map.getMapRenderSet());
 	camera.follow(player.getPos());
 

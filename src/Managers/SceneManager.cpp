@@ -3,6 +3,7 @@
 #include "TypeScene.h"
 #include <GameScene.h>
 #include <Renderer.h>
+#include <InputManager.h>
 
 
 SceneManager::SceneManager() :
@@ -18,8 +19,8 @@ SceneManager::~SceneManager() {
 	delete gameScene;
 }
 
-void SceneManager::init(Surface* screen, Renderer& renderer, TypeScene firstScene) {
-	gameScene = new GameScene(screen, renderer);
+void SceneManager::init(Surface* screen, Renderer& renderer, InputManager& inputManager, TypeScene firstScene) {
+	gameScene = new GameScene(screen, renderer, inputManager);
 	changeScene(firstScene);
 }
 
