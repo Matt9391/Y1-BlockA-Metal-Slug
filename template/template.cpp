@@ -52,10 +52,40 @@ void InitRenderTarget( int w, int h )
 	scrwidth = w, scrheight = h;
 	renderTarget = new GLTexture( scrwidth, scrheight, GLTexture::INTTARGET );
 }
-void ReshapeWindowCallback( GLFWwindow*, int w, int h )
+//Asked to claude how to keep the aspect ratio but I understoo it.
+void ReshapeWindowCallback(GLFWwindow*, int w, int h)
 {
-	glViewport( 0, 0, w, h );
+	float targetAspect = (float)SCRWIDTH / (float)SCRHEIGHT; //the aspect of the game I desire
+	float windowAspect = (float)w / (float)h; //this is the current one
+
+	int vpW, vpH, vpX, vpY;
+	if (windowAspect > targetAspect)
+	{
+		//window is wider than the game's aspect ratio -> pillarbox (bars left/right)
+		vpH = h;
+		vpW = (int)(h * targetAspect);
+		vpX = (w - vpW) / 2;
+		vpY = 0;
+	}
+	else
+	{
+		//window is taller/narrower -> letterbox (bars top/bottom)
+		vpW = w;
+		vpH = (int)(w / targetAspect);
+		vpX = 0;
+		vpY = (h - vpH) / 2;
+	}
+
+	//clear the full window to black first, so the bars aren't garbage/undefined
+	glViewport(0, 0, w, h);
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	//then restrict the viewport to the centered, correctly-proportioned region
+	printf("current settings: %d %d %d %d\n", vpX, vpY, vpW, vpH);
+	glViewport(vpX, vpY, vpW, vpH);
 }
+
 void KeyEventCallback( GLFWwindow*, int key, int, int action, int )
 {
 	if (key == GLFW_KEY_ESCAPE) running = false;
@@ -92,9 +122,14 @@ int main()
 	glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
 	glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
 	glfwWindowHint( GLFW_STENCIL_BITS, GL_FALSE );
-	glfwWindowHint( GLFW_RESIZABLE, GL_FALSE /* easier :) */ );
+	glfwWindowHint( GLFW_RESIZABLE, GL_TRUE /* easier :) */ );
 #ifdef FULLSCREEN
 	window = glfwCreateWindow( SCRWIDTH, SCRHEIGHT, "Tmpl8-2024", glfwGetPrimaryMonitor(), 0 );
+#elif defined(MAXIMISED)
+	glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+	window = glfwCreateWindow(mode->width, mode->height, "Tmpl8-2024", 0, 0);
 #else
 	window = glfwCreateWindow( SCRWIDTH, SCRHEIGHT, "Tmpl8-2024", 0, 0 );
 #endif
@@ -108,8 +143,16 @@ int main()
 	glfwSetScrollCallback( window, MouseScrollCallback );
 	glfwSetCursorPosCallback( window, MousePosCallback );
 	glfwSetCharCallback( window, CharEventCallback );
+	//glfwSetFramebufferSizeCallback(window, ReshapeWindowCallback);
 	// initialize GLAD
 	if (gladLoadGL() == 0) FatalError( "gladLoadGLLoader failed." );
+
+#ifdef MAXIMISED
+	int fbw, fbh;
+	glfwGetFramebufferSize(window, &fbw, &fbh);
+	ReshapeWindowCallback(window, fbw, fbh);
+#endif
+
 	glfwSwapInterval( 0 );
 	// prepare OpenGL state
 	glDisable( GL_DEPTH_TEST );
