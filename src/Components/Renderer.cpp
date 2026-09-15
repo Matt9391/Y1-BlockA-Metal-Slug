@@ -58,7 +58,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			sprite->SetFrame(layer.currentFrame);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
-			int scale = 6;
+			int scale = 1;
 			sprite->DrawScaled(screen, rs.pos.x + offset.x * scale - cameraOffset.x, rs.pos.y + offset.y * scale - cameraOffset.y, scale, flipped);
 			screen->Box(rs.pos.x + offset.x - cameraOffset.x, rs.pos.y + offset.y - cameraOffset.y, rs.pos.x + offset.x - cameraOffset.x + 30 * scale, rs.pos.y + offset.y - cameraOffset.y + 38 * scale, 0xFF0000);
 		}

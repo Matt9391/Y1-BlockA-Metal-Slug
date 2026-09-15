@@ -9,6 +9,15 @@ public:
 
 	vec2 getPos() const;
 
+	vec2 getVelocity() const;
+	//overwrite is to be able to set only component, if you pass (1,0) it only set the x component without overwriting the y since its 0
+	void setVelocity(vec2 v, bool overwrite = false);
+	void addVelocity(vec2 v);
+
+	void setGrounded(bool grounded);
+	bool isGrounded() const;
+	bool hasGravity() const;
+
 private:
 
 	static const float gravity;
@@ -16,6 +25,6 @@ private:
 	const vec2& pos;
 	vec2 velocity;
 
-	bool hasGravity;
-	bool isGrounded;
+	bool isGroundedVariable;
+	bool hasGravityVariable;
 };

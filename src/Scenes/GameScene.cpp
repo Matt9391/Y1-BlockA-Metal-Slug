@@ -8,7 +8,7 @@
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager), //inheritance
-	player(vec2(200,250), inputManager) //my own helper class
+	player(vec2(200,50), inputManager) //my own helper class
 	{
 		camera.setWorldSize(map.getTiles() * map.getTileSize());
 	}
@@ -24,8 +24,7 @@ void GameScene::update(float dt) {
 	renderer.clearRenderSets();
     RenderSet rs = player.getRenderSet();
 	renderer.addRenderSet(rs);
-	//CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
-	renderer.addMapRenderSet(map.getMapRenderSet());
+	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	camera.follow(player.getPos());
 
 };

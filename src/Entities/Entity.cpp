@@ -44,6 +44,12 @@ void Entity::addToPos(const vec2& newPos) {
 	this->pos += newPos;
 }
 
+void Entity::setGrounded(bool grounded) {
+	if (rigidBody) {
+		rigidBody->setGrounded(grounded);
+	}
+}
+
 int Entity::getCurrentASIndex() const {
 	return this->currentASIndex;
 }

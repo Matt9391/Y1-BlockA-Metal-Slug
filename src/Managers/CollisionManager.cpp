@@ -44,6 +44,7 @@ namespace CollisionManager {
 						else {
 							e.addToPos(vec2(0, overlapY * dir.y));
 						}
+						e.setGrounded(true);
 					}
 
 				

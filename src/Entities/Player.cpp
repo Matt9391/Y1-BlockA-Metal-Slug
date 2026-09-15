@@ -101,16 +101,31 @@ void Player::update(float dt) {
 	const bool inputLeft = inputManager.isKeyPressed('A');
 	const bool isMoving = inputRight || inputLeft;
 	const bool isJumping = inputManager.isKeyPressed(' ');
-
+	const bool isGrounded = getRigidBody()->isGrounded();
+	//Movement
 	if (inputRight) {
 		setDir(vec2(1, 0));
-		addToPos(vec2(0.5f * dt, 0));
 	}
 	else if (inputLeft) {
 		setDir(vec2(-1, 0));
-		addToPos(vec2(-0.5f * dt, 0));
 	}
 
+	if(isMoving){
+		getRigidBody()->setVelocity(vec2(0.1, 0));
+	}
+
+	if (!isGrounded) {
+		getRigidBody()->addVelocity(vec2(0, 0.5f));
+	}
+	else {
+		getRigidBody()->setVelocity(vec2(getRigidBody()->getVelocity().x, 0), true);
+		if (isJumping) {
+			getRigidBody()->addVelocity(vec2(0, -5));
+			setGrounded(false);
+		}
+	}
+
+	//Animations
 	if (isMoving) {
 		if (isJumping) {
 			setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
@@ -132,7 +147,8 @@ void Player::update(float dt) {
 	const bool flip = getDir().x < 0;
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()],flip);
 
-
+	//Moving fr
+	//this->addToPos(getRigidBody()->getVelocity());
 
 }
 

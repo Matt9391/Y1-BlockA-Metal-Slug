@@ -22,6 +22,8 @@ public:
 	Collider& getCollider();
 	void addToPos(const vec2& newPos);
 
+	void setGrounded(bool grounded);
+
 	RenderSet getRenderSet() const;
 
 	virtual void update(float dt);
