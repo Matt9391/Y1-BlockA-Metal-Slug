@@ -52,13 +52,15 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		for (int j = 0; j < rs.animationSet.layerCount; j++) {
 			AnimationLayer& layer = rs.animationSet.layers[j];
 			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
+			if (sprite == nullptr) continue;
 			vec2& offset = flipped ? layer.offsetFlipped : layer.offset;
 
 			sprite->SetFrame(layer.currentFrame);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
-			sprite->DrawScaled(screen, rs.pos.x + offset.x - cameraOffset.x, rs.pos.y + offset.y - cameraOffset.y, 1, flipped);
-			screen->Box(rs.pos.x + offset.x - cameraOffset.x, rs.pos.y + offset.y - cameraOffset.y, rs.pos.x + offset.x - cameraOffset.x + 30, rs.pos.y + offset.y - cameraOffset.y + 30, 0xFF0000);
+			int scale = 6;
+			sprite->DrawScaled(screen, rs.pos.x + offset.x * scale - cameraOffset.x, rs.pos.y + offset.y * scale - cameraOffset.y, scale, flipped);
+			screen->Box(rs.pos.x + offset.x - cameraOffset.x, rs.pos.y + offset.y - cameraOffset.y, rs.pos.x + offset.x - cameraOffset.x + 30 * scale, rs.pos.y + offset.y - cameraOffset.y + 38 * scale, 0xFF0000);
 		}
 
 	}
