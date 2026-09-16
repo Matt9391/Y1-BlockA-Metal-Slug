@@ -3,6 +3,7 @@
 #include <AnimationSet.h>
 #include <PlayerAnimations.h>
 #include <InputManager.h>
+#include <Gun.h>
 
 class Tmpl8::Sprite;
 class ResourceManager;
@@ -19,6 +20,6 @@ public:
 
 private:
 	const InputManager& inputManager; //Const so it can only call const methods
-
+	Gun gun;
 };
 

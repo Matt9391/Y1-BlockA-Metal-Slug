@@ -11,8 +11,8 @@
 	
 Player::Player(vec2 pos, InputManager& inputManager) :
 	Entity(pos, true),
-	inputManager(inputManager)
-
+	inputManager(inputManager),
+	gun(this->getPos(), GunData{}) //I need to add gunData templates
 	{
 		setCollider(vec2(20, 7), vec2(3, 30));
 		getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];

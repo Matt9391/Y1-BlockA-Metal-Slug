@@ -124,9 +124,11 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Components\Camera.cpp" />
+    <ClCompile Include="src\Components\Gun.cpp" />
     <ClCompile Include="src\Components\Map.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Components\RigidBody.cpp" />
+    <ClCompile Include="src\Entities\Bullet.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
     <ClCompile Include="src\Entities\Player.cpp" />
     <ClCompile Include="src\Managers\CollisionManager.cpp" />
@@ -159,12 +161,14 @@
     <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\Components\Camera.h" />
     <ClInclude Include="src\Components\Collider.h" />
+    <ClInclude Include="src\Components\Gun.h" />
     <ClInclude Include="src\Components\Map.h" />
     <ClInclude Include="src\Components\MapLayer.h" />
     <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\Components\RigidBody.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
+    <ClInclude Include="src\DataStructures\GunData.h" />
     <ClInclude Include="src\DataStructures\MapLayerNames.h" />
     <ClInclude Include="src\DataStructures\MapRenderSet.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimations.h" />
@@ -173,6 +177,7 @@
     <ClInclude Include="src\DataStructures\ResourceID.h" />
     <ClInclude Include="src\DataStructures\ResourceIDFrames.h" />
     <ClInclude Include="src\DataStructures\vec2.h" />
+    <ClInclude Include="src\Entities\Bullet.h" />
     <ClInclude Include="src\Entities\Entity.h" />
     <ClInclude Include="src\Entities\Player.h" />
     <ClInclude Include="src\Managers\CollisionManager.h" />
