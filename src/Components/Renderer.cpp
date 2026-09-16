@@ -79,7 +79,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 	for (int i = 0; i < collidersCount; i++) {
 		Collider& c = *colliders[i];
-		screen->Box(c.pos.x - cameraOffset.x, c.pos.y - cameraOffset.y, c.pos.x - cameraOffset.x + c.size.x, c.pos.y - cameraOffset.y + c.size.y, 0xFF0000);
+		screen->Box(c.pos.x + c.offset.x - cameraOffset.x, c.pos.y + c.offset.y - cameraOffset.y,
+			c.pos.x + c.offset.x - cameraOffset.x + c.size.x, c.pos.y + c.offset.y - cameraOffset.y + c.size.y, 0xFF0000);
 	}
 
 }

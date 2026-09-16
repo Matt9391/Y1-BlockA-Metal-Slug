@@ -10,7 +10,7 @@ Entity::Entity(vec2 pos, bool needsRigidBody) :
 	animator(pos),
 	animationSets(nullptr),
 	currentASIndex(-1),
-	collider(this->pos, vec2(30,38)),
+	collider(this->pos, vec2(0,0), vec2(0,0)),
 	rigidBody(nullptr)
 	{
 		this->rigidBody = needsRigidBody ? new RigidBody(this->pos, true) : nullptr;
@@ -29,6 +29,12 @@ vec2 Entity::getPos() const {
 	return this->pos;
 }
 
+vec2 Entity::getVelocity() const {
+	if (getRigidBody() == nullptr) return vec2(0, 0);
+	return getRigidBody()->getVelocity();
+}
+
+
 Animator& Entity::getAnimator(){
 	return this->animator;
 }
@@ -40,6 +46,11 @@ void Entity::setPos(const vec2& newPos) {
 	this->pos = newPos;
 }
 
+void Entity::setCollider(vec2 size, vec2 offset) {
+	this->collider.offset = offset;
+	this->collider.size= size;
+}
+
 void Entity::addToPos(const vec2& newPos) {
 	this->pos += newPos;
 }
@@ -47,6 +58,9 @@ void Entity::addToPos(const vec2& newPos) {
 void Entity::setGrounded(bool grounded) {
 	if (rigidBody) {
 		rigidBody->setGrounded(grounded);
+		//if (grounded) {
+		//	rigidBody->setVelocityY(0.f);
+		//}
 	}
 }
 

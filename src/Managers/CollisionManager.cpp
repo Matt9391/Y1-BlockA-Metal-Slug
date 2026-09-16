@@ -5,13 +5,84 @@
 
 namespace CollisionManager {
 
+	//bool resolveMapCollision(Entity& e, MapLayer& layer) {
+	//		Collider& collider = e.getCollider();
+	//		vec2 startPos = vec2(static_cast<int>(e.getPos().x / layer.tileSize),
+	//							 static_cast<int>(e.getPos().y / layer.tileSize));
+	//		//vec2 endPosition = ; //bottom right
+	//		vec2 endPos = vec2(static_cast<int>((e.getPos().x + e.getCollider().size.x) / layer.tileSize),
+	//						   static_cast<int>((e.getPos().y + e.getCollider().size.y) / layer.tileSize)); //bottom right
+	//		//std::cout << "startX: " << startPos.x << "endX: " << endPos.x << std::endl;
+	//		//std::cout << "startY: " << startPos.y << "endY: " << endPos.y << std::endl;
+
+	//		bool grounded = false;
+
+	//		for (int i = startPos.y; i <= endPos.y; i++) {
+	//			for (int j = startPos.x; j <= endPos.x; j++) {
+	//				int tileId = layer.data[i * static_cast<int>(layer.tiles.x) + j] - layer.firstgid;
+	//				if (tileId == -layer.firstgid) continue;
+
+	//				switch (tileId)
+	//				{
+	//					case 1:
+	//						break;
+	//					case 0:
+	//					case 2:
+	//					{
+	//						int tileX = j * layer.tileSize;
+	//						int tileY = i * layer.tileSize;
+	//						
+	//						
+	//						if (tileId == 0) {
+	//							//if (collider.pos.y + collider.size.y > tileY + layer.tileSize * 0.05f) break;
+	//							if (e.getVelocity().y <= 0) break;
+	//						}
+
+
+	//						float leftTile = tileX;
+	//						float rightTile = tileX + layer.tileSize;
+	//						float topTile = tileY;
+	//						float bottomTile = tileY + layer.tileSize;
+
+	//						float overlapX = fminf(rightTile, collider.pos.x + collider.size.x) - fmaxf(leftTile, collider.pos.x);
+	//						float overlapY = fminf(bottomTile, collider.pos.y + collider.size.y) - fmaxf(topTile, collider.pos.y);
+
+	//						vec2 eCenter = vec2(collider.pos.x  + collider.size.x / 2, collider.pos.y + collider.size.y / 2);
+	//						vec2 tCenter = vec2(tileX + layer.tileSize / 2, tileY + layer.tileSize / 2); //tile Center
+
+
+	//						vec2 dir = vec2(eCenter.x < tCenter.x ? -1 : 1, eCenter.y < tCenter.y ? -1 : 1);
+
+	//						if (overlapX > -0.01f && overlapY > -0.01f) {
+	//							if (overlapX < overlapY) {
+	//								e.addToPos(vec2(overlapX * dir.x, 0));
+	//							}
+	//							else {
+	//								e.addToPos(vec2(0, overlapY * dir.y));
+	//								grounded = true;
+	//							}
+	//						}
+	//					}
+	//						break;
+	//					default:
+	//						break;
+	//				}
+	//				
+	//			}
+	//		}
+	//		
+	//		e.setGrounded(grounded);
+
+	//		return true;
+	//}
+
 	bool resolveMapCollision(Entity& e, MapLayer& layer) {
 			Collider& collider = e.getCollider();
-			vec2 startPos = vec2(static_cast<int>(e.getPos().x / layer.tileSize),
-								 static_cast<int>(e.getPos().y / layer.tileSize));
+			vec2 startPos = vec2(static_cast<int>((e.getPos().x + collider.offset.x) / layer.tileSize),
+								 static_cast<int>((e.getPos().y + collider.offset.y) / layer.tileSize));
 			//vec2 endPosition = ; //bottom right
-			vec2 endPos = vec2(static_cast<int>((e.getPos().x + e.getCollider().size.x) / layer.tileSize),
-							   static_cast<int>((e.getPos().y + e.getCollider().size.y) / layer.tileSize)); //bottom right
+			vec2 endPos = vec2(static_cast<int>((e.getPos().x + collider.offset.x + e.getCollider().size.x) / layer.tileSize),
+							   static_cast<int>((e.getPos().y + collider.offset.y + e.getCollider().size.y) / layer.tileSize)); //bottom right
 			//std::cout << "startX: " << startPos.x << "endX: " << endPos.x << std::endl;
 			//std::cout << "startY: " << startPos.y << "endY: " << endPos.y << std::endl;
 
@@ -19,35 +90,58 @@ namespace CollisionManager {
 
 			for (int i = startPos.y; i <= endPos.y; i++) {
 				for (int j = startPos.x; j <= endPos.x; j++) {
-					int tileId = layer.data[i * static_cast<int>(layer.tiles.x) + j];
-					if (tileId == 0) continue;
+					const vec2 colliderPos = (collider.pos + collider.offset); //recompile it everytime because it changes but since its not a reference it need to be recompiled
 
-					int tileX = j * layer.tileSize;
-					int tileY = i * layer.tileSize;
+					int tileId = layer.data[i * static_cast<int>(layer.tiles.x) + j] - layer.firstgid;
+					if (tileId == -layer.firstgid) continue;
 
-					float leftTile = tileX;
-					float rightTile = tileX + layer.tileSize;
-					float topTile = tileY;
-					float bottomTile = tileY + layer.tileSize;
+					switch (tileId)
+					{
+						case 1:
+							break;
+						case 0:
+						case 2:
+						{
+							int tileX = j * layer.tileSize;
+							int tileY = i * layer.tileSize;
+							
+							
+							if (tileId == 0) {
+								//if (collider.pos.y + collider.size.y > tileY + layer.tileSize * 0.05f) break;
+								if (e.getVelocity().y < 0.0f) break;
+							}
 
-					float overlapX = fminf(rightTile, collider.pos.x + collider.size.x) - fmaxf(leftTile, collider.pos.x);
-					float overlapY = fminf(bottomTile, collider.pos.y + collider.size.y) - fmaxf(topTile, collider.pos.y);
+
+							float leftTile = tileX;
+							float rightTile = tileX + layer.tileSize;
+							float topTile = tileY;
+							float bottomTile = tileY + layer.tileSize;
+
+							float overlapX = fminf(rightTile, colliderPos.x + collider.size.x) - fmaxf(leftTile, colliderPos.x);
+							float overlapY = fminf(bottomTile, colliderPos.y + collider.size.y) - fmaxf(topTile, colliderPos.y);
+
+							vec2 eCenter = vec2(colliderPos.x  + collider.size.x / 2, colliderPos.y + collider.size.y / 2);
+							vec2 tCenter = vec2(tileX + layer.tileSize / 2, tileY + layer.tileSize / 2); //tile Center
 
 
-					vec2 eCenter = vec2(collider.pos.x + collider.size.x / 2, collider.pos.y + collider.size.y / 2);
-					vec2 tCenter = vec2(tileX + layer.tileSize / 2, tileY + layer.tileSize / 2); //tile Center
+							vec2 dir = vec2(eCenter.x < tCenter.x ? -1 : 1, eCenter.y < tCenter.y ? -1 : 1);
 
-					vec2 dir = vec2(eCenter.x < tCenter.x ? -1 : 1, eCenter.y < tCenter.y ? -1 : 1);
-
-					if (overlapX > -0.01f && overlapY > -0.01f) {
-						if (overlapX < overlapY) {
-							e.addToPos(vec2(overlapX * dir.x, 0));
+							if (overlapX > -0.01f && overlapY > -0.01f) {
+								if (overlapX < overlapY) {
+									e.addToPos(vec2(overlapX * dir.x, 0));
+								}
+								else {
+									e.addToPos(vec2(0, overlapY * dir.y));
+									if(dir.y < 0)
+										grounded = true;
+								}
+							}
 						}
-						else {
-							e.addToPos(vec2(0, overlapY * dir.y));
-							grounded = true;
-						}
+							break;
+						default:
+							break;
 					}
+					
 				}
 			}
 			
@@ -55,4 +149,6 @@ namespace CollisionManager {
 
 			return true;
 	}
+
+
 } 

@@ -26,6 +26,7 @@ public:
 
 	RenderSet getRenderSet() const;
 
+	vec2 getVelocity() const;
 	virtual void update(float dt);
 
 protected:
@@ -34,11 +35,13 @@ protected:
 
 	void setPos(const vec2& newPos);
 	
+	void setCollider(vec2 size, vec2 offset);
 	int getCurrentASIndex() const;
 	void setCurrentASIndex(int nextASIndex);
 
 	vec2 getDir() const;
 	vec2 getLastDir() const;
+
 	
 	void setDir(vec2 dir);
 	void setLastDir(vec2 dir);

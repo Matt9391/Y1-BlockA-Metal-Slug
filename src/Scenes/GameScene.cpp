@@ -23,8 +23,8 @@ void GameScene::update(float dt) {
 	getRenderer().clearRenderSets();
 	getRenderer().clearColliders();
 
-	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	player.update(dt);
+	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
     RenderSet rs = player.getRenderSet();
 	getRenderer().addRenderSet(rs);
 	getRenderer().addCollider(player.getCollider());

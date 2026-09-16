@@ -14,6 +14,7 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	inputManager(inputManager)
 
 	{
+		setCollider(vec2(20, 7), vec2(3, 30));
 		getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
 	}
 
@@ -129,14 +130,18 @@ void Player::update(float dt) {
 
 	//Animations
 	if (isMoving) {
-		if (isJumping) {
-			setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
-		}
-		else {
-			setCurrentASIndex(PlayerAnimationSet::PAS_WALK);
-		}
+		if (isGrounded) {
+
+			if (isJumping ){
+				setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
+			}
+			else {
+				setCurrentASIndex(PlayerAnimationSet::PAS_WALK);
+			}
+
+		} 
 	}
-	else if (isJumping) {
+	else if (isGrounded && isJumping) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
 	}
 	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_WALK) {
@@ -159,7 +164,7 @@ void Player::update(float dt) {
 	
 	this->addToPos(getRigidBody()->getVelocity() * dt);
 
-
+	std::cout << getCurrentASIndex() << std::endl;
 
 }
 
