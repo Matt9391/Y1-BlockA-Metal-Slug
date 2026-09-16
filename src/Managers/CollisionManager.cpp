@@ -39,14 +39,14 @@ namespace CollisionManager {
 
 					vec2 dir = vec2(eCenter.x < tCenter.x ? -1 : 1, eCenter.y < tCenter.y ? -1 : 1);
 
-					if (overlapX > 0 && overlapY > 0) {
+					if (overlapX > -0.01f && overlapY > -0.01f) {
 						if (overlapX < overlapY) {
 							e.addToPos(vec2(overlapX * dir.x, 0));
 						}
 						else {
 							e.addToPos(vec2(0, overlapY * dir.y));
+							grounded = true;
 						}
-						grounded = true;
 					}
 				}
 			}

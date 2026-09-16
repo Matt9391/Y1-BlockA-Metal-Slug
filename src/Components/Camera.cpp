@@ -1,6 +1,7 @@
 #include "precomp.h"
 #include "Camera.h"
 #include <myMath.h>
+#include <iostream>
 
 
 Camera::Camera(vec2 pos, vec2 size) :
@@ -16,7 +17,7 @@ void Camera::follow(const vec2& target) {
 	this->pos.y = target.y - this->size.y / 2;
 
 	this->pos.x = myMath::constrain(this->pos.x, 0, this->worldSize.x - this->size.x);
-	this->pos.y = myMath::constrain(this->pos.y, 0, this->worldSize.y - this->size.y);
+	this->pos.y = myMath::constrain(this->pos.y, 16, this->worldSize.y - this->size.y);
 }
 
 vec2 Camera::getPos() const {

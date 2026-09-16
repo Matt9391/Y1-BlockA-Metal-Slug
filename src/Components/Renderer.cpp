@@ -49,8 +49,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 				int srcCol = localId % static_cast<int>(layer.tiles.x);
 				int srcRow = localId / layer.tiles.x;
 
-				int destX = mapRenderSet.pos.x + x * 8;
-				int destY = mapRenderSet.pos.y + y * 8;
+				int destX = static_cast<int>(mapRenderSet.pos.x + x * 8);
+				int destY = static_cast<int>(mapRenderSet.pos.y + y * 8);
 
 				drawTile(mapRenderSet.tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
 
@@ -71,7 +71,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
 			//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
 			int scale = 1;
-			sprite->DrawScaled(screen, rs.pos.x + offset.x * scale - cameraOffset.x, rs.pos.y + offset.y * scale - cameraOffset.y, scale, flipped);
+			sprite->DrawScaled(screen, static_cast<int>(rs.pos.x + offset.x * scale - cameraOffset.x), 
+				static_cast<int>(rs.pos.y + offset.y * scale - cameraOffset.y), scale, flipped);
 		}
 
 	}
