@@ -31,10 +31,11 @@ void Game::Init()
 void Game::Tick(float dt)
 {
 	//inputManager.getPressedKeys();
-	screen->Clear(0xFF00ff00);
+	screen->Clear(0xFFffff00);
 	sceneManager.getCurrentScene().update(dt);
 	renderer.render(screen, resourceManager, sceneManager.getCurrentScene().getCameraPos());
-	screen->Box(100,100,screen->width,screen->height,0xff0000);
+	//screen->Box(100,100,screen->width,screen->height,0xff0000);
+	inputManager.updateLastFrameKeys();
 	
 }
 

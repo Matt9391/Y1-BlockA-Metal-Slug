@@ -101,22 +101,20 @@ void Player::update(float dt) {
 	const bool inputRight = inputManager.isKeyPressed('D');
 	const bool inputLeft = inputManager.isKeyPressed('A');
 	const bool isMoving = inputRight || inputLeft;
-	const bool isJumping = inputManager.isKeyPressed(' ');
+	const bool isJumping = inputManager.isKeyJustPressed(' ');
 	const bool isGrounded = getRigidBody()->isGrounded();
 	//Movement
 	if (inputRight) {
 		setDir(vec2(1, 0));
-		std::cout << "RIGHT\n";
 	}
 	else if (inputLeft) {
 		setDir(vec2(-1, 0));
-		std::cout << "LEFT\n";
 	}
 
 
 	//if(isMoving){
 	//}
-	getRigidBody()->setVelocityX(0.1f * getDir().x * dt);
+	getRigidBody()->setVelocityX(0.1f * getDir().x);
 
 	if (!isGrounded) {
 		getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
@@ -124,9 +122,9 @@ void Player::update(float dt) {
 	else {
 		getRigidBody()->setVelocityY(0);
 		if (isJumping) {
-			getRigidBody()->addVelocity(vec2(0, -0.3f));
+			getRigidBody()->addVelocity(vec2(0, -0.37f));
 			setGrounded(false);
-		}
+		} 
 	}
 
 	//Animations
@@ -159,7 +157,9 @@ void Player::update(float dt) {
 
 	//Moving fr
 	
-	this->addToPos(getRigidBody()->getVelocity());
+	this->addToPos(getRigidBody()->getVelocity() * dt);
+
+
 
 }
 
