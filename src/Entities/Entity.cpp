@@ -35,6 +35,9 @@ vec2 Entity::getVelocity() const {
 	return getRigidBody()->getVelocity();
 }
 
+void Entity::setVelocity(vec2 v) {
+	this->getRigidBody()->setVelocity(v);
+}
 
 Animator& Entity::getAnimator(){
 	return this->animator;

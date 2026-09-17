@@ -21,11 +21,13 @@ public:
 	const vec2& getPos() const;
 	Collider& getCollider();
 	void addToPos(const vec2& newPos);
+	void setPos(const vec2& newPos);
 
 	void setGrounded(bool grounded);
 
 	RenderSet getRenderSet() const;
 
+	void setVelocity(vec2 v) ;
 	vec2 getVelocity() const;
 	virtual void update(float dt);
 
@@ -33,7 +35,6 @@ protected:
 	Animator& getAnimator();
 	AnimationSet*& getAnimationSets();
 
-	void setPos(const vec2& newPos);
 	
 	void setCollider(vec2 size, vec2 offset);
 	int getCurrentASIndex() const;

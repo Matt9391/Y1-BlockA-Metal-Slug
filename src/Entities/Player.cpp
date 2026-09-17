@@ -15,7 +15,8 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	inputManager(inputManager),
 	gun(this->getPos(), vec2(0,0), GunPresets::getGun(GunType::PISTOL)) //I need to add gunData templates
 	{
-		setCollider(vec2(20, 7), vec2(3, 30));
+		setCollider(vec2(20, 37), vec2(3, 0));
+		//setCollider(vec2(20, 7), vec2(3, 30));
 		getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
 		loadGFX();
 		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);

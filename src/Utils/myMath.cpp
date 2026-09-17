@@ -10,4 +10,8 @@ namespace myMath {
 			return max;
 		return value;
 	}
+
+	float mapValue(float value, float fromMin, float fromMax, float toMin, float toMax) {
+		return (value - fromMin) * (toMax - toMin) / (fromMax - fromMin) + toMin;
+	}
 }

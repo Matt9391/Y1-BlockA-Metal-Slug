@@ -22,8 +22,8 @@ public:
 	void render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset);
 
 private:
-	static const int MAXRENDERSETS = 10;
-	static const int MAXCOLLIDERS = 10;
+	static const int MAXRENDERSETS = 100; //REMBEMBER THAT THEY FINISH FAST
+	static const int MAXCOLLIDERS = 100;
 	RenderSet renderSets[MAXRENDERSETS];
 	MapRenderSet mapRenderSet;
 	Collider* colliders[MAXCOLLIDERS];

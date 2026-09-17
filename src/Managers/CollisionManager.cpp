@@ -1,6 +1,7 @@
 #include "precomp.h"
 #include "CollisionManager.h"
 #include <iostream>
+#include <myMath.h>
 
 
 namespace CollisionManager {
@@ -98,6 +99,43 @@ namespace CollisionManager {
 					switch (tileId)
 					{
 						case 1:
+						case 3:
+						{
+							int tileX = j * layer.tileSize;
+							int tileY = i * layer.tileSize;
+
+							float leftTile = tileX;
+							float rightTile = tileX + layer.tileSize;
+							float topTile = tileY;
+							float bottomTile = tileY + layer.tileSize;
+
+							float overlapX = fminf(rightTile, colliderPos.x + collider.size.x) - fmaxf(leftTile, colliderPos.x);
+							float overlapY = fminf(bottomTile, colliderPos.y + collider.size.y) - fmaxf(topTile, colliderPos.y);
+
+							if (overlapX > -0.01f && overlapY > -0.01f) { //if colliding
+								if (e.getVelocity().y < 0) break;
+
+								float sampleX;
+								float max, min;
+								if (tileId == 1) { //left-to-right slope
+									sampleX = colliderPos.x + collider.size.x;
+									min = 0.f;
+									max = 1.f;
+								}
+								else { //right-to-left slope
+									sampleX = colliderPos.x;
+									min = 1.f;
+									max = 0.f;
+								}
+
+								if (sampleX >= tileX && sampleX <= tileX + layer.tileSize) { //check if the sample is in this tile
+									float fraction = myMath::mapValue(sampleX, tileX, tileX + layer.tileSize, min, max);
+
+									e.setPos(vec2(e.getPos().x, bottomTile - layer.tileSize * fraction - collider.size.y - collider.offset.y));
+									grounded = true;
+								}
+							}	
+						}
 							break;
 						case 0:
 						case 2:
@@ -109,6 +147,7 @@ namespace CollisionManager {
 							if (tileId == 0) {
 								//if (collider.pos.y + collider.size.y > tileY + layer.tileSize * 0.05f) break;
 								if (e.getVelocity().y < 0.0f) break;
+								if (colliderPos.y + collider.size.y > tileY + layer.tileSize /2.f) break;
 							}
 
 
@@ -132,8 +171,12 @@ namespace CollisionManager {
 								}
 								else {
 									e.addToPos(vec2(0, overlapY * dir.y));
-									if(dir.y < 0)
+									if (dir.y < 0) {
 										grounded = true;
+									}
+									else {
+										e.setVelocity(vec2(e.getVelocity().x, 0.01f));
+									}
 								}
 							}
 						}
