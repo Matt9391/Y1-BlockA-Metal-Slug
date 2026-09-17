@@ -14,7 +14,6 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 	}
 
 void GameScene::init() {
-	player.loadGFX();
 	getRenderer().addMapRenderSet(map.getMapRenderSet());
 };
 void GameScene::exit() {};
@@ -25,8 +24,10 @@ void GameScene::update(float dt) {
 
 	player.update(dt);
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
-    RenderSet rs = player.getRenderSet();
-	getRenderer().addRenderSet(rs);
+	getRenderer().addRenderSet(player.getRenderSet());
+	player.getGun().addRenderSets(getRenderer());
+	//getRenderer().addRenderSet(player.getGunRenderSet(), player.getGunBullets());
+
 	getRenderer().addCollider(player.getCollider());
 	getCamera().follow(player.getPos());
 

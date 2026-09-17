@@ -22,9 +22,12 @@ void Renderer::clearColliders() {
 }
 
 void Renderer::addRenderSet(RenderSet rs) {
+	if (renderSetCount == MAXRENDERSETS)
+		throw runtime_error("Max render sets reached");
 	renderSets[renderSetCount++] = rs;
 	
 }
+
 void Renderer::addMapRenderSet(const MapRenderSet& mrs) {
 	mapRenderSet = mrs;
 }

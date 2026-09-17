@@ -6,6 +6,7 @@ class Bullet : public Entity {
 public:
 
 	Bullet(vec2 pos, bool needsRigidBody);
+	~Bullet() override;
 
 	void loadGFX() override;
 	

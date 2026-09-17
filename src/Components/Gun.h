@@ -4,17 +4,28 @@
 
 enum ResourceId;
 class Bullet;
+struct RenderSet;
+class Renderer;
 
 class Gun {
 
 public:
-	Gun(vec2 pos, GunData gunData);
-
+	Gun(const vec2& pos, vec2 offset, GunData gunData);
+	~Gun();
 	void update(float dt);
 
+	void addRenderSets(Renderer& renderer);
+	int getBulletsCount();
+
+	bool shoot();
+
 private:
-	vec2 pos;
+	static const int MAXBULLETS = 10;
+
+	const vec2& pos;
+	vec2 offset;
 	vec2 shootDir;
 	GunData gunData;
-	Bullet* bullets;
+	Bullet* bullets[MAXBULLETS];
+	int bulletsCount;
 };

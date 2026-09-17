@@ -13,6 +13,7 @@ public:
 
 	void addCollider(Collider& c);
 	void addRenderSet(RenderSet rs);
+	
 	void addMapRenderSet(const MapRenderSet& mrs);
 
 	void clearRenderSets();

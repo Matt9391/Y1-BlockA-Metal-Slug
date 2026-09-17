@@ -18,6 +18,9 @@ public:
 
 	void update(float dt) override;
 
+	Gun& getGun();
+	int getGunBullets();
+
 private:
 
 	void handleMovement(float dt, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded);

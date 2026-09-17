@@ -14,6 +14,7 @@ Entity::Entity(vec2 pos, bool needsRigidBody) :
 	rigidBody(nullptr)
 	{
 		this->rigidBody = needsRigidBody ? new RigidBody(this->pos, true) : nullptr;
+
 	}
 
 
@@ -25,7 +26,7 @@ RenderSet Entity::getRenderSet() const {
 	return RenderSet{ animationSets[currentASIndex], pos };
 }
 
-vec2 Entity::getPos() const {
+const vec2& Entity::getPos() const{
 	return this->pos;
 }
 

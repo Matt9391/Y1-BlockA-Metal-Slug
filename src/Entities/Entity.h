@@ -18,7 +18,7 @@ public:
 
 	virtual void loadGFX() = 0;
 
-	vec2 getPos() const;
+	const vec2& getPos() const;
 	Collider& getCollider();
 	void addToPos(const vec2& newPos);
 

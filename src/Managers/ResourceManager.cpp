@@ -25,6 +25,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_PLAYER_JUMPUP_LEGS]= new Sprite(new Surface("assets/playerAnimation/Pistol/jumpingLegsUp.png"), ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS);
 	sprites[ResourceID::ID_PLAYER_FALLING_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/fallingBody.png"), ResourceIDFrames::IDF_PLAYER_FALLING_BODY);
 	sprites[ResourceID::ID_PLAYER_FALLING_LEGS]= new Sprite(new Surface("assets/playerAnimation/Pistol/fallingLegs.png"), ResourceIDFrames::IDF_PLAYER_FALLING_LEGS);
+	sprites[ResourceID::ID_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/Pistol/fallingLegs.png"), ResourceIDFrames::IDF_PLAYER_FALLING_LEGS);
 	sprites[ResourceID::ID_MAP_TILESET] = new Sprite(new Surface("assets/bg.png"), ResourceIDFrames::IDF_PLAYER_IDLE_LEGS);
 	sprites[ResourceID::ID_COLLISION_TILESET] = new Sprite(new Surface("assets/collisionTile.png"), ResourceIDFrames::IDF_COLLISION_TILESET);
 	

@@ -128,6 +128,7 @@
     <ClCompile Include="src\Components\Map.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Components\RigidBody.cpp" />
+    <ClCompile Include="src\DataStructures\GunPresets.cpp" />
     <ClCompile Include="src\Entities\Bullet.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
     <ClCompile Include="src\Entities\Player.cpp" />
@@ -169,6 +170,8 @@
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
     <ClInclude Include="src\DataStructures\GunData.h" />
+    <ClInclude Include="src\DataStructures\GunPresets.h" />
+    <ClInclude Include="src\DataStructures\GunType.h" />
     <ClInclude Include="src\DataStructures\MapLayerNames.h" />
     <ClInclude Include="src\DataStructures\MapRenderSet.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimations.h" />

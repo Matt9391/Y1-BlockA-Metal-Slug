@@ -97,6 +97,9 @@
     <ClCompile Include="src\Entities\Bullet.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\DataStructures\GunPresets.cpp">
+      <Filter>src\DataStructures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -214,6 +217,12 @@
     </ClInclude>
     <ClInclude Include="src\Entities\Bullet.h">
       <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\GunPresets.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\GunType.h">
+      <Filter>src\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

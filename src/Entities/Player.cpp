@@ -7,23 +7,28 @@
 #include <ResourceIDFrames.h>
 #include <RigidBody.h>
 #include <InputManager.h>
+#include <GunPresets.h>
 
 	
 Player::Player(vec2 pos, InputManager& inputManager) :
 	Entity(pos, true),
 	inputManager(inputManager),
-	gun(this->getPos(), GunData{}) //I need to add gunData templates
+	gun(this->getPos(), vec2(0,0), GunPresets::getGun(GunType::PISTOL)) //I need to add gunData templates
 	{
 		setCollider(vec2(20, 7), vec2(3, 30));
 		getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
+		loadGFX();
+		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
+		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 	}
 
 Player::~Player() {
 	delete[] getAnimationSets();
+	delete getRigidBody();
 }
 
 void Player::loadGFX() {
-	getAnimationSets()[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
+	getAnimationSets()[PlayerAnimationSet::PAS_IDLE] =  AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
 			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
@@ -89,8 +94,14 @@ void Player::loadGFX() {
 	);
 
 	//getAnimator().setAnimation(&getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP]);
-	setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+}
+
+Gun& Player::getGun() {
+	return gun;
+}
+
+int Player::getGunBullets() {
+	return gun.getBulletsCount();
 }
 
 void Player::update(float dt) {
@@ -101,14 +112,19 @@ void Player::update(float dt) {
 	const bool isMoving = inputRight || inputLeft;
 	const bool isJumping = inputManager.isKeyJustPressed(' ');
 	const bool isGrounded = getRigidBody()->isGrounded();
+	const bool isShooting = inputManager.isKeyJustPressed('F');
 
 	handleMovement(dt, inputRight, inputLeft, isJumping, isGrounded);
 	handleAnimationSet(isMoving, isJumping, isGrounded);
 
+	if (isShooting) {
+		gun.shoot();
+	}
 	
 	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip);
 
+	gun.update(dt);
 }
 
 void Player::handleMovement(float dt, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded) {
@@ -175,3 +191,4 @@ void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) 
 		setCurrentASIndex(PlayerAnimationSet::PAS_FALLING);
 	}
 }
+
