@@ -117,7 +117,7 @@ void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, i
 	uint* destination = screen->pixels + x + (y + dy) * screen->width;
 
 	//"transparent" pixel value, actually its magenta because it's easy to visualize in photoshop
-	const uint transparent = 0xFFFF00FF;
+	const uint transparent = 0x00FFFFFF;
 
 	//for each pixel in the tile area
 	for (int i = dy; i < maxY; i++) {
