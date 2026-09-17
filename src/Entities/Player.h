@@ -1,7 +1,6 @@
 #pragma once
 #include <Entity.h>
 #include <AnimationSet.h>
-#include <PlayerAnimations.h>
 #include <InputManager.h>
 #include <Gun.h>
 

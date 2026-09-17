@@ -37,6 +37,7 @@ protected:
 
 	
 	void setCollider(vec2 size, vec2 offset);
+	void setColliderOffset(vec2 offset);
 	int getCurrentASIndex() const;
 	void setCurrentASIndex(int nextASIndex);
 

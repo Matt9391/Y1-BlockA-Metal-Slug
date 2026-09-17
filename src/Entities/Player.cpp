@@ -93,8 +93,68 @@ void Player::loadGFX() {
 			vec2(0, -3),
 			vec2(-25, -3))
 	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_JUMPFORWARD] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
+			100,
+			vec2(0, 18),
+			vec2(-25, 18)),
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_BODY,
+			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_BODY,
+			100,
+			vec2(0, -3),
+			vec2(-25, -3))
+	);
 
-	//getAnimator().setAnimation(&getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP]);
+	getAnimationSets()[PlayerAnimationSet::PAS_FALLINGFORWARD] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_LEGS,
+			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_LEGS,
+			100,
+			vec2(5, 18),
+			vec2(-26, 18)),
+		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_BODY ,
+			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_BODY,
+			100,
+			vec2(-2, -3),
+			vec2(-25, -3))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_FALLINGFORWARD] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_LEGS,
+			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_LEGS,
+			100,
+			vec2(5, 18),
+			vec2(-26, 18)),
+		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_BODY ,
+			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_BODY,
+			100,
+			vec2(-2, -3),
+			vec2(-25, -3))
+	);
+
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-23, 9)),
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
+			80,
+			vec2(-1, -2),
+			vec2(-42, 0))
+	);
+
+
+
+	setCurrentASIndex(PlayerAnimationSet::PAS_SHOOTING_IDLE);
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], true);
+	//getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], false);
 }
 
 Gun& Player::getGun() {
@@ -115,6 +175,8 @@ void Player::update(float dt) {
 	const bool isGrounded = getRigidBody()->isGrounded();
 	const bool isShooting = inputManager.isKeyJustPressed('F');
 
+	std::cout << isGrounded << "and state: " << getCurrentASIndex() << std::endl;
+
 	handleMovement(dt, inputRight, inputLeft, isJumping, isGrounded);
 	handleAnimationSet(isMoving, isJumping, isGrounded);
 
@@ -123,6 +185,7 @@ void Player::update(float dt) {
 	}
 	
 	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
+	setColliderOffset(flip ? vec2(-15, 0) : vec2(3, 0));
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip);
 
 	gun.update(dt);
@@ -188,7 +251,7 @@ void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) 
 	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_FALLING) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
 	}
-	else if (!isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_JUMPUP && getAnimator().isAnimationEnded()) {
+	else if (getCurrentASIndex() == PlayerAnimationSet::PAS_JUMPUP && getAnimator().isAnimationEnded()) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_FALLING);
 	}
 }

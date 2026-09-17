@@ -54,6 +54,9 @@ void Entity::setCollider(vec2 size, vec2 offset) {
 	this->collider.offset = offset;
 	this->collider.size= size;
 }
+void Entity::setColliderOffset(vec2 offset) {
+	this->collider.offset = offset;
+}
 
 void Entity::addToPos(const vec2& newPos) {
 	this->pos += newPos;
