@@ -17,7 +17,10 @@ Entity::Entity(vec2 pos, bool needsRigidBody) :
 
 	}
 
-
+Entity::~Entity()
+{
+	delete rigidBody;
+}
 void Entity::update(float dt) {
 
 }

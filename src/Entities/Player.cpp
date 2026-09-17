@@ -25,7 +25,6 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 
 Player::~Player() {
 	delete[] getAnimationSets();
-	delete getRigidBody();
 }
 
 void Player::loadGFX() {

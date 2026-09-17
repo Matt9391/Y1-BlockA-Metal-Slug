@@ -25,6 +25,9 @@
     <Filter Include="src\Utils">
       <UniqueIdentifier>{8ee8940a-2faa-4413-9233-aa83cfb48c94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Entities\Enemies">
+      <UniqueIdentifier>{6b3b5d00-0715-4013-a754-516957add73e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -100,6 +103,12 @@
     <ClCompile Include="src\DataStructures\GunPresets.cpp">
       <Filter>src\DataStructures</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Enemy.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Enemies\RebelSoldier.cpp">
+      <Filter>src\Entities\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -167,9 +176,6 @@
     <ClInclude Include="src\Components\Animator.h">
       <Filter>src\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\PlayerAnimations.h">
-      <Filter>src\DataStructures</Filter>
-    </ClInclude>
     <ClInclude Include="src\Components\Map.h">
       <Filter>src\Components</Filter>
     </ClInclude>
@@ -223,6 +229,12 @@
     </ClInclude>
     <ClInclude Include="src\DataStructures\GunType.h">
       <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Enemy.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Enemies\RebelSoldier.h">
+      <Filter>src\Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

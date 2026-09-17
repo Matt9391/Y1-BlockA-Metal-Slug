@@ -14,7 +14,7 @@ class Entity
 {
 public:
 	Entity(vec2 pos, bool needsRigidBody);
-	virtual ~Entity() = default;
+	virtual ~Entity();
 
 	virtual void loadGFX() = 0;
 
