@@ -96,14 +96,26 @@ void Player::loadGFX() {
 void Player::update(float dt) {
 	getAnimator().playAnimation(dt);
 
-	if(getDir() != 0)
-		setLastDir(getDir());
-	setDir(vec2(0, 0));
 	const bool inputRight = inputManager.isKeyPressed('D');
 	const bool inputLeft = inputManager.isKeyPressed('A');
 	const bool isMoving = inputRight || inputLeft;
 	const bool isJumping = inputManager.isKeyJustPressed(' ');
 	const bool isGrounded = getRigidBody()->isGrounded();
+
+	handleMovement(dt, inputRight, inputLeft, isJumping, isGrounded);
+	handleAnimationSet(isMoving, isJumping, isGrounded);
+
+	
+	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip);
+
+}
+
+void Player::handleMovement(float dt, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded) {
+	if (getDir() != 0)
+		setLastDir(getDir());
+	setDir(vec2(0, 0));
+
 	//Movement
 	if (inputRight) {
 		setDir(vec2(1, 0));
@@ -125,21 +137,27 @@ void Player::update(float dt) {
 		if (isJumping) {
 			getRigidBody()->addVelocity(vec2(0, -0.37f));
 			setGrounded(false);
-		} 
+		}
 	}
+
+
+	this->addToPos(getRigidBody()->getVelocity() * dt);
+
+}
+void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) {
 
 	//Animations
 	if (isMoving) {
 		if (isGrounded) {
 
-			if (isJumping ){
+			if (isJumping) {
 				setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
 			}
 			else {
 				setCurrentASIndex(PlayerAnimationSet::PAS_WALK);
 			}
 
-		} 
+		}
 	}
 	else if (isGrounded && isJumping) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
@@ -156,15 +174,4 @@ void Player::update(float dt) {
 	else if (!isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_JUMPUP && getAnimator().isAnimationEnded()) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_FALLING);
 	}
-
-	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip);
-
-	//Moving fr
-	
-	this->addToPos(getRigidBody()->getVelocity() * dt);
-
-	std::cout << getCurrentASIndex() << std::endl;
-
 }
-

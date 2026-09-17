@@ -19,6 +19,9 @@ public:
 	void update(float dt) override;
 
 private:
+
+	void handleMovement(float dt, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded);
+	void handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded);
 	const InputManager& inputManager; //Const so it can only call const methods
 	Gun gun;
 };

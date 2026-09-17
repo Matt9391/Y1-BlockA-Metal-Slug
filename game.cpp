@@ -7,7 +7,6 @@
 #include <iostream>
 #include <TypeScene.h>
 
-
 Game::Game() :
 	sceneManager(),
 	resourceManager()
@@ -36,6 +35,5 @@ void Game::Tick(float dt)
 	renderer.render(screen, resourceManager, sceneManager.getCurrentScene().getCameraPos());
 	//screen->Box(100,100,screen->width,screen->height,0xff0000);
 	inputManager.updateLastFrameKeys();
-	
 }
 
