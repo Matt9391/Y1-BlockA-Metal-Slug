@@ -39,7 +39,7 @@ bool Gun::shoot() {
 
 	if (bIndex == -1) return false;
 
-	bullets[bIndex] = new Bullet(this->pos, true);
+	bullets[bIndex] = new Bullet(this->pos, true, this->shootDir);
 	bulletsCount++;
 
 	return true;
@@ -54,4 +54,13 @@ void Gun::addRenderSets(Renderer& renderer) {
 
 int Gun::getBulletsCount() {
 	return bulletsCount;
+}
+
+
+bool Gun::getCanShootDiagonally() {
+	return gunData.canShootDiagonally;
+}
+
+void Gun::setShootDir(vec2 shootDir) {
+	this->shootDir = shootDir;
 }

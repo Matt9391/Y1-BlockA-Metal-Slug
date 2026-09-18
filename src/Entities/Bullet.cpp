@@ -2,7 +2,7 @@
 #include "Bullet.h"
 #include <ResourceIDFrames.h>
 
-Bullet::Bullet(vec2 pos, bool needsRigidBody) :
+Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir) :
 	Entity(pos,needsRigidBody)
 { 
 	setCollider(vec2(5, 5), vec2(0, 0));
@@ -10,6 +10,7 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody) :
 	loadGFX();
 	setCurrentASIndex(0);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+	setDir(dir);
 }
 
 Bullet::~Bullet() {
@@ -31,5 +32,5 @@ void Bullet::loadGFX() {
 void Bullet::update(float dt) {
 	getAnimator().playAnimation(dt);
 
-	this->addToPos(vec2(0.1 * dt, 0));
+	this->addToPos(getDir() * dt * 0.5);
 }

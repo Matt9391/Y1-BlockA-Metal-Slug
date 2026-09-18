@@ -24,7 +24,7 @@ public:
 
 private:
 	PlayerInput getPlayerInput();
-	void handleMovement(float dt, bool inputDown, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded);
+	void handleMovement(float dt, const PlayerInput& pInput);
 	void handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded);
 	const InputManager& inputManager; //Const so it can only call const methods
 	Gun gun;

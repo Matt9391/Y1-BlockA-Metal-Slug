@@ -283,7 +283,7 @@ void Player::update(float dt) {
 	//std::cout << pInput.inputDown << "and state: " << getDir().y << std::endl;
 
 
-	handleMovement(dt, pInput.inputDown, pInput.inputRight, pInput.inputLeft, pInput.isJumping, pInput.isGrounded);
+	handleMovement(dt, pInput);
 	PlayerAnimationSet nextState = state->handleInput(pInput, static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	//std::cout << nextState << std::endl;
 	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
@@ -293,6 +293,54 @@ void Player::update(float dt) {
 
 	if (pInput.isShooting) {
 		gun.shoot();
+	}
+
+	//set gun shooting direction
+	{
+		int x = 1;
+		int y = 0;
+		
+	
+		
+		{
+
+
+			if (getLastDir().x < 0) {
+				x = -1;
+			}
+
+			if (pInput.inputUp) {
+				if (!gun.getCanShootDiagonally()) {
+					x = 0;
+				}
+
+				y = -1;
+			}
+
+			if (!pInput.isGrounded) {
+				if (pInput.inputDown) {
+					y = 1;
+					x = 0;
+				}
+			}
+		}
+		if (gun.getCanShootDiagonally()) {
+
+			if (pInput.inputLeft && pInput.inputUp) {
+				x = -1;
+				y = -1;
+			}
+			else if (pInput.inputRight && pInput.inputUp) {
+				x = 1;
+				y = -1;
+			}
+			else if (pInput.inputUp) {
+				x = 0;
+				y = -1;
+			}
+		}
+
+		gun.setShootDir(vec2(x,y));
 	}
 
 	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
@@ -346,17 +394,22 @@ PlayerInput Player::getPlayerInput() {
 	return playerInput;
 }
 
-void Player::handleMovement(float dt,bool inputDown, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded) {
+void Player::handleMovement(float dt, const PlayerInput& pInput) {
 	if (getDir() != 0)
 		setLastDir(getDir());
 	setDir(vec2(0, 0));
 
 	//Movement
-	if (inputRight) {
+	if (pInput.inputRight) {
 		setDir(vec2(1, 0));
 	}
-	else if (inputLeft) {
+	else if (pInput.inputLeft) {
 		setDir(vec2(-1, 0));
+	}else if (pInput.inputDown) {
+		setDir(vec2(0, 1));
+	}
+	else if (pInput.inputUp) {
+		setDir(vec2(0, -1));
 	}
 
 
@@ -364,12 +417,12 @@ void Player::handleMovement(float dt,bool inputDown, bool inputRight, bool input
 	//}
 	getRigidBody()->setVelocityX(0.1f * getDir().x);
 
-	if (!isGrounded) {
+	if (!pInput.isGrounded) {
 		getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
 	}
 	else {
 		getRigidBody()->setVelocityY(0);
-		if (isJumping) {
+		if (pInput.isJumping) {
 			getRigidBody()->addVelocity(vec2(0, -0.37f));
 			setGrounded(false);
 		}

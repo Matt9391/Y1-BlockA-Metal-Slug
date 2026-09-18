@@ -17,10 +17,13 @@ public:
 	void addRenderSets(Renderer& renderer);
 	int getBulletsCount();
 
+	bool getCanShootDiagonally();
+
+	void setShootDir(vec2 shootDir);
 	bool shoot();
 
 private:
-	static const int MAXBULLETS = 10;
+	static const int MAXBULLETS = 50;
 
 	const vec2& pos;
 	vec2 offset;
