@@ -42,6 +42,7 @@ void Renderer::clearRenderSets() {
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
 
 	for (int i = 0; i < mapRenderSet.layerCount; i++) {
+	//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
 		MapLayer& layer = mapRenderSet.layers[i];
 		for (int y = 0; y < layer.tiles.y; y++) {
 			for (int x = 0; x < layer.tiles.x; x++) {
@@ -78,6 +79,26 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 				static_cast<int>(rs.pos.y + offset.y * scale - cameraOffset.y), scale, flipped);
 		}
 
+	}
+
+	for (int i = 2; i < mapRenderSet.layerCount - 1; i++) {
+		MapLayer& layer = mapRenderSet.layers[i];
+		for (int y = 0; y < layer.tiles.y; y++) {
+			for (int x = 0; x < layer.tiles.x; x++) {
+				int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
+				if (tileId == 0) continue; // empty tile, nothing to draw
+
+				int localId = tileId - layer.firstgid;
+				int srcCol = localId % static_cast<int>(layer.tiles.x);
+				int srcRow = localId / layer.tiles.x;
+
+				int destX = static_cast<int>(mapRenderSet.pos.x + x * 8);
+				int destY = static_cast<int>(mapRenderSet.pos.y + y * 8);
+
+				drawTile(mapRenderSet.tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
+
+			}
+		}
 	}
 
 	for (int i = 0; i < collidersCount; i++) {
