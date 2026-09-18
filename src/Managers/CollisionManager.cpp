@@ -89,10 +89,16 @@ namespace CollisionManager {
 
 			bool grounded = false;
 
-			for (int i = startPos.y; i <= endPos.y; i++) {
-				for (int j = startPos.x; j <= endPos.x; j++) {
-					const vec2 colliderPos = (collider.pos + collider.offset); //recompile it everytime because it changes but since its not a reference it need to be recompiled
 
+			for (int i = startPos.y; i <= endPos.y; i++) {
+				if (i < 0 || i >= layer.tiles.y)
+					continue;
+				for (int j = startPos.x; j <= endPos.x; j++) {
+					if (j < 0 || j >= layer.tiles.x)
+						continue;
+
+					const vec2 colliderPos = (collider.pos + collider.offset); //recompile it everytime because it changes but since its not a reference it need to be recompiled
+					//std::cout << i * static_cast<int>(layer.tiles.x) + j << std::endl;
 					int tileId = layer.data[i * static_cast<int>(layer.tiles.x) + j] - layer.firstgid;
 					if (tileId == -layer.firstgid) continue;
 
