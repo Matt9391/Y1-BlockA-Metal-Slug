@@ -68,6 +68,33 @@ void Player::loadGFX() {
 			vec2(-25, 1))
 	);
 
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_IDLE] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_CROUCH_IDLE_F,
+			ResourceIDFrames::IDF_PLAYER_CROUCH_IDLE_F,
+			150,
+			vec2(3, 14),
+			vec2(-25, 14))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_WALKING] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_CROUCH_WALKING_F,
+			ResourceIDFrames::IDF_PLAYER_CROUCH_WALKING_F,
+			150,
+			vec2(3, 14),
+			vec2(-25, 14))
+	);
+
+	getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_AFTER_RUN_STOP_F,
+			ResourceIDFrames::IDF_PLAYER_AFTER_RUN_STOP_F,
+			150,
+			vec2(3, 1),
+			vec2(-25, 1))
+	);
 	getAnimationSets()[PlayerAnimationSet::PAS_JUMP_UP] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
@@ -174,12 +201,12 @@ void Player::update(float dt) {
 
 	PlayerInput pInput = getPlayerInput();
 
+	//std::cout << pInput.inputDown << "and state: " << getDir().y << std::endl;
 
-	//std::cout << pInput.isGrounded << "and state: " << getCurrentASIndex() << std::endl;
 
-	handleMovement(dt, pInput.inputRight, pInput.inputLeft, pInput.isJumping, pInput.isGrounded);
+	handleMovement(dt, pInput.inputDown, pInput.inputRight, pInput.inputLeft, pInput.isJumping, pInput.isGrounded);
 	PlayerAnimationSet nextState = state->handleInput(pInput, static_cast<PlayerAnimationSet>(getCurrentASIndex()));
-	std::cout << nextState << std::endl;
+	//std::cout << nextState << std::endl;
 	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	setCurrentASIndex(nextState);
 
@@ -199,7 +226,9 @@ void Player::update(float dt) {
 PlayerInput Player::getPlayerInput() {
 	const bool inputRight = inputManager.isKeyPressed('D');
 	const bool inputLeft = inputManager.isKeyPressed('A');
+	const bool inputDown = inputManager.isKeyPressed('S');
 	const bool isMoving = inputRight || inputLeft;
+	const bool isCrouching = inputDown;
 	const bool isJumping = inputManager.isKeyJustPressed(' ');
 	const bool isGrounded = getRigidBody()->isGrounded();
 	const bool isShooting = inputManager.isKeyJustPressed('F');
@@ -221,12 +250,13 @@ PlayerInput Player::getPlayerInput() {
 	//};
 
 	const PlayerInput playerInput = {
+		inputDown,
 		inputRight,
 		inputLeft,
 		isMoving,
 		isJumping,
 		isGrounded,
-		false,
+		isCrouching,
 		isShooting,
 		getAnimator().isAnimationEnded(),
 		getDir().y
@@ -235,10 +265,10 @@ PlayerInput Player::getPlayerInput() {
 	return playerInput;
 }
 
-void Player::handleMovement(float dt, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded) {
+void Player::handleMovement(float dt,bool inputDown, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded) {
 	if (getDir() != 0)
 		setLastDir(getDir());
-	setDir(vec2(0, 0));
+	setDir(vec2(0, inputDown ? 1 : 0));
 
 	//Movement
 	if (inputRight) {

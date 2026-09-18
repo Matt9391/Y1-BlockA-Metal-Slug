@@ -23,6 +23,8 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_PLAYER_AFTER_RUN_STOP_F]= new Sprite(new Surface("assets/playerAnimation/Pistol/afterRunStopFullBody.png"), ResourceIDFrames::IDF_PLAYER_AFTER_RUN_STOP_F);
 	sprites[ResourceID::ID_PLAYER_JUMPUP_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/jumpingBodyUp.png"), ResourceIDFrames::IDF_PLAYER_JUMPUP_BODY);
 	sprites[ResourceID::ID_PLAYER_JUMPUP_LEGS]= new Sprite(new Surface("assets/playerAnimation/Pistol/jumpingLegsUp.png"), ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS);
+	sprites[ResourceID::ID_PLAYER_CROUCH_IDLE_F]= new Sprite(new Surface("assets/playerAnimation/Pistol/idleBodyCrouch.png"), ResourceIDFrames::IDF_PLAYER_CROUCH_IDLE_F);
+	sprites[ResourceID::ID_PLAYER_CROUCH_WALKING_F]= new Sprite(new Surface("assets/playerAnimation/Pistol/walkingBodyCrouch.png"), ResourceIDFrames::IDF_PLAYER_CROUCH_WALKING_F);
 	sprites[ResourceID::ID_PLAYER_FALLING_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/fallingBody.png"), ResourceIDFrames::IDF_PLAYER_FALLING_BODY);
 	sprites[ResourceID::ID_PLAYER_FALLING_LEGS]= new Sprite(new Surface("assets/playerAnimation/Pistol/fallingLegs.png"), ResourceIDFrames::IDF_PLAYER_FALLING_LEGS);
 	sprites[ResourceID::ID_PLAYER_JUMPFORWARD_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/jumpingBodyForward.png"), ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_BODY);

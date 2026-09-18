@@ -9,6 +9,7 @@ class Player;
 // exactly like isJumping/isShooting/etc. are set from input.
 struct PlayerInput
 {
+    bool inputDown;
     bool inputRight;
     bool inputLeft;
     bool isMoving;

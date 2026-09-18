@@ -6,7 +6,7 @@ PlayerAnimationSet IdleState::handleInput(const PlayerInput& in, PlayerAnimation
 {
     if (in.isJumping)                   return PlayerAnimationSet::PAS_JUMP_UP;
     if (in.isMoving && in.isCrouching)  return PlayerAnimationSet::PAS_CROUCH_WALKING;
-    if (in.isCrouching)                 return PlayerAnimationSet::PAS_CROUCH;
+    if (in.isCrouching)                 return PlayerAnimationSet::PAS_CROUCH_IDLE;
     if (in.isMoving)                    return PlayerAnimationSet::PAS_WALK;
     if (in.isShooting && in.dirY == -1) return PlayerAnimationSet::PAS_SHOOTING_IDLE_UP;
     if (in.isShooting)                  return PlayerAnimationSet::PAS_SHOOTING_IDLE;
@@ -16,7 +16,6 @@ PlayerAnimationSet IdleState::handleInput(const PlayerInput& in, PlayerAnimation
 // --- Walk -------------------------------------------------------------------
 PlayerAnimationSet WalkState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
 {
-    printf("PlayerInput { right=%d, left=%d, moving=%d, jumping=%d, grounded=%d, crouching=%d, shooting=%d, animEnd=%d, dirY=%d }\n", in.inputRight, in.inputLeft, in.isMoving, in.isJumping, in.isGrounded, in.isCrouching, in.isShooting, in.onAnimationEnd, in.dirY);
 
     if (in.isJumping)                   return PlayerAnimationSet::PAS_JUMP_FORWARD;
     if (in.isCrouching)                 return PlayerAnimationSet::PAS_CROUCH_WALKING;
@@ -41,13 +40,16 @@ PlayerAnimationSet CrouchState::handleInput(const PlayerInput& in, PlayerAnimati
 {
     if (!in.isCrouching) return in.isMoving ? PlayerAnimationSet::PAS_WALK : PlayerAnimationSet::PAS_IDLE;
     if (in.isMoving)     return PlayerAnimationSet::PAS_CROUCH_WALKING;
+    if (in.isJumping)     return PlayerAnimationSet::PAS_JUMP_UP;
     return current;
 }
 
 PlayerAnimationSet CrouchWalkingState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
 {
     if (!in.isCrouching) return in.isMoving ? PlayerAnimationSet::PAS_WALK : PlayerAnimationSet::PAS_IDLE;
-    if (!in.isMoving)    return PlayerAnimationSet::PAS_CROUCH;
+    if (!in.isMoving)    return PlayerAnimationSet::PAS_CROUCH_IDLE;
+    if (in.isJumping)     return PlayerAnimationSet::PAS_JUMP_FORWARD;
+
     return current;
 }
 
@@ -172,7 +174,7 @@ PlayerState* getPlayerState(PlayerAnimationSet index)
         &idleInstance,                // PAS_IDLE
         &walkInstance,                // PAS_WALK
         &afterRunInstance,            // PAS_AFTER_RUN_STOP
-        &crouchInstance,              // PAS_CROUCH
+        &crouchInstance,              // PAS_CROUCH_IDLE
         &crouchWalkingInstance,       // PAS_CROUCH_WALKING
         &jumpUpInstance,              // PAS_JUMP_UP
         &jumpForwardInstance,         // PAS_JUMP_FORWARD
