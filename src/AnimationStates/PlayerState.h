@@ -9,16 +9,16 @@ class Player;
 // exactly like isJumping/isShooting/etc. are set from input.
 struct PlayerInput
 {
-    bool inputDown;
     bool inputRight;
     bool inputLeft;
+    bool inputUp;
+    bool inputDown;
     bool isMoving;
     bool isJumping;
     bool isGrounded;
     bool isCrouching;
     bool isShooting;
     bool onAnimationEnd;
-    int  dirY; // -1 = aiming up, 0 = neutral, 1 = aiming down
 };
 
 class PlayerState
@@ -113,7 +113,19 @@ public:
     PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
 };
 
+class ShootingCrouchState final : public PlayerState
+{
+public:
+    PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
+};
+
 class ShootingJumpUpState final : public PlayerState
+{
+public:
+    PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
+};
+
+class ShootingUpJumpUpState final : public PlayerState
 {
 public:
     PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;

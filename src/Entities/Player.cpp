@@ -178,11 +178,90 @@ void Player::loadGFX() {
 			vec2(-1, -2),
 			vec2(-42, 0))
 	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-24, 19)),
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
+			80,
+			vec2(0, -4),
+			vec2(-42, -4))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-23, 9)),
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
+			80,
+			vec2(0, -42),
+			vec2(-20, -42))
+	);
+
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-24, 19)),
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
+			80,
+			vec2(0, -42),
+			vec2(-20, -42))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_CROUCH] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_CROUCH_F,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_CROUCH_F,
+			80,
+			vec2(3, 8),
+			vec2(-42, 8))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(-16, 20)),
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
+			80,
+			vec2(0, -3),
+			vec2(-42, -3))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_UP_JUMP_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(-16, 20)),
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
+			80,
+			vec2(0, -42),
+			vec2(-20, -42))
+	);
 
 
 
-	setCurrentASIndex(PlayerAnimationSet::PAS_SHOOTING_IDLE);
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], true);
+	//setCurrentASIndex(PlayerAnimationSet::PAS_SHOOTING_IDLE);
+	//getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], true);
 	//getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], false);
 }
 
@@ -217,8 +296,9 @@ void Player::update(float dt) {
 	}
 
 	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
+	const bool reset = pInput.isShooting;
 	setColliderOffset(flip ? vec2(-15, 0) : vec2(3, 0));
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip);
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip, reset);
 
 	gun.update(dt);
 }
@@ -226,6 +306,7 @@ void Player::update(float dt) {
 PlayerInput Player::getPlayerInput() {
 	const bool inputRight = inputManager.isKeyPressed('D');
 	const bool inputLeft = inputManager.isKeyPressed('A');
+	const bool inputUp = inputManager.isKeyPressed('W');
 	const bool inputDown = inputManager.isKeyPressed('S');
 	const bool isMoving = inputRight || inputLeft;
 	const bool isCrouching = inputDown;
@@ -250,16 +331,16 @@ PlayerInput Player::getPlayerInput() {
 	//};
 
 	const PlayerInput playerInput = {
-		inputDown,
 		inputRight,
 		inputLeft,
+		inputUp,
+		inputDown,
 		isMoving,
 		isJumping,
 		isGrounded,
 		isCrouching,
 		isShooting,
-		getAnimator().isAnimationEnded(),
-		getDir().y
+		getAnimator().isAnimationEnded()
 	};
 
 	return playerInput;
@@ -268,7 +349,7 @@ PlayerInput Player::getPlayerInput() {
 void Player::handleMovement(float dt,bool inputDown, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded) {
 	if (getDir() != 0)
 		setLastDir(getDir());
-	setDir(vec2(0, inputDown ? 1 : 0));
+	setDir(vec2(0, 0));
 
 	//Movement
 	if (inputRight) {
