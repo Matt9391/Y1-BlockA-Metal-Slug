@@ -8,27 +8,30 @@
 #include <RigidBody.h>
 #include <InputManager.h>
 #include <GunPresets.h>
+#include <PlayerState.h>
 
-	
+
 Player::Player(vec2 pos, InputManager& inputManager) :
 	Entity(pos, true),
 	inputManager(inputManager),
-	gun(this->getPos(), vec2(0,0), GunPresets::getGun(GunType::PISTOL)) //I need to add gunData templates
-	{
-		setCollider(vec2(20, 37), vec2(3, 0));
-		//setCollider(vec2(20, 7), vec2(3, 30));
-		getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
-		loadGFX();
-		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
-		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
-	}
+	state(nullptr),
+	gun(this->getPos(), vec2(0, 0), GunPresets::getGun(GunType::PISTOL)) //I need to add gunData templates
+{
+	setCollider(vec2(20, 37), vec2(3, 0));
+	//setCollider(vec2(20, 7), vec2(3, 30));
+	getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
+	loadGFX();
+	setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
+	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+}
 
 Player::~Player() {
 	delete[] getAnimationSets();
 }
 
 void Player::loadGFX() {
-	getAnimationSets()[PlayerAnimationSet::PAS_IDLE] =  AnimationSet(
+	getAnimationSets()[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
 			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
@@ -55,7 +58,7 @@ void Player::loadGFX() {
 			vec2(2, -2),
 			vec2(-25, -2))
 	);
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP] = AnimationSet(
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_AFTER_RUN_STOP_F,
@@ -65,7 +68,7 @@ void Player::loadGFX() {
 			vec2(-25, 1))
 	);
 
-	getAnimationSets()[PlayerAnimationSet::PAS_JUMPUP] = AnimationSet(
+	getAnimationSets()[PlayerAnimationSet::PAS_JUMP_UP] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
 			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
@@ -92,8 +95,8 @@ void Player::loadGFX() {
 			vec2(0, -3),
 			vec2(-25, -3))
 	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_JUMPFORWARD] = AnimationSet(
+
+	getAnimationSets()[PlayerAnimationSet::PAS_JUMP_FORWARD] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
 			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
@@ -107,28 +110,28 @@ void Player::loadGFX() {
 			vec2(-25, -3))
 	);
 
-	getAnimationSets()[PlayerAnimationSet::PAS_FALLINGFORWARD] = AnimationSet(
+	getAnimationSets()[PlayerAnimationSet::PAS_FALLING_FORWARD] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_LEGS,
 			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_LEGS,
 			100,
 			vec2(5, 18),
 			vec2(-26, 18)),
-		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_BODY ,
+		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_BODY,
 			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_BODY,
 			100,
 			vec2(-2, -3),
 			vec2(-25, -3))
 	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_FALLINGFORWARD] = AnimationSet(
+
+	getAnimationSets()[PlayerAnimationSet::PAS_FALLING_FORWARD] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_LEGS,
 			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_LEGS,
 			100,
 			vec2(5, 18),
 			vec2(-26, 18)),
-		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_BODY ,
+		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_BODY,
 			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_BODY,
 			100,
 			vec2(-2, -3),
@@ -167,6 +170,33 @@ int Player::getGunBullets() {
 void Player::update(float dt) {
 	getAnimator().playAnimation(dt);
 
+	//dt = fminf(dt, 0.05f);
+
+	PlayerInput pInput = getPlayerInput();
+
+
+	//std::cout << pInput.isGrounded << "and state: " << getCurrentASIndex() << std::endl;
+
+	handleMovement(dt, pInput.inputRight, pInput.inputLeft, pInput.isJumping, pInput.isGrounded);
+	PlayerAnimationSet nextState = state->handleInput(pInput, static_cast<PlayerAnimationSet>(getCurrentASIndex()));
+	std::cout << nextState << std::endl;
+	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
+	setCurrentASIndex(nextState);
+
+	//handleAnimationSet(isMoving, isJumping, isGrounded);
+
+	if (pInput.isShooting) {
+		gun.shoot();
+	}
+
+	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
+	setColliderOffset(flip ? vec2(-15, 0) : vec2(3, 0));
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip);
+
+	gun.update(dt);
+}
+
+PlayerInput Player::getPlayerInput() {
 	const bool inputRight = inputManager.isKeyPressed('D');
 	const bool inputLeft = inputManager.isKeyPressed('A');
 	const bool isMoving = inputRight || inputLeft;
@@ -174,20 +204,35 @@ void Player::update(float dt) {
 	const bool isGrounded = getRigidBody()->isGrounded();
 	const bool isShooting = inputManager.isKeyJustPressed('F');
 
-	std::cout << isGrounded << "and state: " << getCurrentASIndex() << std::endl;
 
-	handleMovement(dt, inputRight, inputLeft, isJumping, isGrounded);
-	handleAnimationSet(isMoving, isJumping, isGrounded);
+	//printf("PlayerInput { right=%d, left=%d, moving=%d, jumping=%d, grounded=%d, crouching=%d, shooting=%d, animEnd=%d, dirY=%d }\n", inputRight, inputLeft, isMoving, isJumping, isGrounded, false, isShooting, getAnimator().isAnimationEnded(), getDir().y);
 
-	if (isShooting) {
-		gun.shoot();
-	}
-	
-	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
-	setColliderOffset(flip ? vec2(-15, 0) : vec2(3, 0));
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip);
+	//struct PlayerInput
+	//{
+	//	bool inputRight;
+	//	bool inputLeft;
+	//	bool isMoving;
+	//	bool isJumping;
+	//	bool isGrounded;
+	//	bool isCrouching;
+	//	bool isShooting;
+	//	bool onAnimationEnd;
+	//	int  dirY; // -1 = aiming up, 0 = neutral, 1 = aiming down
+	//};
 
-	gun.update(dt);
+	const PlayerInput playerInput = {
+		inputRight,
+		inputLeft,
+		isMoving,
+		isJumping,
+		isGrounded,
+		false,
+		isShooting,
+		getAnimator().isAnimationEnded(),
+		getDir().y
+	};
+
+	return playerInput;
 }
 
 void Player::handleMovement(float dt, bool inputRight, bool inputLeft, bool isJumping, bool isGrounded) {
@@ -230,7 +275,7 @@ void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) 
 		if (isGrounded) {
 
 			if (isJumping) {
-				setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
+				setCurrentASIndex(PlayerAnimationSet::PAS_JUMP_UP);
 			}
 			else {
 				setCurrentASIndex(PlayerAnimationSet::PAS_WALK);
@@ -239,7 +284,7 @@ void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) 
 		}
 	}
 	else if (isGrounded && isJumping) {
-		setCurrentASIndex(PlayerAnimationSet::PAS_JUMPUP);
+		setCurrentASIndex(PlayerAnimationSet::PAS_JUMP_UP);
 	}
 	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_WALK) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_AFTER_RUN_STOP);
@@ -250,7 +295,7 @@ void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) 
 	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_FALLING) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
 	}
-	else if (getCurrentASIndex() == PlayerAnimationSet::PAS_JUMPUP && getAnimator().isAnimationEnded()) {
+	else if (getCurrentASIndex() == PlayerAnimationSet::PAS_JUMP_UP && getAnimator().isAnimationEnded()) {
 		setCurrentASIndex(PlayerAnimationSet::PAS_FALLING);
 	}
 }

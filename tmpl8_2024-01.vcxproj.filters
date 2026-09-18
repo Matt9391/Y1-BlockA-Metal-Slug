@@ -28,6 +28,9 @@
     <Filter Include="src\Entities\Enemies">
       <UniqueIdentifier>{6b3b5d00-0715-4013-a754-516957add73e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\AnimationStates">
+      <UniqueIdentifier>{159d2dfe-73aa-4c31-8636-d15642637103}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -108,6 +111,9 @@
     </ClCompile>
     <ClCompile Include="src\Entities\Enemies\RebelSoldier.cpp">
       <Filter>src\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimationStates\PlayerState.cpp">
+      <Filter>src\AnimationStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="src\Entities\Enemies\RebelSoldier.h">
       <Filter>src\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationStates\PlayerState.h">
+      <Filter>src\AnimationStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

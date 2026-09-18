@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib;src;src\Managers;src\DataStructures;src\Scenes;src\Entities;src\Components;src\Utils</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib;src;src\Managers;src\DataStructures;src\Scenes;src\Entities;src\Components;src\Utils;src\AnimationStates</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
@@ -122,6 +122,7 @@
   <!-- Source files -->
   <ItemGroup>
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="src\AnimationStates\PlayerState.cpp" />
     <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Components\Camera.cpp" />
     <ClCompile Include="src\Components\Gun.cpp" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="src\AnimationStates\PlayerState.h" />
     <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\Components\Camera.h" />
     <ClInclude Include="src\Components\Collider.h" />
