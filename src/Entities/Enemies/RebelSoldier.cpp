@@ -1,5 +1,6 @@
 #include "precomp.h"
 #include <Enemies/RebelSoldier.h>
+#include <RigidBody.h>
 
 RebelSoldier::RebelSoldier(vec2 pos) :
 	Enemy(pos)
@@ -17,5 +18,22 @@ RebelSoldier::~RebelSoldier() {
 }
 
 void RebelSoldier::loadGFX() {
+
+}
+
+void RebelSoldier::update(float dt) {
+
+	const bool isGrounded = getRigidBody()->isGrounded();
+	getRigidBody()->setVelocityX(0.1f * getDir().x);
+
+	if (!isGrounded) {
+		getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
+	}
+	else {
+		getRigidBody()->setVelocityY(0);
+	}
+
+
+	this->addToPos(getRigidBody()->getVelocity() * dt);
 
 }

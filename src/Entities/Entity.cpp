@@ -22,7 +22,6 @@ Entity::~Entity()
 	delete rigidBody;
 }
 void Entity::update(float dt) {
-
 }
 
 RenderSet Entity::getRenderSet() const {

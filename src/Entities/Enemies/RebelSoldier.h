@@ -8,6 +8,8 @@ public:
 
 	void loadGFX() override;
 
+	void update(float dt) override;
+
 private:
 
 
