@@ -39,6 +39,7 @@ void GameScene::update(float dt) {
 
 	CollisionManager::resolveMapCollision(soldier, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	getRenderer().addRenderSet(player.getRenderSet());
+	getRenderer().addRenderSet(soldier.getRenderSet());
 	player.getGun().addRenderSets(getRenderer());
 	//getRenderer().addRenderSet(player.getGunRenderSet(), player.getGunBullets());
 

@@ -1,5 +1,8 @@
 #pragma once
 #include <Enemy.h>
+#include <EnemyState.h>
+
+class EnemyState;
 
 class RebelSoldier : public Enemy {
 public:
@@ -11,6 +14,6 @@ public:
 	void update(float dt) override;
 
 private:
-
-
+	EnemyStates::EnemyState* state;
+	
 };

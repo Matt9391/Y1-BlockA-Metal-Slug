@@ -37,7 +37,13 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/Pistol/fallingLegs.png"), ResourceIDFrames::IDF_PLAYER_FALLING_LEGS);
 	sprites[ResourceID::ID_MAP_TILESET] = new Sprite(new Surface("assets/bg.png"), ResourceIDFrames::IDF_PLAYER_IDLE_LEGS);
 	sprites[ResourceID::ID_COLLISION_TILESET] = new Sprite(new Surface("assets/collisionTile.png"), ResourceIDFrames::IDF_COLLISION_TILESET);
-	
+	sprites[ResourceID::ID_REBELSOLDIER_IDLE] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/idle.png"), ResourceIDFrames::IDF_REBELSOLDIER_IDLE);
+	sprites[ResourceID::ID_REBELSOLDIER_WALK] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/walk.png"), ResourceIDFrames::IDF_REBELSOLDIER_WALK);
+	sprites[ResourceID::ID_REBELSOLDIER_STOP] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/stop.png"), ResourceIDFrames::IDF_REBELSOLDIER_STOP);
+	sprites[ResourceID::ID_REBELSOLDIER_JUMP_UP] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/jumpup.png"), ResourceIDFrames::IDF_REBELSOLDIER_JUMP_UP);	
+	sprites[ResourceID::ID_REBELSOLDIER_JUMP_FORWARD] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/jumpforward.png"), ResourceIDFrames::IDF_REBELSOLDIER_JUMP_FORWARD);
+	sprites[ResourceID::ID_REBELSOLDIER_SCARED] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/scared.png"), ResourceIDFrames::IDF_REBELSOLDIER_SCARED);
+
 	initalized = true;
 }
 

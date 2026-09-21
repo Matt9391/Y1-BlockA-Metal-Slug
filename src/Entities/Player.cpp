@@ -286,8 +286,8 @@ void Player::update(float dt) {
 	handleMovement(dt, pInput);
 	PlayerAnimationSet nextState = state->handleInput(pInput, static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	//std::cout << nextState << std::endl;
-	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	setCurrentASIndex(nextState);
+	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 
 	//handleAnimationSet(isMoving, isJumping, isGrounded);
 

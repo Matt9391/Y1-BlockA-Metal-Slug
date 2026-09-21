@@ -122,6 +122,7 @@
   <!-- Source files -->
   <ItemGroup>
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="src\AnimationStates\EnemyState.cpp" />
     <ClCompile Include="src\AnimationStates\PlayerState.cpp" />
     <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Components\Camera.cpp" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="src\AnimationStates\EnemyState.h" />
     <ClInclude Include="src\AnimationStates\PlayerState.h" />
     <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\Components\Camera.h" />
@@ -173,6 +175,7 @@
     <ClInclude Include="src\Components\RigidBody.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
+    <ClInclude Include="src\DataStructures\EnemyAnimationSet.h" />
     <ClInclude Include="src\DataStructures\GunData.h" />
     <ClInclude Include="src\DataStructures\GunPresets.h" />
     <ClInclude Include="src\DataStructures\GunType.h" />

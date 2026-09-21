@@ -115,6 +115,9 @@
     <ClCompile Include="src\AnimationStates\PlayerState.cpp">
       <Filter>src\AnimationStates</Filter>
     </ClCompile>
+    <ClCompile Include="src\AnimationStates\EnemyState.cpp">
+      <Filter>src\AnimationStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -244,6 +247,12 @@
     </ClInclude>
     <ClInclude Include="src\AnimationStates\PlayerState.h">
       <Filter>src\AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationStates\EnemyState.h">
+      <Filter>src\AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\EnemyAnimationSet.h">
+      <Filter>src\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
