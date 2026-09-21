@@ -88,7 +88,7 @@ namespace CollisionManager {
 			//std::cout << "startY: " << startPos.y << "endY: " << endPos.y << std::endl;
 
 			bool grounded = false;
-
+			bool collided = false;
 
 			for (int i = startPos.y; i <= endPos.y; i++) {
 				if (i < 0 || i >= layer.tiles.y)
@@ -120,7 +120,7 @@ namespace CollisionManager {
 
 							if (overlapX > -0.01f && overlapY > -0.01f) { //if colliding
 								if (e.getVelocity().y < 0) break;
-
+								collided = true;
 								float sampleX;
 								float max, min;
 								if (tileId == 1) { //left-to-right slope
@@ -172,6 +172,8 @@ namespace CollisionManager {
 							vec2 dir = vec2(eCenter.x < tCenter.x ? -1 : 1, eCenter.y < tCenter.y ? -1 : 1);
 
 							if (overlapX > -0.01f && overlapY > -0.01f) {
+								collided = true;
+
 								if (overlapX < overlapY) {
 									e.addToPos(vec2(overlapX * dir.x, 0));
 								}
@@ -196,7 +198,7 @@ namespace CollisionManager {
 			
 			e.setGrounded(grounded);
 
-			return true;
+			return collided;
 	}
 
 

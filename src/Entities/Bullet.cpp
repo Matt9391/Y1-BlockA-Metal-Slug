@@ -15,7 +15,6 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir) :
 
 Bullet::~Bullet() {
 	delete[] getAnimationSets();
-	delete getRigidBody();
 }
 
 void Bullet::loadGFX() {

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <CollisionManager.h>
 #include <InputManager.h>
+#include <Bullet.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager), //inheritance
@@ -26,6 +27,16 @@ void GameScene::update(float dt) {
 	player.update(dt);
 	soldier.update(dt);
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
+	
+	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
+		Bullet* b = player.getGun().getBullet(i);
+		//if (b) std::cout << (*b).getRigidBody();
+		if (b && CollisionManager::resolveMapCollision(*b, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
+			player.getGun().freeBullet(i);
+		}
+	}
+
+
 	CollisionManager::resolveMapCollision(soldier, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	getRenderer().addRenderSet(player.getRenderSet());
 	player.getGun().addRenderSets(getRenderer());

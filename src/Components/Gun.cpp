@@ -56,6 +56,21 @@ int Gun::getBulletsCount() {
 	return bulletsCount;
 }
 
+Bullet* Gun::getBullet(int i) {
+	return bullets[i];
+}
+
+void Gun::freeBullet(int i) {
+	if (bullets[i]) {
+		delete bullets[i];
+		bullets[i] = nullptr;
+		bulletsCount--;
+	}
+}
+
+int Gun::getMaxBullets() const{
+	return MAXBULLETS;
+}
 
 bool Gun::getCanShootDiagonally() {
 	return gunData.canShootDiagonally;

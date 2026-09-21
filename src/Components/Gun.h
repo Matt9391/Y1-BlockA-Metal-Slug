@@ -16,7 +16,10 @@ public:
 
 	void addRenderSets(Renderer& renderer);
 	int getBulletsCount();
+	int getMaxBullets() const;
+	Bullet* getBullet(int i);
 
+	void freeBullet(int i);
 	bool getCanShootDiagonally();
 
 	void setShootDir(vec2 shootDir);
