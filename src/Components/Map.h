@@ -3,7 +3,9 @@
 #include <vec2.h>
 #include <MapLayer.h>
 #include <MapLayerNames.h>
-#include <MapRenderSet.h>
+
+struct MapRenderSet;
+struct MapObjectRenderSet;
 
 class Map
 {
@@ -25,6 +27,7 @@ private:
 	int tileSize;
 
 	MapLayer layers[MapLayerNames::MLN_COUNTS];
+	MapObjLayer objLayers[MapObjectLayerNames::MOLN_COUNTS];
 
 };
 

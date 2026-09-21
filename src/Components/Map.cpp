@@ -1,17 +1,21 @@
 #include "precomp.h"
 #include "Map.h"
 #include <lib/json.hpp>
+#include <MapLayer.h>
+#include <MapRenderSet.h>
+#include <iostream>
+
 
 Map::Map() :
 	tiles(0,0),
 	tileSize(0),
 	pos(0,0)
 	{
-		loadDataFromJson("assets/gameMapV3.tmj");
+		loadDataFromJson("assets/gameMapV4.tmj");
 	}
 
 MapRenderSet Map::getMapRenderSet() const {
-	return MapRenderSet(this->pos, this->tileSize, this->layers);
+	return MapRenderSet(this->pos, this->tileSize, this->layers, this->objLayers);
 }
 
 vec2 Map::getTiles() const {
@@ -40,10 +44,29 @@ bool Map::loadDataFromJson(const char* fileName) {
 	for (int i = 0; i < static_cast<int>(MapLayerNames::MLN_COUNTS); i++) {
 		//current layer
 		nlohmann::json layer = data.at("layers").at(i);
+
+		MapLayerNames layerName = static_cast<MapLayerNames>(i);
+		
+		if (i == 4) { //object layer for now ill improve it
+			nlohmann::json dataObjects = layer.at("objects");
+			int nOfObjects = layer.at("objects").size();
+			std::cout << nOfObjects << std::endl;
+			MapObject* objects = new MapObject[nOfObjects];
+
+			for (int i = 0; i < nOfObjects; i++) {
+				objects[i] = MapObject(vec2(dataObjects[i].at("x"), dataObjects[i].at("y")), 
+					vec2(dataObjects[i].at("width"), dataObjects[i].at("height")));
+			}
+
+			objLayers[0] = MapObjLayer(layerName, nOfObjects, objects);
+
+			delete[] objects;
+			continue;
+		}
+
 		//data (tiles) of current layer
 		nlohmann::json mapData = layer.at("data");
 
-		MapLayerNames layerName = static_cast<MapLayerNames>(i);
 
 		//size of the array of tiles
 		int dataSize = static_cast<int>(mapData.size());
@@ -65,8 +88,7 @@ bool Map::loadDataFromJson(const char* fileName) {
 				vec2(layer.at("width").get<int>(), layer.at("height").get<int>()),
 				this->tileSize
 			);
-		}
-		else {
+		}else {
 			this->layers[i] = MapLayer(
 				ResourceID::ID_MAP_TILESET, //map tileset
 				layerName,

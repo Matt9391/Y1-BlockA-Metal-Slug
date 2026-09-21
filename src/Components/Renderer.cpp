@@ -101,6 +101,16 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		}
 	}
 
+	for (int i = 0; i < mapRenderSet.layerObjCount; i++) {
+		//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
+		MapObjLayer& layer = mapRenderSet.objectLayers[i];
+		for (int j = 0; j < layer.nOfObjects; j++) {
+			MapObject& obj = layer.objects[j];
+			screen->Box(obj.pos.x - cameraOffset.x, obj.pos.y - cameraOffset.y,
+				obj.pos.x - cameraOffset.x + obj.size.x, obj.pos.y - cameraOffset.y + obj.size.y, 0xFFFF00);
+		}
+	}
+
 	for (int i = 0; i < collidersCount; i++) {
 		Collider& c = *colliders[i];
 		screen->Box(c.pos.x + c.offset.x - cameraOffset.x, c.pos.y + c.offset.y - cameraOffset.y,

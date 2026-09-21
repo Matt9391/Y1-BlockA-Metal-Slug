@@ -69,3 +69,49 @@ public:
 	}
 
 };
+
+struct MapObject {
+	vec2 pos;
+	vec2 size;
+
+	MapObject(vec2 pos, vec2 size) :
+		pos(pos),
+		size(size)
+	{
+	}
+
+	MapObject() :
+		pos(0, 0),
+		size(0, 0)
+	{
+	}
+
+	void operator= (const MapObject& other) {
+		this->pos = other.pos;
+		this->size = other.size;
+	}
+};
+
+
+struct MapObjLayer {
+	MapLayerNames layerName;
+	int nOfObjects;
+	static const int MAXOBJECTS = 10;
+
+	MapObject objects[MAXOBJECTS];
+
+	MapObjLayer(MapLayerNames layerName, int nOfObjects, MapObject* objects) :
+		layerName(layerName),
+		nOfObjects(nOfObjects)
+	{
+		for (int i = 0; i < nOfObjects; i++) {
+			this->objects[i] = objects[i];
+		}
+	}
+
+	MapObjLayer() :
+		layerName(MapLayerNames::MLN_NULL_LAYER),
+		nOfObjects(0)
+		{}
+};
+
