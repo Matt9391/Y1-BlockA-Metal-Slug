@@ -30,10 +30,16 @@ void GameScene::update(float dt) {
 	
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);
+		bool free = false;
 		//if (b) std::cout << (*b).getRigidBody();
 		if (b && CollisionManager::resolveMapCollision(*b, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
-			player.getGun().freeBullet(i);
+			free = true;
 		}
+
+		if (b && CollisionManager::checkCollision(b->getCollider(), soldier.getCollider())) {
+			free = true;
+		}
+		if(free) player.getGun().freeBullet(i);
 	}
 
 

@@ -1,6 +1,8 @@
 #include "precomp.h"
 #include "CollisionManager.h"
 #include <iostream>
+#include <Entity.h>
+#include <Collider.h>
 #include <myMath.h>
 
 
@@ -201,5 +203,23 @@ namespace CollisionManager {
 			return collided;
 	}
 
+	bool checkCollision(Collider& a, Collider& b){
+		float leftA = a.pos.x + a.offset.x;
+		float rightA = a.pos.x + + a.offset.x + a.size.x;
+		float topA = a.pos.y + a.offset.y;
+		float bottomA = a.pos.y + a.offset.y + a.size.y;
+	
+		float leftB = b.pos.x + b.offset.x;
+		float rightB = b.pos.x + +b.offset.x + b.size.x;
+		float topB = b.pos.y + b.offset.y;
+		float bottomB = b.pos.y + b.offset.y + b.size.y;
 
+		float overlapX = fminf(rightA, rightB) - fmaxf(leftA, leftB);
+		float overlapY = fminf(bottomA, bottomB) - fmaxf(topA, topB);
+
+		if (overlapX > -0.01f && overlapY > -0.01f) { //if colliding
+			return true;
+		}
+		return false;
+	}
 } 
