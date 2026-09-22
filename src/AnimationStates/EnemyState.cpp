@@ -83,6 +83,10 @@ EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet curren
         current = EnemyAnimationSet::EAS_COVER;
     }
 
+    if (playerVisible && abs(e.getSensors().distToPlayer) < MELEERANGE) {
+        current = EnemyAnimationSet::EAS_MELEE_ATTACK;
+    }
+
     return current;
 }
 
@@ -202,6 +206,40 @@ EnemyAnimationSet CoverState::update(Enemy& e, float dt, EnemyAnimationSet curre
 	return current;
 }
 
+void MeleeAttackState::enter(Enemy& e) {
+    this->duration = 1000.f;
+    this->elapsedTime = 0.f;
+}
+
+EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
+{
+    if (!e.getSensors().isGrounded) {
+        e.addVelocity(vec2(0, 0.001f * dt));
+    }
+    else {
+        e.setVelocityY(0.f);
+    }
+
+    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+
+
+    elapsedTime += dt;
+    if (elapsedTime > duration) {
+        current = EnemyAnimationSet::EAS_WALK;
+        e.setFlip(!e.getFlip());
+    }
+
+    if (playerVisible && abs(e.getSensors().distToPlayer) > MELEERANGE && e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_WALK;
+    }
+    
+    if (!playerVisible && e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+	return current;
+}
+
 
 // --- Static instances + lookup table -----------------------------------
     IdleState                idleInstance;
@@ -211,6 +249,7 @@ EnemyAnimationSet CoverState::update(Enemy& e, float dt, EnemyAnimationSet curre
     ScaredState              scaredInstance;
     FallingState             fallingInstance;
     CoverState               coverInstance;
+    MeleeAttackState         meleeAttackInstance;
     //CrouchState              crouchInstance;
     //CrouchWalkingState       crouchWalkingInstance;
     //JumpUpState              jumpUpInstance;
@@ -240,6 +279,7 @@ EnemyState* getEnemyState(EnemyAnimationSet index)
         &RebelSoldierStates::scaredInstance,             // PAS_FALLING
         &RebelSoldierStates::fallingInstance,             // PAS_FALLING
         &RebelSoldierStates::coverInstance,               // PAS_COVER
+        &RebelSoldierStates::meleeAttackInstance,         // PAS_MELEE_ATTACK
         //&crouchInstance,              // PAS_CROUCH_IDLE
         //&crouchWalkingInstance,       // PAS_CROUCH_WALKING
         //&jumpUpInstance,              // PAS_JUMP_UP

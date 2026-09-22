@@ -257,6 +257,20 @@ void Player::loadGFX() {
 			vec2(0, -42),
 			vec2(-20, -42))
 	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-23, 9)),
+		AnimationLayer(ResourceID::ID_PLAYER_MELEE_ATTACK_BODY,
+			ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY,
+			80,
+			vec2(-7, -15),
+			vec2(-27, -15))
+	);
 
 
 
@@ -361,6 +375,7 @@ PlayerInput Player::getPlayerInput() {
 	const bool isJumping = inputManager.isKeyJustPressed(' ');
 	const bool isGrounded = getRigidBody()->isGrounded();
 	const bool isShooting = inputManager.isKeyJustPressed('F');
+	const bool isAttacking = inputManager.isKeyJustPressed('E');
 
 
 	//printf("PlayerInput { right=%d, left=%d, moving=%d, jumping=%d, grounded=%d, crouching=%d, shooting=%d, animEnd=%d, dirY=%d }\n", inputRight, inputLeft, isMoving, isJumping, isGrounded, false, isShooting, getAnimator().isAnimationEnded(), getDir().y);
@@ -388,6 +403,7 @@ PlayerInput Player::getPlayerInput() {
 		isGrounded,
 		isCrouching,
 		isShooting,
+		isAttacking,
 		getAnimator().isAnimationEnded()
 	};
 

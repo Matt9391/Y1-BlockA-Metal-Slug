@@ -10,6 +10,7 @@ PlayerAnimationSet IdleState::handleInput(const PlayerInput& in, PlayerAnimation
     if (in.isMoving)                    return PlayerAnimationSet::PAS_WALK;
     if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_IDLE_UP;
     if (in.isShooting)                  return PlayerAnimationSet::PAS_SHOOTING_IDLE;
+    if (in.isAttacking)                 return PlayerAnimationSet::PAS_MELEE_ATTACK;
     return current;
 }
 
@@ -177,6 +178,20 @@ PlayerAnimationSet ShootingJumpDownState::handleInput(const PlayerInput& in, Pla
         if (in.isMoving)   return PlayerAnimationSet::PAS_FALLING_FORWARD;
         return PlayerAnimationSet::PAS_FALLING;
     }
+    return current;
+}
+
+PlayerAnimationSet MeleeAttackState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
+{
+    if (in.onAnimationEnd)
+    {
+        if (in.isGrounded) return PlayerAnimationSet::PAS_IDLE;
+        if (in.isMoving)   return PlayerAnimationSet::PAS_WALK;
+    }
+
+    if (in.isShooting && in.isMoving) return PlayerAnimationSet::PAS_SHOOTING_WALK;
+    if (in.isShooting && !in.isMoving) return PlayerAnimationSet::PAS_SHOOTING_IDLE;
+
     return current;
 }
 

@@ -92,6 +92,16 @@ void RebelSoldier::loadGFX() {
 			vec2(-2, -8),
 			vec2(-2, -8))
 	);
+	
+	getAnimationSets()[EnemyAnimationSet::EAS_MELEE_ATTACK] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_REBELSOLDIER_MELEE_ATTACK,
+			ResourceIDFrames::IDF_REBELSOLDIER_MELEE_ATTACK,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
 
 }
 
