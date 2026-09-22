@@ -79,6 +79,8 @@ namespace RebelSoldierStates {
     public:
         void enter(Enemy& e) override;
         EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+    private:
+        static const int MSTRIGGER = 500;
     };
 
     EnemyState* getEnemyState(EnemyAnimationSet index);

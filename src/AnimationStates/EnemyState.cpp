@@ -224,9 +224,8 @@ EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet
 
 
     elapsedTime += dt;
-    if (elapsedTime > duration) {
-        current = EnemyAnimationSet::EAS_WALK;
-        e.setFlip(!e.getFlip());
+    if (elapsedTime > MSTRIGGER) {
+        e.setAttacking(true);
     }
 
     if (playerVisible && abs(e.getSensors().distToPlayer) > MELEERANGE && e.getSensors().animationEnded) {
@@ -235,6 +234,15 @@ EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet
     
     if (!playerVisible && e.getSensors().animationEnded) {
         current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+    if (e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_WALK;
+        e.setFlip(!e.getFlip());
+    }
+
+    if (current != EnemyAnimationSet::EAS_MELEE_ATTACK) {
+        e.setAttacking(false);
     }
 
 	return current;

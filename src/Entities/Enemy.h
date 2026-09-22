@@ -17,6 +17,8 @@ public:
 	//~Enemy() override;
 	void setFlip(bool flip);
 	bool getFlip() const;
+	void setAttacking(bool flip);
+	bool getAttacking() const;
 
 	void loadSensors(vec2 playerPos, bool wallAhead);
 
@@ -25,7 +27,7 @@ public:
 private:
 	EnemySensor sensors;
 	bool flip;
-	int health;
+	bool attacking;
 	//other stuff
 };
 

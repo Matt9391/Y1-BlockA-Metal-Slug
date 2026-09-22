@@ -5,7 +5,8 @@
 Enemy::Enemy(vec2 pos) :
 	Entity(pos, true),
 	flip(false),
-	sensors{}
+	sensors{},
+	attacking(false)
 {
 	
 }
@@ -15,6 +16,13 @@ void Enemy::setFlip(bool flip) {
 }
 bool Enemy::getFlip() const {
 	return this->flip;
+}
+
+void Enemy::setAttacking(bool attacking) {
+	this->attacking = attacking;
+}
+bool Enemy::getAttacking() const {
+	return this->attacking;
 }
 
 void Enemy::loadSensors(vec2 playerPos, bool wallAhead) {

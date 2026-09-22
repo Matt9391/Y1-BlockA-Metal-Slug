@@ -21,7 +21,6 @@ public:
 private:
 	bool loadDataFromJson(const char* fileName);
 
-
 	vec2 pos;
 	vec2 tiles;
 	int tileSize;

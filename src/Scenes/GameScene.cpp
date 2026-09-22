@@ -47,6 +47,9 @@ void GameScene::update(float dt) {
 		if(free) player.getGun().freeBullet(i);
 	}
 
+	if (soldier.getAttacking() && CollisionManager::checkCollision(player.getCollider(), soldier.getCollider())) {
+		printf("HIT\n");
+	}
 
 	getRenderer().addRenderSet(player.getRenderSet());
 	getRenderer().addRenderSet(soldier.getRenderSet());
