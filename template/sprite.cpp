@@ -40,9 +40,9 @@ Sprite::~Sprite()
 {
 	delete surface;
 	delete reverseSurface;
-	for (unsigned int i = 0; i < numFrames; i++) { delete start[i]; delete reverseStart[i]; }
-	delete start;
-	delete reverseStart;
+	for (unsigned int i = 0; i < numFrames; i++) { delete[] start[i]; delete[] reverseStart[i]; }
+	delete[] start;
+	delete[] reverseStart;
 }
 
 // draw sprite to target surface

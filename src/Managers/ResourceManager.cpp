@@ -47,7 +47,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_REBELSOLDIER_FALLING] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/falling.png"), ResourceIDFrames::IDF_REBELSOLDIER_FALLING);
 	sprites[ResourceID::ID_REBELSOLDIER_COVER] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/cover.png"), ResourceIDFrames::IDF_REBELSOLDIER_COVER);
 	sprites[ResourceID::ID_REBELSOLDIER_MELEE_ATTACK] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/meleeAttack.png"), ResourceIDFrames::IDF_REBELSOLDIER_MELEE_ATTACK);
-	sprites[ResourceID::ID_REBELSOLDIER_GRANADE_ATTACK] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/meleeAttack.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_ATTACK);
+	sprites[ResourceID::ID_REBELSOLDIER_GRANADE_ATTACK] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/granadeAttack.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_ATTACK);
 
 	initalized = true;
 }
