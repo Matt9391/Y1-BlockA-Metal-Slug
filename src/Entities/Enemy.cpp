@@ -17,7 +17,7 @@ bool Enemy::getFlip() const {
 	return this->flip;
 }
 
-void Enemy::loadSensors(vec2 playerPos) {
+void Enemy::loadSensors(vec2 playerPos, bool wallAhead) {
 	//struct EnemySensor {
 	//	float distToPlayer;
 	//	bool allyDiedNearby;
@@ -28,7 +28,7 @@ void Enemy::loadSensors(vec2 playerPos) {
 	this->sensors = {
 		this->getPos().x - playerPos.x,
 		false,
-		false,
+		wallAhead,
 		false,
 		getRigidBody()->isGrounded(),
 		getAnimator().isAnimationEnded()

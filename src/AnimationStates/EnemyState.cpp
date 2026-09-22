@@ -79,8 +79,8 @@ EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet curren
         current = EnemyAnimationSet::EAS_STOP;
     }
 
-    if (playerVisible && e.getSensors().distToPlayer < ATTACKRANGE) {
-
+    if (playerVisible && e.getSensors().wallAhead && elapsedTime > duration/3.f) {
+        current = EnemyAnimationSet::EAS_COVER;
     }
 
     return current;
@@ -128,6 +128,27 @@ EnemyAnimationSet JumpForwardState::update(Enemy& e, float dt, EnemyAnimationSet
 
 	return current;
 }
+void ScaredState::enter(Enemy& e) {
+    this->duration =  1000.f;
+    this->elapsedTime = 0.f;
+}
+
+EnemyAnimationSet ScaredState::update(Enemy& e, float dt, EnemyAnimationSet current)
+{
+    if (!e.getSensors().isGrounded) {
+        e.addVelocity(vec2(0, 0.001f * dt));
+    }
+    else {
+        e.setVelocityY(0.f);
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+    if (e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+	return current;
+}
 
 void FallingState::enter(Enemy& e) {
     this->duration =  1000.f;
@@ -151,13 +172,45 @@ EnemyAnimationSet FallingState::update(Enemy& e, float dt, EnemyAnimationSet cur
 	return current;
 }
 
+void CoverState::enter(Enemy& e) {
+    this->duration = RandomFloat() * 1000.f + 1500.f;
+    this->elapsedTime = 0.f;
+}
+
+EnemyAnimationSet CoverState::update(Enemy& e, float dt, EnemyAnimationSet current)
+{
+    if (!e.getSensors().isGrounded) {
+        e.addVelocity(vec2(0, 0.001f * dt));
+    }
+    else {
+        e.setVelocityY(0.f);
+    }
+
+    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+
+
+    elapsedTime += dt;
+    if (elapsedTime > duration) {
+        current = EnemyAnimationSet::EAS_WALK;
+        e.setFlip(!e.getFlip());
+    }
+
+    if (!playerVisible) {
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+	return current;
+}
+
 
 // --- Static instances + lookup table -----------------------------------
     IdleState                idleInstance;
     WalkState                walkInstance;
     AfterRunState            afterRunInstance;
     JumpForwardState         jumpForwardInstance;
+    ScaredState              scaredInstance;
     FallingState             fallingInstance;
+    CoverState               coverInstance;
     //CrouchState              crouchInstance;
     //CrouchWalkingState       crouchWalkingInstance;
     //JumpUpState              jumpUpInstance;
@@ -178,12 +231,15 @@ EnemyAnimationSet FallingState::update(Enemy& e, float dt, EnemyAnimationSet cur
 EnemyState* getEnemyState(EnemyAnimationSet index)
 {
     static EnemyState* table[EnemyAnimationSet::EAS_COUNTS] =
+
     {
         &RebelSoldierStates::idleInstance,                // PAS_IDLE
         &RebelSoldierStates::walkInstance,                // PAS_WALK
         &RebelSoldierStates::afterRunInstance,            // PAS_AFTER_RUN_STOP
         &RebelSoldierStates::jumpForwardInstance,         // PAS_JUMP_FORWARD
+        &RebelSoldierStates::scaredInstance,             // PAS_FALLING
         &RebelSoldierStates::fallingInstance,             // PAS_FALLING
+        &RebelSoldierStates::coverInstance,               // PAS_COVER
         //&crouchInstance,              // PAS_CROUCH_IDLE
         //&crouchWalkingInstance,       // PAS_CROUCH_WALKING
         //&jumpUpInstance,              // PAS_JUMP_UP

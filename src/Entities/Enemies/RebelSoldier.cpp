@@ -83,6 +83,16 @@ void RebelSoldier::loadGFX() {
 			vec2(0, 0))
 	);
 
+	getAnimationSets()[EnemyAnimationSet::EAS_COVER] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_REBELSOLDIER_COVER,
+			ResourceIDFrames::IDF_REBELSOLDIER_COVER,
+			100,
+			vec2(-2, -8),
+			vec2(-2, -8))
+	);
+
 }
 
 void RebelSoldier::update(float dt) {

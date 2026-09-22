@@ -25,7 +25,10 @@ void GameScene::update(float dt) {
 	getRenderer().clearColliders();
 
 	player.update(dt);
-	soldier.loadSensors(player.getPos());
+	soldier.loadSensors(
+		player.getPos(),
+		CollisionManager::checkMapCollision(soldier.getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), 0)
+	);
 	soldier.update(dt);
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	CollisionManager::resolveMapCollision(soldier, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));

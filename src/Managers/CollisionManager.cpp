@@ -222,4 +222,76 @@ namespace CollisionManager {
 		}
 		return false;
 	}
+
+	bool checkMapCollision(Collider& collider, MapLayer& layer, int axe /* 0 = x, 1 = y, -1 = xy*/) {
+		vec2 startPos = vec2(static_cast<int>((collider.pos.x + collider.offset.x) / layer.tileSize),
+			static_cast<int>((collider.pos.y + collider.offset.y) / layer.tileSize));
+
+		vec2 endPos = vec2(static_cast<int>((collider.pos.x + collider.offset.x + collider.size.x) / layer.tileSize),
+			static_cast<int>((collider.pos.y + collider.offset.y + collider.size.y) / layer.tileSize)); //bottom right
+
+		bool collided = false;
+
+		for (int i = startPos.y; i <= endPos.y; i++) {
+			if (i < 0 || i >= layer.tiles.y)
+				continue;
+			for (int j = startPos.x; j <= endPos.x; j++) {
+				if (j < 0 || j >= layer.tiles.x)
+					continue;
+
+				const vec2 colliderPos = (collider.pos + collider.offset); //recompile it everytime because it changes but since its not a reference it need to be recompiled
+				
+				int tileId = layer.data[i * static_cast<int>(layer.tiles.x) + j] - layer.firstgid;
+				if (tileId == -layer.firstgid) continue;
+
+				switch (tileId)
+				{
+					case 2:
+					{
+						int tileX = j * layer.tileSize;
+						int tileY = i * layer.tileSize;
+
+						float leftTile = tileX;
+						float rightTile = tileX + layer.tileSize;
+						float topTile = tileY;
+						float bottomTile = tileY + layer.tileSize;
+
+						float overlapX = fminf(rightTile, colliderPos.x + collider.size.x) - fmaxf(leftTile, colliderPos.x);
+						float overlapY = fminf(bottomTile, colliderPos.y + collider.size.y) - fmaxf(topTile, colliderPos.y);
+
+						vec2 eCenter = vec2(colliderPos.x + collider.size.x / 2, colliderPos.y + collider.size.y / 2);
+						vec2 tCenter = vec2(tileX + layer.tileSize / 2, tileY + layer.tileSize / 2); //tile Center
+
+						if (overlapX > -0.01f && overlapY > -0.01f) {
+
+							if (axe == -1) {
+								collided = true;
+							}
+							else {
+
+								if (overlapX < overlapY) {
+									if (axe == 0) {
+										collided = true;
+									}
+								}
+								else {
+									if (axe == 1) {
+										collided = true;
+									}
+								}
+
+							}
+						}
+					}
+					break;
+
+					default:
+						break;
+				}
+
+			}
+		}
+
+		return collided;
+	}
 } 

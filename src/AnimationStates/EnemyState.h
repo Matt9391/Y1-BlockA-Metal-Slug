@@ -14,7 +14,7 @@ namespace RebelSoldierStates {
         float duration = 0.f;
         float elapsedTime = 0.f;
         static const int ATTACKRANGE = 50;
-        static const int VIEWRANGE = 0;
+        static const int VIEWRANGE = 160;
         static const int MAXCHANCE = 100;
     };
 
@@ -52,7 +52,21 @@ namespace RebelSoldierStates {
         EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
     };
     
+    class ScaredState final : public EnemyState
+    {
+    public:
+        void enter(Enemy& e) override;
+        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+    };
+    
     class FallingState final : public EnemyState
+    {
+    public:
+        void enter(Enemy& e) override;
+        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+    };
+    
+    class CoverState final : public EnemyState
     {
     public:
         void enter(Enemy& e) override;

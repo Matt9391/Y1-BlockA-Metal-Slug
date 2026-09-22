@@ -18,7 +18,7 @@ public:
 	void setFlip(bool flip);
 	bool getFlip() const;
 
-	void loadSensors(vec2 playerPos);
+	void loadSensors(vec2 playerPos, bool wallAhead);
 
 	const EnemySensor& getSensors() const;
 
