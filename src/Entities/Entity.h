@@ -29,8 +29,15 @@ public:
 
 	void setVelocity(vec2 v) ;
 	vec2 getVelocity() const;
+
+	void setVelocityX(float v);
+	void setVelocityY(float v);
+	void addVelocity(vec2 v);
 	virtual void update(float dt);
 
+
+	vec2 getDir() const;
+	void setDir(vec2 dir);
 protected:
 	Animator& getAnimator();
 	AnimationSet*& getAnimationSets();
@@ -40,12 +47,9 @@ protected:
 	void setColliderOffset(vec2 offset);
 	int getCurrentASIndex() const;
 	void setCurrentASIndex(int nextASIndex);
-
-	vec2 getDir() const;
 	vec2 getLastDir() const;
 
 	
-	void setDir(vec2 dir);
 	void setLastDir(vec2 dir);
 
 	RigidBody* getRigidBody() const;

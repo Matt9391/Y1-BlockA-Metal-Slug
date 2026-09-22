@@ -13,7 +13,7 @@ RebelSoldier::RebelSoldier(vec2 pos) :
 	getAnimationSets() = new AnimationSet[EnemyAnimationSet::EAS_COUNTS];
 	loadGFX();
 	setCurrentASIndex(EnemyAnimationSet::EAS_IDLE);
-	state = EnemyStates::getEnemyState(EnemyAnimationSet::EAS_IDLE);
+	state = RebelSoldierStates::getEnemyState(EnemyAnimationSet::EAS_IDLE);
 	state->enter(*this);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 }
@@ -62,6 +62,16 @@ void RebelSoldier::loadGFX() {
 			vec2(0, 0),
 			vec2(0, 0))
 	);
+	
+	getAnimationSets()[EnemyAnimationSet::EAS_SCARED] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_REBELSOLDIER_SCARED,
+			ResourceIDFrames::IDF_REBELSOLDIER_SCARED,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
 
 }
 
@@ -71,22 +81,23 @@ void RebelSoldier::update(float dt) {
 	EnemyAnimationSet nextState = state->update(*this, dt, static_cast<EnemyAnimationSet>(getCurrentASIndex()));
 	if (nextState != getCurrentASIndex()) {
 		setCurrentASIndex(nextState);
-		state = EnemyStates::getEnemyState(static_cast<EnemyAnimationSet>(getCurrentASIndex()));
+		state = RebelSoldierStates::getEnemyState(static_cast<EnemyAnimationSet>(getCurrentASIndex()));
 		state->enter(*this);
 
 	}
 
+
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], getFlip());
 
-	const bool isGrounded = getRigidBody()->isGrounded();
-	getRigidBody()->setVelocityX(0.1f * getDir().x);
+	//const bool isGrounded = getRigidBody()->isGrounded();
+	//getRigidBody()->setVelocityX(0.1f * getDir().x);
 
-	if (!isGrounded) {
-		getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
-	}
-	else {
-		getRigidBody()->setVelocityY(0);
-	}
+	//if (!isGrounded) {
+	//	getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
+	//}
+	//else {
+	//	getRigidBody()->setVelocityY(0);
+	//}
 
 
 	this->addToPos(getRigidBody()->getVelocity() * dt);

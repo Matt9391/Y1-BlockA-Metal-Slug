@@ -14,6 +14,6 @@ public:
 	void update(float dt) override;
 
 private:
-	EnemyStates::EnemyState* state;
+	RebelSoldierStates::EnemyState* state;
 	
 };

@@ -23,6 +23,7 @@ bool Animator::setAnimation(AnimationSet* newAnimationSet, bool flipped,  bool r
 		for (int i = 0; i < animationSet->layerCount; i++) {
 			animationSet->layers[i].currentFrame = 0;
 		}
+		animationEnded = false;
 
 		result = true;
 	}
@@ -35,15 +36,15 @@ bool Animator::setAnimation(AnimationSet* newAnimationSet, bool flipped,  bool r
 
 			this->animationSet = newAnimationSet;
 			
+			animationEnded = false;
 
 			for (int i = 0; i < animationSet->layerCount; i++) {
 				animationSet->layers[i].currentFrame = 0;
-				result = true;
 			}
+			result = true;
 		}
 	}
 	this->animationSet->flipped = flipped;
-	animationEnded = false;
 
 	return result;
 }

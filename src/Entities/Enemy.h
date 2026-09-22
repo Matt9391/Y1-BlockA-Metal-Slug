@@ -7,6 +7,8 @@ struct EnemySensor {
 	bool allyDiedNearby;
 	bool wallAhead;
 	bool platformAbove;
+	bool isGrounded;
+	bool animationEnded;
 };
 
 class Enemy : public Entity {

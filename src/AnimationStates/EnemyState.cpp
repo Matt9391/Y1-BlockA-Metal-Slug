@@ -4,37 +4,96 @@
 #include <EnemyAnimationSet.h>
 
 
-namespace EnemyStates{
+namespace RebelSoldierStates{
 
 void IdleState::enter(Enemy& e) {
-    this->duration = RandomFloat() * 800.f + 400.f;
+    this->duration = RandomFloat() * 3000.f + 400.f;
     this->elapsedTime = 0.f;
+    e.setVelocityX(0.f);
 }
 
 EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    if (!e.getSensors().isGrounded) {
+        e.addVelocity(vec2(0, 0.001f * dt));
+    }
+    else {
+        e.setVelocityY(0.f);
+    }
+
     elapsedTime += dt;
-    if (RandomFloat() * 100 > 0.05f) {
+    if (int(elapsedTime) % 300 == 0 && Rand(100) > 75) {
         e.setFlip(!e.getFlip());
     }
     
-    if (elapsedTime > duration || e.getSensors().playerVisible) {
+    if (elapsedTime > duration  /* ||e.getSensors().playerVisible*/) {
         current = EnemyAnimationSet::EAS_WALK;
+    }
+    if (!e.getSensors().playerVisible && e.getSensors().allyDiedNearby) {
+        current = EnemyAnimationSet::EAS_SCARED;
     }
 
 	return current;
 }
 
+void WalkState::enter(Enemy& e) {
+    this->duration = RandomFloat() * 3000.f + 1500.f;
+    this->elapsedTime = 0.f;
+    e.setDir(vec2(e.getFlip() ? 1 : -1, 0));
+
+}
+
 EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet current) 
 {
-    //if (e.getVelocity().x < 0.0001f) {
-    //    current = EnemyAnimationSet::EAS_IDLE;
-    //}
+    elapsedTime += dt;
+    if (int(elapsedTime) % 300 == 0 && Rand(100) > 95) {
+        e.setFlip(!e.getFlip());
+        e.setDir(vec2(e.getFlip() ? 1 : -1, e.getDir().y));
+    }
+    
+    printf("e.getVelocity().x: %.2f ground: %d\n", e.getVelocity().x, e.getSensors().isGrounded);
+    e.setVelocityX(0.1f * e.getDir().x);
+
+    if (!e.getSensors().isGrounded) {
+        e.addVelocity(vec2(0, 0.001f * dt));
+    }
+    else {
+        e.setVelocityY(0.f);
+        //if (e.getSensors().) {
+            //getRigidBody()->addVelocity(vec2(0, -0.37f));
+            //setGrounded(false);
+        //}
+    }
+
+    if (elapsedTime > duration) {
+        current = EnemyAnimationSet::EAS_STOP;
+    }
+
+    if (e.getSensors().playerVisible && e.getSensors().distToPlayer < ATTACKRANGE) {
+
+    }
+
     return current;
+}
+
+void AfterRunState::enter(Enemy& e) {
+    this->duration =  1000.f;
+    this->elapsedTime = 0.f;
 }
 
 EnemyAnimationSet AfterRunState::update(Enemy& e, float dt, EnemyAnimationSet current) 
 {
+    if (!e.getSensors().isGrounded) {
+        e.addVelocity(vec2(0, 0.001f * dt));
+    }
+    else {
+        e.setVelocityY(0.f);
+    }
+
+    if (e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
 	return current;
 }
 
@@ -64,9 +123,9 @@ EnemyState* getEnemyState(EnemyAnimationSet index)
 {
     static EnemyState* table[EnemyAnimationSet::EAS_COUNTS] =
     {
-        &EnemyStates::idleInstance,                // PAS_IDLE
-        &EnemyStates::walkInstance,                // PAS_WALK
-        &EnemyStates::afterRunInstance            // PAS_AFTER_RUN_STOP
+        &RebelSoldierStates::idleInstance,                // PAS_IDLE
+        &RebelSoldierStates::walkInstance,                // PAS_WALK
+        &RebelSoldierStates::afterRunInstance            // PAS_AFTER_RUN_STOP
         //&crouchInstance,              // PAS_CROUCH_IDLE
         //&crouchWalkingInstance,       // PAS_CROUCH_WALKING
         //&jumpUpInstance,              // PAS_JUMP_UP

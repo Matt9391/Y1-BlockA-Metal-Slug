@@ -41,6 +41,14 @@ void Entity::setVelocity(vec2 v) {
 	this->getRigidBody()->setVelocity(v);
 }
 
+
+void Entity::addVelocity(vec2 v) {
+	this->getRigidBody()->addVelocity(v);
+}
+
+void Entity::setVelocityX(float v) { rigidBody->setVelocityX(v); }
+void Entity::setVelocityY(float v) { rigidBody->setVelocityY(v); }
+
 Animator& Entity::getAnimator(){
 	return this->animator;
 }

@@ -3,7 +3,7 @@
 class Enemy;
 enum EnemyAnimationSet;
 
-namespace EnemyStates {
+namespace RebelSoldierStates {
     class EnemyState
     {
     public:
@@ -13,6 +13,7 @@ namespace EnemyStates {
     protected:
         float duration = 0.f;
         float elapsedTime = 0.f;
+        static const int ATTACKRANGE = 50;
     };
 
 
@@ -27,12 +28,14 @@ namespace EnemyStates {
     class WalkState final : public EnemyState
     {
     public:
+        void enter(Enemy& e) override;
         EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
     };
 
     class AfterRunState final : public EnemyState
     {
     public:
+        void enter(Enemy& e) override;
         EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
     };
 

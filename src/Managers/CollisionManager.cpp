@@ -138,7 +138,7 @@ namespace CollisionManager {
 
 								if (sampleX >= tileX && sampleX <= tileX + layer.tileSize) { //check if the sample is in this tile
 									float fraction = myMath::mapValue(sampleX, tileX, tileX + layer.tileSize, min, max);
-
+									printf("tua madre e una zzoocla\n");
 									e.setPos(vec2(e.getPos().x, bottomTile - layer.tileSize * fraction - collider.size.y - collider.offset.y));
 									grounded = true;
 								}

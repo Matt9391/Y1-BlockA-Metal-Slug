@@ -1,5 +1,6 @@
 #include "precomp.h"
 #include "Enemy.h"
+#include <RigidBody.h>
 
 Enemy::Enemy(vec2 pos) :
 	Entity(pos, true),
@@ -24,12 +25,15 @@ void Enemy::loadSensors(vec2 playerPos) {
 	//	bool wallAhead;
 	//	bool platformAbove;
 	//};
+
 	this->sensors = {
 		abs(this->getPos().x - playerPos.x) < 150,
 		abs(this->getPos().x - playerPos.x),
 		false,
 		false,
-		false
+		false,
+		getRigidBody()->isGrounded(),
+		getAnimator().isAnimationEnded()
 	};
 }
 

@@ -25,8 +25,10 @@ void GameScene::update(float dt) {
 	getRenderer().clearColliders();
 
 	player.update(dt);
+	soldier.loadSensors(player.getPos());
 	soldier.update(dt);
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
+	CollisionManager::resolveMapCollision(soldier, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);
@@ -43,7 +45,6 @@ void GameScene::update(float dt) {
 	}
 
 
-	CollisionManager::resolveMapCollision(soldier, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	getRenderer().addRenderSet(player.getRenderSet());
 	getRenderer().addRenderSet(soldier.getRenderSet());
 	player.getGun().addRenderSets(getRenderer());
