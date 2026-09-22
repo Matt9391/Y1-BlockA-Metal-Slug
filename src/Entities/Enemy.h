@@ -2,7 +2,6 @@
 #include <Entity.h>
 
 struct EnemySensor {
-	bool playerVisible;
 	float distToPlayer;
 	bool allyDiedNearby;
 	bool wallAhead;

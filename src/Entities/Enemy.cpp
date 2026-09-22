@@ -19,7 +19,6 @@ bool Enemy::getFlip() const {
 
 void Enemy::loadSensors(vec2 playerPos) {
 	//struct EnemySensor {
-	//	bool playerVisible;
 	//	float distToPlayer;
 	//	bool allyDiedNearby;
 	//	bool wallAhead;
@@ -27,8 +26,7 @@ void Enemy::loadSensors(vec2 playerPos) {
 	//};
 
 	this->sensors = {
-		abs(this->getPos().x - playerPos.x) < 150,
-		abs(this->getPos().x - playerPos.x),
+		this->getPos().x - playerPos.x,
 		false,
 		false,
 		false,

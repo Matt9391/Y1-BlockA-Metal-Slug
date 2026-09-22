@@ -4,7 +4,8 @@ enum EnemyAnimationSet {
 	EAS_IDLE,
 	EAS_WALK,
 	EAS_STOP,
-	EAS_JUMP,
+	EAS_JUMP_FORWARD,
 	EAS_SCARED,
+	EAS_FALLING,
 	EAS_COUNTS
 };

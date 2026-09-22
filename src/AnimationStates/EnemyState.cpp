@@ -14,6 +14,9 @@ void IdleState::enter(Enemy& e) {
 
 EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+
+
     if (!e.getSensors().isGrounded) {
         e.addVelocity(vec2(0, 0.001f * dt));
     }
@@ -22,14 +25,16 @@ EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet curren
     }
 
     elapsedTime += dt;
-    if (int(elapsedTime) % 300 == 0 && Rand(100) > 75) {
+    if (int(elapsedTime) % 300 == 0 && Rand(100) > MAXCHANCE - FLIPCHANCE) {
         e.setFlip(!e.getFlip());
     }
+
+   
     
-    if (elapsedTime > duration  /* ||e.getSensors().playerVisible*/) {
+    if (elapsedTime > duration  || playerVisible) {
         current = EnemyAnimationSet::EAS_WALK;
     }
-    if (!e.getSensors().playerVisible && e.getSensors().allyDiedNearby) {
+    if (!playerVisible && e.getSensors().allyDiedNearby) {
         current = EnemyAnimationSet::EAS_SCARED;
     }
 
@@ -45,13 +50,17 @@ void WalkState::enter(Enemy& e) {
 
 EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet current) 
 {
+    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+
+
     elapsedTime += dt;
-    if (int(elapsedTime) % 300 == 0 && Rand(100) > 95) {
+    if (int(elapsedTime) % 300 == 0 && Rand(100) > MAXCHANCE - FLIPCHANCE) {
         e.setFlip(!e.getFlip());
         e.setDir(vec2(e.getFlip() ? 1 : -1, e.getDir().y));
     }
     
-    printf("e.getVelocity().x: %.2f ground: %d\n", e.getVelocity().x, e.getSensors().isGrounded);
+    
+
     e.setVelocityX(0.1f * e.getDir().x);
 
     if (!e.getSensors().isGrounded) {
@@ -59,17 +68,18 @@ EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet curren
     }
     else {
         e.setVelocityY(0.f);
-        //if (e.getSensors().) {
-            //getRigidBody()->addVelocity(vec2(0, -0.37f));
-            //setGrounded(false);
-        //}
+        if (int(elapsedTime) % 350 == 0 && Rand(100) > MAXCHANCE - JUMPCHANCE) {
+            e.addVelocity(vec2(0, -0.37f));
+            e.setGrounded(false);
+            current = EnemyAnimationSet::EAS_JUMP_FORWARD;
+        }
     }
 
     if (elapsedTime > duration) {
         current = EnemyAnimationSet::EAS_STOP;
     }
 
-    if (e.getSensors().playerVisible && e.getSensors().distToPlayer < ATTACKRANGE) {
+    if (playerVisible && e.getSensors().distToPlayer < ATTACKRANGE) {
 
     }
 
@@ -97,11 +107,57 @@ EnemyAnimationSet AfterRunState::update(Enemy& e, float dt, EnemyAnimationSet cu
 	return current;
 }
 
+void JumpForwardState::enter(Enemy& e) {
+    this->duration =  1000.f;
+    this->elapsedTime = 0.f;
+}
+
+EnemyAnimationSet JumpForwardState::update(Enemy& e, float dt, EnemyAnimationSet current)
+{
+    if (!e.getSensors().isGrounded) {
+        e.addVelocity(vec2(0, 0.001f * dt));
+    }
+    else {
+        e.setVelocityY(0.f);
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+    if (e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_FALLING;
+    }
+
+	return current;
+}
+
+void FallingState::enter(Enemy& e) {
+    this->duration =  1000.f;
+    this->elapsedTime = 0.f;
+}
+
+EnemyAnimationSet FallingState::update(Enemy& e, float dt, EnemyAnimationSet current)
+{
+    if (!e.getSensors().isGrounded) {
+        e.addVelocity(vec2(0, 0.001f * dt));
+    }
+    else {
+        e.setVelocityY(0.f);
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+    if (e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+	return current;
+}
+
 
 // --- Static instances + lookup table -----------------------------------
     IdleState                idleInstance;
     WalkState                walkInstance;
     AfterRunState            afterRunInstance;
+    JumpForwardState         jumpForwardInstance;
+    FallingState             fallingInstance;
     //CrouchState              crouchInstance;
     //CrouchWalkingState       crouchWalkingInstance;
     //JumpUpState              jumpUpInstance;
@@ -125,12 +181,12 @@ EnemyState* getEnemyState(EnemyAnimationSet index)
     {
         &RebelSoldierStates::idleInstance,                // PAS_IDLE
         &RebelSoldierStates::walkInstance,                // PAS_WALK
-        &RebelSoldierStates::afterRunInstance            // PAS_AFTER_RUN_STOP
+        &RebelSoldierStates::afterRunInstance,            // PAS_AFTER_RUN_STOP
+        &RebelSoldierStates::jumpForwardInstance,         // PAS_JUMP_FORWARD
+        &RebelSoldierStates::fallingInstance,             // PAS_FALLING
         //&crouchInstance,              // PAS_CROUCH_IDLE
         //&crouchWalkingInstance,       // PAS_CROUCH_WALKING
         //&jumpUpInstance,              // PAS_JUMP_UP
-        //&jumpForwardInstance,         // PAS_JUMP_FORWARD
-        //&fallingInstance,             // PAS_FALLING
         //&fallingForwardInstance,      // PAS_FALLING_FORWARD
         //&shootingIdleInstance,        // PAS_SHOOTING_IDLE
         //&shootingIdleUpInstance,      // PAS_SHOOTING_IDLE_UP

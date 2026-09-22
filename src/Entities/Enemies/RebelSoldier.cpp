@@ -53,11 +53,11 @@ void RebelSoldier::loadGFX() {
 			vec2(0, 0))
 	);
 
-	getAnimationSets()[EnemyAnimationSet::EAS_JUMP] = AnimationSet(
+	getAnimationSets()[EnemyAnimationSet::EAS_JUMP_FORWARD] = AnimationSet(
 		1,
 		AnimationLayer(
-			ResourceID::ID_REBELSOLDIER_JUMP_UP,
-			ResourceIDFrames::IDF_REBELSOLDIER_JUMP_UP,
+			ResourceID::ID_REBELSOLDIER_JUMP_FORWARD,
+			ResourceIDFrames::IDF_REBELSOLDIER_JUMP_FORWARD,
 			100,
 			vec2(0, 0),
 			vec2(0, 0))
@@ -68,6 +68,16 @@ void RebelSoldier::loadGFX() {
 		AnimationLayer(
 			ResourceID::ID_REBELSOLDIER_SCARED,
 			ResourceIDFrames::IDF_REBELSOLDIER_SCARED,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
+
+	getAnimationSets()[EnemyAnimationSet::EAS_FALLING] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_REBELSOLDIER_FALLING,
+			ResourceIDFrames::IDF_REBELSOLDIER_FALLING,
 			100,
 			vec2(0, 0),
 			vec2(0, 0))
