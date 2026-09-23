@@ -15,7 +15,8 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	Entity(pos, true),
 	inputManager(inputManager),
 	state(nullptr),
-	gun(this->getPos(), vec2(0, 0), GunPresets::getGun(GunType::PISTOL)) //I need to add gunData templates
+	gun(this->getPos(), vec2(0, 0), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
+	shooting(false)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -307,6 +308,10 @@ void Player::update(float dt) {
 
 	if (pInput.isShooting) {
 		gun.shoot();
+		setShooting(true);
+	}
+	else {
+		setShooting(false);
 	}
 
 	//set gun shooting direction
@@ -480,3 +485,10 @@ void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) 
 	}
 }
 
+void Player::setShooting(bool shooting) {
+	this->shooting = shooting;
+}
+
+bool Player::isShooting() const{
+	return this->shooting;
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "CustomScene.h"
 #include <Player.h>
+#include <Pow.h>
 #include <Enemies/RebelSoldier.h>
 #include <Map.h>
 
@@ -19,6 +20,7 @@ public:
 private:
 	Player player;
 	RebelSoldier soldier;
+	Pow pow;
 	Map map;
 };
 

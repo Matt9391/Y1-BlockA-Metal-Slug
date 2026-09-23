@@ -118,6 +118,12 @@
     <ClCompile Include="src\AnimationStates\EnemyState.cpp">
       <Filter>src\AnimationStates</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Pow.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimationStates\PowState.cpp">
+      <Filter>src\AnimationStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -253,6 +259,15 @@
     </ClInclude>
     <ClInclude Include="src\DataStructures\EnemyAnimationSet.h">
       <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Pow.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\PowAnimationSet.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationStates\PowState.h">
+      <Filter>src\AnimationStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

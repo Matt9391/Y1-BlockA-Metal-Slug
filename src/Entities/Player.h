@@ -19,15 +19,20 @@ public:
 
 	void update(float dt) override;
 
+	bool isShooting() const;
+
 	Gun& getGun();
 	int getGunBullets();
 
 private:
+	void setShooting(bool shooting);
 	PlayerInput getPlayerInput();
 	void handleMovement(float dt, const PlayerInput& pInput);
 	void handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded);
 	const InputManager& inputManager; //Const so it can only call const methods
 	Gun gun;
 	PlayerState* state;
+
+	bool shooting;
 };
 

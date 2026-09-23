@@ -2,7 +2,6 @@
 #include <Enemy.h>
 #include <EnemyState.h>
 
-class EnemyState;
 
 class RebelSoldier : public Enemy {
 public:

@@ -35,7 +35,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_PLAYER_SHOOTING_UP_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/shootingBodyUp.png"), ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY);
 	sprites[ResourceID::ID_PLAYER_SHOOTING_CROUCH_F]= new Sprite(new Surface("assets/playerAnimation/Pistol/shootingBodyCrouch.png"), ResourceIDFrames::IDF_PLAYER_SHOOTING_CROUCH_F);
 	sprites[ResourceID::ID_PLAYER_MELEE_ATTACK_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/meleeAttack1Body.png"), ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY);
-	sprites[ResourceID::ID_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/Pistol/fallingLegs.png"), ResourceIDFrames::IDF_PLAYER_FALLING_LEGS);
+	sprites[ResourceID::ID_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/bullet.png"), ResourceIDFrames::IDF_PLAYER_BULLLET_PISTOL);
 	sprites[ResourceID::ID_MAP_TILESET] = new Sprite(new Surface("assets/bg.png"), ResourceIDFrames::IDF_PLAYER_IDLE_LEGS);
 	sprites[ResourceID::ID_COLLISION_TILESET] = new Sprite(new Surface("assets/collisionTile.png"), ResourceIDFrames::IDF_COLLISION_TILESET);
 	sprites[ResourceID::ID_REBELSOLDIER_IDLE] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/idle.png"), ResourceIDFrames::IDF_REBELSOLDIER_IDLE);
@@ -48,6 +48,12 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_REBELSOLDIER_COVER] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/cover.png"), ResourceIDFrames::IDF_REBELSOLDIER_COVER);
 	sprites[ResourceID::ID_REBELSOLDIER_MELEE_ATTACK] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/meleeAttack.png"), ResourceIDFrames::IDF_REBELSOLDIER_MELEE_ATTACK);
 	sprites[ResourceID::ID_REBELSOLDIER_GRANADE_ATTACK] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/granadeAttack.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_ATTACK);
+	sprites[ResourceID::ID_POW_IDLE] = new Sprite(new Surface("assets/POWsAnimation/idle.png"), ResourceIDFrames::IDF_POW_IDLE);
+	sprites[ResourceID::ID_POW_RELEASING] = new Sprite(new Surface("assets/POWsAnimation/releasing.png"), ResourceIDFrames::IDF_POW_RELEASING);
+	sprites[ResourceID::ID_POW_WALK_WAIT] = new Sprite(new Surface("assets/POWsAnimation/walkWait.png"), ResourceIDFrames::IDF_POW_WALK_WAIT);
+	sprites[ResourceID::ID_POW_PANTS] = new Sprite(new Surface("assets/POWsAnimation/pants.png"), ResourceIDFrames::IDF_POW_PANTS);
+	sprites[ResourceID::ID_POW_BYE] = new Sprite(new Surface("assets/POWsAnimation/bye.png"), ResourceIDFrames::IDF_POW_BYE);
+	sprites[ResourceID::ID_POW_RUN_AWAY] = new Sprite(new Surface("assets/POWsAnimation/runAway.png"), ResourceIDFrames::IDF_POW_RUN_AWAY);
 
 	initalized = true;
 }
