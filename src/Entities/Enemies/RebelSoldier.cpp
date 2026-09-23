@@ -3,11 +3,14 @@
 #include <RigidBody.h>
 #include <EnemyAnimationSet.h>
 #include <EnemyState.h>
+#include <Renderer.h>
 #include <ResourceIDFrames.h>
 
 RebelSoldier::RebelSoldier(vec2 pos) :
 	Enemy(pos),
-	state(nullptr)
+	state(nullptr),
+	granades{},
+	granadesCount(0)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[EnemyAnimationSet::EAS_COUNTS];
@@ -23,6 +26,9 @@ RebelSoldier::RebelSoldier(vec2 pos) :
 
 RebelSoldier::~RebelSoldier() {
 	delete[] getAnimationSets();
+	for (int i = 0; i < 10; i++) {
+		delete granades[i];
+	}
 }
 
 void RebelSoldier::loadGFX() {
@@ -106,6 +112,16 @@ void RebelSoldier::loadGFX() {
 			vec2(0, 0))
 	);
 
+	getAnimationSets()[EnemyAnimationSet::EAS_GRANADE_ATTACK] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_REBELSOLDIER_GRANADE_ATTACK,
+			ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_ATTACK,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
+
 }
 
 void RebelSoldier::update(float dt) {
@@ -134,5 +150,41 @@ void RebelSoldier::update(float dt) {
 
 	this->addToPos(getRigidBody()->getVelocity() * dt);
 
+	for (int i = 0; i < 10; i++) {
+		if (granades[i] == nullptr) continue;
+		granades[i]->update(dt);
+	}
 }
 
+
+bool RebelSoldier::throwGranade(vec2 dir) {
+	int bIndex = -1;
+	for (int i = 0; i < 10; i++) {
+		if (granades[i] == nullptr) {
+			bIndex = i;
+			break;
+		}
+	}
+
+	if (bIndex == -1) return false;
+
+	granades[bIndex] = new Granade(this->getPos(), false, dir);
+	granadesCount++;
+
+	return true;
+}
+
+void RebelSoldier::addRenderSets(Renderer& renderer) {
+	for (int i = 0; i < 10; i++) {
+		if (granades[i] == nullptr) continue;
+		renderer.addRenderSet(granades[i]->getRenderSet());
+	}
+}
+
+void RebelSoldier::freeGranade(int i) {
+	if (granades[i]) {
+		delete granades[i];
+		granades[i] = nullptr;
+		granadesCount--;
+	}
+}

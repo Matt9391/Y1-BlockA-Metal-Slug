@@ -3,6 +3,7 @@
 #include <Enemy.h>
 #include <EnemyAnimationSet.h>
 #include <RigidBody.h>
+#include <Enemies/RebelSoldier.h>
 
 
 namespace RebelSoldierStates{
@@ -79,6 +80,9 @@ EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet curren
         current = EnemyAnimationSet::EAS_COVER;
     }
 
+    if (playerVisible && abs(e.getSensors().distToPlayer) > MELEERANGE && abs(e.getSensors().distToPlayer) < GRANADERANGE) {
+        current = EnemyAnimationSet::EAS_GRANADE_ATTACK;
+    }
     if (playerVisible && abs(e.getSensors().distToPlayer) < MELEERANGE) {
         current = EnemyAnimationSet::EAS_MELEE_ATTACK;
     }
@@ -223,14 +227,13 @@ void GrandadeAttackState::enter(Enemy& e) {
 
 EnemyAnimationSet GrandadeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
-
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
 
     elapsedTime += dt;
     if (!thrown && elapsedTime > MSTRIGGER) {
         thrown = true;
-        //e.throwGranade();
+        static_cast<RebelSoldier&>(e).throwGranade(vec2(e.getSensors().distToPlayer < 0 ? 1 : -1, 0));
     }
     
     if (!playerVisible && e.getSensors().animationEnded) {

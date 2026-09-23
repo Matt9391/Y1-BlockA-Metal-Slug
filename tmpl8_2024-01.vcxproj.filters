@@ -124,6 +124,9 @@
     <ClCompile Include="src\AnimationStates\PowState.cpp">
       <Filter>src\AnimationStates</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Granade.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="src\AnimationStates\PowState.h">
       <Filter>src\AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Granade.h">
+      <Filter>src\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

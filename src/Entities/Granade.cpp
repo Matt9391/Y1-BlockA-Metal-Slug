@@ -8,7 +8,7 @@ Granade::Granade(vec2 pos, bool needsRigidBody, vec2 dir) :
 	startPos(pos),
 	duration(800.f), //ms
 	elapsedTime(0.f),
-	peakHeight(150.f)
+	peakHeight(50.f)
 {
 	setCollider(vec2(5, 5), vec2(0, 0));
 	getAnimationSets() = new AnimationSet[1];

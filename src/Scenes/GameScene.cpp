@@ -72,6 +72,7 @@ void GameScene::update(float dt) {
 	getRenderer().addRenderSet(pow.getRenderSet());
 	getRenderer().addRenderSet(gr.getRenderSet());
 	player.getGun().addRenderSets(getRenderer());
+	soldier.addRenderSets(getRenderer());
 	//getRenderer().addRenderSet(player.getGunRenderSet(), player.getGunBullets());
 
 	getRenderer().addCollider(player.getCollider());
