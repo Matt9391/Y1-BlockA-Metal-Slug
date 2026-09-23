@@ -9,5 +9,6 @@ enum EnemyAnimationSet {
 	EAS_FALLING,
 	EAS_COVER,
 	EAS_MELEE_ATTACK,
+	EAS_GRANADE_ATTACK,
 	EAS_COUNTS
 };

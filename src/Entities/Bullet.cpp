@@ -1,6 +1,7 @@
 #include "precomp.h"
 #include "Bullet.h"
 #include <ResourceIDFrames.h>
+#include <RigidBody.h>
 
 Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir) :
 	Entity(pos,needsRigidBody)
@@ -11,6 +12,7 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir) :
 	setCurrentASIndex(0);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 	setDir(dir);
+	getRigidBody()->setSpeed(0.5f);
 }
 
 Bullet::~Bullet() {
@@ -31,5 +33,5 @@ void Bullet::loadGFX() {
 void Bullet::update(float dt) {
 	getAnimator().playAnimation(dt);
 
-	this->addToPos(getDir() * dt * 0.5);
+	this->addToPos(getDir() * dt * getRigidBody()->getSpeed());
 }

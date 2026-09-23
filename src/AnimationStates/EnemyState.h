@@ -87,6 +87,16 @@ namespace RebelSoldierStates {
     private:
         static const int MSTRIGGER = 500;
     };
+    
+    class GrandadeAttackState final : public EnemyState
+    {
+    public:
+        void enter(Enemy& e) override;
+        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+    private:
+        static const int MSTRIGGER = 500;
+        bool thrown;
+    };
 
     EnemyState* getEnemyState(EnemyAnimationSet index);
 

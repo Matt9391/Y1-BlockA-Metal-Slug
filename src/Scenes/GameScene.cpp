@@ -11,7 +11,8 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 	CustomScene(screen, renderer, inputManager), //inheritance
 	player(vec2(200, 50), getInputManager()),
 	soldier(vec2(300, 50)),
-	pow(vec2(900, 50))
+	pow(vec2(900, 50)),
+	gr(vec2(200, 100),false, vec2(-1,0))
 	{
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
 	}
@@ -42,6 +43,8 @@ void GameScene::update(float dt) {
 	}
 
 	pow.update(dt);
+	
+	gr.update(dt);
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	CollisionManager::resolveMapCollision(soldier, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	CollisionManager::resolveMapCollision(pow, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
@@ -67,12 +70,14 @@ void GameScene::update(float dt) {
 	getRenderer().addRenderSet(player.getRenderSet());
 	getRenderer().addRenderSet(soldier.getRenderSet());
 	getRenderer().addRenderSet(pow.getRenderSet());
+	getRenderer().addRenderSet(gr.getRenderSet());
 	player.getGun().addRenderSets(getRenderer());
 	//getRenderer().addRenderSet(player.getGunRenderSet(), player.getGunBullets());
 
 	getRenderer().addCollider(player.getCollider());
 	getRenderer().addCollider(soldier.getCollider());
 	getRenderer().addCollider(pow.getCollider());
+	getRenderer().addCollider(gr.getCollider());
 	getCamera().follow(player.getPos());
 
 };

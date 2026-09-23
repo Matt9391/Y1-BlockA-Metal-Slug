@@ -215,6 +215,36 @@ EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet
 	return current;
 }
 
+void GrandadeAttackState::enter(Enemy& e) {
+    this->duration = 1000.f;
+    this->elapsedTime = 0.f;
+    this->thrown = false;
+}
+
+EnemyAnimationSet GrandadeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
+{
+
+    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+
+
+    elapsedTime += dt;
+    if (!thrown && elapsedTime > MSTRIGGER) {
+        thrown = true;
+        //e.throwGranade();
+    }
+    
+    if (!playerVisible && e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_IDLE;
+    }
+
+    if (e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_WALK;
+        e.setFlip(!e.getFlip());
+    }
+
+	return current;
+}
+
 
 // --- Static instances + lookup table -----------------------------------
     IdleState                idleInstance;
@@ -225,6 +255,7 @@ EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet
     FallingState             fallingInstance;
     CoverState               coverInstance;
     MeleeAttackState         meleeAttackInstance;
+    GrandadeAttackState      granadeAttackInstance;
     //CrouchState              crouchInstance;
     //CrouchWalkingState       crouchWalkingInstance;
     //JumpUpState              jumpUpInstance;
@@ -255,6 +286,7 @@ EnemyState* getEnemyState(EnemyAnimationSet index)
         &RebelSoldierStates::fallingInstance,             // PAS_FALLING
         &RebelSoldierStates::coverInstance,               // PAS_COVER
         &RebelSoldierStates::meleeAttackInstance,         // PAS_MELEE_ATTACK
+        &RebelSoldierStates::granadeAttackInstance,         // PAS_MELEE_ATTACK
         //&crouchInstance,              // PAS_CROUCH_IDLE
         //&crouchWalkingInstance,       // PAS_CROUCH_WALKING
         //&jumpUpInstance,              // PAS_JUMP_UP
