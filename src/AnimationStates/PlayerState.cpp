@@ -8,7 +8,7 @@ PlayerAnimationSet IdleState::handleInput(const PlayerInput& in, PlayerAnimation
     if (in.isMoving && in.isCrouching)  return PlayerAnimationSet::PAS_CROUCH_WALKING;
     if (in.isCrouching)                 return PlayerAnimationSet::PAS_CROUCH_IDLE;
     if (in.isMoving)                    return PlayerAnimationSet::PAS_WALK;
-    if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_IDLE_UP;
+    if (in.isShooting && in.inputUp)    return PlayerAnimationSet::PAS_SHOOTING_IDLE_UP;
     if (in.isShooting)                  return PlayerAnimationSet::PAS_SHOOTING_IDLE;
     if (in.isAttacking)                 return PlayerAnimationSet::PAS_MELEE_ATTACK;
     return current;
