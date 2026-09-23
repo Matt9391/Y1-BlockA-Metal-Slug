@@ -25,6 +25,8 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
 	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+
+	getRigidBody()->setSpeed(0.1f);
 }
 
 Player::~Player() {
@@ -69,7 +71,7 @@ void Player::loadGFX() {
 			vec2(-25, 1))
 	);
 
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_IDLE] = AnimationSet(
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_CROUCH_IDLE_F,
@@ -78,7 +80,7 @@ void Player::loadGFX() {
 			vec2(3, 14),
 			vec2(-25, 14))
 	);
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_WALKING] = AnimationSet(
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_CROUCH_WALKING_F,
@@ -179,7 +181,7 @@ void Player::loadGFX() {
 			vec2(-1, -2),
 			vec2(-42, 0))
 	);
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
@@ -193,7 +195,7 @@ void Player::loadGFX() {
 			vec2(0, -4),
 			vec2(-42, -4))
 	);
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE_UP] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
@@ -221,7 +223,7 @@ void Player::loadGFX() {
 			vec2(0, -42),
 			vec2(-20, -42))
 	);
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_CROUCH] = AnimationSet(
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_CROUCH_F,
@@ -230,7 +232,7 @@ void Player::loadGFX() {
 			vec2(3, 8),
 			vec2(-42, 8))
 	);
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_UP] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
@@ -244,7 +246,7 @@ void Player::loadGFX() {
 			vec2(0, -3),
 			vec2(-42, -3))
 	);
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_UP_JUMP_UP] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
@@ -258,7 +260,7 @@ void Player::loadGFX() {
 			vec2(0, -42),
 			vec2(-20, -42))
 	);
-	
+
 	getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
@@ -279,7 +281,6 @@ void Player::loadGFX() {
 	//getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], true);
 	//getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], false);
 }
-
 Gun& Player::getGun() {
 	return gun;
 }
@@ -364,7 +365,7 @@ void Player::update(float dt) {
 
 	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
 	const bool reset = pInput.isShooting;
-	setColliderOffset(flip ? vec2(-15, 0) : vec2(3, 0));
+	//setColliderOffset(flip ? vec2(-15, 0) : vec2(3, 0));
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip, reset);
 
 	gun.update(dt);
@@ -416,6 +417,9 @@ PlayerInput Player::getPlayerInput() {
 }
 
 void Player::handleMovement(float dt, const PlayerInput& pInput) {
+
+	RigidBody* rb = getRigidBody();
+
 	if (getDir() != 0)
 		setLastDir(getDir());
 	setDir(vec2(0, 0));
@@ -436,21 +440,21 @@ void Player::handleMovement(float dt, const PlayerInput& pInput) {
 
 	//if(isMoving){
 	//}
-	getRigidBody()->setVelocityX(0.1f * getDir().x);
+	rb->setVelocityX(rb->getSpeed() * getDir().x);
 
 	if (!pInput.isGrounded) {
-		getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
+		rb->addVelocity(vec2(0, rb->getGravity() * dt));
 	}
 	else {
-		getRigidBody()->setVelocityY(0);
+		rb->setVelocityY(0);
 		if (pInput.isJumping) {
-			getRigidBody()->addVelocity(vec2(0, -0.37f));
+			rb->addVelocity(vec2(0, -0.37f));
 			setGrounded(false);
 		}
 	}
 
 
-	this->addToPos(getRigidBody()->getVelocity() * dt);
+	this->addToPos(rb->getVelocity() * dt);
 
 }
 void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) {

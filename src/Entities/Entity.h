@@ -38,6 +38,9 @@ public:
 
 	vec2 getDir() const;
 	void setDir(vec2 dir);
+
+	RigidBody* getRigidBody() const;
+
 protected:
 	Animator& getAnimator();
 	AnimationSet*& getAnimationSets();
@@ -52,7 +55,6 @@ protected:
 	
 	void setLastDir(vec2 dir);
 
-	RigidBody* getRigidBody() const;
 
 private:
 

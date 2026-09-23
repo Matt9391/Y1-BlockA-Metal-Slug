@@ -16,6 +16,9 @@ RebelSoldier::RebelSoldier(vec2 pos) :
 	state = RebelSoldierStates::getEnemyState(EnemyAnimationSet::EAS_IDLE);
 	state->enter(*this);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+
+	getRigidBody()->setSpeed(0.1f);
+
 }
 
 RebelSoldier::~RebelSoldier() {
@@ -108,6 +111,15 @@ void RebelSoldier::loadGFX() {
 void RebelSoldier::update(float dt) {
 	getAnimator().playAnimation(dt);
 
+
+	if (!getSensors().isGrounded) {
+		addVelocity(vec2(0, getRigidBody()->getGravity() * dt));
+	}
+	else {
+		setVelocityY(0.f);
+	}
+
+
 	EnemyAnimationSet nextState = state->update(*this, dt, static_cast<EnemyAnimationSet>(getCurrentASIndex()));
 	if (nextState != getCurrentASIndex()) {
 		setCurrentASIndex(nextState);
@@ -118,16 +130,6 @@ void RebelSoldier::update(float dt) {
 
 
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], getFlip());
-
-	//const bool isGrounded = getRigidBody()->isGrounded();
-	//getRigidBody()->setVelocityX(0.1f * getDir().x);
-
-	//if (!isGrounded) {
-	//	getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
-	//}
-	//else {
-	//	getRigidBody()->setVelocityY(0);
-	//}
 
 
 	this->addToPos(getRigidBody()->getVelocity() * dt);

@@ -1,13 +1,14 @@
 #include "precomp.h"
 #include "RigidBody.h"
 
-const float RigidBody::gravity = 1.f;
+const float RigidBody::gravity = 0.001f;
 
 RigidBody::RigidBody(const vec2& pos, bool hasGravity) :
 	pos(pos),
-	velocity(0,0),
+	velocity(0, 0),
 	hasGravityVariable(hasGravity),
-	isGroundedVariable(false)
+	isGroundedVariable(false),
+	speed(0)
 { }
 
 vec2 RigidBody::getPos() const {
@@ -49,3 +50,14 @@ bool RigidBody::hasGravity() const{
 	return this->hasGravityVariable;
 }
 
+
+void RigidBody::setSpeed(float s) {
+	this->speed = s;
+}
+float  RigidBody::getSpeed() const {
+	return speed;
+}
+
+float RigidBody::getGravity() const {
+	return this->gravity;
+}

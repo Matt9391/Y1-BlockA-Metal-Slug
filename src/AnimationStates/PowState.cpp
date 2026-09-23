@@ -2,6 +2,7 @@
 #include "PowState.h"
 #include <PowAnimationSet.h>
 #include <Pow.h>
+#include <RigidBody.h>
 
 namespace PowStates {
 
@@ -34,6 +35,7 @@ namespace PowStates {
 		this->elapsedTime = 0.f;
 		this->flipElapsedTime = 0.f;
 		pow.setDir(vec2(-1, 0));
+		pow.getRigidBody()->setSpeed(0.05f);
 	}
 
 	PowAnimationSet WalkWaitState::update(Pow& pow, float dt, PowAnimationSet current) {
@@ -41,7 +43,7 @@ namespace PowStates {
 		flipElapsedTime += dt;
 		if (elapsedTime > TRIGGERMINTIME) {
 			if (pow.isIntersectingPlayer())
-				current = PowAnimationSet::POW_PANTS;;
+				current = PowAnimationSet::POW_PANTS;
 		}
 
 		if (flipElapsedTime > FLIPMS) {
@@ -75,11 +77,11 @@ namespace PowStates {
 	}
 
 	void RunAwayState::enter(Pow& pow) {
-	
+		pow.setDir(vec2(-1.f, 0));
+		pow.getRigidBody()->setSpeed(0.2f);
 	}
 
 	PowAnimationSet RunAwayState::update(Pow& pow, float dt, PowAnimationSet current) {
-		pow.setDir(vec2(-1.f, 0));
 		return current;
 	}
 

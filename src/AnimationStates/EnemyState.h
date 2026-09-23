@@ -37,6 +37,11 @@ namespace RebelSoldierStates {
     private:
         static const int FLIPCHANCE = 5;
         static const int JUMPCHANCE = 15;
+        static const float JUMPTIMER;
+        static const float FLIPTIMER;
+
+        float jumpCountdown;
+        float flipCountdown;
     };
 
     class AfterRunState final : public EnemyState

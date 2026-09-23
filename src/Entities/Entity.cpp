@@ -111,3 +111,5 @@ Collider& Entity::getCollider() {
 RigidBody* Entity::getRigidBody() const {
 	return this->rigidBody;
 }
+
+

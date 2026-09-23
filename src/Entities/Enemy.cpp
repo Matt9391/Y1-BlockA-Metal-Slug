@@ -8,7 +8,6 @@ Enemy::Enemy(vec2 pos) :
 	sensors{},
 	attacking(false)
 {
-	
 }
 
 void Enemy::setFlip(bool flip) {

@@ -19,6 +19,8 @@ Pow::Pow(vec2 pos) :
 	state = PowStates::getPowState(PowAnimationSet::POW_IDLE);
 	state->enter(*this);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+
+	getRigidBody()->setSpeed(0.05f);
 }
 
 Pow::~Pow() {
@@ -101,17 +103,19 @@ void Pow::update(float dt) {
 
 	}
 
-	getRigidBody()->setVelocityX(0.05f * getDir().x);
+	RigidBody* rb = getRigidBody();
 
-	if (!getRigidBody()->isGrounded()) {
-		getRigidBody()->addVelocity(vec2(0, 0.001f * dt));
+	rb->setVelocityX(rb->getSpeed() * getDir().x);
+
+	if (!rb->isGrounded()) {
+		rb->addVelocity(vec2(0, rb->getGravity() * dt));
 	}
 	else {
-		getRigidBody()->setVelocityY(0);
+		rb->setVelocityY(0);
 	}
 
 
-	this->addToPos(getRigidBody()->getVelocity() * dt);
+	this->addToPos(rb->getVelocity() * dt);
 
 	const bool flip = getDir().x == 0 ? getLastDir().x < 0 : getDir().x < 0;
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], !flip);

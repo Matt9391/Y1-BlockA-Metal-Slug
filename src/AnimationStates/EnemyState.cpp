@@ -2,6 +2,7 @@
 #include "EnemyState.h"
 #include <Enemy.h>
 #include <EnemyAnimationSet.h>
+#include <RigidBody.h>
 
 
 namespace RebelSoldierStates{
@@ -16,20 +17,11 @@ EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet curren
 {
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
-
-    if (!e.getSensors().isGrounded) {
-        e.addVelocity(vec2(0, 0.001f * dt));
-    }
-    else {
-        e.setVelocityY(0.f);
-    }
-
     elapsedTime += dt;
     if (int(elapsedTime) % 300 == 0 && Rand(100) > MAXCHANCE - FLIPCHANCE) {
         e.setFlip(!e.getFlip());
     }
-
-   
+     
     
     if (elapsedTime > duration  || playerVisible) {
         current = EnemyAnimationSet::EAS_WALK;
@@ -41,9 +33,15 @@ EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet curren
 	return current;
 }
 
+
+const float WalkState::JUMPTIMER = 350.f;
+const float WalkState::FLIPTIMER = 350.f;
+
 void WalkState::enter(Enemy& e) {
     this->duration = RandomFloat() * 3000.f + 1500.f;
     this->elapsedTime = 0.f;
+    this->jumpCountdown = 0.f;
+    this->flipCountdown = 0.f;
     e.setDir(vec2(e.getFlip() ? 1 : -1, 0));
 
 }
@@ -52,23 +50,21 @@ EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet curren
 {
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
-
     elapsedTime += dt;
-    if (int(elapsedTime) % 300 == 0 && Rand(100) > MAXCHANCE - FLIPCHANCE) {
+    flipCountdown += dt;
+    jumpCountdown += dt;
+
+    if (flipCountdown > JUMPTIMER  && Rand(100) > MAXCHANCE - FLIPCHANCE) {
+        flipCountdown = 0.f;
         e.setFlip(!e.getFlip());
         e.setDir(vec2(e.getFlip() ? 1 : -1, e.getDir().y));
     }
     
-    
+     e.setVelocityX(e.getRigidBody()->getSpeed() * e.getDir().x);
 
-    e.setVelocityX(0.1f * e.getDir().x);
-
-    if (!e.getSensors().isGrounded) {
-        e.addVelocity(vec2(0, 0.001f * dt));
-    }
-    else {
-        e.setVelocityY(0.f);
-        if (int(elapsedTime) % 350 == 0 && Rand(100) > MAXCHANCE - JUMPCHANCE) {
+    if (e.getSensors().isGrounded) {
+        if (jumpCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - JUMPCHANCE) {
+            jumpCountdown = 0.f;
             e.addVelocity(vec2(0, -0.37f));
             e.setGrounded(false);
             current = EnemyAnimationSet::EAS_JUMP_FORWARD;
@@ -97,12 +93,6 @@ void AfterRunState::enter(Enemy& e) {
 
 EnemyAnimationSet AfterRunState::update(Enemy& e, float dt, EnemyAnimationSet current) 
 {
-    if (!e.getSensors().isGrounded) {
-        e.addVelocity(vec2(0, 0.001f * dt));
-    }
-    else {
-        e.setVelocityY(0.f);
-    }
 
     if (e.getSensors().animationEnded) {
         current = EnemyAnimationSet::EAS_IDLE;
@@ -118,11 +108,7 @@ void JumpForwardState::enter(Enemy& e) {
 
 EnemyAnimationSet JumpForwardState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
-    if (!e.getSensors().isGrounded) {
-        e.addVelocity(vec2(0, 0.001f * dt));
-    }
-    else {
-        e.setVelocityY(0.f);
+    if (e.getSensors().isGrounded) {
         current = EnemyAnimationSet::EAS_IDLE;
     }
 
@@ -132,6 +118,7 @@ EnemyAnimationSet JumpForwardState::update(Enemy& e, float dt, EnemyAnimationSet
 
 	return current;
 }
+
 void ScaredState::enter(Enemy& e) {
     this->duration =  1000.f;
     this->elapsedTime = 0.f;
@@ -139,11 +126,7 @@ void ScaredState::enter(Enemy& e) {
 
 EnemyAnimationSet ScaredState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
-    if (!e.getSensors().isGrounded) {
-        e.addVelocity(vec2(0, 0.001f * dt));
-    }
-    else {
-        e.setVelocityY(0.f);
+    if (e.getSensors().isGrounded) {
         current = EnemyAnimationSet::EAS_IDLE;
     }
 
@@ -161,11 +144,7 @@ void FallingState::enter(Enemy& e) {
 
 EnemyAnimationSet FallingState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
-    if (!e.getSensors().isGrounded) {
-        e.addVelocity(vec2(0, 0.001f * dt));
-    }
-    else {
-        e.setVelocityY(0.f);
+    if (e.getSensors().isGrounded) {
         current = EnemyAnimationSet::EAS_IDLE;
     }
 
@@ -183,12 +162,6 @@ void CoverState::enter(Enemy& e) {
 
 EnemyAnimationSet CoverState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
-    if (!e.getSensors().isGrounded) {
-        e.addVelocity(vec2(0, 0.001f * dt));
-    }
-    else {
-        e.setVelocityY(0.f);
-    }
 
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
@@ -213,12 +186,6 @@ void MeleeAttackState::enter(Enemy& e) {
 
 EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
-    if (!e.getSensors().isGrounded) {
-        e.addVelocity(vec2(0, 0.001f * dt));
-    }
-    else {
-        e.setVelocityY(0.f);
-    }
 
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 

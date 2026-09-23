@@ -20,12 +20,19 @@ public:
 	bool isGrounded() const;
 	bool hasGravity() const;
 
+	void setSpeed(float s);
+	float getSpeed() const;
+	
+	//void setGravity(float g);
+	float getGravity() const;
+
 private:
 
 	static const float gravity;
 
 	const vec2& pos;
 	vec2 velocity;
+	float speed;
 
 	bool isGroundedVariable;
 	bool hasGravityVariable;
