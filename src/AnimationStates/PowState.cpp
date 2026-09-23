@@ -28,21 +28,24 @@ namespace PowStates {
 	}
 
 	const float WalkWaitState::TRIGGERMINTIME = 1500.f;
-	const int WalkWaitState::FLIPMS = 400.f;
+	const int WalkWaitState::FLIPMS = 600.f;
 
 	void WalkWaitState::enter(Pow& pow) {
 		this->elapsedTime = 0.f;
+		this->flipElapsedTime = 0.f;
 		pow.setDir(vec2(-1, 0));
 	}
 
 	PowAnimationSet WalkWaitState::update(Pow& pow, float dt, PowAnimationSet current) {
 		elapsedTime += dt;
+		flipElapsedTime += dt;
 		if (elapsedTime > TRIGGERMINTIME) {
 			if (pow.isIntersectingPlayer())
 				current = PowAnimationSet::POW_PANTS;;
 		}
 
-		if (int(elapsedTime) % FLIPMS == 0) {
+		if (flipElapsedTime > FLIPMS) {
+			flipElapsedTime = 0.f;
 			pow.setDir(vec2(pow.getDir().x * -1, 0));
 		}
 

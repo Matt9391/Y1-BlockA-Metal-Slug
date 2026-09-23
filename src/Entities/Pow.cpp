@@ -32,7 +32,7 @@ void Pow::loadGFX() {
 		AnimationLayer(
 			ResourceID::ID_POW_IDLE,
 			ResourceIDFrames::IDF_POW_IDLE,
-			100,
+			150,
 			vec2(0, 0),
 			vec2(0, 0))
 	);
@@ -62,7 +62,7 @@ void Pow::loadGFX() {
 		AnimationLayer(
 			ResourceID::ID_POW_PANTS,
 			ResourceIDFrames::IDF_POW_PANTS,
-			100,
+			150,
 			vec2(0, 0),
 			vec2(0, 0))
 	);
@@ -72,7 +72,7 @@ void Pow::loadGFX() {
 		AnimationLayer(
 			ResourceID::ID_POW_BYE,
 			ResourceIDFrames::IDF_POW_BYE,
-			100,
+			130,
 			vec2(0, 0),
 			vec2(0, 0))
 	);

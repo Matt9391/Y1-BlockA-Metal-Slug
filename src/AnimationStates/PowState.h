@@ -38,6 +38,7 @@ namespace PowStates {
         PowAnimationSet update(Pow& pow, float dt, PowAnimationSet current) override;
     private:
         float elapsedTime;
+        float flipElapsedTime;
         static const float TRIGGERMINTIME;
         static const int FLIPMS;
     };
