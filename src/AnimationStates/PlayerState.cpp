@@ -82,7 +82,7 @@ PlayerAnimationSet JumpForwardState::handleInput(const PlayerInput& in, PlayerAn
 PlayerAnimationSet FallingState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
 {
     if (in.isGrounded)                 return PlayerAnimationSet::PAS_IDLE;
-    if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN;
+    if (in.isShooting && in.inputUp)   return PlayerAnimationSet::PAS_SHOOTING_UP_JUMP_UP;
     if (in.isShooting)                 return PlayerAnimationSet::PAS_SHOOTING_JUMP_UP;
     return current;
 }

@@ -180,12 +180,12 @@ void Player::loadGFX() {
 			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
 			100,
 			vec2(2, 9),
-			vec2(-3, 9)),
+			vec2(-6, 9)),
 		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
 			ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
 			80,
 			vec2(0, -42),
-			vec2(0, -42))
+			vec2(-4, -42))
 	);
 
 	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK_UP] = AnimationSet(
@@ -231,12 +231,12 @@ void Player::loadGFX() {
 			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
 			80,
 			vec2(6, 20),
-			vec2(-16, 20)),
+			vec2(0, 20)),
 		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
 			ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
 			80,
 			vec2(0, -42),
-			vec2(-20, -42))
+			vec2(-4, -42))
 	);
 	
 	getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK] = AnimationSet(
@@ -399,7 +399,7 @@ void Player::handleMovement(float dt, const PlayerInput& pInput) {
 
 	RigidBody* rb = getRigidBody();
 
-	if (getDir() != 0)
+	if (getDir().x != 0)
 		setLastDir(getDir());
 	setDir(vec2(0, 0));
 
