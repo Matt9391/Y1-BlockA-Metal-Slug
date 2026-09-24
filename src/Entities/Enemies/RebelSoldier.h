@@ -19,10 +19,15 @@ public:
 	void addRenderSets(Renderer& renderer);
 
 	void freeGranade(int i);
+	Granade* getGranade(int i);
+
+	int getMaxGranades() const;
 
 private:
 	RebelSoldierStates::EnemyState* state;
 	
-	Granade* granades[10];
+	static const int MAXGRANADES = 5;
+
+	Granade* granades[MAXGRANADES];
 	int granadesCount;
 };

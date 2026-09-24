@@ -66,7 +66,19 @@ void GameScene::update(float dt) {
 		printf("HIT\n");
 	}
 
-	
+	for (int i = 0; i < soldier.getMaxGranades(); i++) {
+		Granade* g = soldier.getGranade(i);
+		bool free = false;
+		//if (b) std::cout << (*b).getRigidBody();
+		if (g && CollisionManager::resolveMapCollision(*g, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
+			free = true;
+		}
+
+		if (g && CollisionManager::checkCollision(g->getCollider(), player.getCollider())) {
+			free = true;
+		}
+		if (free) soldier.freeGranade(i);
+	}
 
 	getRenderer().addRenderSet(player.getRenderSet());
 	getRenderer().addRenderSet(soldier.getRenderSet());

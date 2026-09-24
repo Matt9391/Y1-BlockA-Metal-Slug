@@ -150,7 +150,7 @@ void RebelSoldier::update(float dt) {
 
 	this->addToPos(getRigidBody()->getVelocity() * dt);
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < MAXGRANADES; i++) {
 		if (granades[i] == nullptr) continue;
 		granades[i]->update(dt);
 	}
@@ -159,7 +159,7 @@ void RebelSoldier::update(float dt) {
 
 bool RebelSoldier::throwGranade(vec2 dir) {
 	int bIndex = -1;
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < MAXGRANADES; i++) {
 		if (granades[i] == nullptr) {
 			bIndex = i;
 			break;
@@ -175,10 +175,14 @@ bool RebelSoldier::throwGranade(vec2 dir) {
 }
 
 void RebelSoldier::addRenderSets(Renderer& renderer) {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < MAXGRANADES; i++) {
 		if (granades[i] == nullptr) continue;
 		renderer.addRenderSet(granades[i]->getRenderSet());
 	}
+}
+
+int RebelSoldier::getMaxGranades() const {
+	return MAXGRANADES;
 }
 
 void RebelSoldier::freeGranade(int i) {
@@ -187,4 +191,9 @@ void RebelSoldier::freeGranade(int i) {
 		granades[i] = nullptr;
 		granadesCount--;
 	}
+}
+
+Granade* RebelSoldier::getGranade(int i) {
+	if (granades[i]) return granades[i];
+	return nullptr;
 }
