@@ -8,7 +8,7 @@
 #include <Bullet.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
-	CustomScene(screen, renderer, inputManager), //inheritance
+	CustomScene(screen, renderer, inputManager), 
 	player(vec2(200, 50), getInputManager()),
 	soldier(vec2(300, 50)),
 	pow(vec2(900, 50))
@@ -24,6 +24,7 @@ void GameScene::exit() {};
 void GameScene::update(float dt) {
 	getRenderer().clearRenderSets();
 	getRenderer().clearColliders();
+	getRenderer().clearTexts();
 
 	player.update(dt);
 	soldier.loadSensors(
@@ -65,6 +66,8 @@ void GameScene::update(float dt) {
 		printf("HIT\n");
 	}
 
+	
+
 	getRenderer().addRenderSet(player.getRenderSet());
 	getRenderer().addRenderSet(soldier.getRenderSet());
 	getRenderer().addRenderSet(pow.getRenderSet());
@@ -76,6 +79,9 @@ void GameScene::update(float dt) {
 	getRenderer().addCollider(soldier.getCollider());
 	getRenderer().addCollider(pow.getCollider());
 	getCamera().follow(player.getPos());
+
+	//getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, "bella bro\nahah", vec2(100, 100),1});
+	//getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "ciao a te", vec2(250, 100),0.5f });
 
 };
 

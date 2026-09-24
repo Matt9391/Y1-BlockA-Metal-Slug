@@ -5,8 +5,7 @@
 
 
 
-Printer::Printer(Surface* fontSource) :
-	font(fontSource),
+Printer::Printer() :
 	//counted manually from the font source image (not ideal)
 	fontHeight(18),
 	fontWidth(18)
@@ -14,7 +13,7 @@ Printer::Printer(Surface* fontSource) :
 
 }
 
-void Printer::drawText(const HUDText& text, Surface* screen) {
+void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 	if (font == nullptr) {
 		printf("Font not initialized yet! Initialize it before using");
 		return;
@@ -51,6 +50,7 @@ void Printer::drawText(const HUDText& text, Surface* screen) {
 			line,
 			fontSize,
 			vec2(float(dx), float(dy)),
+			font,
 			screen
 		);
 
@@ -63,7 +63,7 @@ void Printer::drawText(const HUDText& text, Surface* screen) {
 	delete[] lines;
 }
 
-void Printer::drawLine(const HUDText& text, const vec2& fontSize, const vec2& clipValue, Surface* screen) {
+void Printer::drawLine(const HUDText& text, const vec2& fontSize, const vec2& clipValue, Surface* font, Surface* screen) {
 	int count = 0;
 	printf("w: %d\n", (*font).width);
 
@@ -81,40 +81,32 @@ void Printer::drawLine(const HUDText& text, const vec2& fontSize, const vec2& cl
 		uint* destination = screen->pixels + int(text.pos.x + fontWidth * text.scale * count) +
 			int(text.pos.y + clipValue.y) * screen->width;
 
-		drawChar(clipValue, fontSize, text.scale, source, destination, screen->width);
+		drawChar(clipValue, fontSize, text.scale, source, destination, font, screen->width);
 
 		count++;
 	}
 
 }
 
-void Printer::drawChar(const vec2& start, const vec2& end, int charScale, uint* source, uint* destination, const int& screenPitch) {
-	//draw character pixel by pixel with scaling
-	//si/sj are scale iterators
+void Printer::drawChar(const vec2& start,const vec2& end,float scale,uint* source,uint* destination,Surface* font,const int& screenWidth){
+	int destWidth = int(end.x * scale);
+	int destHeight = int(end.y * scale);
 
-	//iterate through original rows
-	for (int i = int(start.y); i < end.y; i++) {
-		//for each row it iterates scale times the same row
-		for (int si = 0; si < charScale; si++) {
-			//jIndex is the index of the pixel needed to be drawn
-			int jIndex = 0;
+	for (int y = 0; y < destHeight; y++)
+	{
+		int sourceY = int(y / scale);
 
-			//iterate through original columns
-			for (int j = int(start.x); j < end.x * charScale; j += charScale) {
+		for (int x = 0; x < destWidth; x++)
+		{
+			int sourceX = int(x / scale);
 
-				//for each column it iterates scale times the same column
-				for (int sj = 0; sj < charScale; sj++) {
+			uint pixel = source[sourceY * font->width + sourceX];
 
-					//if the source pixel is not black (transparent) copy it to the screen
-					//black pixel used for transparent/void pixels in the font sprite
-					if (source[jIndex] != 0x0)
-						destination[j + sj] = source[jIndex];
-				}
-				jIndex++;
+			if (pixel != 0xFFb5e61d)
+			{
+				destination[x + y * screenWidth] = pixel;
 			}
-			destination += screenPitch;
 		}
-		source += (*font).width;
 	}
 }
 
@@ -123,7 +115,7 @@ vec2 Printer::getFontSize() const {
 }
 
 //split string into multiple lines based on '\n' character
-char**  Printer::splitLines(const char* text, int& lineCount) {
+char** Printer::splitLines(const char* text, int& lineCount) {
 	char** lines = new char*[MAXLINES];
 
 	for (int i = 0; i < MAXLINES; i++) {

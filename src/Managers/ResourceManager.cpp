@@ -36,8 +36,6 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_PLAYER_SHOOTING_CROUCH_F]= new Sprite(new Surface("assets/playerAnimation/Pistol/shootingBodyCrouch.png"), ResourceIDFrames::IDF_PLAYER_SHOOTING_CROUCH_F);
 	sprites[ResourceID::ID_PLAYER_MELEE_ATTACK_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/meleeAttack1Body.png"), ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY);
 	sprites[ResourceID::ID_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/bullet.png"), ResourceIDFrames::IDF_PLAYER_BULLLET_PISTOL);
-	sprites[ResourceID::ID_MAP_TILESET] = new Sprite(new Surface("assets/bg.png"), ResourceIDFrames::IDF_PLAYER_IDLE_LEGS);
-	sprites[ResourceID::ID_COLLISION_TILESET] = new Sprite(new Surface("assets/collisionTile.png"), ResourceIDFrames::IDF_COLLISION_TILESET);
 	sprites[ResourceID::ID_REBELSOLDIER_IDLE] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/idle.png"), ResourceIDFrames::IDF_REBELSOLDIER_IDLE);
 	sprites[ResourceID::ID_REBELSOLDIER_WALK] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/walk.png"), ResourceIDFrames::IDF_REBELSOLDIER_WALK);
 	sprites[ResourceID::ID_REBELSOLDIER_STOP] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/stop.png"), ResourceIDFrames::IDF_REBELSOLDIER_STOP);
@@ -54,6 +52,10 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_POW_PANTS] = new Sprite(new Surface("assets/POWsAnimation/pants.png"), ResourceIDFrames::IDF_POW_PANTS);
 	sprites[ResourceID::ID_POW_BYE] = new Sprite(new Surface("assets/POWsAnimation/bye.png"), ResourceIDFrames::IDF_POW_BYE);
 	sprites[ResourceID::ID_POW_RUN_AWAY] = new Sprite(new Surface("assets/POWsAnimation/runAway.png"), ResourceIDFrames::IDF_POW_RUN_AWAY);
+	sprites[ResourceID::ID_MAP_TILESET] = new Sprite(new Surface("assets/bg.png"), ResourceIDFrames::IDF_PLAYER_IDLE_LEGS);
+	sprites[ResourceID::ID_COLLISION_TILESET] = new Sprite(new Surface("assets/collisionTile.png"), ResourceIDFrames::IDF_COLLISION_TILESET);
+	sprites[ResourceID::ID_FONT_ORANGE] = new Sprite(new Surface("assets/fontOrange.png"), ResourceIDFrames::IDF_FONT_ORANGE);
+	sprites[ResourceID::ID_FONT_GREY] = new Sprite(new Surface("assets/fontGrey.png"), ResourceIDFrames::IDF_FONT_GREY);
 
 	initalized = true;
 }

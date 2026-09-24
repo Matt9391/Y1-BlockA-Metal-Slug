@@ -9,19 +9,17 @@ void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, i
 Renderer::Renderer() :
 	renderSetCount(0),
 	collidersCount(0),
-	printer(new Surface("assets/fontGrey.png"))
+	textsCount(0),
+	colliders{nullptr},
+	printer()
 	{}
 
 void Renderer::addCollider(Collider& c) {
+	if (collidersCount == MAXCOLLIDERS)
+		throw runtime_error("Max colliders reached");
 	colliders[collidersCount++] = &c;
 }
 
-void Renderer::clearColliders() {
-	for (int i = 0; i < MAXCOLLIDERS; i++) {
-		colliders[i] = nullptr;
-	}
-	collidersCount = 0;
-}
 
 void Renderer::addRenderSet(RenderSet rs) {
 	if (renderSetCount == MAXRENDERSETS)
@@ -34,11 +32,31 @@ void Renderer::addMapRenderSet(const MapRenderSet& mrs) {
 	mapRenderSet = mrs;
 }
 
+void Renderer::addHUDText(HUDText t) {
+	if (textsCount == MAXTEXTS)
+		throw runtime_error("Max texts reached");
+	texts[textsCount++] = t;
+}
+
+void Renderer::clearColliders() {
+	for (int i = 0; i < MAXCOLLIDERS; i++) {
+		colliders[i] = nullptr;
+	}
+	collidersCount = 0;
+}
+
 void Renderer::clearRenderSets() {
 	for (int i = 0; i < MAXRENDERSETS; i++) {
 		renderSets[i] = RenderSet();
 	}
 	renderSetCount = 0;
+}
+
+void Renderer::clearTexts() {
+	for (int i = 0; i < MAXTEXTS; i++) {
+		texts[i] = {};
+	}
+	textsCount = 0;
 }
 
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
@@ -119,7 +137,11 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			c.pos.x + c.offset.x - cameraOffset.x + c.size.x, c.pos.y + c.offset.y - cameraOffset.y + c.size.y, 0xFF0000);
 	}
 
-	printer.drawText({ ":'>(),<CIAO\ndiooo", vec2(100,100), 1 }, screen);
+	for (int i = 0; i < textsCount; i++) {
+		HUDText& t = texts[i];
+		Surface* s = resourceManager.getSprite(t.resourceId)->GetSurface();
+		printer.drawText(t, s, screen);
+	}
 }
 
 

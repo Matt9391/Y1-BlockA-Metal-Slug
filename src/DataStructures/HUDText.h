@@ -3,12 +3,10 @@
 #include <ResourceID.h>
 
 struct HUDText {
-	//vec2 pos;
+
 	//vec2 scale;
-	//ResourceID resourceId;
+	ResourceID resourceId;
 	char text[100];
 	vec2 pos;
-	int scale;
-	bool isStatic = true;
-	bool background = false;
+	float scale;
 };
