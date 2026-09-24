@@ -17,7 +17,9 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	state(nullptr),
 	gun(this->getPos(), vec2(0, 0), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
 	shooting(false),
-	hasEnemyInFront(false)
+	hasEnemyInFront(false),
+	lives(3),
+	score(25001)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -316,6 +318,14 @@ void Player::setEnemyInFront(bool enemyInFront) {
 
 bool Player::getEnemyInFront() const {
 	return this->hasEnemyInFront;
+}
+
+int Player::getLives() const {
+	return this->lives;
+}
+
+int Player::getScore() const {
+	return this->score;
 }
 
 void Player::update(float dt) {

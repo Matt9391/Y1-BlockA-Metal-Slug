@@ -5,13 +5,7 @@
 
 
 
-Printer::Printer() :
-	//counted manually from the font source image (not ideal)
-	fontHeight(18),
-	fontWidth(18)
-{
-
-}
+Printer::Printer(){}
 
 void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 	if (font == nullptr) {
@@ -22,18 +16,21 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 	int nLines = 0;
 	char** lines = splitLines(text.text, nLines);
 
+	int size = (text.resourceId == ID_FONT_GREY || text.resourceId == ID_FONT_ORANGE) ? 18 : 9;
+	float4 fontSize(size, size, size, size);
+
 	//check if the text is outside the screen bounds
-	if (text.pos.x + fontWidth * text.scale < 0 || text.pos.y + fontHeight * text.scale < 0 || text.pos.x > screen->width|| text.pos.y > screen->height)
+	if (text.pos.x + fontSize.x * text.scale < 0 || text.pos.y + fontSize.y * text.scale < 0 || text.pos.x > screen->width|| text.pos.y > screen->height)
 		return;
+
 
 	//clipping variables
 	int dx = 0, dy = 0;
-	vec2 fontSize = vec2(float(fontWidth), float(fontHeight));
 	//clip position and size if the text is partially outside the screen
 	if (text.pos.x < 0) dx = int(-text.pos.x);
 	if (text.pos.y < 0) dy = int(-text.pos.y);
-	if (text.pos.x + fontWidth > screen->width)  fontSize.x = float(screen->width - text.pos.x);
-	if (text.pos.y + fontHeight > screen->height) fontSize.y = float(screen->height - text.pos.y);
+	if (text.pos.x + fontSize.x > screen->width)  fontSize.w = float(screen->width - text.pos.x);
+	if (text.pos.y + fontSize.y > screen->height) fontSize.z = float(screen->height - text.pos.y);
 
 
 	int lineCounter = 0;
@@ -43,7 +40,7 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 		HUDText line;
 
 		strcpy(line.text, lines[i]);
-		line.pos = text.pos + vec2(0, float(this->fontHeight * lineCounter * text.scale));
+		line.pos = text.pos + vec2(0, float(size * lineCounter * text.scale));
 		line.scale = text.scale;
 
 		drawLine(
@@ -63,7 +60,7 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 	delete[] lines;
 }
 
-void Printer::drawLine(const HUDText& text, const vec2& fontSize, const vec2& clipValue, Surface* font, Surface* screen) {
+void Printer::drawLine(const HUDText& text, const float4& fontSize, const vec2& clipValue, Surface* font, Surface* screen) {
 	int count = 0;
 	printf("w: %d\n", (*font).width);
 
@@ -72,16 +69,17 @@ void Printer::drawLine(const HUDText& text, const vec2& fontSize, const vec2& cl
 		//get character index in the font surface
 		int index = int(character) - 32;
 		//get source based on character index
-		uint* source = (*font).pixels + index * fontWidth;
+		uint* source = (*font).pixels + index * int(fontSize.y);
 		//add clipping offset
 		source += int(clipValue.y) * (*font).width;
 
 		//set destination on screen with clipping offsets and line offset
 		//get the buffer off the screen and the calculate the position based on character count and line counter
-		uint* destination = screen->pixels + int(text.pos.x + fontWidth * text.scale * count) +
+		uint* destination = screen->pixels + int(text.pos.x + fontSize.x * text.scale * count) +
 			int(text.pos.y + clipValue.y) * screen->width;
 
-		drawChar(clipValue, fontSize, text.scale, source, destination, font, screen->width);
+		vec2 fontSize2D = vec2(fontSize.w, fontSize.z);
+		drawChar(clipValue, fontSize2D, text.scale, source, destination, font, screen->width);
 
 		count++;
 	}
@@ -108,10 +106,6 @@ void Printer::drawChar(const vec2& start,const vec2& end,float scale,uint* sourc
 			}
 		}
 	}
-}
-
-vec2 Printer::getFontSize() const {
-	return vec2(float(fontWidth), float(fontHeight));
 }
 
 //split string into multiple lines based on '\n' character

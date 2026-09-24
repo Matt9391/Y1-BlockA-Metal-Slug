@@ -101,8 +101,21 @@ void GameScene::update(float dt) {
 	getRenderer().addCollider(c);
 	getCamera().follow(player.getPos());
 
-	//getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, "bella bro\nahah", vec2(100, 100),1});
-	//getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "ciao a te", vec2(250, 100),0.5f });
+	//HUD
+	{
+		char livesText[50];
+		snprintf(livesText, sizeof(livesText), "1UP=%d", player.getLives());
+		char scoreText[50];
+		snprintf(scoreText, sizeof(scoreText), "%d", player.getScore());
+
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, scoreText, vec2(38, 2),0.5f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, livesText, vec2(10, 20),0.8f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "200", vec2(95, 10),1.f});
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "10", vec2(130, 10),1.f});
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "LEVEL-4", vec2(150, 205),1.f});
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 205),1.f});
+
+	}
 
 };
 

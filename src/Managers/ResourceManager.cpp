@@ -57,6 +57,10 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_COLLISION_TILESET] = new Sprite(new Surface("assets/collisionTile.png"), ResourceIDFrames::IDF_COLLISION_TILESET);
 	sprites[ResourceID::ID_FONT_ORANGE] = new Sprite(new Surface("assets/fontOrange.png"), ResourceIDFrames::IDF_FONT_ORANGE);
 	sprites[ResourceID::ID_FONT_GREY] = new Sprite(new Surface("assets/fontGrey.png"), ResourceIDFrames::IDF_FONT_GREY);
+	sprites[ResourceID::ID_FONT_ORANGE_S] = new Sprite(new Surface("assets/fontOrange_9px.png"), ResourceIDFrames::IDF_FONT_ORANGE_S);
+	sprites[ResourceID::ID_FONT_GREY_S] = new Sprite(new Surface("assets/fontGrey_9px.png"), ResourceIDFrames::IDF_FONT_GREY_S);
+	sprites[ResourceID::ID_FUEL_BAR] = new Sprite(new Surface("assets/fuelBar.png"), ResourceIDFrames::IDF_FUEL_BAR);
+	sprites[ResourceID::ID_AMMOS] = new Sprite(new Surface("assets/ammos.png"), ResourceIDFrames::IDF_AMMOS);
 
 	initalized = true;
 }

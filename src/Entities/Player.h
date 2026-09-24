@@ -25,6 +25,9 @@ public:
 	int getGunBullets();
 
 	void setEnemyInFront(bool enemyInFront);
+	
+	int getLives() const;
+	int getScore() const;
 
 private:
 	bool getEnemyInFront() const;
@@ -38,5 +41,8 @@ private:
 
 	bool shooting;
 	bool hasEnemyInFront;
+
+	int lives;
+	int score;
 };
 

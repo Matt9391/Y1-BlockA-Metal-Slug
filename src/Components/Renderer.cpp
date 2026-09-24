@@ -54,7 +54,7 @@ void Renderer::clearRenderSets() {
 
 void Renderer::clearTexts() {
 	for (int i = 0; i < MAXTEXTS; i++) {
-		texts[i] = {};
+		texts[i] = HUDText();
 	}
 	textsCount = 0;
 }
@@ -142,6 +142,11 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		Surface* s = resourceManager.getSprite(t.resourceId)->GetSurface();
 		printer.drawText(t, s, screen);
 	}
+
+	Sprite* s = resourceManager.getSprite(ResourceID::ID_FUEL_BAR);
+	s->Draw(screen, 10, 12, 0);
+	s = resourceManager.getSprite(ResourceID::ID_AMMOS);
+	s->Draw(screen, 90, 2, 0);
 }
 
 
