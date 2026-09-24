@@ -24,7 +24,10 @@ public:
 	Gun& getGun();
 	int getGunBullets();
 
+	void setEnemyInFront(bool enemyInFront);
+
 private:
+	bool getEnemyInFront() const;
 	void setShooting(bool shooting);
 	PlayerInput getPlayerInput();
 	void handleMovement(float dt, const PlayerInput& pInput);
@@ -34,5 +37,6 @@ private:
 	PlayerState* state;
 
 	bool shooting;
+	bool hasEnemyInFront;
 };
 

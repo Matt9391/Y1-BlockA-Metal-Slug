@@ -16,7 +16,8 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	inputManager(inputManager),
 	state(nullptr),
 	gun(this->getPos(), vec2(0, 0), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
-	shooting(false)
+	shooting(false),
+	hasEnemyInFront(false)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -238,14 +239,54 @@ void Player::loadGFX() {
 			vec2(0, -42),
 			vec2(-4, -42))
 	);
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_FORWARD] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
+			100,
+			vec2(0, 18),
+			vec2(-4, 18)),
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
+			80,
+			vec2(-1, -2),
+			vec2(-23, 0))
+	);
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(0, 20)),
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_DOWN_BODY,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_DOWN_BODY,
+			80,
+			vec2(4, 3),
+			vec2(-2, 3))
+	);
 	
-	getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK] = AnimationSet(
+	getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
 			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
 			100,
 			vec2(2, 9),
 			vec2(-7, 9)),
+		AnimationLayer(ResourceID::ID_PLAYER_MELEE_ATTACK_BODY,
+			ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY,
+			80,
+			vec2(-7, -15),
+			vec2(-10, -15))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_WALK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-4, 19)),
 		AnimationLayer(ResourceID::ID_PLAYER_MELEE_ATTACK_BODY,
 			ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY,
 			80,
@@ -268,6 +309,15 @@ int Player::getGunBullets() {
 	return gun.getBulletsCount();
 }
 
+
+void Player::setEnemyInFront(bool enemyInFront) {
+	this->hasEnemyInFront = enemyInFront;
+}
+
+bool Player::getEnemyInFront() const {
+	return this->hasEnemyInFront;
+}
+
 void Player::update(float dt) {
 	getAnimator().playAnimation(dt);
 
@@ -287,8 +337,10 @@ void Player::update(float dt) {
 	//handleAnimationSet(isMoving, isJumping, isGrounded);
 
 	if (pInput.isShooting) {
-		gun.shoot();
-		setShooting(true);
+		if (!pInput.enemyInFront) {
+			gun.shoot();
+			setShooting(true);
+		}
 	}
 	else {
 		setShooting(false);
@@ -360,7 +412,7 @@ PlayerInput Player::getPlayerInput() {
 	const bool isJumping = inputManager.isKeyJustPressed(' ');
 	const bool isGrounded = getRigidBody()->isGrounded();
 	const bool isShooting = inputManager.isKeyJustPressed('F');
-	const bool isAttacking = inputManager.isKeyJustPressed('E');
+	const bool enemyInFront = getEnemyInFront();
 
 
 	//printf("PlayerInput { right=%d, left=%d, moving=%d, jumping=%d, grounded=%d, crouching=%d, shooting=%d, animEnd=%d, dirY=%d }\n", inputRight, inputLeft, isMoving, isJumping, isGrounded, false, isShooting, getAnimator().isAnimationEnded(), getDir().y);
@@ -388,7 +440,7 @@ PlayerInput Player::getPlayerInput() {
 		isGrounded,
 		isCrouching,
 		isShooting,
-		isAttacking,
+		enemyInFront,
 		getAnimator().isAnimationEnded()
 	};
 
@@ -416,9 +468,11 @@ void Player::handleMovement(float dt, const PlayerInput& pInput) {
 		setDir(vec2(getDir().x, -1));
 	}
 
+	if (pInput.inputDown && getCurrentASIndex() == PAS_SHOOTING_CROUCH) {
+		setDir(vec2(0.f, 1.f));
+	}
 
-	//if(isMoving){
-	//}
+
 	rb->setVelocityX(rb->getSpeed() * getDir().x);
 
 	if (!pInput.isGrounded) {

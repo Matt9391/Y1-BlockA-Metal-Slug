@@ -18,7 +18,7 @@ struct PlayerInput
     bool isGrounded;
     bool isCrouching;
     bool isShooting;
-    bool isAttacking;
+    bool enemyInFront;
     bool onAnimationEnd;
 };
 
@@ -144,7 +144,13 @@ public:
     PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
 };
 
-class MeleeAttackState final : public PlayerState
+class MeleeAttackStateIdle final : public PlayerState
+{
+public:
+    PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
+};
+
+class MeleeAttackStateWalk final : public PlayerState
 {
 public:
     PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;

@@ -33,6 +33,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_PLAYER_FALLINGFORWARD_LEGS]= new Sprite(new Surface("assets/playerAnimation/Pistol/fallingLegsForward.png"), ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_LEGS);
 	sprites[ResourceID::ID_PLAYER_SHOOTING_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/shootingBody.png"), ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY);
 	sprites[ResourceID::ID_PLAYER_SHOOTING_UP_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/shootingBodyUp.png"), ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY);
+	sprites[ResourceID::ID_PLAYER_SHOOTING_DOWN_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/shootingBodyDown.png"), ResourceIDFrames::IDF_PLAYER_SHOOTING_DOWN_BODY);
 	sprites[ResourceID::ID_PLAYER_SHOOTING_CROUCH_F]= new Sprite(new Surface("assets/playerAnimation/Pistol/shootingBodyCrouch.png"), ResourceIDFrames::IDF_PLAYER_SHOOTING_CROUCH_F);
 	sprites[ResourceID::ID_PLAYER_MELEE_ATTACK_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/meleeAttack1Body.png"), ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY);
 	sprites[ResourceID::ID_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/bullet.png"), ResourceIDFrames::IDF_PLAYER_BULLLET_PISTOL);

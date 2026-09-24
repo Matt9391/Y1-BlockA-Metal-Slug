@@ -36,6 +36,7 @@ public:
 	virtual void update(float dt);
 
 
+	vec2 getLastDir() const;
 	vec2 getDir() const;
 	void setDir(vec2 dir);
 
@@ -50,7 +51,6 @@ protected:
 	void setColliderOffset(vec2 offset);
 	int getCurrentASIndex() const;
 	void setCurrentASIndex(int nextASIndex);
-	vec2 getLastDir() const;
 
 	
 	void setLastDir(vec2 dir);

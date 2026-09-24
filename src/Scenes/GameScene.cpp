@@ -31,6 +31,14 @@ void GameScene::update(float dt) {
 		player.getPos(),
 		CollisionManager::checkMapCollision(soldier.getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), 0)
 	);
+
+	Collider c = player.getCollider();
+	c.offset.x += player.getLastDir().x * c.size.x;
+	player.setEnemyInFront(
+		CollisionManager::checkCollision(c,soldier.getCollider()) ||
+		CollisionManager::checkCollision(player.getCollider(), soldier.getCollider())
+	);
+
 	soldier.update(dt);
 	if (CollisionManager::checkCollision(player.getCollider(), pow.getCollider())) {
 		if (player.isShooting()) {
@@ -51,7 +59,6 @@ void GameScene::update(float dt) {
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);
 		bool free = false;
-		//if (b) std::cout << (*b).getRigidBody();
 		if (b && CollisionManager::resolveMapCollision(*b, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
 			free = true;
 		}
@@ -69,7 +76,6 @@ void GameScene::update(float dt) {
 	for (int i = 0; i < soldier.getMaxGranades(); i++) {
 		Granade* g = soldier.getGranade(i);
 		bool free = false;
-		//if (b) std::cout << (*b).getRigidBody();
 		if (g && CollisionManager::resolveMapCollision(*g, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
 			free = true;
 		}
@@ -90,6 +96,9 @@ void GameScene::update(float dt) {
 	getRenderer().addCollider(player.getCollider());
 	getRenderer().addCollider(soldier.getCollider());
 	getRenderer().addCollider(pow.getCollider());
+	//Collider c = player.getCollider();
+	//c.offset.x += player.getLastDir().x * c.size.x;
+	getRenderer().addCollider(c);
 	getCamera().follow(player.getPos());
 
 	//getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, "bella bro\nahah", vec2(100, 100),1});
