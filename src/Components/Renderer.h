@@ -4,6 +4,7 @@
 #include <MapRenderSet.h>
 #include <ResourceManager.h>
 #include <Collider.h>
+#include <Printer.h>
 
 class Tmpl8::Surface;
 
@@ -29,4 +30,6 @@ private:
 	Collider* colliders[MAXCOLLIDERS];
 	int renderSetCount;
 	int collidersCount;
+
+	Printer printer;
 };

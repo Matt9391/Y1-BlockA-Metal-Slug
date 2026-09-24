@@ -18,6 +18,8 @@ public:
 	void Draw( Surface* target, int x, int y, bool flipped = false);
 	void DrawScaled( int x, int y, int width, int height, Surface* target );
 	void DrawScaled(Surface* target, int x, int y, int scaleFactor, bool flipped = false);
+
+	void DrawScaled(int x, int y, int width, int height, Surface* target, const uint colour = 0xffffff);
 	void SetFlags( unsigned int f ) { flags = f; }
 	void SetFrame( unsigned int i ) { currentFrame = i; }
 	unsigned int GetFlags() const { return flags; }

@@ -4,7 +4,7 @@
 #include <Pow.h>
 #include <Enemies/RebelSoldier.h>
 #include <Map.h>
-#include <Granade.h>
+#include <Printer.h>
 
 
 class GameScene : public CustomScene
@@ -23,6 +23,5 @@ private:
 	RebelSoldier soldier;
 	Pow pow;
 	Map map;
-	Granade gr;
 };
 

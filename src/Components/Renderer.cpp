@@ -1,13 +1,15 @@
 #include "precomp.h"
 #include "Renderer.h"
 #include <ResourceManager.h>
+#include <HUDText.h>
 #include <iostream>
 
 void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
 
 Renderer::Renderer() :
 	renderSetCount(0),
-	collidersCount(0)
+	collidersCount(0),
+	printer(new Surface("assets/fontGrey.png"))
 	{}
 
 void Renderer::addCollider(Collider& c) {
@@ -117,6 +119,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			c.pos.x + c.offset.x - cameraOffset.x + c.size.x, c.pos.y + c.offset.y - cameraOffset.y + c.size.y, 0xFF0000);
 	}
 
+	printer.drawText({ ":'>(),<CIAO\ndiooo", vec2(100,100), 1 }, screen);
 }
 
 

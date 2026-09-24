@@ -104,7 +104,19 @@ void Sprite::Draw( Surface* target, int x, int y, bool flipped)
 	}
 }
 
-// draw scaled sprite
+void Sprite::DrawScaled(int x1, int y1, int w, int h, Surface* target)
+{
+	if (width == 0 || height == 0) return;
+	for (int x = 0; x < w; x++) for (int y = 0; y < h; y++)
+	{
+		int u = (int)((float)x * ((float)width / (float)w));
+		int v = (int)((float)y * ((float)height / (float)h));
+		uint color = GetBuffer()[u + v * width * numFrames];
+		if (color & 0xffffff) target->pixels[x1 + x + ((y1 + y) * target->width)] = color;
+	}
+}
+
+// draw scaled sprite built by me
 void Sprite::DrawScaled(Surface* target, int x, int y, int scaleFactor, bool flipped)
 {
 
@@ -171,15 +183,39 @@ void Sprite::DrawScaled(Surface* target, int x, int y, int scaleFactor, bool fli
 
 
 
-void Sprite::DrawScaled( int x1, int y1, int w, int h, Surface* target )
+
+
+//drawScaled function of David even though I built my own up there
+void Sprite::DrawScaled(int x1, int y1, int w, int h, Surface* target, const uint colour)
 {
-	if (width == 0 || height == 0) return;
-	for (int x = 0; x < w; x++) for (int y = 0; y < h; y++)
+	if (width == 0 || height == 0)
+		return;
+
+	for (int x = 0; x < w; x++)
 	{
-		int u = (int)((float)x * ((float)width / (float)w));
-		int v = (int)((float)y * ((float)height / (float)h));
-		uint color = GetBuffer()[u + v * width * numFrames];
-		if (color & 0xffffff) target->pixels[x1 + x + ((y1 + y) * target->width)] = color;
+		for (int y = 0; y < h; y++)
+		{
+			const int u =
+				(int)((float)x * ((float)width / (float)w));
+
+			const int v =
+				(int)((float)y * ((float)height / (float)h));
+
+			const uint color =
+				GetBuffer()[
+					currentFrame * width +
+						u +
+						v * width * numFrames
+				];
+
+			if (color & 0xffffff)
+			{
+				target->pixels[
+					x1 + x +
+						((y1 + y) * target->width)
+				] = colour;
+			}
+		}
 	}
 }
 
