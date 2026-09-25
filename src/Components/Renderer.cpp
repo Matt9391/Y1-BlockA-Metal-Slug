@@ -10,6 +10,7 @@ Renderer::Renderer() :
 	renderSetCount(0),
 	collidersCount(0),
 	textsCount(0),
+	spriteSetCount(0),
 	colliders{nullptr},
 	printer()
 	{}
@@ -38,6 +39,13 @@ void Renderer::addHUDText(HUDText t) {
 	texts[textsCount++] = t;
 }
 
+void Renderer::addSpriteSet(SpriteSet ss) {
+	if (spriteSetCount == MAXSPRITESETS)
+		throw runtime_error("Max sprite sets reached");
+
+	spriteSets[spriteSetCount++] = ss;
+}
+
 void Renderer::clearColliders() {
 	for (int i = 0; i < MAXCOLLIDERS; i++) {
 		colliders[i] = nullptr;
@@ -59,6 +67,12 @@ void Renderer::clearTexts() {
 	textsCount = 0;
 }
 
+void Renderer::clearSpriteSets() {
+	for (int i = 0; i < MAXSPRITESETS; i++) {
+		spriteSets[i] = SpriteSet();
+	}
+	spriteSetCount = 0;
+}
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
 
 	for (int i = 0; i < mapRenderSet.layerCount; i++) {
@@ -137,16 +151,22 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			c.pos.x + c.offset.x - cameraOffset.x + c.size.x, c.pos.y + c.offset.y - cameraOffset.y + c.size.y, 0xFF0000);
 	}
 
+	for (int i = 0; i < spriteSetCount; i++) {
+		SpriteSet& ss = spriteSets[i];
+
+		Sprite* sprite = resourceManager.getSprite(ss.resourceId);
+		if (sprite == nullptr) continue;
+
+		sprite->Draw(screen, ss.pos.x, ss.pos.y, 0);
+	}
+
 	for (int i = 0; i < textsCount; i++) {
 		HUDText& t = texts[i];
 		Surface* s = resourceManager.getSprite(t.resourceId)->GetSurface();
 		printer.drawText(t, s, screen);
 	}
 
-	Sprite* s = resourceManager.getSprite(ResourceID::ID_FUEL_BAR);
-	s->Draw(screen, 10, 12, 0);
-	s = resourceManager.getSprite(ResourceID::ID_AMMOS);
-	s->Draw(screen, 90, 2, 0);
+	
 }
 
 

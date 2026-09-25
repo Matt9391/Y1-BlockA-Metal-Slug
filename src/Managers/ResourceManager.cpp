@@ -61,6 +61,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_FONT_GREY_S] = new Sprite(new Surface("assets/fontGrey_9px.png"), ResourceIDFrames::IDF_FONT_GREY_S);
 	sprites[ResourceID::ID_FUEL_BAR] = new Sprite(new Surface("assets/fuelBar.png"), ResourceIDFrames::IDF_FUEL_BAR);
 	sprites[ResourceID::ID_AMMOS] = new Sprite(new Surface("assets/ammos.png"), ResourceIDFrames::IDF_AMMOS);
+	sprites[ResourceID::ID_MENU_BG] = new Sprite(new Surface("assets/menuBg.png"), ResourceIDFrames::IDF_MENU_BG);
 
 	initalized = true;
 }

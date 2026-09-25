@@ -49,5 +49,6 @@ enum ResourceIDFrames {
 	IDF_FONT_ORANGE_S = 1,
 	IDF_FONT_GREY_S = 1,
 	IDF_FUEL_BAR = 1,
+	IDF_MENU_BG = 1,
 	IDF_AMMOS = 1,
 };

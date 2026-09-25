@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "TypeScene.h"
 #include <GameScene.h>
+#include <MenuScene.h>
 #include <Renderer.h>
 #include <InputManager.h>
 
@@ -21,6 +22,7 @@ SceneManager::~SceneManager() {
 
 void SceneManager::init(Surface* screen, Renderer& renderer, InputManager& inputManager, TypeScene firstScene) {
 	gameScene = new GameScene(screen, renderer, inputManager);
+	menuScene = new MenuScene(screen, renderer, inputManager);
 	changeScene(firstScene);
 }
 

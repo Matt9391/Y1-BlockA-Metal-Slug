@@ -145,6 +145,7 @@
     <ClCompile Include="src\Managers\SceneManager.cpp" />
     <ClCompile Include="src\Scenes\GameScene.cpp" />
     <ClCompile Include="src\Scenes\CustomScene.cpp" />
+    <ClCompile Include="src\Scenes\MenuScene.cpp" />
     <ClCompile Include="src\Utils\myMath.cpp" />
     <ClCompile Include="src\Utils\Printer.cpp" />
     <ClCompile Include="template\opencl.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="src\DataStructures\RenderSet.h" />
     <ClInclude Include="src\DataStructures\ResourceID.h" />
     <ClInclude Include="src\DataStructures\ResourceIDFrames.h" />
+    <ClInclude Include="src\DataStructures\SpriteSet.h" />
     <ClInclude Include="src\DataStructures\vec2.h" />
     <ClInclude Include="src\Entities\Bullet.h" />
     <ClInclude Include="src\Entities\Enemies\RebelSoldier.h" />
@@ -207,6 +209,7 @@
     <ClInclude Include="src\DataStructures\TypeScene.h" />
     <ClInclude Include="src\Scenes\GameScene.h" />
     <ClInclude Include="src\Scenes\CustomScene.h" />
+    <ClInclude Include="src\Scenes\MenuScene.h" />
     <ClInclude Include="src\Utils\myMath.h" />
     <ClInclude Include="src\Utils\Printer.h" />
     <ClInclude Include="template\common.h" />

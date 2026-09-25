@@ -2,12 +2,15 @@
 #include "CustomScene.h"
 #include <surface.h>
 #include <Renderer.h>
+#include <TypeScene.h>
 
 CustomScene::CustomScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	screen(screen),
 	renderer(renderer),
 	inputManager(inputManager),
-	camera(vec2(0,0), vec2(screen->width, screen->height))
+	camera(vec2(0,0), vec2(screen->width, screen->height)),
+	changeScene(false),
+	nextScene(TypeScene::MENU)
 
 {
 
@@ -31,4 +34,19 @@ InputManager& CustomScene::getInputManager() const{
 
 Camera& CustomScene::getCamera() {
 	return this->camera;
+}
+
+
+TypeScene CustomScene::getNextScene() const {
+	return this->nextScene;
+}
+bool CustomScene::sceneHasToChange() const {
+	return changeScene;
+}
+
+void CustomScene::setNextScene(TypeScene nextScene){
+	this->nextScene = nextScene;
+}
+void CustomScene::setChangeScene(bool changeScene) {
+	this->changeScene = changeScene;
 }

@@ -49,5 +49,6 @@ enum ResourceID {
 	ID_FONT_GREY_S,
 	ID_FUEL_BAR,
 	ID_AMMOS,
+	ID_MENU_BG,
 	ID_COUNTS
 };

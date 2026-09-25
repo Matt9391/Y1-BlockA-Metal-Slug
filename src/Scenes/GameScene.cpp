@@ -5,6 +5,7 @@
 #include <iostream>
 #include <CollisionManager.h>
 #include <InputManager.h>
+#include <ResourceIDFrames.h>
 #include <Bullet.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
@@ -18,6 +19,17 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 
 void GameScene::init() {
 	getRenderer().addMapRenderSet(map.getMapRenderSet());
+	getRenderer().addSpriteSet(SpriteSet(
+		ResourceID::ID_FUEL_BAR,
+		ResourceIDFrames::IDF_FUEL_BAR,
+		vec2(10, 12)
+	));
+
+	getRenderer().addSpriteSet(SpriteSet(
+		ResourceID::ID_AMMOS,
+		ResourceIDFrames::IDF_AMMOS,
+		vec2(90, 2)
+	)); 
 };
 void GameScene::exit() {};
 
@@ -112,8 +124,10 @@ void GameScene::update(float dt) {
 		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, livesText, vec2(10, 20),0.8f });
 		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "200", vec2(95, 10),1.f});
 		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "10", vec2(130, 10),1.f});
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "LEVEL-4", vec2(150, 205),1.f});
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 205),1.f});
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "LEVEL-4", vec2(150, 215),1.f});
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 215),1.f});
+
+		
 
 	}
 

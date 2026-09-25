@@ -130,6 +130,9 @@
     <ClCompile Include="src\Utils\Printer.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\MenuScene.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -282,6 +285,12 @@
       <Filter>src\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\DataStructures\HUDText.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\MenuScene.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\SpriteSet.h">
       <Filter>src\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>
