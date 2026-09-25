@@ -82,7 +82,7 @@ void GameScene::update(float dt) {
 	}
 
 	if (soldier.getAttacking() && CollisionManager::checkCollision(player.getCollider(), soldier.getCollider())) {
-		printf("HIT\n");
+		player.takeHit();
 	}
 
 	for (int i = 0; i < soldier.getMaxGranades(); i++) {

@@ -29,20 +29,31 @@ public:
 	int getLives() const;
 	int getScore() const;
 
+	void takeHit();
+
+	void revive();
 private:
 	bool getEnemyInFront() const;
 	void setShooting(bool shooting);
 	PlayerInput getPlayerInput();
 	void handleMovement(float dt, const PlayerInput& pInput);
 	void handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded);
+
+	void setLifeState(bool state);
+
 	const InputManager& inputManager; //Const so it can only call const methods
 	Gun gun;
 	PlayerState* state;
 
 	bool shooting;
 	bool hasEnemyInFront;
+	bool alive;
+	bool enabled;
 
 	int lives;
 	int score;
+
+	float deadTimeElapsed;
+	static const int DEADTIMER = 2500;
 };
 

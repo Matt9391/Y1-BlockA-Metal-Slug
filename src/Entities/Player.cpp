@@ -18,8 +18,11 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	gun(this->getPos(), vec2(0, 0), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
 	shooting(false),
 	hasEnemyInFront(false),
+	alive(true),
+	enabled(true),
 	lives(3),
-	score(25001)
+	score(25001),
+	deadTimeElapsed(0.f)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -295,6 +298,33 @@ void Player::loadGFX() {
 			vec2(-7, -15),
 			vec2(-10, -15))
 	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_DIE] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_DIE,
+			ResourceIDFrames::IDF_PLAYER_DIE,
+			80,
+			vec2(-7, 0),
+			vec2(-10,0))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_DIE_STILL] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_DIE_STILL,
+			ResourceIDFrames::IDF_PLAYER_DIE_STILL,
+			80,
+			vec2(-7, 0),
+			vec2(-10, 0))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_REVIVE] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_REVIVE_F,
+			ResourceIDFrames::IDF_PLAYER_REVIVE_F,
+			100,
+			vec2(0, -205),
+			vec2(-10, -205))
+	);
 
 
 
@@ -328,7 +358,28 @@ int Player::getScore() const {
 	return this->score;
 }
 
+void Player::takeHit() {
+	this->lives--;
+	setLifeState(false);
+	if (lives == -1) {
+		
+	}
+}
+
+void Player::setLifeState(bool state) {
+	alive = state;
+	enabled = state;
+}
+
+void Player::revive() {
+	setLifeState(true);
+	deadTimeElapsed = 0.f;
+}
+
+
 void Player::update(float dt) {
+	if (!alive) deadTimeElapsed += dt;
+
 	getAnimator().playAnimation(dt);
 
 	//dt = fminf(dt, 0.05f);
@@ -341,8 +392,17 @@ void Player::update(float dt) {
 	handleMovement(dt, pInput);
 	PlayerAnimationSet nextState = state->handleInput(pInput, static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	//std::cout << nextState << std::endl;
-	setCurrentASIndex(nextState);
-	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
+	if (nextState == PlayerAnimationSet::PAS_REVIVE) {
+		if (deadTimeElapsed > DEADTIMER) {
+			setCurrentASIndex(nextState);
+			state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
+			revive();
+		}
+	}
+	else {
+		setCurrentASIndex(nextState);
+		state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
+	}
 
 	//handleAnimationSet(isMoving, isJumping, isGrounded);
 
@@ -423,6 +483,9 @@ PlayerInput Player::getPlayerInput() {
 	const bool isGrounded = getRigidBody()->isGrounded();
 	const bool isShooting = inputManager.isKeyJustPressed('F');
 	const bool enemyInFront = getEnemyInFront();
+	const bool dead = !alive;
+	const bool lost = lives < 0;
+
 
 
 	//printf("PlayerInput { right=%d, left=%d, moving=%d, jumping=%d, grounded=%d, crouching=%d, shooting=%d, animEnd=%d, dirY=%d }\n", inputRight, inputLeft, isMoving, isJumping, isGrounded, false, isShooting, getAnimator().isAnimationEnded(), getDir().y);
@@ -451,7 +514,9 @@ PlayerInput Player::getPlayerInput() {
 		isCrouching,
 		isShooting,
 		enemyInFront,
-		getAnimator().isAnimationEnded()
+		getAnimator().isAnimationEnded(),
+		dead,
+		lost
 	};
 
 	return playerInput;
@@ -490,12 +555,16 @@ void Player::handleMovement(float dt, const PlayerInput& pInput) {
 	}
 	else {
 		rb->setVelocityY(0);
-		if (pInput.isJumping) {
+		if (enabled && pInput.isJumping) {
 			rb->addVelocity(vec2(0, -0.37f));
 			setGrounded(false);
 		}
 	}
 
+	if (!enabled) {
+		rb->setVelocityX(0);
+		setDir(vec2(0, 0));
+	}
 
 	this->addToPos(rb->getVelocity() * dt);
 

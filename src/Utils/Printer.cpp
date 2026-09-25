@@ -62,7 +62,6 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 
 void Printer::drawLine(const HUDText& text, const float4& fontSize, const vec2& clipValue, Surface* font, Surface* screen) {
 	int count = 0;
-	printf("w: %d\n", (*font).width);
 
 	for (int i = 0; text.text[i] != '\0'; i++) {
 		char character = text.text[i];

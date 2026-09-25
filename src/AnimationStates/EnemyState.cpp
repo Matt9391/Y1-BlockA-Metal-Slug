@@ -186,6 +186,7 @@ EnemyAnimationSet CoverState::update(Enemy& e, float dt, EnemyAnimationSet curre
 void MeleeAttackState::enter(Enemy& e) {
     this->duration = 1000.f;
     this->elapsedTime = 0.f;
+    this->attacked = false;
 }
 
 EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
@@ -193,9 +194,11 @@ EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet
 
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
+    e.setAttacking(false);
 
     elapsedTime += dt;
-    if (elapsedTime > MSTRIGGER) {
+    if (elapsedTime > MSTRIGGER && !attacked) {
+        attacked = true;
         e.setAttacking(true);
     }
 
@@ -210,10 +213,6 @@ EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet
     if (e.getSensors().animationEnded) {
         current = EnemyAnimationSet::EAS_WALK;
         e.setFlip(!e.getFlip());
-    }
-
-    if (current != EnemyAnimationSet::EAS_MELEE_ATTACK) {
-        e.setAttacking(false);
     }
 
 	return current;

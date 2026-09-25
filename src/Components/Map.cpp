@@ -50,7 +50,7 @@ bool Map::loadDataFromJson(const char* fileName) {
 		if (i == 4) { //object layer for now ill improve it
 			nlohmann::json dataObjects = layer.at("objects");
 			int nOfObjects = layer.at("objects").size();
-			std::cout << nOfObjects << std::endl;
+			//std::cout << nOfObjects << std::endl;
 			MapObject* objects = new MapObject[nOfObjects];
 
 			for (int i = 0; i < nOfObjects; i++) {

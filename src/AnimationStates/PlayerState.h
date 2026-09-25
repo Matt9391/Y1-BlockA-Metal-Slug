@@ -20,6 +20,8 @@ struct PlayerInput
     bool isShooting;
     bool enemyInFront;
     bool onAnimationEnd;
+    bool dead;
+    bool lost;
 };
 
 class PlayerState
@@ -151,6 +153,22 @@ public:
 };
 
 class MeleeAttackStateWalk final : public PlayerState
+{
+public:
+    PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
+};
+
+class DeadState final : public PlayerState
+{
+public:
+    PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
+};
+class DeadStillState final : public PlayerState
+{
+public:
+    PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
+};
+class ReviveState final : public PlayerState
 {
 public:
     PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
