@@ -32,6 +32,7 @@ void Game::Tick(float dt)
 	//inputManager.getPressedKeys();
 	screen->Clear(0xFFffff00);
 	sceneManager.getCurrentScene().update(dt);
+	printf("%.2f, %.2f\n", sceneManager.getCurrentScene().getCameraPos().x, sceneManager.getCurrentScene().getCameraPos().y);
 	renderer.render(screen, resourceManager, sceneManager.getCurrentScene().getCameraPos());
 	//screen->Box(100,100,screen->width,screen->height,0xff0000);
 	inputManager.updateLastFrameKeys();

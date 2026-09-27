@@ -11,7 +11,7 @@ Map::Map() :
 	tileSize(0),
 	pos(0,0)
 	{
-		loadDataFromJson("assets/gameMapV4.tmj");
+		loadDataFromJson("assets/gameMapV6.tmj");
 	}
 
 MapRenderSet Map::getMapRenderSet() const {

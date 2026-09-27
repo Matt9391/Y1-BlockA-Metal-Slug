@@ -10,6 +10,7 @@ public:
 
 	void follow(const vec2& target);
 
+	void setPos(vec2 pos);
 	vec2 getPos() const;
 
 	void setWorldSize(const vec2& worldSize);
