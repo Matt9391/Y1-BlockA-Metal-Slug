@@ -30,10 +30,10 @@ void Camera::follow(const vec2& target)
 	this->pos.x = myMath::constrain(this->pos.x,0,this->worldSize.x - this->size.x);
 
 
-	//if (this->pos.x > 500) {
-	//	enableYFollow(true);
-	//	setMinYLimit(-150);
-	//}
+	if (this->pos.x > 500) {
+		enableYFollow(true);
+		setMinYLimit(-150);
+	}
 
 	if (this->followY)
 	{
@@ -43,9 +43,8 @@ void Camera::follow(const vec2& target)
 	}
 }
 
-vec2 Camera::getPos() const
-{
-	return enable ? this->pos : vec2(0,0);
+vec2 Camera::getPos() const {
+	return enable ? vec2(pos.x, floorf(pos.y)) : vec2(0, 0);
 }
 
 void Camera::setWorldSize(const vec2& worldSize)
