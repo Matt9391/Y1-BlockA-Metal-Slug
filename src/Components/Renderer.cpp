@@ -157,7 +157,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		Sprite* sprite = resourceManager.getSprite(ss.resourceId);
 		if (sprite == nullptr) continue;
 
-		sprite->Draw(screen, ss.pos.x, ss.pos.y, 0);
+		sprite->Draw(screen, ss.pos.x - cameraOffset.x, ss.pos.y - cameraOffset.y, 0);
 	}
 
 	for (int i = 0; i < textsCount; i++) {

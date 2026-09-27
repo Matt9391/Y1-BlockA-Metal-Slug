@@ -13,6 +13,7 @@ MenuScene::MenuScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 {}
 
 void MenuScene::init() {
+	getCamera().enableCamera(false);
 	getRenderer().addRenderSet(RenderSet(
 		AnimationSet(
 			1,

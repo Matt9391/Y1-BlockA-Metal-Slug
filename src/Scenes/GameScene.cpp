@@ -10,14 +10,15 @@
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager), 
-	player(vec2(200, 50), getInputManager()),
+	player(vec2(300, 50), getInputManager()),
 	soldier(vec2(300, 50)),
-	pow(vec2(900, 50))
+	pow(vec2(350, 50))
 	{
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
 	}
 
 void GameScene::init() {
+	getCamera().enableCamera(true);
 	getRenderer().addMapRenderSet(map.getMapRenderSet());
 	getRenderer().addSpriteSet(SpriteSet(
 		ResourceID::ID_FUEL_BAR,
@@ -110,7 +111,7 @@ void GameScene::update(float dt) {
 	getRenderer().addCollider(pow.getCollider());
 	//Collider c = player.getCollider();
 	//c.offset.x += player.getLastDir().x * c.size.x;
-	getRenderer().addCollider(c);
+	//getRenderer().addCollider(c);
 	getCamera().follow(player.getPos());
 
 	//HUD
