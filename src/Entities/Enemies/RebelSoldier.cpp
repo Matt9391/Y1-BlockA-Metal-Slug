@@ -147,7 +147,7 @@ void RebelSoldier::update(float dt) {
 
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], getFlip());
 
-
+	setVelocityX(getRigidBody()->getSpeed() * getDir().x);
 	this->addToPos(getRigidBody()->getVelocity() * dt);
 
 	for (int i = 0; i < MAXGRANADES; i++) {

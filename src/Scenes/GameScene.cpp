@@ -12,7 +12,7 @@
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager),
 	player(vec2(300, 50), getInputManager()),
-	soldier(vec2(300, 50)),
+	soldier(vec2(600, 50)),
 	pow(vec2(350, 50)),
 	loseCondition(false),
 	secondsLeft(9),
@@ -53,7 +53,7 @@ void GameScene::update(float dt) {
 
 	player.update(dt);
 	soldier.loadSensors(
-		player.getPos(),
+		player.getPos() + player.getCollider().size / 2.f,
 		CollisionManager::checkMapCollision(soldier.getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), 0)
 	);
 
@@ -90,6 +90,7 @@ void GameScene::update(float dt) {
 
 		if (b && CollisionManager::checkCollision(b->getCollider(), soldier.getCollider())) {
 			free = true;
+			
 		}
 		if(free) player.getGun().freeBullet(i);
 	}

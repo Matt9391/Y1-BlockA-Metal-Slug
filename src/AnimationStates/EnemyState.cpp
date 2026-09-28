@@ -35,14 +35,16 @@ EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet curren
 }
 
 
-const float WalkState::JUMPTIMER = 350.f;
-const float WalkState::FLIPTIMER = 350.f;
+const float WalkState::JUMPTIMER = 500.f;
+const float WalkState::FLIPTIMER = 500.f;
+const float WalkState::GRENADETIMER = 500.f;
 
 void WalkState::enter(Enemy& e) {
     this->duration = RandomFloat() * 3000.f + 1500.f;
     this->elapsedTime = 0.f;
     this->jumpCountdown = 0.f;
     this->flipCountdown = 0.f;
+    this->grenadeCountdown = 0.f;
     e.setDir(vec2(e.getFlip() ? 1 : -1, 0));
 
 }
@@ -54,14 +56,13 @@ EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet curren
     elapsedTime += dt;
     flipCountdown += dt;
     jumpCountdown += dt;
+    grenadeCountdown += dt;
 
     if (flipCountdown > JUMPTIMER  && Rand(100) > MAXCHANCE - FLIPCHANCE) {
         flipCountdown = 0.f;
         e.setFlip(!e.getFlip());
         e.setDir(vec2(e.getFlip() ? 1 : -1, e.getDir().y));
     }
-    
-     e.setVelocityX(e.getRigidBody()->getSpeed() * e.getDir().x);
 
     if (e.getSensors().isGrounded) {
         if (jumpCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - JUMPCHANCE) {
@@ -74,16 +75,19 @@ EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet curren
 
     if (elapsedTime > duration) {
         current = EnemyAnimationSet::EAS_STOP;
-    }
-
-    if (playerVisible && e.getSensors().wallAhead && elapsedTime > duration/3.f) {
+    }else if (playerVisible && e.getSensors().wallAhead && elapsedTime > duration/3.f) {
         current = EnemyAnimationSet::EAS_COVER;
-    }
-
-    if (playerVisible && abs(e.getSensors().distToPlayer) > MELEERANGE && abs(e.getSensors().distToPlayer) < GRANADERANGE) {
+    }else if (grenadeCountdown > GRENADETIMER &&
+        playerVisible &&
+        abs(e.getSensors().distToPlayer) > MELEERANGE &&
+        abs(e.getSensors().distToPlayer) < GRANADERANGE &&
+        Rand(100) > MAXCHANCE - GRANADECHANCE)
+    {
+        grenadeCountdown = 0.f;
         current = EnemyAnimationSet::EAS_GRANADE_ATTACK;
-    }
-    if (playerVisible && abs(e.getSensors().distToPlayer) < MELEERANGE) {
+    }else if (elapsedTime > 500.f &&
+        playerVisible && abs(e.getSensors().distToPlayer) < MELEERANGE &&
+        Rand(100) > MAXCHANCE - MELEECHANCE) {
         current = EnemyAnimationSet::EAS_MELEE_ATTACK;
     }
 
@@ -152,10 +156,6 @@ EnemyAnimationSet FallingState::update(Enemy& e, float dt, EnemyAnimationSet cur
         current = EnemyAnimationSet::EAS_IDLE;
     }
 
-    if (e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_IDLE;
-    }
-
 	return current;
 }
 
@@ -195,6 +195,9 @@ EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
     e.setAttacking(false);
+    e.setDir(vec2(0, e.getDir().y));
+
+    e.setFlip(e.getSensors().distToPlayer < 0 ? true : false);
 
     elapsedTime += dt;
     if (elapsedTime > MSTRIGGER && !attacked) {
@@ -227,8 +230,8 @@ void GrandadeAttackState::enter(Enemy& e) {
 EnemyAnimationSet GrandadeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
-
-
+    e.setDir(vec2(0, e.getDir().y));
+    e.setFlip(e.getSensors().distToPlayer < 0 ? true : false);
     elapsedTime += dt;
     if (!thrown && elapsedTime > MSTRIGGER) {
         thrown = true;

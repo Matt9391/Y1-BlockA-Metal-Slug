@@ -35,7 +35,7 @@ private:
 	static const int MAXTEXTS = 100;
 	static const int MAXSPRITESETS = 100;
 	
-	RenderSet renderSets[MAXRENDERSETS];
+	RenderSet renderSets[MAXRENDERSETS]; //dont describe it meaning
 	MapRenderSet mapRenderSet;
 	Collider* colliders[MAXCOLLIDERS];
 	HUDText texts[MAXTEXTS];

@@ -222,7 +222,8 @@ namespace CollisionManager {
 		return false;
 	}
 
-	bool checkMapCollision(Collider& collider, MapLayer& layer, int axe /* 0 = x, 1 = y, -1 = xy*/) {
+
+	bool checkMapCollision(Collider& collider, MapLayer& layer, int axis /* 0 = x, 1 = y, -1 = xy*/) {
 		vec2 startPos = vec2(static_cast<int>((collider.pos.x + collider.offset.x) / layer.tileSize),
 			static_cast<int>((collider.pos.y + collider.offset.y) / layer.tileSize));
 
@@ -263,18 +264,18 @@ namespace CollisionManager {
 
 						if (overlapX > -0.01f && overlapY > -0.01f) {
 
-							if (axe == -1) {
+							if (axis == -1) {
 								collided = true;
 							}
 							else {
 
 								if (overlapX < overlapY) {
-									if (axe == 0) {
+									if (axis == 0) {
 										collided = true;
 									}
 								}
 								else {
-									if (axe == 1) {
+									if (axis == 1) {
 										collided = true;
 									}
 								}

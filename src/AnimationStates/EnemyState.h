@@ -13,8 +13,8 @@ namespace RebelSoldierStates {
     protected:
         float duration = 0.f;
         float elapsedTime = 0.f;
-        static const int MELEERANGE = 50;
-        static const int GRANADERANGE = 150;
+        static const int MELEERANGE = 20;
+        static const int GRANADERANGE = 100;
         static const int VIEWRANGE = 200;
         static const int MAXCHANCE = 100;
     };
@@ -37,11 +37,15 @@ namespace RebelSoldierStates {
     private:
         static const int FLIPCHANCE = 5;
         static const int JUMPCHANCE = 15;
+        static const int GRANADECHANCE = 35;
+        static const int MELEECHANCE =  5;
         static const float JUMPTIMER;
         static const float FLIPTIMER;
+        static const float GRENADETIMER;
 
         float jumpCountdown;
         float flipCountdown;
+        float grenadeCountdown;
     };
 
     class AfterRunState final : public EnemyState
