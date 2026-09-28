@@ -562,7 +562,7 @@ void Player::handleMovement(float dt, const PlayerInput& pInput) {
 	}
 	else {
 		rb->setVelocityY(0);
-		if (enabled && pInput.isJumping) {
+		if (enabled && !(pInput.isCrouching && pInput.isShooting) && pInput.isJumping) {
 			rb->addVelocity(vec2(0, -0.37f));
 			setGrounded(false);
 		}

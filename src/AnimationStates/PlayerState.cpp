@@ -50,6 +50,8 @@ PlayerAnimationSet CrouchState::handleInput(const PlayerInput& in, PlayerAnimati
     if (in.isMoving)     return PlayerAnimationSet::PAS_CROUCH_WALKING;
     if (in.isJumping)     return PlayerAnimationSet::PAS_JUMP_UP;
     if (in.isShooting && in.enemyInFront) return PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE;
+    if (in.isShooting && in.isJumping)    return PlayerAnimationSet::PAS_SHOOTING_JUMP_UP;
+    if (in.isShooting && in.isJumping && in.inputDown)    return PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN;
     if (in.isShooting)    return PlayerAnimationSet::PAS_SHOOTING_CROUCH;
     return current;
 }
@@ -82,7 +84,7 @@ PlayerAnimationSet JumpUpState::handleInput(const PlayerInput& in, PlayerAnimati
 PlayerAnimationSet JumpForwardState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
 {
     if (in.dead)                         return PlayerAnimationSet::PAS_DIE;
-    if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN;
+    if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_JUMP_UP;
     if (in.isShooting && in.inputDown) return PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN;
     if (in.isShooting)                 return PlayerAnimationSet::PAS_SHOOTING_JUMP_FORWARD;
     if (in.onAnimationEnd)             return PlayerAnimationSet::PAS_FALLING_FORWARD;
@@ -106,7 +108,7 @@ PlayerAnimationSet FallingForwardState::handleInput(const PlayerInput& in, Playe
 {
     if (in.dead)                         return PlayerAnimationSet::PAS_DIE;
     if (in.isGrounded)                 return PlayerAnimationSet::PAS_IDLE;
-    if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN;
+    if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_JUMP_UP;
     if (in.isShooting && in.inputDown) return PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN;
     if (in.isShooting)                 return PlayerAnimationSet::PAS_SHOOTING_JUMP_FORWARD;
     return current;
@@ -165,8 +167,10 @@ PlayerAnimationSet ShootingCrouchState::handleInput(const PlayerInput& in, Playe
 {
     if (in.dead)                         return PlayerAnimationSet::PAS_DIE;
     if (in.inputUp && in.isShooting) return PlayerAnimationSet::PAS_SHOOTING_IDLE_UP;
-    if (!in.inputDown && in.isShooting) return PlayerAnimationSet::PAS_SHOOTING_IDLE;
     if (in.enemyInFront && in.isShooting)      return PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE;
+    if (!in.inputDown && in.isShooting) return PlayerAnimationSet::PAS_SHOOTING_IDLE;
+    if ( in.isJumping && in.inputDown)    return PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN;
+    if (in.isShooting && in.isJumping)    return PlayerAnimationSet::PAS_SHOOTING_JUMP_UP;
     if (in.onAnimationEnd) return PlayerAnimationSet::PAS_CROUCH_IDLE;
     return current;
 }
