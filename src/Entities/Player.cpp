@@ -22,7 +22,8 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	enabled(true),
 	lives(0),
 	score(25001),
-	deadTimeElapsed(0.f)
+	deadTimeElapsed(0.f),
+	canRevive(true)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -42,6 +43,7 @@ Player::~Player() {
 void Player::init(vec2 pos) {
 	this->setPos(pos);
 	this->lives = 3;
+	this->canRevive = true;
 }
 
 void Player::loadGFX() {
@@ -367,7 +369,7 @@ void Player::takeHit() {
 	this->lives--;
 	setLifeState(false);
 	if (lives == -1) {
-		
+		canRevive = false;
 	}
 }
 
@@ -398,7 +400,7 @@ void Player::update(float dt) {
 	PlayerAnimationSet nextState = state->handleInput(pInput, static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	//std::cout << nextState << std::endl;
 	if (nextState == PlayerAnimationSet::PAS_REVIVE) {
-		if (deadTimeElapsed > DEADTIMER) {
+		if (deadTimeElapsed > DEADTIMER && canRevive) {
 			setCurrentASIndex(nextState);
 			state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 			revive();

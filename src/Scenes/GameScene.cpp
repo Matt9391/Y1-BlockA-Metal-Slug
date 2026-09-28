@@ -151,7 +151,7 @@ void GameScene::update(float dt) {
 
 			char timeLeft[50];
 			snprintf(timeLeft, sizeof(timeLeft), "%d", secondsLeft);
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "CONTINUE?", vec2(100, 80),1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "CONTINUE?", vec2(80, 80),1.f });
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, timeLeft, vec2(130, 100),2.f });
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CONTINUE ", vec2(10, 10),1.f });
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, timeLeft, vec2(90, 10),1.f });

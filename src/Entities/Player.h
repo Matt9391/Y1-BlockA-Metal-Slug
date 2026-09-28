@@ -56,5 +56,7 @@ private:
 
 	float deadTimeElapsed;
 	static const int DEADTIMER = 2500;
+
+	bool canRevive;
 };
 

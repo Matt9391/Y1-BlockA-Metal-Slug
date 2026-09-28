@@ -155,7 +155,6 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		SpriteSet& ss = spriteSets[i];
 		Sprite* sprite = resourceManager.getSprite(ss.resourceId);
 		if (sprite == nullptr) continue;
-		printf("%d\n", i);
 
 		sprite->Draw(screen, ss.pos.x, ss.pos.y, 0);
 	}
