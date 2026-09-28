@@ -153,11 +153,11 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 	for (int i = 0; i < spriteSetCount; i++) {
 		SpriteSet& ss = spriteSets[i];
-
 		Sprite* sprite = resourceManager.getSprite(ss.resourceId);
 		if (sprite == nullptr) continue;
+		printf("%d\n", i);
 
-		sprite->Draw(screen, ss.pos.x - cameraOffset.x, ss.pos.y - cameraOffset.y, 0);
+		sprite->Draw(screen, ss.pos.x, ss.pos.y, 0);
 	}
 
 	for (int i = 0; i < textsCount; i++) {

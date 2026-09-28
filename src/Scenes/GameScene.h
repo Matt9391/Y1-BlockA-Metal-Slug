@@ -23,5 +23,8 @@ private:
 	RebelSoldier soldier;
 	Pow pow;
 	Map map;
+	bool loseCondition;
+	int secondsLeft;
+	float elapsedLoseTime;
 };
 

@@ -14,22 +14,17 @@ MenuScene::MenuScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 
 void MenuScene::init() {
 	getCamera().enableCamera(false);
-	getRenderer().addRenderSet(RenderSet(
-		AnimationSet(
-			1,
-			AnimationLayer(
+	getRenderer().clearSpriteSets();
+	getRenderer().addSpriteSet(SpriteSet(
 				ResourceID::ID_MENU_BG,
 				ResourceIDFrames::IDF_MENU_BG,
-				100.f,
-				vec2(0,0), vec2(0,0))),
-		vec2(0,0)
-	));
-	
+				vec2(0,0)));
+
 	secondsLeft = 60;
 	elapsedTime = 0.f;
 
 	setNextScene(TypeScene::GAMEPLAY);
-
+	setChangeScene(false);
 }
 
 void MenuScene::exit() {};

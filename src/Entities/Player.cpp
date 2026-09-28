@@ -20,7 +20,7 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	hasEnemyInFront(false),
 	alive(true),
 	enabled(true),
-	lives(3),
+	lives(0),
 	score(25001),
 	deadTimeElapsed(0.f)
 {
@@ -37,6 +37,11 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 
 Player::~Player() {
 	delete[] getAnimationSets();
+}
+
+void Player::init(vec2 pos) {
+	this->setPos(pos);
+	this->lives = 3;
 }
 
 void Player::loadGFX() {

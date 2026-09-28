@@ -15,6 +15,7 @@ public:
 	Player(vec2 pos, InputManager& inputManager);
 	~Player() override;
 
+	void init(vec2 pos);
 	void loadGFX() override;
 
 	void update(float dt) override;

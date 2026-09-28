@@ -7,20 +7,25 @@
 #include <InputManager.h>
 #include <ResourceIDFrames.h>
 #include <Bullet.h>
+#include <TypeScene.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
-	CustomScene(screen, renderer, inputManager), 
+	CustomScene(screen, renderer, inputManager),
 	player(vec2(300, 50), getInputManager()),
 	soldier(vec2(300, 50)),
-	pow(vec2(350, 50))
+	pow(vec2(350, 50)),
+	loseCondition(false),
+	secondsLeft(9),
+	elapsedLoseTime(0.f)
 	{
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
-		getCamera().setPos(vec2(0, 10 * map.getTileSize()));
 	}
 
 void GameScene::init() {
+	getCamera().init(vec2(0, 10 * map.getTileSize()));
 	getCamera().enableCamera(true);
 	getRenderer().addMapRenderSet(map.getMapRenderSet());
+	getRenderer().clearSpriteSets();
 	getRenderer().addSpriteSet(SpriteSet(
 		ResourceID::ID_FUEL_BAR,
 		ResourceIDFrames::IDF_FUEL_BAR,
@@ -32,6 +37,12 @@ void GameScene::init() {
 		ResourceIDFrames::IDF_AMMOS,
 		vec2(90, 2)
 	)); 
+	setChangeScene(false);
+
+	player.init(vec2(300, 50));
+	loseCondition = false;
+	secondsLeft = 9;
+	elapsedLoseTime = 0.f;
 };
 void GameScene::exit() {};
 
@@ -117,22 +128,50 @@ void GameScene::update(float dt) {
 
 	//HUD
 	{
-		char livesText[50];
-		snprintf(livesText, sizeof(livesText), "1UP=%d", player.getLives());
-		char scoreText[50];
-		snprintf(scoreText, sizeof(scoreText), "%d", player.getScore());
-
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, scoreText, vec2(38, 2),0.5f });
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, livesText, vec2(10, 20),0.8f });
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "200", vec2(95, 10),1.f});
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "10", vec2(130, 10),1.f});
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "LEVEL-4", vec2(150, 215),1.f});
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 215),1.f});
+		
 
 		
 
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "LEVEL-4", vec2(150, 215),1.f});
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 215),1.f});
+
+		if (loseCondition) {
+			elapsedLoseTime += dt;
+
+			if (elapsedLoseTime > 1000) {
+				elapsedLoseTime = 0.f;
+				secondsLeft--;
+				secondsLeft = secondsLeft < 0 ? 0 : secondsLeft;
+			}
+
+			if (secondsLeft == 0) {
+				setNextScene(TypeScene::MENU);
+				setChangeScene(true);
+			}
+
+			char timeLeft[50];
+			snprintf(timeLeft, sizeof(timeLeft), "%d", secondsLeft);
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "CONTINUE?", vec2(100, 80),1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, timeLeft, vec2(130, 100),2.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CONTINUE ", vec2(10, 10),1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, timeLeft, vec2(90, 10),1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PUSH START", vec2(180, 10),1.f });
+
+		}
+		else {
+			char livesText[50];
+			snprintf(livesText, sizeof(livesText), "1UP=%d", player.getLives());
+			char scoreText[50];
+			snprintf(scoreText, sizeof(scoreText), "%d", player.getScore());
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, scoreText, vec2(38, 2),0.5f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, livesText, vec2(10, 20),0.8f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "200", vec2(95, 10),1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "10", vec2(130, 10),1.f });
+		}
+
 	}
 
+	loseCondition = player.getLives() <= -1;
 };
 
 

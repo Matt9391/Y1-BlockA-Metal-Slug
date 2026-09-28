@@ -8,6 +8,7 @@ class Camera
 public:
 	Camera(vec2 pos, vec2 size);
 
+	void init(vec2 pos);
 	void follow(const vec2& target);
 
 	void setPos(vec2 pos);
