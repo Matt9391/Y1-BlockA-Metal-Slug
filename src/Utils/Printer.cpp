@@ -55,7 +55,7 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 	}
 
 	for (int i = 0; i < MAXLINES; i++)
-		delete[] lines[i];
+		delete lines[i];
 
 	delete[] lines;
 }

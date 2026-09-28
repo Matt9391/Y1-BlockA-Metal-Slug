@@ -8,6 +8,8 @@ public:
 
 	void loadGFX() override;
 
+	void explode();
+
 	void update(float dt) override;
 private:
 	float arcWidth;
@@ -15,4 +17,5 @@ private:
 	float duration;
 	float peakHeight;
 	float elapsedTime;
+	bool ableMovement;
 };

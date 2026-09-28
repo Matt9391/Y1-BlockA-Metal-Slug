@@ -39,6 +39,8 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_PLAYER_DIE]= new Sprite(new Surface("assets/playerAnimation/die.png"), ResourceIDFrames::IDF_PLAYER_DIE);
 	sprites[ResourceID::ID_PLAYER_DIE_STILL]= new Sprite(new Surface("assets/playerAnimation/dieStill.png"), ResourceIDFrames::IDF_PLAYER_DIE_STILL);
 	sprites[ResourceID::ID_PLAYER_REVIVE_F]= new Sprite(new Surface("assets/playerAnimation/Pistol/revive.png"), ResourceIDFrames::IDF_PLAYER_REVIVE_F);
+	sprites[ResourceID::ID_REBELSOLDIER_GRANADE]= new Sprite(new Surface("assets/EnemyAnimation/Rebel/grenade.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE);
+	sprites[ResourceID::ID_REBELSOLDIER_GRANADE_BOOM]= new Sprite(new Surface("assets/EnemyAnimation/Rebel/grenadeBoom.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_BOOM);
 	sprites[ResourceID::ID_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/bullet.png"), ResourceIDFrames::IDF_PLAYER_BULLLET_PISTOL);
 	sprites[ResourceID::ID_REBELSOLDIER_IDLE] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/idle.png"), ResourceIDFrames::IDF_REBELSOLDIER_IDLE);
 	sprites[ResourceID::ID_REBELSOLDIER_WALK] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/walk.png"), ResourceIDFrames::IDF_REBELSOLDIER_WALK);
@@ -50,6 +52,8 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_REBELSOLDIER_COVER] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/cover.png"), ResourceIDFrames::IDF_REBELSOLDIER_COVER);
 	sprites[ResourceID::ID_REBELSOLDIER_MELEE_ATTACK] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/meleeAttack.png"), ResourceIDFrames::IDF_REBELSOLDIER_MELEE_ATTACK);
 	sprites[ResourceID::ID_REBELSOLDIER_GRANADE_ATTACK] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/granadeAttack.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_ATTACK);
+	sprites[ResourceID::ID_REBELSOLDIER_DEATH] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/death.png"), ResourceIDFrames::IDF_REBELSOLDIER_DEATH);
+	sprites[ResourceID::ID_REBELSOLDIER_DEATH_STILL] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/deathStill.png"), ResourceIDFrames::IDF_REBELSOLDIER_DEATH_STILL);
 	sprites[ResourceID::ID_POW_IDLE] = new Sprite(new Surface("assets/POWsAnimation/idle.png"), ResourceIDFrames::IDF_POW_IDLE);
 	sprites[ResourceID::ID_POW_RELEASING] = new Sprite(new Surface("assets/POWsAnimation/releasing.png"), ResourceIDFrames::IDF_POW_RELEASING);
 	sprites[ResourceID::ID_POW_WALK_WAIT] = new Sprite(new Surface("assets/POWsAnimation/walkWait.png"), ResourceIDFrames::IDF_POW_WALK_WAIT);

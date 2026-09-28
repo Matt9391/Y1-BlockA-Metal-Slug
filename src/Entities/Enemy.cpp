@@ -6,7 +6,8 @@ Enemy::Enemy(vec2 pos) :
 	Entity(pos, true),
 	flip(false),
 	sensors{},
-	attacking(false)
+	attacking(false),
+	alive(true)
 {
 }
 
@@ -38,10 +39,21 @@ void Enemy::loadSensors(vec2 playerPos, bool wallAhead) {
 		wallAhead,
 		false,
 		getRigidBody()->isGrounded(),
-		getAnimator().isAnimationEnded()
+		getAnimator().isAnimationEnded(),
+		getAlive()
 	};
 }
 
 const EnemySensor& Enemy::getSensors() const {
 	return this->sensors;
+}
+
+
+void Enemy::setAlive(bool alive) {
+	this->alive = alive;
+}
+bool Enemy::getAlive() const {
+
+	return this->alive;
+
 }

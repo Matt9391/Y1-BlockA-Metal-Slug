@@ -36,7 +36,7 @@ bool Animator::setAnimation(AnimationSet* newAnimationSet, bool flipped,  bool r
 
 			this->animationSet = newAnimationSet;
 			
-			animationEnded = false;
+			this->animationEnded = false;
 
 			for (int i = 0; i < animationSet->layerCount; i++) {
 				animationSet->layers[i].currentFrame = 0;
@@ -62,12 +62,12 @@ void Animator::playAnimation(float dt) {
 		AnimationLayer& l = animationSet->layers[i];
 
 		this->timeElapsed[i] += dt;
-		if (timeElapsed[i] >= l.frameDuration) {
-			timeElapsed[i] = 0.f;
+		if (this->timeElapsed[i] >= l.frameDuration) {
+			this->timeElapsed[i] = 0.f;
 			l.currentFrame = ++l.currentFrame % l.nFrames;
 		}
 
-		animationEnded = l.currentFrame == (l.nFrames -1);
+		this->animationEnded = l.currentFrame == (l.nFrames -1);
 
 	}
 }

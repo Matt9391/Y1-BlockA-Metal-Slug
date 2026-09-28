@@ -11,7 +11,8 @@ Entity::Entity(vec2 pos, bool needsRigidBody) :
 	animationSets(nullptr),
 	currentASIndex(-1),
 	collider(this->pos, vec2(0,0), vec2(0,0)),
-	rigidBody(nullptr)
+	rigidBody(nullptr),
+	free(false)
 	{
 		this->rigidBody = needsRigidBody ? new RigidBody(this->pos, true) : nullptr;
 
@@ -24,7 +25,7 @@ Entity::~Entity()
 void Entity::update(float dt) {
 }
 
-RenderSet Entity::getRenderSet() const {
+RenderSet Entity::getRenderSet() const { //make it reference
 	return RenderSet{ animationSets[currentASIndex], pos };
 }
 
@@ -112,4 +113,11 @@ RigidBody* Entity::getRigidBody() const {
 	return this->rigidBody;
 }
 
+void Entity::setFree(bool free) {
+	this->free = free;
+}
 
+
+bool Entity::hasToBeFreed() const {
+	return this->free;
+}

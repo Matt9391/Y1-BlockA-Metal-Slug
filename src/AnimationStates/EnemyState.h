@@ -102,6 +102,22 @@ namespace RebelSoldierStates {
         static const int MSTRIGGER = 500;
         bool thrown;
     };
+    
+    class DeathState final : public EnemyState
+    {
+    public:
+        void enter(Enemy& e) override;
+        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+    private:
+    };
+    
+    class DeathStillState final : public EnemyState
+    {
+    public:
+        void enter(Enemy& e) override;
+        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+    private:
+    };
 
     EnemyState* getEnemyState(EnemyAnimationSet index);
 

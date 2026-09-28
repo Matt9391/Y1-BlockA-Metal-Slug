@@ -42,6 +42,7 @@ public:
 
 	RigidBody* getRigidBody() const;
 
+	bool hasToBeFreed() const;
 protected:
 	Animator& getAnimator();
 	AnimationSet*& getAnimationSets();
@@ -55,6 +56,7 @@ protected:
 	
 	void setLastDir(vec2 dir);
 
+	void setFree(bool free);
 
 private:
 
@@ -70,5 +72,8 @@ private:
 
 	Collider collider;
 	RigidBody* rigidBody;
+
+	bool free;
+
 };
 

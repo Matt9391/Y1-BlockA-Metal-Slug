@@ -8,10 +8,11 @@ Granade::Granade(vec2 pos, bool needsRigidBody, vec2 dir) :
 	startPos(pos),
 	duration(800.f), //ms
 	elapsedTime(0.f),
-	peakHeight(50.f)
+	peakHeight(50.f),
+	ableMovement(true)
 {
 	setCollider(vec2(5, 5), vec2(0, 0));
-	getAnimationSets() = new AnimationSet[1];
+	getAnimationSets() = new AnimationSet[2];
 	loadGFX();
 	setCurrentASIndex(0);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
@@ -25,8 +26,16 @@ Granade::~Granade() {
 void Granade::loadGFX() {
 	getAnimationSets()[0] = AnimationSet(
 		1,
-		AnimationLayer(ResourceID::ID_PLAYER_FALLING_LEGS,
-			ResourceIDFrames::IDF_PLAYER_FALLING_LEGS,
+		AnimationLayer(ResourceID::ID_REBELSOLDIER_GRANADE,
+			ResourceIDFrames::IDF_REBELSOLDIER_GRANADE,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
+	getAnimationSets()[1] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_REBELSOLDIER_GRANADE_BOOM,
+			ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_BOOM,
 			100,
 			vec2(0, 0),
 			vec2(0, 0))
@@ -35,6 +44,12 @@ void Granade::loadGFX() {
 
 void Granade::update(float dt) {
 	getAnimator().playAnimation(dt);
+
+	if (getAnimator().isAnimationEnded() && getCurrentASIndex() == 1) {
+		setFree(true);
+	}
+
+	if (!ableMovement) return;
 
 	// y = 1 - (2x - 1)^2
 	elapsedTime += dt;
@@ -46,4 +61,11 @@ void Granade::update(float dt) {
 	float worldY = startPos.y - peakHeight * y;
 
 	setPos(vec2(worldX, worldY));
+
+}
+
+void Granade::explode() {
+	setCurrentASIndex(1);
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+	ableMovement = false;
 }

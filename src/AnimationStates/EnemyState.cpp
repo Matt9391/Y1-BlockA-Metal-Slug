@@ -16,6 +16,10 @@ void IdleState::enter(Enemy& e) {
 
 EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    if (!e.getSensors().alive) {
+        return   EnemyAnimationSet::EAS_DEATH;
+    }
+
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
     elapsedTime += dt;
@@ -30,6 +34,7 @@ EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet curren
     if (!playerVisible && e.getSensors().allyDiedNearby) {
         current = EnemyAnimationSet::EAS_SCARED;
     }
+
 
 	return current;
 }
@@ -51,6 +56,9 @@ void WalkState::enter(Enemy& e) {
 
 EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet current) 
 {
+    if (!e.getSensors().alive) {
+        return   EnemyAnimationSet::EAS_DEATH;
+    }
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
     elapsedTime += dt;
@@ -101,7 +109,9 @@ void AfterRunState::enter(Enemy& e) {
 
 EnemyAnimationSet AfterRunState::update(Enemy& e, float dt, EnemyAnimationSet current) 
 {
-
+    if (!e.getSensors().alive) {
+        return   EnemyAnimationSet::EAS_DEATH;
+    }
     if (e.getSensors().animationEnded) {
         current = EnemyAnimationSet::EAS_IDLE;
     }
@@ -116,6 +126,9 @@ void JumpForwardState::enter(Enemy& e) {
 
 EnemyAnimationSet JumpForwardState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    if (!e.getSensors().alive) {
+        return   EnemyAnimationSet::EAS_DEATH;
+    }
     if (e.getSensors().isGrounded) {
         current = EnemyAnimationSet::EAS_IDLE;
     }
@@ -134,6 +147,9 @@ void ScaredState::enter(Enemy& e) {
 
 EnemyAnimationSet ScaredState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    if (!e.getSensors().alive) {
+        return   EnemyAnimationSet::EAS_DEATH;
+    }
     if (e.getSensors().isGrounded) {
         current = EnemyAnimationSet::EAS_IDLE;
     }
@@ -152,6 +168,9 @@ void FallingState::enter(Enemy& e) {
 
 EnemyAnimationSet FallingState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    if (!e.getSensors().alive) {
+        return   EnemyAnimationSet::EAS_DEATH;
+    }
     if (e.getSensors().isGrounded) {
         current = EnemyAnimationSet::EAS_IDLE;
     }
@@ -166,6 +185,9 @@ void CoverState::enter(Enemy& e) {
 
 EnemyAnimationSet CoverState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    if (!e.getSensors().alive) {
+        return EnemyAnimationSet::EAS_DEATH;
+    }
 
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
@@ -191,6 +213,9 @@ void MeleeAttackState::enter(Enemy& e) {
 
 EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    if (!e.getSensors().alive) {
+        return   EnemyAnimationSet::EAS_DEATH;
+    }
 
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
@@ -229,6 +254,10 @@ void GrandadeAttackState::enter(Enemy& e) {
 
 EnemyAnimationSet GrandadeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
 {
+    if (!e.getSensors().alive) {
+        return   EnemyAnimationSet::EAS_DEATH;
+    }
+
     bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
     e.setDir(vec2(0, e.getDir().y));
     e.setFlip(e.getSensors().distToPlayer < 0 ? true : false);
@@ -250,6 +279,29 @@ EnemyAnimationSet GrandadeAttackState::update(Enemy& e, float dt, EnemyAnimation
 	return current;
 }
 
+void DeathState::enter(Enemy& e) {}
+
+
+EnemyAnimationSet DeathState::update(Enemy& e, float dt, EnemyAnimationSet current)
+{
+    e.setFlip(e.getSensors().distToPlayer < 0 ? false : true);
+    e.setDir(vec2(e.getSensors().distToPlayer < 0 ? -1 : 1, e.getDir().y));
+    e.getRigidBody()->setSpeed(0.05f);
+    if (e.getSensors().animationEnded) {
+        current = EnemyAnimationSet::EAS_DEATH_STILL;
+    }
+
+	return current;
+}
+
+void DeathStillState::enter(Enemy& e) {}
+
+EnemyAnimationSet DeathStillState::update(Enemy& e, float dt, EnemyAnimationSet current)
+{
+    e.setDir(vec2(0, e.getDir().y));
+	return current;
+}
+
 
 // --- Static instances + lookup table -----------------------------------
     IdleState                idleInstance;
@@ -261,6 +313,8 @@ EnemyAnimationSet GrandadeAttackState::update(Enemy& e, float dt, EnemyAnimation
     CoverState               coverInstance;
     MeleeAttackState         meleeAttackInstance;
     GrandadeAttackState      granadeAttackInstance;
+    DeathState               deathInstance;
+    DeathStillState          deathStillIstance;
     //CrouchState              crouchInstance;
     //CrouchWalkingState       crouchWalkingInstance;
     //JumpUpState              jumpUpInstance;
@@ -292,6 +346,8 @@ EnemyState* getEnemyState(EnemyAnimationSet index)
         &RebelSoldierStates::coverInstance,               // PAS_COVER
         &RebelSoldierStates::meleeAttackInstance,         // PAS_MELEE_ATTACK
         &RebelSoldierStates::granadeAttackInstance,         // PAS_MELEE_ATTACK
+        &RebelSoldierStates::deathInstance,         // PAS_MELEE_ATTACK
+        &RebelSoldierStates::deathStillIstance,         // PAS_MELEE_ATTACK
         //&crouchInstance,              // PAS_CROUCH_IDLE
         //&crouchWalkingInstance,       // PAS_CROUCH_WALKING
         //&jumpUpInstance,              // PAS_JUMP_UP

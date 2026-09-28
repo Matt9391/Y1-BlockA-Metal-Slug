@@ -26,7 +26,7 @@ RebelSoldier::RebelSoldier(vec2 pos) :
 
 RebelSoldier::~RebelSoldier() {
 	delete[] getAnimationSets();
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < MAXGRANADES; i++) {
 		delete granades[i];
 	}
 }
@@ -121,6 +121,26 @@ void RebelSoldier::loadGFX() {
 			vec2(0, 0),
 			vec2(0, 0))
 	);
+	
+	getAnimationSets()[EnemyAnimationSet::EAS_DEATH] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_REBELSOLDIER_DEATH,
+			ResourceIDFrames::IDF_REBELSOLDIER_DEATH,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
+	
+	getAnimationSets()[EnemyAnimationSet::EAS_DEATH_STILL] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_REBELSOLDIER_DEATH_STILL,
+			ResourceIDFrames::IDF_REBELSOLDIER_DEATH_STILL,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
 
 }
 
@@ -148,6 +168,7 @@ void RebelSoldier::update(float dt) {
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], getFlip());
 
 	setVelocityX(getRigidBody()->getSpeed() * getDir().x);
+	
 	this->addToPos(getRigidBody()->getVelocity() * dt);
 
 	for (int i = 0; i < MAXGRANADES; i++) {

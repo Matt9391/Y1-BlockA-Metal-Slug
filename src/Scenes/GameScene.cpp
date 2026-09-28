@@ -90,7 +90,7 @@ void GameScene::update(float dt) {
 
 		if (b && CollisionManager::checkCollision(b->getCollider(), soldier.getCollider())) {
 			free = true;
-			
+			soldier.setAlive(false);
 		}
 		if(free) player.getGun().freeBullet(i);
 	}
@@ -101,17 +101,15 @@ void GameScene::update(float dt) {
 
 	for (int i = 0; i < soldier.getMaxGranades(); i++) {
 		Granade* g = soldier.getGranade(i);
-		bool free = false;
 		if (g && CollisionManager::resolveMapCollision(*g, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
-			free = true;
+			g->explode();
 		}
 
 		if (g && CollisionManager::checkCollision(g->getCollider(), player.getCollider())) {
-			free = true;
+			g->explode();
 		}
-		if (free) soldier.freeGranade(i);
+		if (g && g->hasToBeFreed()) soldier.freeGranade(i);
 	}
-
 	getRenderer().addRenderSet(player.getRenderSet());
 	getRenderer().addRenderSet(soldier.getRenderSet());
 	getRenderer().addRenderSet(pow.getRenderSet());

@@ -8,6 +8,7 @@ struct EnemySensor {
 	bool platformAbove;
 	bool isGrounded;
 	bool animationEnded;
+	bool alive;
 };
 
 class Enemy : public Entity {
@@ -24,10 +25,16 @@ public:
 
 	const EnemySensor& getSensors() const;
 
+	void setAlive(bool alive);
+	bool getAlive() const;
+
+	
+
 private:
 	EnemySensor sensors;
 	bool flip;
 	bool attacking;
+	bool alive;
 	//other stuff
 };
 
