@@ -15,10 +15,11 @@ class Game : public TheApp
 {
 public:
 	Game();
+	~Game();
 	// game flow methods
 	void Init();
 	void Tick( float dt );
-	void Shutdown() { /* implement if you want to do something on exit */ }
+	void Shutdown() { printf("shutdown");/* implement if you want to do something on exit */ }
 	// input handling
 	void MouseUp( int ) { /* implement if you want to detect mouse button presses */ }
 	void MouseDown( int ) { /* implement if you want to detect mouse button presses */ }

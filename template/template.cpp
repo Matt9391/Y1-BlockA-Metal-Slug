@@ -394,6 +394,7 @@ int main()
 	// close down
 	app->Shutdown();
 	Kernel::KillCL();
+	delete app;
 	glfwDestroyWindow( window );
 	glfwTerminate();
 	return 0;
