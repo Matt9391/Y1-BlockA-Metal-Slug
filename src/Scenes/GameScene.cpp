@@ -11,19 +11,22 @@
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager),
-	player(vec2(300, 50), getInputManager()),
+	player(vec2(0, 0), getInputManager()),
 	soldier(vec2(600, 50)),
 	pow(vec2(350, 50)),
 	loseCondition(false),
 	secondsLeft(9),
 	elapsedLoseTime(0.f),
-	spawnedEntities{nullptr}
+	spawnedEntities{}
 	{
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
 	}
 
 	GameScene::~GameScene() {
-
+		for (int i = 0; i < MAXENTITIES; i++) {
+			if (spawnedEntities[i] != nullptr)
+				delete spawnedEntities[i];
+		}
 	}
 
 void GameScene::init() {

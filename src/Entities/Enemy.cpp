@@ -9,6 +9,8 @@ Enemy::Enemy(vec2 pos) :
 	attacking(false),
 	alive(true)
 {
+	sensors.alive = true;
+	sensors.isGrounded = true;
 }
 
 void Enemy::setFlip(bool flip) {
