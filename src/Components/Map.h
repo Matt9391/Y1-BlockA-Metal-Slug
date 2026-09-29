@@ -14,6 +14,9 @@ public:
 	const MapRenderSet& getMapRenderSet() const;
 	vec2 getTiles() const;
 	int getTileSize() const;
+	Spawner** getSpawners(int layer);
+	const int* getSpawnersCount() const;
+	const int& getSpawnersLayers() const;
 
 	MapLayer& getLayer(MapLayerNames layerName);
 

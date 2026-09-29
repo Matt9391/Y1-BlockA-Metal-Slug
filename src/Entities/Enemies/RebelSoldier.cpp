@@ -158,9 +158,9 @@ void RebelSoldier::update(float dt) {
 
 	EnemyAnimationSet nextState = state->update(*this, dt, static_cast<EnemyAnimationSet>(getCurrentASIndex()));
 	if (nextState != getCurrentASIndex()) {
-		setCurrentASIndex(nextState);
-		state = RebelSoldierStates::getEnemyState(static_cast<EnemyAnimationSet>(getCurrentASIndex()));
-		state->enter(*this);
+		//setCurrentASIndex(nextState);
+		//state = RebelSoldierStates::getEnemyState(static_cast<EnemyAnimationSet>(getCurrentASIndex()));
+		//state->enter(*this);
 
 	}
 

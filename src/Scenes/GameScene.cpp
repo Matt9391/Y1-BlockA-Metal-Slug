@@ -16,9 +16,10 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 	pow(vec2(350, 50)),
 	loseCondition(false),
 	secondsLeft(9),
-	elapsedLoseTime(0.f)
+	elapsedLoseTime(0.f),
+	spawnedEntities{nullptr}
 	{
-		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
+		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
 	}
 
 	GameScene::~GameScene() {
@@ -54,6 +55,29 @@ void GameScene::update(float dt) {
 	getRenderer().clearRenderSets();
 	getRenderer().clearColliders();
 	getRenderer().clearTexts();
+
+	for (int i = 0; i < map.getSpawnersLayers(); i++) {
+		Spawner** layerSpawners = map.getSpawners(i);
+		for (int j = 0; j < map.getSpawnersCount()[i]; j++) {
+			Spawner& spawner = *layerSpawners[j];
+
+			//printf("spawner %d %.2f %2.f\n", j, spawner.getPos().x, spawner.getPos().y);
+			spawner.setDistToPlayer(player.getPos().x - spawner.getPos().x);
+			spawner.update(dt);
+			Entity* newEntity = spawner.createEntity();
+			addNewEntity(newEntity);
+		}
+	}
+
+
+	for (Entity* e : this->spawnedEntities) {
+		if (!e) continue;
+		e->update(dt);
+		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
+		getRenderer().addRenderSet(e->getRenderSet());
+		getRenderer().addCollider(e->getCollider());
+	}
+
 
 	player.update(dt);
 	soldier.loadSensors(
@@ -180,3 +204,24 @@ void GameScene::display(float dt) {
 	//player.display(dt, screen); //player which as entity
 
 };
+
+void GameScene::addNewEntity(Entity* e) {
+	if (e == nullptr) return;
+
+	int spawnIndex = -1;
+
+	for (int i = 0; i < MAXENTITIES; i++) {
+		Entity* se = spawnedEntities[i]; //se - spawned entities
+		if (se == nullptr) {
+			spawnIndex = i;
+			break;
+		}
+	}
+
+	if (spawnIndex != -1) {
+		spawnedEntities[spawnIndex] = e;
+	}
+	else {
+		throw runtime_error("Max entities reached");
+	}
+}

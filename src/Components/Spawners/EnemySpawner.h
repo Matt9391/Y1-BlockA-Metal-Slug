@@ -12,4 +12,6 @@ private:
 
 	int enemyType;
 	int nOfEnemy;
+
+	static const int SPAWNRANGE = 300;
 };

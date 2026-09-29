@@ -20,9 +20,13 @@ public:
 	void display(float dt) override;
 
 private:
+	void addNewEntity(Entity* e);
+
 	Player player;
 	RebelSoldier soldier;
-	Entity* spawnedEntities;
+	static const int MAXENTITIES = 150;
+
+	Entity* spawnedEntities[MAXENTITIES];
 
 	Pow pow;
 	Map map;
