@@ -3,6 +3,7 @@
 #include <ResourceManager.h>
 #include <HUDText.h>
 #include <iostream>
+#include <Spawner.h>
 
 void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
 
@@ -12,7 +13,8 @@ Renderer::Renderer() :
 	textsCount(0),
 	spriteSetCount(0),
 	colliders{nullptr},
-	printer()
+	printer(),
+	mapRenderSet{nullptr}
 	{}
 
 void Renderer::addCollider(Collider& c) {
@@ -30,7 +32,7 @@ void Renderer::addRenderSet(RenderSet rs) {
 }
 
 void Renderer::addMapRenderSet(const MapRenderSet& mrs) {
-	mapRenderSet = mrs;
+	mapRenderSet = &mrs;
 }
 
 void Renderer::addHUDText(HUDText t) {
@@ -75,27 +77,29 @@ void Renderer::clearSpriteSets() {
 }
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
 
-	for (int i = 0; i < mapRenderSet.layerCount; i++) {
-	//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
-		MapLayer& layer = mapRenderSet.layers[i];
-		for (int y = 0; y < layer.tiles.y; y++) {
-			for (int x = 0; x < layer.tiles.x; x++) {
-				int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
-				if (tileId == 0) continue; // empty tile, nothing to draw
+	if (mapRenderSet != nullptr) {
+		for (int i = 0; i < mapRenderSet->layerCount; i++) {
+			//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
+			const MapLayer& layer = mapRenderSet->layers[i];
+			for (int y = 0; y < layer.tiles.y; y++) {
+				for (int x = 0; x < layer.tiles.x; x++) {
+					int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
+					if (tileId == 0) continue; // empty tile, nothing to draw
 
-				int localId = tileId - layer.firstgid;
-				int srcCol = localId % static_cast<int>(layer.tiles.x);
-				int srcRow = localId / layer.tiles.x;
 
-				int destX = static_cast<int>(mapRenderSet.pos.x + x * 8);
-				int destY = static_cast<int>(mapRenderSet.pos.y + y * 8);
+					int localId = tileId - layer.firstgid;
+					int srcCol = localId % static_cast<int>(layer.tiles.x);
+					int srcRow = localId / layer.tiles.x;
 
-				drawTile(mapRenderSet.tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
+					int destX = static_cast<int>(mapRenderSet->pos.x + x * 8);
+					int destY = static_cast<int>(mapRenderSet->pos.y + y * 8);
 
+					drawTile(mapRenderSet->tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
+
+				}
 			}
 		}
 	}
-
 	for (int i = 0; i < renderSetCount; i++) {
 		RenderSet& rs = this->renderSets[i];
 		bool flipped = rs.animationSet.flipped;
@@ -115,33 +119,40 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 	}
 
-	for (int i = 2; i < mapRenderSet.layerCount - 1; i++) {
-		MapLayer& layer = mapRenderSet.layers[i];
-		for (int y = 0; y < layer.tiles.y; y++) {
-			for (int x = 0; x < layer.tiles.x; x++) {
-				int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
-				if (tileId == 0) continue; // empty tile, nothing to draw
+	if (mapRenderSet != nullptr) {
+		for (int i = 2; i < mapRenderSet->layerCount - 1; i++) {
+			const MapLayer& layer = mapRenderSet->layers[i];
+			for (int y = 0; y < layer.tiles.y; y++) {
+				for (int x = 0; x < layer.tiles.x; x++) {
+					int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
+					if (tileId == 0) continue; // empty tile, nothing to draw
 
-				int localId = tileId - layer.firstgid;
-				int srcCol = localId % static_cast<int>(layer.tiles.x);
-				int srcRow = localId / layer.tiles.x;
+					int localId = tileId - layer.firstgid;
+					int srcCol = localId % static_cast<int>(layer.tiles.x);
+					int srcRow = localId / layer.tiles.x;
 
-				int destX = static_cast<int>(mapRenderSet.pos.x + x * 8);
-				int destY = static_cast<int>(mapRenderSet.pos.y + y * 8);
+					int destX = static_cast<int>(mapRenderSet->pos.x + x * 8);
+					int destY = static_cast<int>(mapRenderSet->pos.y + y * 8);
 
-				drawTile(mapRenderSet.tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
+					drawTile(mapRenderSet->tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
 
+				}
 			}
 		}
 	}
 
-	for (int i = 0; i < mapRenderSet.layerObjCount; i++) {
-		//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
-		MapObjLayer& layer = mapRenderSet.objectLayers[i];
-		for (int j = 0; j < layer.nOfObjects; j++) {
-			MapObject& obj = layer.objects[j];
-			screen->Box(obj.pos.x - cameraOffset.x, obj.pos.y - cameraOffset.y,
-				obj.pos.x - cameraOffset.x + obj.size.x, obj.pos.y - cameraOffset.y + obj.size.y, 0xFFFF00);
+	if (mapRenderSet != nullptr) {
+		for (int i = 0; i < mapRenderSet->layerObjCount; i++) {
+			//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
+			for (int j = 0; j < mapRenderSet->spawnerCounts[i]; j++) {
+				const Spawner* spawner = mapRenderSet->spawners[i][j];
+
+				const vec2& pos = spawner->getPos();
+				const vec2& size = spawner->getSize();
+
+				screen->Box(pos.x - cameraOffset.x, pos.y - cameraOffset.y,
+					pos.x - cameraOffset.x + size.x, pos.y - cameraOffset.y + size.y, 0xFFFF00);
+			}
 		}
 	}
 

@@ -36,7 +36,7 @@ private:
 	static const int MAXSPRITESETS = 100;
 	
 	RenderSet renderSets[MAXRENDERSETS]; //dont describe it meaning
-	MapRenderSet mapRenderSet;
+	const MapRenderSet* mapRenderSet;
 	Collider* colliders[MAXCOLLIDERS];
 	HUDText texts[MAXTEXTS];
 	SpriteSet spriteSets[MAXSPRITESETS];
