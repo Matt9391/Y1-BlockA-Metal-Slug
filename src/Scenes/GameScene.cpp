@@ -97,6 +97,10 @@ void GameScene::update(float dt) {
 				Granade* g = enemy->getGranade(i);
 				if (!g) continue;
 				
+				if (getCamera().isOutOfView(g->getPos())) {
+					g->explode();
+				}
+				
 				if (g->hasToBeFreed()) {
 					enemy->freeGranade(i);
 					continue;
@@ -156,6 +160,9 @@ void GameScene::update(float dt) {
 		}
 		if (b->getDisabled()) continue;
 
+		if (getCamera().isOutOfView(b->getPos())) {
+			b->explode();
+		}
 		
 		if (CollisionManager::resolveMapCollision(*b, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
 			b->explode();

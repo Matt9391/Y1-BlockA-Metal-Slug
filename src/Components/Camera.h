@@ -21,11 +21,15 @@ public:
 
 	void setMinYLimit(float minY);
 
+	bool isOutOfView(const vec2& pos) const;
+
 private:
 	vec2 pos;
 	vec2 size;
 	vec2 worldSize;
 
+	const vec2 threshold;
+	
 	bool enable;
 	bool followY;
 

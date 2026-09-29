@@ -10,7 +10,8 @@ Camera::Camera(vec2 pos, vec2 size) :
 	enable(false),
 	followY(false),
 	minY(0),
-	maxY(0)
+	maxY(0),
+	threshold(vec2(100,100))
 {
 }
 
@@ -78,4 +79,13 @@ void Camera::enableCamera(bool enabled)
 void Camera::setMinYLimit(float minY)
 {
 	this->minY = minY;
+}
+
+bool Camera::isOutOfView(const vec2& pos) const{
+	vec2 screenPos = pos - this->pos;
+	//trick learnt from Jacco :b
+	if (screenPos.x < -threshold.x || screenPos.x > SCRWIDTH + threshold.x) return true;
+	if (screenPos.y < -threshold.y || screenPos.y > SCRHEIGHT + threshold.y) return true;
+
+	return false;
 }
