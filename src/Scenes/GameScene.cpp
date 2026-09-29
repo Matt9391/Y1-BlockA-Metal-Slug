@@ -64,9 +64,9 @@ void GameScene::update(float dt) {
 		for (int j = 0; j < map.getSpawnersCount()[i]; j++) {
 			Spawner& spawner = *layerSpawners[j];
 
-			//printf("spawner %d %.2f %2.f\n", j, spawner.getPos().x, spawner.getPos().y);
 			spawner.setDistToPlayer(player.getPos().x - spawner.getPos().x);
 			spawner.update(dt);
+
 			Entity* newEntity = spawner.createEntity();
 			addNewEntity(newEntity);
 		}
@@ -77,25 +77,59 @@ void GameScene::update(float dt) {
 		if (!e) continue;
 		e->update(dt);
 		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
+		
+		if (RebelSoldier* enemy = dynamic_cast<RebelSoldier*>(e)) {
+			enemy->loadSensors(
+				player.getPos() + player.getCollider().size / 2.f,
+				CollisionManager::checkMapCollision(
+					enemy->getCollider(),
+					map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
+					0
+				)
+			);
+
+			if (enemy->getAttacking() && CollisionManager::checkCollision(player.getCollider(), enemy->getCollider())) {
+				player.takeHit();
+			}
+			enemy->addRenderSets(getRenderer());
+
+			for (int i = 0; i < enemy->getMaxGranades(); i++) {
+				Granade* g = enemy->getGranade(i);
+				if (!g) continue;
+				
+				if (g->hasToBeFreed()) {
+					enemy->freeGranade(i);
+					continue;
+				}
+				if(g->getDisabled()) continue;
+
+				if (CollisionManager::resolveMapCollision(*g, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
+					g->explode();
+				}
+
+				if (CollisionManager::checkCollision(g->getCollider(), player.getCollider())) {
+					g->explode();
+					player.takeHit();
+				}
+			}
+		}
+
 		getRenderer().addRenderSet(e->getRenderSet());
 		getRenderer().addCollider(e->getCollider());
+
+		
 	}
 
 
 	player.update(dt);
-	soldier.loadSensors(
-		player.getPos() + player.getCollider().size / 2.f,
-		CollisionManager::checkMapCollision(soldier.getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), 0)
-	);
 
 	Collider c = player.getCollider();
 	c.offset.x += player.getLastDir().x * c.size.x;
-	player.setEnemyInFront(
-		CollisionManager::checkCollision(c,soldier.getCollider()) ||
-		CollisionManager::checkCollision(player.getCollider(), soldier.getCollider())
-	);
+	//player.setEnemyInFront(
+	//	CollisionManager::checkCollision(c,soldier.getCollider()) ||
+	//	CollisionManager::checkCollision(player.getCollider(), soldier.getCollider())
+	//);
 
-	soldier.update(dt);
 	if (CollisionManager::checkCollision(player.getCollider(), pow.getCollider())) {
 		if (player.isShooting()) {
 			pow.setReleased(true);
@@ -105,51 +139,48 @@ void GameScene::update(float dt) {
 	else {
 		pow.setIntersectingPlayer(false);
 	}
-
+	
 	pow.update(dt);
 
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
-	CollisionManager::resolveMapCollision(soldier, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	CollisionManager::resolveMapCollision(pow, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);
 		bool free = false;
-		if (b && CollisionManager::resolveMapCollision(*b, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
-			free = true;
-		}
+		if (!b) continue;
 
-		if (b && CollisionManager::checkCollision(b->getCollider(), soldier.getCollider())) {
-			free = true;
-			soldier.setAlive(false);
+		if (b->hasToBeFreed()) {
+			player.getGun().freeBullet(i);
+			continue;
 		}
-		if(free) player.getGun().freeBullet(i);
+		if (b->getDisabled()) continue;
+
+		
+		if (CollisionManager::resolveMapCollision(*b, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
+			b->explode();
+		}
+		for (Entity* e : this->spawnedEntities) {
+			if (!e) continue;
+			RebelSoldier* enemy = dynamic_cast<RebelSoldier*>(e);
+			if (!enemy->getAlive()) continue;
+
+			if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider())) {
+				b->explode();
+				enemy->setAlive(false);
+			}
+		}
 	}
 
-	if (soldier.getAttacking() && CollisionManager::checkCollision(player.getCollider(), soldier.getCollider())) {
-		player.takeHit();
-	}
+	
 
-	for (int i = 0; i < soldier.getMaxGranades(); i++) {
-		Granade* g = soldier.getGranade(i);
-		if (g && CollisionManager::resolveMapCollision(*g, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
-			g->explode();
-		}
-
-		if (g && CollisionManager::checkCollision(g->getCollider(), player.getCollider())) {
-			g->explode();
-		}
-		if (g && g->hasToBeFreed()) soldier.freeGranade(i);
-	}
+	
 	getRenderer().addRenderSet(player.getRenderSet());
-	getRenderer().addRenderSet(soldier.getRenderSet());
 	getRenderer().addRenderSet(pow.getRenderSet());
 	player.getGun().addRenderSets(getRenderer());
-	soldier.addRenderSets(getRenderer());
 	//getRenderer().addRenderSet(player.getGunRenderSet(), player.getGunBullets());
 
 	getRenderer().addCollider(player.getCollider());
-	getRenderer().addCollider(soldier.getCollider());
 	getRenderer().addCollider(pow.getCollider());
 	//Collider c = player.getCollider();
 	//c.offset.x += player.getLastDir().x * c.size.x;

@@ -9,6 +9,8 @@ public:
 	void loadGFX() override;
 
 	void explode();
+	bool getDisabled() const;
+
 
 	void update(float dt) override;
 private:
@@ -18,4 +20,5 @@ private:
 	float peakHeight;
 	float elapsedTime;
 	bool ableMovement;
+	bool isDisabled;
 };

@@ -42,6 +42,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_REBELSOLDIER_GRANADE]= new Sprite(new Surface("assets/EnemyAnimation/Rebel/grenade.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE);
 	sprites[ResourceID::ID_REBELSOLDIER_GRANADE_BOOM]= new Sprite(new Surface("assets/EnemyAnimation/Rebel/grenadeBoom.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_BOOM);
 	sprites[ResourceID::ID_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/bullet.png"), ResourceIDFrames::IDF_PLAYER_BULLLET_PISTOL);
+	sprites[ResourceID::ID_BULLET_PISTOL_BOOM]= new Sprite(new Surface("assets/playerAnimation/bulletBoom.png"), ResourceIDFrames::IDF_PLAYER_BULLLET_PISTOL_BOOM);
 	sprites[ResourceID::ID_REBELSOLDIER_IDLE] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/idle.png"), ResourceIDFrames::IDF_REBELSOLDIER_IDLE);
 	sprites[ResourceID::ID_REBELSOLDIER_WALK] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/walk.png"), ResourceIDFrames::IDF_REBELSOLDIER_WALK);
 	sprites[ResourceID::ID_REBELSOLDIER_STOP] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/stop.png"), ResourceIDFrames::IDF_REBELSOLDIER_STOP);

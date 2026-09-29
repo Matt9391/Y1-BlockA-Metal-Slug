@@ -78,7 +78,7 @@ void Renderer::clearSpriteSets() {
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
 
 	if (mapRenderSet != nullptr) {
-		for (int i = 0; i < mapRenderSet->layerCount; i++) {
+		for (int i = 0; i < mapRenderSet->layerCount - 2; i++) {
 			//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
 			const MapLayer& layer = mapRenderSet->layers[i];
 			for (int y = 0; y < layer.tiles.y; y++) {
@@ -120,7 +120,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	}
 
 	if (mapRenderSet != nullptr) {
-		for (int i = 2; i < mapRenderSet->layerCount - 1; i++) {
+		for (int i = 3; i < mapRenderSet->layerCount - 1; i++) {
 			const MapLayer& layer = mapRenderSet->layers[i];
 			for (int y = 0; y < layer.tiles.y; y++) {
 				for (int x = 0; x < layer.tiles.x; x++) {
@@ -142,8 +142,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	}
 
 	if (mapRenderSet != nullptr) {
-		for (int i = 0; i < mapRenderSet->layerObjCount; i++) {
-			//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
+		for (int i = 0; i < mapRenderSet->layerObjCount - 1; i++) {
+			//for (int i = 0; i < mapRenderSet.layerCount - 1; i++) { //uncomment to remove hitboxes
 			for (int j = 0; j < mapRenderSet->spawnerCounts[i]; j++) {
 				const Spawner* spawner = mapRenderSet->spawners[i][j];
 

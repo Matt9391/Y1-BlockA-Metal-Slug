@@ -12,6 +12,11 @@ public:
 	
 	void update(float dt) override;
 
-private:
+	void explode();
+	bool getDisabled() const;
 
+
+private:
+	bool ableMovement;
+	bool isDisabled;
 };

@@ -9,7 +9,8 @@ Granade::Granade(vec2 pos, bool needsRigidBody, vec2 dir) :
 	duration(800.f), //ms
 	elapsedTime(0.f),
 	peakHeight(50.f),
-	ableMovement(true)
+	ableMovement(true),
+	isDisabled(false)
 {
 	setCollider(vec2(5, 5), vec2(0, 0));
 	getAnimationSets() = new AnimationSet[2];
@@ -62,10 +63,16 @@ void Granade::update(float dt) {
 
 	setPos(vec2(worldX, worldY));
 
+
 }
 
 void Granade::explode() {
 	setCurrentASIndex(1);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 	ableMovement = false;
+	isDisabled = true;
+}
+
+bool Granade::getDisabled() const {
+	return this->isDisabled;
 }
