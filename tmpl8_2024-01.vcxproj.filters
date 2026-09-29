@@ -31,6 +31,9 @@
     <Filter Include="src\AnimationStates">
       <UniqueIdentifier>{159d2dfe-73aa-4c31-8636-d15642637103}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Components\Spawners">
+      <UniqueIdentifier>{fb5fcc25-55ed-4d30-a1f5-30ee8c82fb5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -132,6 +135,12 @@
     </ClCompile>
     <ClCompile Include="src\Scenes\MenuScene.cpp">
       <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Spawner.cpp">
+      <Filter>src\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Spawners\EnemySpawner.cpp">
+      <Filter>src\Components\Spawners</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +301,12 @@
     </ClInclude>
     <ClInclude Include="src\DataStructures\SpriteSet.h">
       <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Spawner.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Spawners\EnemySpawner.h">
+      <Filter>src\Components\Spawners</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

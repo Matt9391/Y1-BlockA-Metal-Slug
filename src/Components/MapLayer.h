@@ -96,7 +96,7 @@ struct MapObject {
 struct MapObjLayer {
 	MapLayerNames layerName;
 	int nOfObjects;
-	static const int MAXOBJECTS = 10;
+	static const int MAXOBJECTS = 15;
 
 	MapObject objects[MAXOBJECTS];
 

@@ -3,16 +3,14 @@
 #include <vec2.h>
 #include <MapLayer.h>
 #include <MapLayerNames.h>
-
-struct MapRenderSet;
-struct MapObjectRenderSet;
+#include <Spawner.h>
+#include <MapRenderSet.h>
 
 class Map
 {
 public:
 	Map();
-
-	MapRenderSet getMapRenderSet() const;
+	const MapRenderSet& getMapRenderSet() const;
 	vec2 getTiles() const;
 	int getTileSize() const;
 
@@ -20,13 +18,17 @@ public:
 
 private:
 	bool loadDataFromJson(const char* fileName);
+	void loadMapRenderSet();
 
 	vec2 pos;
 	vec2 tiles;
 	int tileSize;
 
 	MapLayer layers[MapLayerNames::MLN_COUNTS];
-	MapObjLayer objLayers[MapObjectLayerNames::MOLN_COUNTS];
-
+	Spawner** spawners[MapObjectLayerNames::MOLN_COUNTS];
+	int spawnerCounts[MapObjectLayerNames::MOLN_COUNTS];
+	int layerCount;
+	int layerObjCount;
+	MapRenderSet* mapRenderSet;
 };
 

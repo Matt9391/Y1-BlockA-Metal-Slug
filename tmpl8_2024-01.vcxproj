@@ -131,6 +131,8 @@
     <ClCompile Include="src\Components\Map.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Components\RigidBody.cpp" />
+    <ClCompile Include="src\Components\Spawner.cpp" />
+    <ClCompile Include="src\Components\Spawners\EnemySpawner.cpp" />
     <ClCompile Include="src\DataStructures\GunPresets.cpp" />
     <ClCompile Include="src\Entities\Bullet.cpp" />
     <ClCompile Include="src\Entities\Enemies\RebelSoldier.cpp" />
@@ -179,6 +181,8 @@
     <ClInclude Include="src\Components\MapLayer.h" />
     <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\Components\RigidBody.h" />
+    <ClInclude Include="src\Components\Spawner.h" />
+    <ClInclude Include="src\Components\Spawners\EnemySpawner.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
     <ClInclude Include="src\DataStructures\EnemyAnimationSet.h" />

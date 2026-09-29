@@ -3,19 +3,25 @@
 #include <lib/json.hpp>
 #include <MapLayer.h>
 #include <MapRenderSet.h>
+#include <Spawners/EnemySpawner.h>
 #include <iostream>
 
 
 Map::Map() :
 	tiles(0,0),
 	tileSize(0),
-	pos(0,0)
+	pos(0,0),
+	mapRenderSet{nullptr},
+	layerCount(MLN_COUNTS),
+	layerObjCount(MOLN_COUNTS)
 	{
-		loadDataFromJson("assets/gameMapV6.tmj");
+		loadDataFromJson("assets/gameMapV7.tmj");
+		loadMapRenderSet();
+		printf("\nOBJECT LAYER COUNT PRE: %d", mapRenderSet->layerObjCount);
 	}
 
-MapRenderSet Map::getMapRenderSet() const {
-	return MapRenderSet(this->pos, this->tileSize, this->layers, this->objLayers);
+const MapRenderSet& Map::getMapRenderSet() const {
+	return *this->mapRenderSet;
 }
 
 vec2 Map::getTiles() const {
@@ -47,20 +53,28 @@ bool Map::loadDataFromJson(const char* fileName) {
 
 		MapLayerNames layerName = static_cast<MapLayerNames>(i);
 		
-		if (i == 4) { //object layer for now ill improve it
+		if (layerName == MapLayerNames::MLN_ENEMY_SPAWNER_LAYER) {
 			nlohmann::json dataObjects = layer.at("objects");
 			int nOfObjects = layer.at("objects").size();
-			//std::cout << nOfObjects << std::endl;
-			MapObject* objects = new MapObject[nOfObjects];
+			std::cout << nOfObjects << std::endl;
+
+			spawners[MapObjectLayerNames::MOLN_ENEMY_SPAWNER_LAYER] = new Spawner*[nOfObjects];
+			spawnerCounts[MapObjectLayerNames::MOLN_ENEMY_SPAWNER_LAYER] = nOfObjects;
 
 			for (int i = 0; i < nOfObjects; i++) {
-				objects[i] = MapObject(vec2(dataObjects[i].at("x"), dataObjects[i].at("y")), 
-					vec2(dataObjects[i].at("width"), dataObjects[i].at("height")));
+				nlohmann::json eSpawner = dataObjects[i];
+				nlohmann::json properties = eSpawner.at("properties");
+
+				int enemyType = properties[0].at("value").get<int>();
+				int nOfEnemy = properties[1].at("value").get<int>();
+				float spawnDelay = properties[2].at("value").get<int>();
+				vec2 pos = vec2(eSpawner.at("x").get<int>(), eSpawner.at("y").get<int>());
+				vec2 size = vec2(eSpawner.at("width").get<int>(), eSpawner.at("height").get<int>());
+				
+				spawners[MapObjectLayerNames::MOLN_ENEMY_SPAWNER_LAYER][i] = new EnemySpawner(pos, size, spawnDelay, enemyType, nOfEnemy);
 			}
 
-			objLayers[0] = MapObjLayer(layerName, nOfObjects, objects);
 
-			delete[] objects;
 			continue;
 		}
 
@@ -107,4 +121,15 @@ bool Map::loadDataFromJson(const char* fileName) {
 }
 
 
-
+void Map::loadMapRenderSet() {
+	//MapRenderSet(this->pos, this->tileSize, this->layers, this->spawners);
+	mapRenderSet = new MapRenderSet(
+		this->pos,
+		this->tileSize, 
+		layerCount,
+		layerObjCount,
+		this->layers, 
+		this->spawners,
+		this->spawnerCounts
+	);
+}

@@ -4,41 +4,33 @@
 #include <MapLayerNames.h>
 #include <MapLayer.h>
 
+class Spawner;
 
 struct MapRenderSet {
-	vec2 pos;
-	int tileSize;
+    const vec2& pos;
+    const int& tileSize;
+    const int& layerCount;
+    const int& layerObjCount;
+    const MapLayer(&layers)[MapLayerNames::MLN_COUNTS];
+    Spawner**  const(&spawners)[MapObjectLayerNames::MOLN_COUNTS];
+    const int(&spawnerCounts)[MapObjectLayerNames::MOLN_COUNTS];
 
-	int layerCount;
-	int layerObjCount;
-	MapLayer layers[MapLayerNames::MLN_COUNTS];
-	MapObjLayer objectLayers[MapObjectLayerNames::MOLN_COUNTS];
-	MapRenderSet() :
-		pos(vec2(0,0)),
-		tileSize(0),
-		layerCount(MapLayerNames::MLN_COUNTS),
-		layerObjCount(MapObjectLayerNames::MOLN_COUNTS)
-	{
-		for (int i = 0; i < MapLayerNames::MLN_COUNTS; i++) {
-			this->layers[i] = MapLayer();
-		}
-		for (int i = 0; i < MapObjectLayerNames::MOLN_COUNTS; i++) {
-			this->objectLayers[i] = MapObjLayer();
-		}
-	}
-	
-	MapRenderSet(const vec2 pos, const int tileSize, const MapLayer* layers, const MapObjLayer* objectLayers) :
-		pos(pos),
-		tileSize(tileSize),
-		layerCount(MapLayerNames::MLN_COUNTS),
-		layerObjCount(MapObjectLayerNames::MOLN_COUNTS)
-	{
-		for (int i = 0; i < MapLayerNames::MLN_COUNTS; i++) {
-			this->layers[i] = layers[i];
-		}
-
-		for (int i = 0; i < MapObjectLayerNames::MOLN_COUNTS; i++) {
-			this->objectLayers[i] = objectLayers[i];
-		}
-	}
+    MapRenderSet(
+        const vec2& pos,
+        const int& tileSize,
+        const int& layerCount,
+        const int& layerObjCount,
+        const MapLayer(&layers)[MapLayerNames::MLN_COUNTS],
+        Spawner** const(&spawners)[MapObjectLayerNames::MOLN_COUNTS],
+        const int(&spawnerCounts)[MapObjectLayerNames::MOLN_COUNTS]
+    )
+        : pos(pos),
+        tileSize(tileSize),
+        layerCount(layerCount),
+        layerObjCount(layerObjCount),
+        layers(layers),
+        spawners(spawners),
+        spawnerCounts(spawnerCounts)
+    {
+    }
 };
