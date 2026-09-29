@@ -10,6 +10,7 @@ class Map
 {
 public:
 	Map();
+	~Map();
 	const MapRenderSet& getMapRenderSet() const;
 	vec2 getTiles() const;
 	int getTileSize() const;

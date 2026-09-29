@@ -19,7 +19,6 @@ private:
 	vec2 pos;
 	vec2 size;
 
-	Entity* spawnedEntities;
 
 	float spawnDelay;
 	float timer;

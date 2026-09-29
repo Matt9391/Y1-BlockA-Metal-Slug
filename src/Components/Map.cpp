@@ -24,6 +24,29 @@ const MapRenderSet& Map::getMapRenderSet() const {
 	return *this->mapRenderSet;
 }
 
+Map::~Map()
+{
+	//delete every spawner in every spawner layer
+	for (int i = 0; i < MapObjectLayerNames::MOLN_COUNTS; i++)
+	{
+		if (spawners[i] != nullptr)
+		{
+			for (int j = 0; j < spawnerCounts[i]; j++)
+			{
+				delete spawners[i][j];
+			}
+
+			delete[] spawners[i];
+			spawners[i] = nullptr;
+		}
+
+		spawnerCounts[i] = 0;
+	}
+
+	delete mapRenderSet;
+	mapRenderSet = nullptr;
+}
+
 vec2 Map::getTiles() const {
 	return this->tiles;
 }

@@ -21,6 +21,10 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
 	}
 
+	GameScene::~GameScene() {
+
+	}
+
 void GameScene::init() {
 	getCamera().init(vec2(0, 10 * map.getTileSize()));
 	getCamera().enableCamera(true);

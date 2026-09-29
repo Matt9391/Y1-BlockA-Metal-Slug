@@ -10,7 +10,7 @@ class CustomScene
 {
 public:
 	CustomScene(Surface* screen, Renderer& renderer, InputManager& inputManager);
-
+	virtual ~CustomScene() {};
 	virtual void init() = 0;
 	virtual void exit() = 0;
 

@@ -11,6 +11,7 @@ class GameScene : public CustomScene
 {
 public:
 	GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager);
+	~GameScene();
 	
 	void init() override;
 	void exit() override;
@@ -21,6 +22,8 @@ public:
 private:
 	Player player;
 	RebelSoldier soldier;
+	Entity* spawnedEntities;
+
 	Pow pow;
 	Map map;
 	bool loseCondition;

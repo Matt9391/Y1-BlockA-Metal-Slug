@@ -6,8 +6,7 @@ Spawner::Spawner(vec2 pos, vec2 size, float spawnDelay) :
 	pos(pos),
 	size(size),
 	spawnDelay(spawnDelay),
-	timer(0.f),
-	spawnedEntities{nullptr}
+	timer(0.f)
 {
 }
 
