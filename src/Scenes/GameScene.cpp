@@ -127,9 +127,6 @@ void GameScene::update(float dt) {
 
 	//HUD
 	{
-		
-
-		
 
 		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "LEVEL-4", vec2(150, 215),1.f});
 		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 215),1.f});
