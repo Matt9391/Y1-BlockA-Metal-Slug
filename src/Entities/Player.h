@@ -33,6 +33,8 @@ public:
 	void takeHit();
 
 	void revive();
+
+	bool getEnabled() const;
 private:
 	bool getEnemyInFront() const;
 	void setShooting(bool shooting);
@@ -58,5 +60,6 @@ private:
 	static const int DEADTIMER = 2500;
 
 	bool canRevive;
+	float gravityMultiplier;
 };
 

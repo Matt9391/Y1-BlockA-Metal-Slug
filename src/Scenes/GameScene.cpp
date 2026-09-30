@@ -46,7 +46,7 @@ void GameScene::init() {
 	)); 
 	setChangeScene(false);
 
-	player.init(vec2(300, 0));
+	player.init(vec2(300, 80));
 	loseCondition = false;
 	secondsLeft = 9;
 	elapsedLoseTime = 0.f;
@@ -58,16 +58,21 @@ void GameScene::update(float dt) {
 	getRenderer().clearColliders();
 	getRenderer().clearTexts();
 
-	for (int i = 0; i < map.getSpawnersLayers(); i++) {
-		Spawner** layerSpawners = map.getSpawners(i);
-		for (int j = 0; j < map.getSpawnersCount()[i]; j++) {
-			Spawner& spawner = *layerSpawners[j];
+	player.update(dt);
 
-			spawner.setDistToPlayer(player.getPos().x - spawner.getPos().x);
-			spawner.update(dt);
+	if (player.getEnabled()) {
 
-			Entity* newEntity = spawner.createEntity();
-			addNewEntity(newEntity);
+		for (int i = 0; i < map.getSpawnersLayers(); i++) {
+			Spawner** layerSpawners = map.getSpawners(i);
+			for (int j = 0; j < map.getSpawnersCount()[i]; j++) {
+				Spawner& spawner = *layerSpawners[j];
+
+				spawner.setDistToPlayer(player.getPos().x - spawner.getPos().x);
+				spawner.update(dt);
+
+				Entity* newEntity = spawner.createEntity();
+				addNewEntity(newEntity);
+			}
 		}
 	}
 
@@ -124,7 +129,6 @@ void GameScene::update(float dt) {
 	}
 
 
-	player.update(dt);
 
 	Collider c = player.getCollider();
 	c.offset.x += player.getLastDir().x * c.size.x;

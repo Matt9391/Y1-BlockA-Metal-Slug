@@ -19,11 +19,12 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	shooting(false),
 	hasEnemyInFront(false),
 	alive(true),
-	enabled(true),
+	enabled(false),
 	lives(0),
 	score(25001),
 	deadTimeElapsed(0.f),
-	canRevive(true)
+	canRevive(true),
+	gravityMultiplier(0.05f)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -52,7 +53,7 @@ void Player::loadGFX() {
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_PARACHUTE,
 			ResourceIDFrames::IDF_PLAYER_PARACHUTE,
-			200,
+			300,
 			vec2(2, -40),
 			vec2(-7, -40))
 	);
@@ -61,7 +62,7 @@ void Player::loadGFX() {
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_PARACHUTE_CLOSE,
 			ResourceIDFrames::IDF_PLAYER_PARACHUTE_CLOSE,
-			100,
+			50,
 			vec2(2, -50),
 			vec2(-7, -50))
 	);
@@ -402,11 +403,19 @@ void Player::revive() {
 	deadTimeElapsed = 0.f;
 }
 
+bool Player::getEnabled() const {
+	return this->enabled;
+}
 
 void Player::update(float dt) {
 	if (!alive) deadTimeElapsed += dt;
 
 	getAnimator().playAnimation(dt);
+
+	if (getCurrentASIndex() == PlayerAnimationSet::PAS_PARACHUTE_CLOSE && getAnimator().isAnimationEnded()) {
+		this->gravityMultiplier = 1.f;
+		enabled = true;
+	}
 
 	//dt = fminf(dt, 0.05f);
 
@@ -415,7 +424,6 @@ void Player::update(float dt) {
 	//std::cout << pInput.inputDown << "and state: " << getDir().y << std::endl;
 
 
-	handleMovement(dt, pInput);
 	PlayerAnimationSet nextState = state->handleInput(pInput, static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	//std::cout << nextState << std::endl;
 	if (nextState == PlayerAnimationSet::PAS_REVIVE) {
@@ -431,8 +439,9 @@ void Player::update(float dt) {
 	}
 
 	//handleAnimationSet(isMoving, isJumping, isGrounded);
+	handleMovement(dt, pInput);
 
-	if (pInput.isShooting && !pInput.dead) {
+	if (enabled && pInput.isShooting && !pInput.dead) {
 		if (!pInput.enemyInFront) {
 			gun.shoot();
 			setShooting(true);
@@ -491,8 +500,9 @@ void Player::update(float dt) {
 	}
 
 	const bool flip = getLastDir().x < 0;
-	const bool reset = pInput.isShooting && !pInput.dead;
+	const bool reset = pInput.isShooting && !pInput.dead && !enabled;
 	//setColliderOffset(flip ? vec2(-15, 0) : vec2(3, 0));
+
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip, reset);
 
 	gun.update(dt);
@@ -577,7 +587,7 @@ void Player::handleMovement(float dt, const PlayerInput& pInput) {
 	rb->setVelocityX(rb->getSpeed() * getDir().x);
 
 	if (!pInput.isGrounded) {
-		rb->addVelocity(vec2(0, rb->getGravity() * dt));
+		rb->addVelocity(vec2(0, rb->getGravity() * dt * this->gravityMultiplier));
 	}
 	else {
 		rb->setVelocityY(0);
