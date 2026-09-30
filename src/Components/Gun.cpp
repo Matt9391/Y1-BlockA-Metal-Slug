@@ -39,7 +39,7 @@ bool Gun::shoot() {
 
 	if (bIndex == -1) return false;
 
-	bullets[bIndex] = new Bullet(this->pos, true, this->shootDir);
+	bullets[bIndex] = new Bullet(this->pos + this->offset, true, this->shootDir);
 	bulletsCount++;
 
 	return true;
@@ -78,4 +78,16 @@ bool Gun::getCanShootDiagonally() {
 
 void Gun::setShootDir(vec2 shootDir) {
 	this->shootDir = shootDir;
+}
+
+void Gun::setOffset(vec2 offset) {
+	this->offset = offset;
+}
+
+void Gun::setOffsetY(float offsetY) {
+	this->offset.y = offsetY;
+}
+
+void Gun::setOffsetX(float offsetX) {
+	this->offset.x = offsetX;
 }

@@ -451,6 +451,16 @@ void Player::update(float dt) {
 		setShooting(false);
 	}
 
+	//update gun offset
+	{
+		if (pInput.inputDown) {
+			gun.setOffsetY(20.f);
+		}
+		else {
+			gun.setOffsetY(5.f);
+		}
+	}
+
 	//set gun shooting direction
 	{
 		int x = 1;
@@ -500,7 +510,7 @@ void Player::update(float dt) {
 	}
 
 	const bool flip = getLastDir().x < 0;
-	const bool reset = pInput.isShooting && !pInput.dead && !enabled;
+	const bool reset = enabled && pInput.isShooting && !pInput.dead;
 	//setColliderOffset(flip ? vec2(-15, 0) : vec2(3, 0));
 
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip, reset);

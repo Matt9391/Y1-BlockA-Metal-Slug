@@ -25,6 +25,10 @@ public:
 	void setShootDir(vec2 shootDir);
 	bool shoot();
 
+	void setOffsetX(float offsetX);
+	void setOffsetY(float offsetY);
+	void setOffset(vec2 offset);
+
 private:
 	static const int MAXBULLETS = 50;
 
