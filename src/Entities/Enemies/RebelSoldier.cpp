@@ -6,11 +6,12 @@
 #include <Renderer.h>
 #include <ResourceIDFrames.h>
 
-RebelSoldier::RebelSoldier(vec2 pos) :
+RebelSoldier::RebelSoldier(vec2 pos, const RebelSoldierData& rsData) :
 	Enemy(pos),
 	state(nullptr),
 	granades{},
-	granadesCount(0)
+	granadesCount(0),
+	rsData(rsData)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[EnemyAnimationSet::EAS_COUNTS];
@@ -204,6 +205,10 @@ void RebelSoldier::addRenderSets(Renderer& renderer) {
 
 int RebelSoldier::getMaxGranades() const {
 	return MAXGRANADES;
+}
+
+const RebelSoldierData& RebelSoldier::getData() const {
+	return rsData;
 }
 
 void RebelSoldier::freeGranade(int i) {

@@ -1,6 +1,7 @@
 #pragma once
 
 class Enemy;
+class RebelSoldier;
 enum EnemyAnimationSet;
 
 namespace RebelSoldierStates {
@@ -8,8 +9,8 @@ namespace RebelSoldierStates {
     {
     public:
         virtual ~EnemyState() = default;
-        virtual EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current) = 0;
-        virtual void enter(Enemy& e) {}
+        virtual EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current) = 0;
+        virtual void enter(RebelSoldier& e) {}
     protected:
         float duration = 0.f;
         float elapsedTime = 0.f;
@@ -23,8 +24,8 @@ namespace RebelSoldierStates {
     class IdleState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
         static const int FLIPCHANCE = 25;
     };
@@ -32,8 +33,8 @@ namespace RebelSoldierStates {
     class WalkState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
         static const int FLIPCHANCE = 5;
         static const int JUMPCHANCE = 15;
@@ -51,43 +52,43 @@ namespace RebelSoldierStates {
     class AfterRunState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     };
     
     class JumpForwardState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     };
     
     class ScaredState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     };
     
     class FallingState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     };
     
     class CoverState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     };
    
     class MeleeAttackState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
         static const int MSTRIGGER = 500;
         bool attacked;
@@ -96,8 +97,8 @@ namespace RebelSoldierStates {
     class GrandadeAttackState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
         static const int MSTRIGGER = 500;
         bool thrown;
@@ -106,16 +107,16 @@ namespace RebelSoldierStates {
     class DeathState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
     };
     
     class DeathStillState final : public EnemyState
     {
     public:
-        void enter(Enemy& e) override;
-        EnemyAnimationSet update(Enemy& e, float dt, EnemyAnimationSet current)  override;
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
     };
 

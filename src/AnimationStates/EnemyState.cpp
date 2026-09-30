@@ -6,304 +6,311 @@
 #include <Enemies/RebelSoldier.h>
 
 
-namespace RebelSoldierStates{
+namespace RebelSoldierStates {
 
-void IdleState::enter(Enemy& e) {
-    this->duration = RandomFloat() * 3000.f + 400.f;
-    this->elapsedTime = 0.f;
-    e.setVelocityX(0.f);
-}
-
-EnemyAnimationSet IdleState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    if (!e.getSensors().alive) {
-        return   EnemyAnimationSet::EAS_DEATH;
+    void IdleState::enter(RebelSoldier& e) {
+        this->duration = RandomFloat() * 3000.f + 400.f;
+        this->elapsedTime = 0.f;
+        e.setVelocityX(0.f);
     }
 
-    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
-
-    elapsedTime += dt;
-    if (int(elapsedTime) % 300 == 0 && Rand(100) > MAXCHANCE - FLIPCHANCE) {
-        e.setFlip(!e.getFlip());
-    }
-     
-    
-    if (elapsedTime > duration  || playerVisible) {
-        current = EnemyAnimationSet::EAS_WALK;
-    }
-    if (!playerVisible && e.getSensors().allyDiedNearby) {
-        current = EnemyAnimationSet::EAS_SCARED;
-    }
-
-
-	return current;
-}
-
-
-const float WalkState::JUMPTIMER = 500.f;
-const float WalkState::FLIPTIMER = 500.f;
-const float WalkState::GRENADETIMER = 500.f;
-
-void WalkState::enter(Enemy& e) {
-    this->duration = RandomFloat() * 3000.f + 1500.f;
-    this->elapsedTime = 0.f;
-    this->jumpCountdown = 0.f;
-    this->flipCountdown = 0.f;
-    this->grenadeCountdown = 0.f;
-    e.setDir(vec2(e.getFlip() ? 1 : -1, 0));
-
-}
-
-EnemyAnimationSet WalkState::update(Enemy& e, float dt, EnemyAnimationSet current) 
-{
-    if (!e.getSensors().alive) {
-        return   EnemyAnimationSet::EAS_DEATH;
-    }
-    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
-
-    elapsedTime += dt;
-    flipCountdown += dt;
-    jumpCountdown += dt;
-    grenadeCountdown += dt;
-
-    if (flipCountdown > JUMPTIMER  && Rand(100) > MAXCHANCE - FLIPCHANCE) {
-        flipCountdown = 0.f;
-        e.setFlip(!e.getFlip());
-        e.setDir(vec2(e.getFlip() ? 1 : -1, e.getDir().y));
-    }
-
-    if (e.getSensors().isGrounded) {
-        if (jumpCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - JUMPCHANCE) {
-            jumpCountdown = 0.f;
-            e.addVelocity(vec2(0, -0.37f));
-            e.setGrounded(false);
-            current = EnemyAnimationSet::EAS_JUMP_FORWARD;
-        }
-    }
-
-    if (elapsedTime > duration) {
-        current = EnemyAnimationSet::EAS_STOP;
-    }else if (playerVisible && e.getSensors().wallAhead && elapsedTime > duration/3.f) {
-        current = EnemyAnimationSet::EAS_COVER;
-    }else if (grenadeCountdown > GRENADETIMER &&
-        playerVisible &&
-        abs(e.getSensors().distToPlayer) > MELEERANGE &&
-        abs(e.getSensors().distToPlayer) < GRANADERANGE &&
-        Rand(100) > MAXCHANCE - GRANADECHANCE)
+    EnemyAnimationSet IdleState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
     {
-        grenadeCountdown = 0.f;
-        current = EnemyAnimationSet::EAS_GRANADE_ATTACK;
-    }else if (elapsedTime > 500.f &&
-        playerVisible && abs(e.getSensors().distToPlayer) < MELEERANGE &&
-        Rand(100) > MAXCHANCE - MELEECHANCE) {
-        current = EnemyAnimationSet::EAS_MELEE_ATTACK;
+        if (!e.getSensors().alive) {
+            return   EnemyAnimationSet::EAS_DEATH;
+        }
+
+        bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+
+        elapsedTime += dt;
+        if (int(elapsedTime) % 300 == 0 && Rand(100) > MAXCHANCE - FLIPCHANCE) {
+            e.setFlip(!e.getFlip());
+        }
+
+
+        if (elapsedTime > duration || playerVisible) {
+            current = EnemyAnimationSet::EAS_WALK;
+        }
+        if (!playerVisible && e.getSensors().allyDiedNearby) {
+            current = EnemyAnimationSet::EAS_SCARED;
+        }
+
+
+        return current;
     }
 
-    return current;
-}
 
-void AfterRunState::enter(Enemy& e) {
-    this->duration =  1000.f;
-    this->elapsedTime = 0.f;
-}
+    const float WalkState::JUMPTIMER = 500.f;
+    const float WalkState::FLIPTIMER = 500.f;
+    const float WalkState::GRENADETIMER = 500.f;
 
-EnemyAnimationSet AfterRunState::update(Enemy& e, float dt, EnemyAnimationSet current) 
-{
-    if (!e.getSensors().alive) {
-        return   EnemyAnimationSet::EAS_DEATH;
-    }
-    if (e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_IDLE;
+    void WalkState::enter(RebelSoldier& e) {
+        this->duration = RandomFloat() * 3000.f + 1500.f;
+        this->elapsedTime = 0.f;
+        this->jumpCountdown = 0.f;
+        this->flipCountdown = 0.f;
+        this->grenadeCountdown = 0.f;
+        e.setDir(vec2(e.getFlip() ? 1 : -1, 0));
+
     }
 
-	return current;
-}
+    EnemyAnimationSet WalkState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        if (!e.getSensors().alive) {
+            return   EnemyAnimationSet::EAS_DEATH;
+        }
+        bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
-void JumpForwardState::enter(Enemy& e) {
-    this->duration =  1000.f;
-    this->elapsedTime = 0.f;
-}
+        elapsedTime += dt;
+        flipCountdown += dt;
+        jumpCountdown += dt;
+        grenadeCountdown += dt;
 
-EnemyAnimationSet JumpForwardState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    if (!e.getSensors().alive) {
-        return   EnemyAnimationSet::EAS_DEATH;
-    }
-    if (e.getSensors().isGrounded) {
-        current = EnemyAnimationSet::EAS_IDLE;
-    }
+        if (flipCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - FLIPCHANCE) {
+            flipCountdown = 0.f;
+            e.setFlip(!e.getFlip());
+            e.setDir(vec2(e.getFlip() ? 1 : -1, e.getDir().y));
+        }
 
-    if (e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_FALLING;
-    }
+        if (e.getSensors().isGrounded) {
+            if (jumpCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - JUMPCHANCE) {
+                jumpCountdown = 0.f;
+                e.addVelocity(vec2(0, -0.37f));
+                e.setGrounded(false);
+                current = EnemyAnimationSet::EAS_JUMP_FORWARD;
+            }
+        }
 
-	return current;
-}
+        if (elapsedTime > duration) {
+            current = EnemyAnimationSet::EAS_STOP;
+        }
+        else if (playerVisible && e.getSensors().wallAhead && elapsedTime > duration / 3.f) { //FIX MAGIC VALUES
+            current = EnemyAnimationSet::EAS_COVER;
+        }
+        else if (
+            e.getData().canAttackGranade &&
+            grenadeCountdown > GRENADETIMER &&
+            playerVisible &&
+            abs(e.getSensors().distToPlayer) > MELEERANGE &&
+            abs(e.getSensors().distToPlayer) < GRANADERANGE &&
+            Rand(100) > MAXCHANCE - GRANADECHANCE)
+        {
+            grenadeCountdown = 0.f;
+            current = EnemyAnimationSet::EAS_GRANADE_ATTACK;
+        }
+        else if (
+            e.getData().canAttackMelee &&
+            elapsedTime > 500.f &&
+            playerVisible && abs(e.getSensors().distToPlayer) < MELEERANGE &&
+            Rand(100) > MAXCHANCE - MELEECHANCE) {
+            current = EnemyAnimationSet::EAS_MELEE_ATTACK;
+        }
 
-void ScaredState::enter(Enemy& e) {
-    this->duration =  1000.f;
-    this->elapsedTime = 0.f;
-}
-
-EnemyAnimationSet ScaredState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    if (!e.getSensors().alive) {
-        return   EnemyAnimationSet::EAS_DEATH;
-    }
-    if (e.getSensors().isGrounded) {
-        current = EnemyAnimationSet::EAS_IDLE;
-    }
-
-    if (e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_IDLE;
-    }
-
-	return current;
-}
-
-void FallingState::enter(Enemy& e) {
-    this->duration =  1000.f;
-    this->elapsedTime = 0.f;
-}
-
-EnemyAnimationSet FallingState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    if (!e.getSensors().alive) {
-        return   EnemyAnimationSet::EAS_DEATH;
-    }
-    if (e.getSensors().isGrounded) {
-        current = EnemyAnimationSet::EAS_IDLE;
+        return current;
     }
 
-	return current;
-}
-
-void CoverState::enter(Enemy& e) {
-    this->duration = RandomFloat() * 1000.f + 1500.f;
-    this->elapsedTime = 0.f;
-}
-
-EnemyAnimationSet CoverState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    if (!e.getSensors().alive) {
-        return EnemyAnimationSet::EAS_DEATH;
+    void AfterRunState::enter(RebelSoldier& e) {
+        this->duration = 1000.f;
+        this->elapsedTime = 0.f;
     }
 
-    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+    EnemyAnimationSet AfterRunState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        if (!e.getSensors().alive) {
+            return   EnemyAnimationSet::EAS_DEATH;
+        }
+        if (e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_IDLE;
+        }
 
-
-    elapsedTime += dt;
-    if (elapsedTime > duration) {
-        current = EnemyAnimationSet::EAS_WALK;
-        e.setFlip(!e.getFlip());
+        return current;
     }
 
-    if (!playerVisible) {
-        current = EnemyAnimationSet::EAS_IDLE;
+    void JumpForwardState::enter(RebelSoldier& e) {
+        this->duration = 1000.f;
+        this->elapsedTime = 0.f;
     }
 
-	return current;
-}
+    EnemyAnimationSet JumpForwardState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        if (!e.getSensors().alive) {
+            return   EnemyAnimationSet::EAS_DEATH;
+        }
+        if (e.getSensors().isGrounded) {
+            current = EnemyAnimationSet::EAS_IDLE;
+        }
 
-void MeleeAttackState::enter(Enemy& e) {
-    this->duration = 1000.f;
-    this->elapsedTime = 0.f;
-    this->attacked = false;
-}
+        if (e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_FALLING;
+        }
 
-EnemyAnimationSet MeleeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    if (!e.getSensors().alive) {
-        return   EnemyAnimationSet::EAS_DEATH;
+        return current;
     }
 
-    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
-
-    e.setAttacking(false);
-    e.setDir(vec2(0, e.getDir().y));
-
-    e.setFlip(e.getSensors().distToPlayer < 0 ? true : false);
-
-    elapsedTime += dt;
-    if (elapsedTime > MSTRIGGER && !attacked) {
-        attacked = true;
-        e.setAttacking(true);
+    void ScaredState::enter(RebelSoldier& e) {
+        this->duration = 1000.f;
+        this->elapsedTime = 0.f;
     }
 
-    if (playerVisible && abs(e.getSensors().distToPlayer) > MELEERANGE && e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_WALK;
-    }
-    
-    if (!playerVisible && e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_IDLE;
-    }
+    EnemyAnimationSet ScaredState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        if (!e.getSensors().alive) {
+            return   EnemyAnimationSet::EAS_DEATH;
+        }
+        if (e.getSensors().isGrounded) {
+            current = EnemyAnimationSet::EAS_IDLE;
+        }
 
-    if (e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_WALK;
-        e.setFlip(!e.getFlip());
-    }
+        if (e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_IDLE;
+        }
 
-	return current;
-}
-
-void GrandadeAttackState::enter(Enemy& e) {
-    this->duration = 1000.f;
-    this->elapsedTime = 0.f;
-    this->thrown = false;
-}
-
-EnemyAnimationSet GrandadeAttackState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    if (!e.getSensors().alive) {
-        return   EnemyAnimationSet::EAS_DEATH;
+        return current;
     }
 
-    bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
-    e.setDir(vec2(0, e.getDir().y));
-    e.setFlip(e.getSensors().distToPlayer < 0 ? true : false);
-    elapsedTime += dt;
-    if (!thrown && elapsedTime > MSTRIGGER) {
-        thrown = true;
-        static_cast<RebelSoldier&>(e).throwGranade(vec2(e.getSensors().distToPlayer < 0 ? 1 : -1, 0));
-    }
-    
-    if (!playerVisible && e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_IDLE;
+    void FallingState::enter(RebelSoldier& e) {
+        this->duration = 1000.f;
+        this->elapsedTime = 0.f;
     }
 
-    if (e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_WALK;
-        e.setFlip(!e.getFlip());
+    EnemyAnimationSet FallingState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        if (!e.getSensors().alive) {
+            return   EnemyAnimationSet::EAS_DEATH;
+        }
+        if (e.getSensors().isGrounded) {
+            current = EnemyAnimationSet::EAS_IDLE;
+        }
+
+        return current;
     }
 
-	return current;
-}
-
-void DeathState::enter(Enemy& e) {}
-
-
-EnemyAnimationSet DeathState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    e.setFlip(e.getSensors().distToPlayer < 0 ? false : true);
-    e.setDir(vec2(e.getSensors().distToPlayer < 0 ? -1 : 1, e.getDir().y));
-    e.getRigidBody()->setSpeed(0.05f);
-    if (e.getSensors().animationEnded) {
-        current = EnemyAnimationSet::EAS_DEATH_STILL;
+    void CoverState::enter(RebelSoldier& e) {
+        this->duration = RandomFloat() * 1000.f + 1500.f;
+        this->elapsedTime = 0.f;
     }
 
-	return current;
-}
+    EnemyAnimationSet CoverState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        if (!e.getSensors().alive) {
+            return EnemyAnimationSet::EAS_DEATH;
+        }
 
-void DeathStillState::enter(Enemy& e) {}
-
-EnemyAnimationSet DeathStillState::update(Enemy& e, float dt, EnemyAnimationSet current)
-{
-    e.setDir(vec2(0, e.getDir().y));
-	return current;
-}
+        bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
 
-// --- Static instances + lookup table -----------------------------------
+        elapsedTime += dt;
+        if (elapsedTime > duration) {
+            current = EnemyAnimationSet::EAS_WALK;
+            e.setFlip(!e.getFlip());
+        }
+
+        if (!playerVisible) {
+            current = EnemyAnimationSet::EAS_IDLE;
+        }
+
+        return current;
+    }
+
+    void MeleeAttackState::enter(RebelSoldier& e) {
+        this->duration = 1000.f;
+        this->elapsedTime = 0.f;
+        this->attacked = false;
+    }
+
+    EnemyAnimationSet MeleeAttackState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        if (!e.getSensors().alive) {
+            return   EnemyAnimationSet::EAS_DEATH;
+        }
+
+        bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+
+        e.setAttacking(false);
+        e.setDir(vec2(0, e.getDir().y));
+
+        e.setFlip(e.getSensors().distToPlayer < 0 ? true : false);
+
+        elapsedTime += dt;
+        if (elapsedTime > MSTRIGGER && !attacked) {
+            attacked = true;
+            e.setAttacking(true);
+        }
+
+        if (playerVisible && abs(e.getSensors().distToPlayer) > MELEERANGE && e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_WALK;
+        }
+
+        if (!playerVisible && e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_IDLE;
+        }
+
+        if (e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_WALK;
+            e.setFlip(!e.getFlip());
+        }
+
+        return current;
+    }
+
+    void GrandadeAttackState::enter(RebelSoldier& e) {
+        this->duration = 1000.f;
+        this->elapsedTime = 0.f;
+        this->thrown = false;
+    }
+
+    EnemyAnimationSet GrandadeAttackState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        if (!e.getSensors().alive) {
+            return   EnemyAnimationSet::EAS_DEATH;
+        }
+
+        bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
+        e.setDir(vec2(0, e.getDir().y));
+        e.setFlip(e.getSensors().distToPlayer < 0 ? true : false);
+        elapsedTime += dt;
+        if (!thrown && elapsedTime > MSTRIGGER) {
+            thrown = true;
+            static_cast<RebelSoldier&>(e).throwGranade(vec2(e.getSensors().distToPlayer < 0 ? 1 : -1, 0));
+        }
+
+        if (!playerVisible && e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_IDLE;
+        }
+
+        if (e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_WALK;
+            e.setFlip(!e.getFlip());
+        }
+
+        return current;
+    }
+
+    void DeathState::enter(RebelSoldier& e) {}
+
+
+    EnemyAnimationSet DeathState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        e.setFlip(e.getSensors().distToPlayer < 0 ? false : true);
+        e.setDir(vec2(e.getSensors().distToPlayer < 0 ? -1 : 1, e.getDir().y));
+        e.getRigidBody()->setSpeed(0.05f);
+        if (e.getSensors().animationEnded) {
+            current = EnemyAnimationSet::EAS_DEATH_STILL;
+        }
+
+        return current;
+    }
+
+    void DeathStillState::enter(RebelSoldier& e) {}
+
+    EnemyAnimationSet DeathStillState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        e.setDir(vec2(0, e.getDir().y));
+        return current;
+    }
+
+
+    // --- Static instances + lookup table -----------------------------------
     IdleState                idleInstance;
     WalkState                walkInstance;
     AfterRunState            afterRunInstance;
@@ -332,37 +339,38 @@ EnemyAnimationSet DeathStillState::update(Enemy& e, float dt, EnemyAnimationSet 
     //ShootingJumpDownState    shootingJumpDownInstance;
 
 
-EnemyState* getEnemyState(EnemyAnimationSet index)
-{
-    static EnemyState* table[EnemyAnimationSet::EAS_COUNTS] =
-
+    EnemyState* getEnemyState(EnemyAnimationSet index)
     {
-        &RebelSoldierStates::idleInstance,                // PAS_IDLE
-        &RebelSoldierStates::walkInstance,                // PAS_WALK
-        &RebelSoldierStates::afterRunInstance,            // PAS_AFTER_RUN_STOP
-        &RebelSoldierStates::jumpForwardInstance,         // PAS_JUMP_FORWARD
-        &RebelSoldierStates::scaredInstance,             // PAS_FALLING
-        &RebelSoldierStates::fallingInstance,             // PAS_FALLING
-        &RebelSoldierStates::coverInstance,               // PAS_COVER
-        &RebelSoldierStates::meleeAttackInstance,         // PAS_MELEE_ATTACK
-        &RebelSoldierStates::granadeAttackInstance,         // PAS_MELEE_ATTACK
-        &RebelSoldierStates::deathInstance,         // PAS_MELEE_ATTACK
-        &RebelSoldierStates::deathStillIstance,         // PAS_MELEE_ATTACK
-        //&crouchInstance,              // PAS_CROUCH_IDLE
-        //&crouchWalkingInstance,       // PAS_CROUCH_WALKING
-        //&jumpUpInstance,              // PAS_JUMP_UP
-        //&fallingForwardInstance,      // PAS_FALLING_FORWARD
-        //&shootingIdleInstance,        // PAS_SHOOTING_IDLE
-        //&shootingIdleUpInstance,      // PAS_SHOOTING_IDLE_UP
-        //&shootingWalkInstance,        // PAS_SHOOTING_WALK
-        //&shootingWalkUpInstance,      // PAS_SHOOTING_WALK_UP
-        //&shootingCrouchInstance,      // PAS_SHOOTING_CROUCH
-        //&shootingJumpUpInstance,      // PAS_SHOOTING_JUMP_UP
-        //&shootingUpJumpUpIstance,      // PAS_SHOOTING_UP_JUMP_UP
-        //&shootingJumpForwardInstance, // PAS_SHOOTING_JUMP_FORWARD
-        //&shootingJumpDownInstance     // PAS_SHOOTING_JUMP_DOWN
-    };
-    return table[index];
-}
+        static EnemyState* table[EnemyAnimationSet::EAS_COUNTS] =
+
+        {
+            &RebelSoldierStates::idleInstance,                // PAS_IDLE
+            &RebelSoldierStates::walkInstance,                // PAS_WALK
+            &RebelSoldierStates::afterRunInstance,            // PAS_AFTER_RUN_STOP
+            &RebelSoldierStates::jumpForwardInstance,         // PAS_JUMP_FORWARD
+            &RebelSoldierStates::scaredInstance,             // PAS_FALLING
+            &RebelSoldierStates::fallingInstance,             // PAS_FALLING
+            &RebelSoldierStates::coverInstance,               // PAS_COVER
+            &RebelSoldierStates::meleeAttackInstance,         // PAS_MELEE_ATTACK
+            &RebelSoldierStates::granadeAttackInstance,         // PAS_MELEE_ATTACK
+            &RebelSoldierStates::deathInstance,         // PAS_MELEE_ATTACK
+            &RebelSoldierStates::deathStillIstance,         // PAS_MELEE_ATTACK
+            //&crouchInstance,              // PAS_CROUCH_IDLE
+            //&crouchWalkingInstance,       // PAS_CROUCH_WALKING
+            //&jumpUpInstance,              // PAS_JUMP_UP
+            //&fallingForwardInstance,      // PAS_FALLING_FORWARD
+            //&shootingIdleInstance,        // PAS_SHOOTING_IDLE
+            //&shootingIdleUpInstance,      // PAS_SHOOTING_IDLE_UP
+            //&shootingWalkInstance,        // PAS_SHOOTING_WALK
+            //&shootingWalkUpInstance,      // PAS_SHOOTING_WALK_UP
+            //&shootingCrouchInstance,      // PAS_SHOOTING_CROUCH
+            //&shootingJumpUpInstance,      // PAS_SHOOTING_JUMP_UP
+            //&shootingUpJumpUpIstance,      // PAS_SHOOTING_UP_JUMP_UP
+            //&shootingJumpForwardInstance, // PAS_SHOOTING_JUMP_FORWARD
+            //&shootingJumpDownInstance     // PAS_SHOOTING_JUMP_DOWN
+        };
+        return table[index];
+    }
+
 
 }

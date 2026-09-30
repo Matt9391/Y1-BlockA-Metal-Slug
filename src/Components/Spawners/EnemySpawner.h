@@ -1,5 +1,6 @@
 #pragma once
 #include <Spawner.h>
+#include <RebelSoldierPresets.h>
 
 
 class EnemySpawner : public Spawner {
@@ -12,6 +13,7 @@ private:
 
 	int enemyType;
 	int nOfEnemy;
+		RebelSoldierPresets rsPreset;
 
 	static const int SPAWNRANGE = 300;
 };

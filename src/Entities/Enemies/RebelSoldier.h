@@ -2,12 +2,13 @@
 #include <Enemy.h>
 #include <EnemyState.h>
 #include <Granade.h>
+#include <RebelSoldierPresets.h>
 
 class Renderer;
 
 class RebelSoldier : public Enemy {
 public:
-	RebelSoldier(vec2 pos);
+	RebelSoldier(vec2 pos,const RebelSoldierData& rsData);
 	~RebelSoldier() override;
 
 	void loadGFX() override;
@@ -22,6 +23,7 @@ public:
 	Granade* getGranade(int i);
 
 	int getMaxGranades() const;
+	const RebelSoldierData& getData() const;
 
 private:
 	RebelSoldierStates::EnemyState* state;
@@ -30,4 +32,6 @@ private:
 
 	Granade* granades[MAXGRANADES];
 	int granadesCount;
+
+	RebelSoldierData rsData;
 };
