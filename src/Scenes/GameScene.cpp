@@ -111,7 +111,7 @@ void GameScene::update(float dt) {
 				}
 				if(g->getDisabled()) continue;
 
-				if (CollisionManager::resolveMapCollision(*g, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
+				if (CollisionManager::checkMapCollision(g->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
 					g->explode();
 				}
 
@@ -167,7 +167,7 @@ void GameScene::update(float dt) {
 			b->explode();
 		}
 		
-		if (CollisionManager::resolveMapCollision(*b, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER))) {
+		if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
 			b->explode();
 		}
 		for (Entity* e : this->spawnedEntities) {
