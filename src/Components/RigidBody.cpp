@@ -2,6 +2,7 @@
 #include "RigidBody.h"
 
 const float RigidBody::gravity = 0.001f;
+const float RigidBody::jumpForce = 0.32f;
 
 RigidBody::RigidBody(const vec2& pos, bool hasGravity) :
 	pos(pos),
@@ -60,4 +61,8 @@ float  RigidBody::getSpeed() const {
 
 float RigidBody::getGravity() const {
 	return this->gravity;
+}
+
+float RigidBody::getJumpForce() const {
+	return this->jumpForce;
 }

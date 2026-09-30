@@ -25,10 +25,13 @@ public:
 	
 	//void setGravity(float g);
 	float getGravity() const;
+	float getJumpForce() const;
+
 
 private:
 
 	static const float gravity;
+	static const float jumpForce;
 
 	const vec2& pos;
 	vec2 velocity;

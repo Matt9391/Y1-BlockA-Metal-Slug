@@ -75,7 +75,7 @@ namespace RebelSoldierStates {
         if (e.getSensors().isGrounded) {
             if (jumpCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - JUMPCHANCE) {
                 jumpCountdown = 0.f;
-                e.addVelocity(vec2(0, -0.37f));
+                e.addVelocity(vec2(0, -e.getRigidBody()->getJumpForce()));
                 e.setGrounded(false);
                 current = EnemyAnimationSet::EAS_JUMP_FORWARD;
             }

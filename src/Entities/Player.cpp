@@ -15,7 +15,7 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	Entity(pos, true),
 	inputManager(inputManager),
 	state(nullptr),
-	gun(this->getPos(), vec2(0, 0), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
+	gun(this->getPos(), vec2(5, 5), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
 	shooting(false),
 	hasEnemyInFront(false),
 	alive(true),
@@ -602,7 +602,7 @@ void Player::handleMovement(float dt, const PlayerInput& pInput) {
 	else {
 		rb->setVelocityY(0);
 		if (enabled && !(pInput.isCrouching && pInput.isShooting) && pInput.isJumping) {
-			rb->addVelocity(vec2(0, -0.37f));
+			rb->addVelocity(vec2(0, -rb->getJumpForce()));
 			setGrounded(false);
 		}
 	}
