@@ -432,10 +432,13 @@ void Player::update(float dt) {
 		if (deadTimeElapsed > DEADTIMER && canRevive) {
 			setCurrentASIndex(nextState);
 			state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
-			revive();
 		}
 	}
 	else {
+		if (getCurrentASIndex() == PlayerAnimationSet::PAS_REVIVE && getAnimator().isAnimationEnded()) {
+			revive();
+		}
+
 		setCurrentASIndex(nextState);
 		state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	}
