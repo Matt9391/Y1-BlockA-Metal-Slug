@@ -7,7 +7,7 @@
 #include <ResourceIDFrames.h>
 
 RebelSoldier::RebelSoldier(vec2 pos, const RebelSoldierData& rsData) :
-	Enemy(pos),
+	Enemy(pos, EntityType::ET_REBELSOLDIER),
 	state(nullptr),
 	granades{},
 	granadesCount(0),

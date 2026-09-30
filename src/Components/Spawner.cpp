@@ -14,9 +14,11 @@ Spawner::Spawner(vec2 pos, vec2 size, float spawnDelay) :
 }
 
 Spawner::~Spawner() {
+
 }
 
-void Spawner::update(float dt) {}
+void Spawner::update(float dt) {
+}
 
 
 const vec2& Spawner::getPos() const {

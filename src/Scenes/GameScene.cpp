@@ -12,7 +12,6 @@
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager),
 	player(vec2(0, 0), getInputManager()),
-	pow(vec2(350, 50)),
 	loseCondition(false),
 	secondsLeft(9),
 	elapsedLoseTime(0.f),
@@ -82,7 +81,9 @@ void GameScene::update(float dt) {
 		e->update(dt);
 		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 		
-		if (RebelSoldier* enemy = dynamic_cast<RebelSoldier*>(e)) {
+		if (e->getEntityType() == EntityType::ET_REBELSOLDIER) {
+			RebelSoldier* enemy = dynamic_cast<RebelSoldier*>(e);
+				
 			enemy->loadSensors(
 				player.getPos() + player.getCollider().size / 2.f,
 				CollisionManager::checkMapCollision(
@@ -121,9 +122,22 @@ void GameScene::update(float dt) {
 				}
 			}
 		}
+		else if (e->getEntityType() == EntityType::ET_POW) {
+			Pow* pow = dynamic_cast<Pow*>(e);
+			if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider())) {
+				if (player.isShooting()) {
+					pow->setReleased(true);
+				}
+				pow->setIntersectingPlayer(true);
+			}
+			else {
+				pow->setIntersectingPlayer(false);
+			}
+		}
 
 		getRenderer().addRenderSet(e->getRenderSet());
 		getRenderer().addCollider(e->getCollider());
+
 
 		
 	}
@@ -137,20 +151,7 @@ void GameScene::update(float dt) {
 	//	CollisionManager::checkCollision(player.getCollider(), soldier.getCollider())
 	//);
 
-	if (CollisionManager::checkCollision(player.getCollider(), pow.getCollider())) {
-		if (player.isShooting()) {
-			pow.setReleased(true);
-		}
-		pow.setIntersectingPlayer(true);
-	}
-	else {
-		pow.setIntersectingPlayer(false);
-	}
-	
-	pow.update(dt);
-
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
-	CollisionManager::resolveMapCollision(pow, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);
@@ -172,6 +173,8 @@ void GameScene::update(float dt) {
 		}
 		for (Entity* e : this->spawnedEntities) {
 			if (!e) continue;
+			if (e->getEntityType() != EntityType::ET_REBELSOLDIER) continue;
+			
 			RebelSoldier* enemy = dynamic_cast<RebelSoldier*>(e);
 			if (!enemy->getAlive()) continue;
 
@@ -186,12 +189,10 @@ void GameScene::update(float dt) {
 
 	
 	getRenderer().addRenderSet(player.getRenderSet());
-	getRenderer().addRenderSet(pow.getRenderSet());
 	player.getGun().addRenderSets(getRenderer());
 	//getRenderer().addRenderSet(player.getGunRenderSet(), player.getGunBullets());
 
 	getRenderer().addCollider(player.getCollider());
-	getRenderer().addCollider(pow.getCollider());
 	//Collider c = player.getCollider();
 	//c.offset.x += player.getLastDir().x * c.size.x;
 	//getRenderer().addCollider(c);

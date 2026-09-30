@@ -3,7 +3,7 @@
 #include <ResourceIDFrames.h>
 
 Granade::Granade(vec2 pos, bool needsRigidBody, vec2 dir) :
-	Entity(pos, needsRigidBody),
+	Entity(pos, needsRigidBody, EntityType::ET_GRANADE),
 	arcWidth(50.f),
 	startPos(pos),
 	duration(800.f), //ms

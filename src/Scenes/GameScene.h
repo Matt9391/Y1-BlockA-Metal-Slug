@@ -26,8 +26,6 @@ private:
 	static const int MAXENTITIES = 150;
 
 	Entity* spawnedEntities[MAXENTITIES];
-
-	Pow pow;
 	Map map;
 	bool loseCondition;
 	int secondsLeft;

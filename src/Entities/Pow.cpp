@@ -7,7 +7,7 @@
 #include <RigidBody.h>
 
 Pow::Pow(vec2 pos) :
-	Entity(pos, true),
+	Entity(pos, true, EntityType::ET_POW),
 	state(nullptr),
 	released(false),
 	intersectingPlayer(false)

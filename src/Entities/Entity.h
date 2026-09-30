@@ -9,11 +9,20 @@ class Tmpl8::Surface;
 class ResourceManager;
 class RigidBody;
 
+enum EntityType {
+	ET_PLAYER,
+	ET_REBELSOLDIER,
+	ET_POW,
+	ET_GRANADE,
+	ET_BULLET,
+	ET_COUNTS
+};
+
 
 class Entity
 {
 public:
-	Entity(vec2 pos, bool needsRigidBody);
+	Entity(vec2 pos, bool needsRigidBody, EntityType entityType);
 	virtual ~Entity();
 
 	virtual void loadGFX() = 0;
@@ -43,6 +52,8 @@ public:
 	RigidBody* getRigidBody() const;
 
 	bool hasToBeFreed() const;
+
+	EntityType getEntityType() const;
 protected:
 	Animator& getAnimator();
 	AnimationSet*& getAnimationSets();
@@ -72,6 +83,7 @@ private:
 
 	Collider collider;
 	RigidBody* rigidBody;
+	EntityType entityType;
 
 	bool free;
 

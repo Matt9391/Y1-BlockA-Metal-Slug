@@ -145,6 +145,9 @@
     <ClCompile Include="src\DataStructures\RebelSoldierPresets.cpp">
       <Filter>src\DataStructures</Filter>
     </ClCompile>
+    <ClCompile Include="src\Components\Spawners\PowSpawner.cpp">
+      <Filter>src\Components\Spawners</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -316,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="src\DataStructures\RebelSoldierPresets.h">
       <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Spawners\PowSpawner.h">
+      <Filter>src\Components\Spawners</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

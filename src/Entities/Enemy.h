@@ -14,7 +14,7 @@ struct EnemySensor {
 class Enemy : public Entity {
 
 public:
-	Enemy(vec2 pos);
+	Enemy(vec2 pos, EntityType entityType);
 	//~Enemy() override;
 	void setFlip(bool flip);
 	bool getFlip() const;

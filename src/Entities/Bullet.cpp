@@ -4,7 +4,7 @@
 #include <RigidBody.h>
 
 Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir) :
-	Entity(pos,needsRigidBody),
+	Entity(pos,needsRigidBody, EntityType::ET_BULLET),
 	ableMovement(true),
 	isDisabled(false)
 { 

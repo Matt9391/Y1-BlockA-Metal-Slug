@@ -2,7 +2,8 @@
 #include "Entity.h"
 #include <RigidBody.h>
 
-Entity::Entity(vec2 pos, bool needsRigidBody) :
+Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
+	entityType(entityType),
 	pos(pos),
 	velocity(0,0),
 	dir(0,0),
@@ -120,4 +121,9 @@ void Entity::setFree(bool free) {
 
 bool Entity::hasToBeFreed() const {
 	return this->free;
+}
+
+
+EntityType Entity::getEntityType() const {
+	return this->entityType;
 }

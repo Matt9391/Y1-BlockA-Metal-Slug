@@ -2,8 +2,8 @@
 #include "Enemy.h"
 #include <RigidBody.h>
 
-Enemy::Enemy(vec2 pos) :
-	Entity(pos, true),
+Enemy::Enemy(vec2 pos, EntityType entityType) :
+	Entity(pos, true, entityType),
 	flip(false),
 	sensors{},
 	attacking(false),

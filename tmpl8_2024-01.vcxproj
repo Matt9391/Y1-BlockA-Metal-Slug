@@ -133,6 +133,7 @@
     <ClCompile Include="src\Components\RigidBody.cpp" />
     <ClCompile Include="src\Components\Spawner.cpp" />
     <ClCompile Include="src\Components\Spawners\EnemySpawner.cpp" />
+    <ClCompile Include="src\Components\Spawners\PowSpawner.cpp" />
     <ClCompile Include="src\DataStructures\GunPresets.cpp" />
     <ClCompile Include="src\DataStructures\RebelSoldierPresets.cpp" />
     <ClCompile Include="src\Entities\Bullet.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\Components\RigidBody.h" />
     <ClInclude Include="src\Components\Spawner.h" />
+    <ClInclude Include="src\Components\Spawners\PowSpawner.h" />
     <ClInclude Include="src\DataStructures\MapLayer.h" />
     <ClInclude Include="src\Components\Spawners\EnemySpawner.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
