@@ -12,7 +12,7 @@
 
 
 Player::Player(vec2 pos, InputManager& inputManager) :
-	Entity(pos, true),
+	Entity(pos, true, EntityType::ET_PLAYER),
 	inputManager(inputManager),
 	state(nullptr),
 	gun(this->getPos(), vec2(5, 5), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
@@ -386,6 +386,8 @@ int Player::getScore() const {
 }
 
 void Player::takeHit() {
+	if (!enabled) return;
+
 	this->lives--;
 	setLifeState(false);
 	if (lives == -1) {
