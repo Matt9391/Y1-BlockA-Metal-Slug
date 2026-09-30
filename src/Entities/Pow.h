@@ -14,6 +14,7 @@ public:
 
 	bool isReleased() const;
 	void setReleased(bool released);
+	void setPowFree(bool free);
 
 	bool isAnimationEnded();
 	

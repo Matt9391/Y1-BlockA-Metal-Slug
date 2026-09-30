@@ -76,9 +76,16 @@ void GameScene::update(float dt) {
 	}
 
 
-	for (Entity* e : this->spawnedEntities) {
+	for (int i = 0; i < MAXENTITIES; i++) {
+		Entity* e = this->spawnedEntities[i];
 		if (!e) continue;
 		e->update(dt);
+
+		if(e->hasToBeFreed()){
+			freeEntity(i);
+			continue;
+		}
+
 		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 		
 		if (e->getEntityType() == EntityType::ET_REBELSOLDIER) {
@@ -132,6 +139,12 @@ void GameScene::update(float dt) {
 			}
 			else {
 				pow->setIntersectingPlayer(false);
+			}
+
+			if (getCamera().isOutOfView(pow->getPos())) {
+				if (pow->isReleased()) {
+					pow->setPowFree(true);
+				}
 			}
 		}
 
@@ -268,5 +281,12 @@ void GameScene::addNewEntity(Entity* e) {
 	}
 	else {
 		throw runtime_error("Max entities reached");
+	}
+}
+
+void GameScene::freeEntity(int index) {
+	if (spawnedEntities[index]) {
+		delete spawnedEntities[index];
+		spawnedEntities[index] = nullptr;
 	}
 }

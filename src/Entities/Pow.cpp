@@ -129,6 +129,10 @@ void Pow::setReleased(bool released) {
 	this->released = released;
 }
 
+void Pow::setPowFree(bool free){
+	this->setFree(free);
+	printf("pow released");
+}
 
 bool Pow::isAnimationEnded() {
 	return this->getAnimator().isAnimationEnded();

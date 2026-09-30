@@ -16,7 +16,6 @@ Camera::Camera(vec2 pos, vec2 size) :
 }
 
 void Camera::init(vec2 pos) {
-	printf("%.2f, %.2f", this->pos.x, this->pos.y);
 	this->pos = pos;
 }
 

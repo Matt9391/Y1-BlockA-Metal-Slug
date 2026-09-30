@@ -33,5 +33,7 @@ private:
 	Granade* granades[MAXGRANADES];
 	int granadesCount;
 
+	float deathTimeElapsed;
+	const float DEATHTIMER = 500.f;
 	RebelSoldierData rsData;
 };

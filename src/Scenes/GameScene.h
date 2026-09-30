@@ -21,7 +21,7 @@ public:
 
 private:
 	void addNewEntity(Entity* e);
-
+	void freeEntity(int index);
 	Player player;
 	static const int MAXENTITIES = 150;
 

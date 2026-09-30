@@ -11,7 +11,8 @@ RebelSoldier::RebelSoldier(vec2 pos, const RebelSoldierData& rsData) :
 	state(nullptr),
 	granades{},
 	granadesCount(0),
-	rsData(rsData)
+	rsData(rsData),
+	deathTimeElapsed(0.f)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[EnemyAnimationSet::EAS_COUNTS];
@@ -156,6 +157,12 @@ void RebelSoldier::update(float dt) {
 		setVelocityY(0.f);
 	}
 
+	if (getCurrentASIndex() == EnemyAnimationSet::EAS_DEATH_STILL){
+		deathTimeElapsed += dt;
+		if(deathTimeElapsed > DEATHTIMER && getAnimator().isAnimationEnded()) {
+			setFree(true);
+		}
+	}
 
 	EnemyAnimationSet nextState = state->update(*this, dt, static_cast<EnemyAnimationSet>(getCurrentASIndex()));
 	if (nextState != getCurrentASIndex()) {
