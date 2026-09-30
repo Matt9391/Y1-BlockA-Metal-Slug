@@ -12,7 +12,6 @@
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager),
 	player(vec2(0, 0), getInputManager()),
-	soldier(vec2(600, 50)),
 	pow(vec2(350, 50)),
 	loseCondition(false),
 	secondsLeft(9),
@@ -47,7 +46,7 @@ void GameScene::init() {
 	)); 
 	setChangeScene(false);
 
-	player.init(vec2(300, 50));
+	player.init(vec2(300, 0));
 	loseCondition = false;
 	secondsLeft = 9;
 	elapsedLoseTime = 0.f;

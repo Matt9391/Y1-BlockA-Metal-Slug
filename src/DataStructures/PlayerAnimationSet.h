@@ -1,6 +1,8 @@
 #pragma once
 
 enum PlayerAnimationSet {
+	PAS_PARACHUTE,
+	PAS_PARACHUTE_CLOSE,
 	PAS_IDLE,
 	PAS_WALK,
 	PAS_AFTER_RUN_STOP,

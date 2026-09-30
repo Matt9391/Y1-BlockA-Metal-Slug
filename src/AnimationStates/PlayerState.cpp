@@ -1,6 +1,20 @@
 #include "precomp.h"
 #include "PlayerState.h"
 
+PlayerAnimationSet ParachuteState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
+{
+    if (in.onAnimationEnd) current = PlayerAnimationSet::PAS_PARACHUTE_CLOSE;
+
+    return current;
+}
+
+PlayerAnimationSet ParachuteCloseState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
+{
+    if (in.onAnimationEnd) current = PlayerAnimationSet::PAS_FALLING;
+
+    return current;
+}
+
 // --- Idle -------------------------------------------------------------------
 PlayerAnimationSet IdleState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
 {
@@ -278,6 +292,8 @@ PlayerAnimationSet ReviveState::handleInput(const PlayerInput& in, PlayerAnimati
 
 namespace
 {
+    ParachuteState           parachuteInstance;
+    ParachuteCloseState      parachuteCloseInstance;
     IdleState                idleInstance;
     WalkState                walkInstance;
     AfterRunState            afterRunInstance;
@@ -307,6 +323,8 @@ PlayerState* getPlayerState(PlayerAnimationSet index)
 {
     static PlayerState* table[PlayerAnimationSet::PAS_COUNTS] =
     {
+        &parachuteInstance,                // PAS_IDLE
+        &parachuteCloseInstance,                // PAS_IDLE
         &idleInstance,                // PAS_IDLE
         &walkInstance,                // PAS_WALK
         &afterRunInstance,            // PAS_AFTER_RUN_STOP

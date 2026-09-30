@@ -29,7 +29,7 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	//setCollider(vec2(20, 7), vec2(3, 30));
 	getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
 	loadGFX();
-	setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
+	setCurrentASIndex(PlayerAnimationSet::PAS_PARACHUTE);
 	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 
@@ -44,9 +44,28 @@ void Player::init(vec2 pos) {
 	this->setPos(pos);
 	this->lives = 3;
 	this->canRevive = true;
+	
 }
 
 void Player::loadGFX() {
+	getAnimationSets()[PlayerAnimationSet::PAS_PARACHUTE] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_PARACHUTE,
+			ResourceIDFrames::IDF_PLAYER_PARACHUTE,
+			200,
+			vec2(2, -40),
+			vec2(-7, -40))
+	);
+	
+	getAnimationSets()[PlayerAnimationSet::PAS_PARACHUTE_CLOSE] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_PARACHUTE_CLOSE,
+			ResourceIDFrames::IDF_PLAYER_PARACHUTE_CLOSE,
+			100,
+			vec2(2, -50),
+			vec2(-7, -50))
+	);
+
 	getAnimationSets()[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
 		2,
 		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,

@@ -142,7 +142,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	}
 
 	if (mapRenderSet != nullptr) {
-		for (int i = 0; i < mapRenderSet->layerObjCount - 1; i++) {
+		for (int i = 0; i < mapRenderSet->layerObjCount; i++) {
 			//for (int i = 0; i < mapRenderSet.layerCount - 1; i++) { //uncomment to remove hitboxes
 			for (int j = 0; j < mapRenderSet->spawnerCounts[i]; j++) {
 				const Spawner* spawner = mapRenderSet->spawners[i][j];

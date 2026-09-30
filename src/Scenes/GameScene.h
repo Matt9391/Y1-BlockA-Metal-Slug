@@ -23,7 +23,6 @@ private:
 	void addNewEntity(Entity* e);
 
 	Player player;
-	RebelSoldier soldier;
 	static const int MAXENTITIES = 150;
 
 	Entity* spawnedEntities[MAXENTITIES];

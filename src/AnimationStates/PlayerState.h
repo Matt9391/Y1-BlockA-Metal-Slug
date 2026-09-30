@@ -34,6 +34,18 @@ public:
 
 // --- Ground / neutral states ---------------------------------------------
 
+class ParachuteState final : public PlayerState
+{
+public:
+    PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
+};
+
+class ParachuteCloseState final : public PlayerState
+{
+public:
+    PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const override;
+};
+
 class IdleState final : public PlayerState
 {
 public:

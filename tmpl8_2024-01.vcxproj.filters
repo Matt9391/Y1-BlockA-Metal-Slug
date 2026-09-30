@@ -142,6 +142,9 @@
     <ClCompile Include="src\Components\Spawners\EnemySpawner.cpp">
       <Filter>src\Components\Spawners</Filter>
     </ClCompile>
+    <ClCompile Include="src\DataStructures\RebelSoldierPresets.cpp">
+      <Filter>src\DataStructures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -236,7 +239,7 @@
     <ClInclude Include="src\Utils\myMath.h">
       <Filter>src\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\Components\MapLayer.h">
+    <ClInclude Include="src\DataStructures\MapLayer.h">
       <Filter>src\DataStructures</Filter>
     </ClInclude>
     <ClInclude Include="src\Components\Collider.h">
@@ -307,6 +310,12 @@
     </ClInclude>
     <ClInclude Include="src\Components\Spawners\EnemySpawner.h">
       <Filter>src\Components\Spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\RebelSoldierType.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\RebelSoldierPresets.h">
+      <Filter>src\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

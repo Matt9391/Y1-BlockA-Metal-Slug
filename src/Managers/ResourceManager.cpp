@@ -16,6 +16,8 @@ ResourceManager::~ResourceManager() {
 
 
 void ResourceManager::init() {
+	sprites[ResourceID::ID_PLAYER_PARACHUTE] = new Sprite(new Surface("assets/playerAnimation/parachute.png"), ResourceIDFrames::IDF_PLAYER_PARACHUTE);
+	sprites[ResourceID::ID_PLAYER_PARACHUTE_CLOSE] = new Sprite(new Surface("assets/playerAnimation/parachuteClose.png"), ResourceIDFrames::IDF_PLAYER_PARACHUTE_CLOSE);
 	sprites[ResourceID::ID_PLAYER_IDLE_BODY] = new Sprite(new Surface("assets/playerAnimation/Pistol/idleBody.png"), ResourceIDFrames::IDF_PLAYER_IDLE_BODY);
 	sprites[ResourceID::ID_PLAYER_IDLE_LEGS] = new Sprite(new Surface("assets/playerAnimation/Pistol/idleLegs.png"), ResourceIDFrames::IDF_PLAYER_IDLE_LEGS);
 	sprites[ResourceID::ID_PLAYER_WALK_BODY]= new Sprite(new Surface("assets/playerAnimation/Pistol/walkingBody.png"), ResourceIDFrames::IDF_PLAYER_WALK_BODY);

@@ -4,6 +4,8 @@ enum ResourceIDFrames {
 	// This enum just exist because we cant fuck use the hash maps. so yeah, you take it
 	// keep track of the frames of the sprite
 	IDF_NULL = -1,
+	IDF_PLAYER_PARACHUTE = 5,
+	IDF_PLAYER_PARACHUTE_CLOSE = 17,
 	IDF_PLAYER_IDLE_BODY = 4,
 	IDF_PLAYER_IDLE_LEGS = 1,
 	IDF_PLAYER_WALK_BODY = 12,

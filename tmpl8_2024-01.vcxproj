@@ -134,6 +134,7 @@
     <ClCompile Include="src\Components\Spawner.cpp" />
     <ClCompile Include="src\Components\Spawners\EnemySpawner.cpp" />
     <ClCompile Include="src\DataStructures\GunPresets.cpp" />
+    <ClCompile Include="src\DataStructures\RebelSoldierPresets.cpp" />
     <ClCompile Include="src\Entities\Bullet.cpp" />
     <ClCompile Include="src\Entities\Enemies\RebelSoldier.cpp" />
     <ClCompile Include="src\Entities\Enemy.cpp" />
@@ -178,10 +179,10 @@
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\Gun.h" />
     <ClInclude Include="src\Components\Map.h" />
-    <ClInclude Include="src\Components\MapLayer.h" />
     <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\Components\RigidBody.h" />
     <ClInclude Include="src\Components\Spawner.h" />
+    <ClInclude Include="src\DataStructures\MapLayer.h" />
     <ClInclude Include="src\Components\Spawners\EnemySpawner.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
     <ClInclude Include="src\DataStructures\AnimationSet.h" />
@@ -194,6 +195,8 @@
     <ClInclude Include="src\DataStructures\MapRenderSet.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimationSet.h" />
     <ClInclude Include="src\DataStructures\PowAnimationSet.h" />
+    <ClInclude Include="src\DataStructures\RebelSoldierPresets.h" />
+    <ClInclude Include="src\DataStructures\RebelSoldierType.h" />
     <ClInclude Include="src\DataStructures\RenderSet.h" />
     <ClInclude Include="src\DataStructures\ResourceID.h" />
     <ClInclude Include="src\DataStructures\ResourceIDFrames.h" />
