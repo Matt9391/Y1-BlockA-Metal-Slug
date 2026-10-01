@@ -20,7 +20,7 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	hasEnemyInFront(false),
 	alive(true),
 	enabled(false),
-	lives(0),
+	lives(3),
 	score(25001),
 	deadTimeElapsed(0.f),
 	canRevive(true),
@@ -45,7 +45,15 @@ void Player::init(vec2 pos) {
 	this->setPos(pos);
 	this->lives = 3;
 	this->canRevive = true;
-	
+	this->enabled = false;
+	this->alive = true;
+	this->setGunData(GunPresets::getGun(GunType::PISTOL));
+
+	setCurrentASIndex(PlayerAnimationSet::PAS_PARACHUTE);
+	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+
+	gravityMultiplier = 0.05f;
 }
 
 void Player::loadGFX() {

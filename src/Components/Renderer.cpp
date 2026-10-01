@@ -17,6 +17,21 @@ Renderer::Renderer() :
 	mapRenderSet{nullptr}
 	{}
 
+Renderer::~Renderer(){
+	mapRenderSet = nullptr;
+	for(int i = 0; i < MAXCOLLIDERS; i++){
+		colliders[i] = nullptr;
+	}
+}
+
+void Renderer::reset(){
+	mapRenderSet = nullptr;
+	for(int i = 0; i < MAXCOLLIDERS; i++){
+		colliders[i] = nullptr;
+	}
+}
+
+
 void Renderer::addCollider(Collider& c) {
 	if (collidersCount == MAXCOLLIDERS)
 		throw runtime_error("Max colliders reached");
@@ -157,9 +172,10 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	}
 
 	for (int i = 0; i < collidersCount; i++) {
-		Collider& c = *colliders[i];
-		screen->Box(c.pos.x + c.offset.x - cameraOffset.x, c.pos.y + c.offset.y - cameraOffset.y,
-			c.pos.x + c.offset.x - cameraOffset.x + c.size.x, c.pos.y + c.offset.y - cameraOffset.y + c.size.y, 0xFF0000);
+		Collider* c = colliders[i];
+		if(!c) continue;
+		screen->Box(c->pos.x + c->offset.x - cameraOffset.x, c->pos.y + c->offset.y - cameraOffset.y,
+			c->pos.x + c->offset.x - cameraOffset.x + c->size.x, c->pos.y + c->offset.y - cameraOffset.y + c->size.y, 0xFF0000);
 	}
 
 	for (int i = 0; i < spriteSetCount; i++) {

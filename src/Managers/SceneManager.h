@@ -14,7 +14,7 @@ public:
 
 	CustomScene& getCurrentScene() const;
 	
-	void changeScene(TypeScene nextScene);
+	void changeScene(TypeScene nextScene,Surface* screen, Renderer& renderer, InputManager& inputManager);
 
 
 private:

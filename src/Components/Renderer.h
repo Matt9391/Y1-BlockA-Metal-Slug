@@ -13,6 +13,9 @@ class Tmpl8::Surface;
 class Renderer {
 public:
 	Renderer();
+	~Renderer();
+
+	void reset();
 
 	void addCollider(Collider& c);
 	void addRenderSet(RenderSet rs);

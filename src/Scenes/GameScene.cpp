@@ -15,7 +15,7 @@
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager),
-	player(vec2(0, 0), getInputManager()),
+	player(vec2(30, 80), getInputManager()),
 	loseCondition(false),
 	secondsLeft(9),
 	elapsedLoseTime(0.f),
@@ -24,36 +24,38 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
 	}
 
-	GameScene::~GameScene() {
-		for (int i = 0; i < MAXENTITIES; i++) {
-			if (spawnedEntities[i] != nullptr)
-				delete spawnedEntities[i];
-		}
+GameScene::~GameScene() {
+	for (int i = 0; i < MAXENTITIES; i++) {
+		freeEntity(i);
 	}
+}
 
 void GameScene::init() {
+	//* Initialize camera to game scene settings
 	getCamera().init(vec2(0, 10 * map.getTileSize()));
 	getCamera().enableCamera(true);
-	getRenderer().addMapRenderSet(map.getMapRenderSet());
-	getRenderer().clearSpriteSets();
-	getRenderer().addSpriteSet(SpriteSet(
-		ResourceID::ID_FUEL_BAR,
-		ResourceIDFrames::IDF_FUEL_BAR,
-		vec2(10, 12)
-	));
+	// Add renders
+	{
+		getRenderer().addMapRenderSet(map.getMapRenderSet());
+		getRenderer().clearSpriteSets();
+		getRenderer().addSpriteSet(SpriteSet(
+			ResourceID::ID_FUEL_BAR,
+			ResourceIDFrames::IDF_FUEL_BAR,
+			vec2(10, 12)
+		));
 
-	getRenderer().addSpriteSet(SpriteSet(
-		ResourceID::ID_AMMOS,
-		ResourceIDFrames::IDF_AMMOS,
-		vec2(90, 2)
-	)); 
+		getRenderer().addSpriteSet(SpriteSet(
+			ResourceID::ID_AMMOS,
+			ResourceIDFrames::IDF_AMMOS,
+			vec2(90, 2)
+		)); 
+
+	}
+	
 	setChangeScene(false);
-
-	player.init(vec2(300, 80));
-	loseCondition = false;
-	secondsLeft = 9;
-	elapsedLoseTime = 0.f;
+	setNextScene(TypeScene::MENU);
 };
+
 void GameScene::exit() {};
 
 void GameScene::update(float dt) {
@@ -250,7 +252,6 @@ void GameScene::update(float dt) {
 			}
 
 			if (secondsLeft == 0) {
-				setNextScene(TypeScene::MENU);
 				setChangeScene(true);
 			}
 
@@ -263,7 +264,7 @@ void GameScene::update(float dt) {
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PUSH START", vec2(180, 10),1.f });
 
 			if(getInputManager().isKeyPressed(' ')) {
-				player.fullRevive();
+				player.fullRevive();	
 			}
 
 		}

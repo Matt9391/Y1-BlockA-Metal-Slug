@@ -44,7 +44,7 @@ void Game::Tick(float dt)
 	inputManager.updateLastFrameKeys();
 
 	if (sceneManager.getCurrentScene().sceneHasToChange()) {
-		sceneManager.changeScene(sceneManager.getCurrentScene().getNextScene());
+		sceneManager.changeScene(sceneManager.getCurrentScene().getNextScene(), screen, renderer, inputManager);
 	}
 }
 
