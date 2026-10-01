@@ -89,6 +89,7 @@ void GameScene::update(float dt) {
 		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 		
 		if (e->getEntityType() == EntityType::ET_REBELSOLDIER) {
+			// TODO: serach static vs dynamic cast
 			RebelSoldier* enemy = static_cast<RebelSoldier*>(e); //static vs dynamic ?
 				
 			enemy->loadSensors(
