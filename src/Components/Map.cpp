@@ -5,6 +5,7 @@
 #include <MapRenderSet.h>
 #include <Spawners/EnemySpawner.h>
 #include <Spawners/PowSpawner.h>
+#include <Spawners/PowerUpSpawner.h>
 #include <iostream>
 
 
@@ -16,7 +17,7 @@ Map::Map() :
 	layerCount(MLN_COUNTS),
 	layerObjCount(MOLN_COUNTS)
 	{
-		loadDataFromJson("assets/gameMapV8.tmj");
+		loadDataFromJson("assets/gameMapV9.tmj");
 		loadMapRenderSet();
 	}
 
@@ -173,6 +174,26 @@ bool Map::loadDataFromJson(const char* fileName) {
 				vec2 size = vec2(spawner.at("width").get<int>(), spawner.at("height").get<int>());
 
 				spawners[MapObjectLayerNames::MOLN_POW_SPAWNER_LAYER][i] = new PowSpawner(pos, size, 0, enemyType);
+			}
+
+
+			continue;
+		}else if (layerName == MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER) {
+			nlohmann::json dataObjects = layer.at("objects");
+			int nOfObjects = layer.at("objects").size();
+
+			spawners[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER] = new Spawner *[nOfObjects];
+			spawnerCounts[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER] = nOfObjects;
+
+			for (int i = 0; i < nOfObjects; i++) {
+				nlohmann::json spawner = dataObjects[i];
+				nlohmann::json properties = spawner.at("properties");
+
+				int state = properties[0].at("value").get<int>();
+				vec2 pos = vec2(spawner.at("x").get<int>(), spawner.at("y").get<int>());
+				vec2 size = vec2(spawner.at("width").get<int>(), spawner.at("height").get<int>());
+
+				spawners[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER][i] = new PowerUpSpawner(pos, size, 0, state);
 			}
 
 
