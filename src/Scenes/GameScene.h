@@ -1,8 +1,7 @@
 #pragma once
 #include "CustomScene.h"
 #include <Player.h>
-#include <Pow.h>
-#include <Enemies/RebelSoldier.h>
+
 #include <Map.h>
 #include <Printer.h>
 

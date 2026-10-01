@@ -29,6 +29,9 @@ public:
 	void setOffsetY(float offsetY);
 	void setOffset(vec2 offset);
 
+	void setGunData(GunData newData);
+	GunType getGunType() const;
+
 private:
 	static const int MAXBULLETS = 50;
 

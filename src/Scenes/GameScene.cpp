@@ -8,6 +8,10 @@
 #include <ResourceIDFrames.h>
 #include <Bullet.h>
 #include <TypeScene.h>
+#include <Pow.h>
+#include <Enemies/RebelSoldier.h>
+#include <LootDrop.h>
+#include <LootDrops/PowerUp.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
 	CustomScene(screen, renderer, inputManager),
@@ -89,7 +93,7 @@ void GameScene::update(float dt) {
 		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 		
 		if (e->getEntityType() == EntityType::ET_REBELSOLDIER) {
-			// TODO: serach static vs dynamic cast
+
 			RebelSoldier* enemy = static_cast<RebelSoldier*>(e); //static vs dynamic ?
 				
 			enemy->loadSensors(
@@ -131,7 +135,7 @@ void GameScene::update(float dt) {
 			}
 		}
 		else if (e->getEntityType() == EntityType::ET_POW) {
-			Pow* pow = dynamic_cast<Pow*>(e);
+			Pow* pow = static_cast<Pow*>(e);
 			if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider())) {
 				if (player.isShooting()) {
 					pow->setReleased(true);
@@ -146,6 +150,15 @@ void GameScene::update(float dt) {
 				if (pow->isReleased()) {
 					pow->setPowFree(true);
 				}
+			}
+			// TODO: think of a better solution for checking entity type of lootdrop
+		}else if(e->getEntityType() == EntityType::ET_LOOTDROP ||
+				e->getEntityType() == EntityType::ET_POWERUP){
+			LootDrop* lootDrop = static_cast<LootDrop*>(e);
+
+			// TODO: Add player colllision resolution on lootdrop, it can walk over it
+			if (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider())) {
+				lootDrop->applyEffect(player);
 			}
 		}
 
@@ -187,14 +200,24 @@ void GameScene::update(float dt) {
 		}
 		for (Entity* e : this->spawnedEntities) {
 			if (!e) continue;
-			if (e->getEntityType() != EntityType::ET_REBELSOLDIER) continue;
-			
-			RebelSoldier* enemy = dynamic_cast<RebelSoldier*>(e);
-			if (!enemy->getAlive()) continue;
+			if (e->getEntityType() == EntityType::ET_REBELSOLDIER){
 
-			if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider())) {
-				b->explode();
-				enemy->setAlive(false);
+				RebelSoldier* enemy = static_cast<RebelSoldier*>(e);
+				if (!enemy->getAlive()) continue;
+				
+				if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider())) {
+					b->explode();
+					enemy->setAlive(false);
+				}
+				
+			}else if(e->getEntityType() == EntityType::ET_POWERUP){
+				PowerUp* powerUp = static_cast<PowerUp*>(e);
+				
+				if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider())) {
+					b->explode();
+					powerUp->setState(PowerUpState::PUS_REVEALED);
+					
+				}
 			}
 		}
 	}

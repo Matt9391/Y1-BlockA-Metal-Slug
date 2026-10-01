@@ -1,9 +1,11 @@
 #include "precomp.h"
 #include "PowerUp.h"
 #include <ResourceIDFrames.h>
+#include <Player.h>
+#include <GunPresets.h>
 
 PowerUp::PowerUp(vec2 pos, PowerUpState PowerUpState) :
-    LootDrop(pos)
+    LootDrop(pos, EntityType::ET_POWERUP)
     {
         
         setCollider(vec2(32,32), vec2(0,0));
@@ -41,5 +43,12 @@ void PowerUp::loadGFX() {
 
 
 void PowerUp::applyEffect(Player& pl){
+    if(getCurrentASIndex() == PowerUpState::PUS_CRATE) return;
 
+    pl.setGunData(GunPresets::getGun(GunType::FLAME_THROWER));
+    setFree(true);
+}
+
+void PowerUp::setState(PowerUpState powerUpState){
+    setCurrentASIndex(powerUpState);
 }

@@ -50,14 +50,14 @@ void Player::init(vec2 pos) {
 
 void Player::loadGFX() {
 	getAnimationSets()[PlayerAnimationSet::PAS_PARACHUTE] = AnimationSet(
-		1,
-		AnimationLayer(ResourceID::ID_PLAYER_PARACHUTE,
-			ResourceIDFrames::IDF_PLAYER_PARACHUTE,
-			300,
-			vec2(2, -40),
-			vec2(-7, -40))
-	);
-	
+			1,
+			AnimationLayer(ResourceID::ID_PLAYER_PARACHUTE,
+				ResourceIDFrames::IDF_PLAYER_PARACHUTE,
+				300,
+				vec2(2, -40),
+				vec2(-7, -40))
+			);
+			
 	getAnimationSets()[PlayerAnimationSet::PAS_PARACHUTE_CLOSE] = AnimationSet(
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_PARACHUTE_CLOSE,
@@ -65,267 +65,7 @@ void Player::loadGFX() {
 			50,
 			vec2(2, -50),
 			vec2(-7, -50))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
-			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
-			100,
-			vec2(2, 9),
-			vec2(-7, 9)),
-		AnimationLayer(ResourceID::ID_PLAYER_IDLE_BODY,
-			ResourceIDFrames::IDF_PLAYER_IDLE_BODY,
-			200,
-			vec2(0, 0),
-			vec2(-6, 0))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_WALK] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
-			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
-			100,
-			vec2(0, 19),
-			vec2(-4, 19)),
-		AnimationLayer(ResourceID::ID_PLAYER_WALK_BODY,
-			ResourceIDFrames::IDF_PLAYER_WALK_BODY,
-			90,
-			vec2(2, -2),
-			vec2(-7, -2))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP] = AnimationSet(
-		1,
-		AnimationLayer(ResourceID::ID_PLAYER_AFTER_RUN_STOP_F,
-			ResourceIDFrames::IDF_PLAYER_AFTER_RUN_STOP_F,
-			150,
-			vec2(3, 1),
-			vec2(-8, 1))
-	);
-
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_IDLE] = AnimationSet(
-		1,
-		AnimationLayer(ResourceID::ID_PLAYER_CROUCH_IDLE_F,
-			ResourceIDFrames::IDF_PLAYER_CROUCH_IDLE_F,
-			150,
-			vec2(3, 14),
-			vec2(-5, 14))
-	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_WALKING] = AnimationSet(
-		1,
-		AnimationLayer(ResourceID::ID_PLAYER_CROUCH_WALKING_F,
-			ResourceIDFrames::IDF_PLAYER_CROUCH_WALKING_F,
-			150,
-			vec2(3, 14),
-			vec2(-5, 14))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_JUMP_UP] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
-			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
-			80,
-			vec2(7, 20),
-			vec2(0, 20)),
-		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_BODY,
-			ResourceIDFrames::IDF_PLAYER_JUMPUP_BODY,
-			80,
-			vec2(0, -3),
-			vec2(-2, -3))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_FALLING] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_FALLING_LEGS,
-			ResourceIDFrames::IDF_PLAYER_FALLING_LEGS,
-			100,
-			vec2(7, 20),
-			vec2(0, 20)),
-		AnimationLayer(ResourceID::ID_PLAYER_FALLING_BODY,
-			ResourceIDFrames::IDF_PLAYER_FALLING_BODY,
-			100,
-			vec2(0, -3),
-			vec2(-2, -3))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_JUMP_FORWARD] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
-			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
-			100,
-			vec2(0, 18),
-			vec2(-4, 18)),
-		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_BODY,
-			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_BODY,
-			100,
-			vec2(0, -3),
-			vec2(-4, -3))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_FALLING_FORWARD] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_LEGS,
-			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_LEGS,
-			100,
-			vec2(5, 18),
-			vec2(-5, 18)),
-		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_BODY,
-			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_BODY,
-			100,
-			vec2(-2, -3),
-			vec2(-4, -3))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
-			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
-			100,
-			vec2(2, 9),
-			vec2(-7, 9)),
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
-			80,
-			vec2(-1, -2),
-			vec2(-23, 0))
-	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
-			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
-			100,
-			vec2(0, 19),
-			vec2(-4, 19)),
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
-			80,
-			vec2(0, -4),
-			vec2(-24, -4))
-	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE_UP] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
-			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
-			100,
-			vec2(2, 9),
-			vec2(-6, 9)),
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
-			80,
-			vec2(0, -42),
-			vec2(-4, -42))
-	);
-
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK_UP] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
-			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
-			100,
-			vec2(0, 19),
-			vec2(-5, 19)),
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
-			80,
-			vec2(0, -42),
-			vec2(-3, -42))
-	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_CROUCH] = AnimationSet(
-		1,
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_CROUCH_F,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_CROUCH_F,
-			80,
-			vec2(3, 8),
-			vec2(-22, 8))
-	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_UP] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
-			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
-			80,
-			vec2(6, 20),
-			vec2(0, 20)),
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
-			80,
-			vec2(0, -3),
-			vec2(-25, -3))
-	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_UP_JUMP_UP] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
-			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
-			80,
-			vec2(6, 20),
-			vec2(0, 20)),
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
-			80,
-			vec2(0, -42),
-			vec2(-4, -42))
-	);
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_FORWARD] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
-			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
-			100,
-			vec2(0, 18),
-			vec2(-4, 18)),
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
-			80,
-			vec2(-1, -2),
-			vec2(-23, 0))
-	);
-	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
-			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
-			80,
-			vec2(6, 20),
-			vec2(0, 20)),
-		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_DOWN_BODY,
-			ResourceIDFrames::IDF_PLAYER_SHOOTING_DOWN_BODY,
-			80,
-			vec2(4, 3),
-			vec2(-2, 3))
-	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
-			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
-			100,
-			vec2(2, 9),
-			vec2(-7, 9)),
-		AnimationLayer(ResourceID::ID_PLAYER_MELEE_ATTACK_BODY,
-			ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY,
-			80,
-			vec2(-7, -15),
-			vec2(-10, -15))
-	);
-	
-	getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_WALK] = AnimationSet(
-		2,
-		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
-			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
-			100,
-			vec2(0, 19),
-			vec2(-4, 19)),
-		AnimationLayer(ResourceID::ID_PLAYER_MELEE_ATTACK_BODY,
-			ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY,
-			80,
-			vec2(-7, -15),
-			vec2(-10, -15))
-	);
-	
+		);
 	getAnimationSets()[PlayerAnimationSet::PAS_DIE] = AnimationSet(
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_DIE,
@@ -333,7 +73,7 @@ void Player::loadGFX() {
 			80,
 			vec2(-7, 0),
 			vec2(-10,0))
-	);
+		);
 	
 	getAnimationSets()[PlayerAnimationSet::PAS_DIE_STILL] = AnimationSet(
 		1,
@@ -342,18 +82,552 @@ void Player::loadGFX() {
 			80,
 			vec2(-7, 0),
 			vec2(-10, 0))
-	);
+		);
+
+	if(this->gun.getGunType() == GunType::PISTOL){
+
+		
+
+		getAnimationSets()[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-7, 9)),
+			AnimationLayer(ResourceID::ID_PLAYER_IDLE_BODY,
+				ResourceIDFrames::IDF_PLAYER_IDLE_BODY,
+				200,
+				vec2(0, 0),
+				vec2(-6, 0))
+			);
+
+			getAnimationSets()[PlayerAnimationSet::PAS_WALK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-4, 19)),
+			AnimationLayer(ResourceID::ID_PLAYER_WALK_BODY,
+				ResourceIDFrames::IDF_PLAYER_WALK_BODY,
+				90,
+				vec2(2, -2),
+				vec2(-7, -2))
+			);
+
+			getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP] = AnimationSet(
+				1,
+				AnimationLayer(ResourceID::ID_PLAYER_AFTER_RUN_STOP_F,
+					ResourceIDFrames::IDF_PLAYER_AFTER_RUN_STOP_F,
+					150,
+					vec2(3, 1),
+					vec2(-8, 1))
+				);
+
+				
+				getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_IDLE] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_CROUCH_IDLE_F,
+			ResourceIDFrames::IDF_PLAYER_CROUCH_IDLE_F,
+			150,
+			vec2(3, 14),
+			vec2(-5, 14))
+		);
 	
-	getAnimationSets()[PlayerAnimationSet::PAS_REVIVE] = AnimationSet(
+		getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_WALKING] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_CROUCH_WALKING_F,
+			ResourceIDFrames::IDF_PLAYER_CROUCH_WALKING_F,
+			150,
+			vec2(3, 14),
+			vec2(-5, 14))
+		);
+
+		getAnimationSets()[PlayerAnimationSet::PAS_JUMP_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(7, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_BODY,
+				ResourceIDFrames::IDF_PLAYER_JUMPUP_BODY,
+				80,
+				vec2(0, -3),
+				vec2(-2, -3))
+			);
+
+			getAnimationSets()[PlayerAnimationSet::PAS_FALLING] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_FALLING_LEGS,
+			ResourceIDFrames::IDF_PLAYER_FALLING_LEGS,
+			100,
+			vec2(7, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_FALLING_BODY,
+				ResourceIDFrames::IDF_PLAYER_FALLING_BODY,
+				100,
+				vec2(0, -3),
+				vec2(-2, -3))
+			);
+
+			getAnimationSets()[PlayerAnimationSet::PAS_JUMP_FORWARD] = AnimationSet(
+				2,
+				AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
+					ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
+					100,
+					vec2(0, 18),
+					vec2(-4, 18)),
+					AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_BODY,
+						ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_BODY,
+						100,
+						vec2(0, -3),
+						vec2(-4, -3))
+					);
+
+					getAnimationSets()[PlayerAnimationSet::PAS_FALLING_FORWARD] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_LEGS,
+			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_LEGS,
+			100,
+			vec2(5, 18),
+			vec2(-5, 18)),
+			AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_BODY,
+				ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_BODY,
+				100,
+				vec2(-2, -3),
+				vec2(-4, -3))
+			);
+			
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-7, 9)),
+			AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
+				ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
+				80,
+				vec2(-1, -2),
+				vec2(-23, 0))
+			);
+	
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-4, 19)),
+			AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
+				ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
+				80,
+				vec2(0, -4),
+				vec2(-24, -4))
+			);
+	
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-6, 9)),
+			AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
+				ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
+				80,
+				vec2(0, -42),
+				vec2(-4, -42))
+			);
+
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK_UP] = AnimationSet(
+				2,
+				AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+					ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+					100,
+					vec2(0, 19),
+					vec2(-5, 19)),
+					AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
+						ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
+						80,
+						vec2(0, -42),
+						vec2(-3, -42))
+					);
+	
+					getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_CROUCH] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_CROUCH_F,
+			ResourceIDFrames::IDF_PLAYER_SHOOTING_CROUCH_F,
+			80,
+			vec2(3, 8),
+			vec2(-22, 8))
+		);
+	
+		getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
+				ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
+				80,
+				vec2(0, -3),
+				vec2(-25, -3))
+			);
+			
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_UP_JUMP_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_UP_BODY,
+				ResourceIDFrames::IDF_PLAYER_SHOOTING_UP_BODY,
+				80,
+				vec2(0, -42),
+				vec2(-4, -42))
+			);
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_FORWARD] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
+			100,
+			vec2(0, 18),
+			vec2(-4, 18)),
+			AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_BODY,
+				ResourceIDFrames::IDF_PLAYER_SHOOTING_BODY,
+				80,
+				vec2(-1, -2),
+				vec2(-23, 0))
+			);
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_SHOOTING_DOWN_BODY,
+				ResourceIDFrames::IDF_PLAYER_SHOOTING_DOWN_BODY,
+				80,
+				vec2(4, 3),
+				vec2(-2, 3))
+			);
+	
+			getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-7, 9)),
+			AnimationLayer(ResourceID::ID_PLAYER_MELEE_ATTACK_BODY,
+				ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY,
+				80,
+				vec2(-7, -15),
+				vec2(-10, -15))
+			);
+	
+			getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_WALK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-4, 19)),
+			AnimationLayer(ResourceID::ID_PLAYER_MELEE_ATTACK_BODY,
+				ResourceIDFrames::IDF_PLAYER_MELEE_ATTACK_BODY,
+				80,
+				vec2(-7, -15),
+				vec2(-10, -15))
+			);
+			
+		
+	
+		getAnimationSets()[PlayerAnimationSet::PAS_REVIVE] = AnimationSet(
 		1,
 		AnimationLayer(ResourceID::ID_PLAYER_REVIVE_F,
 			ResourceIDFrames::IDF_PLAYER_REVIVE_F,
 			100,
 			vec2(0, -205),
 			vec2(-10, -205))
-	);
+		);
+		
+	}else if(this->gun.getGunType() == GunType::FLAME_THROWER){
+		getAnimationSets()[PlayerAnimationSet::PAS_IDLE] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-7, 9)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_IDLE_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_IDLE_BODY,
+				200,
+				vec2(0, 0),
+				vec2(-6, 0))
+			);
 
+			getAnimationSets()[PlayerAnimationSet::PAS_WALK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-4, 19)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_WALK_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_WALK_BODY,
+				90,
+				vec2(2, -2),
+				vec2(-7, -2))
+			);
 
+			getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP] = AnimationSet(
+				1,
+				AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_AFTER_RUN_STOP_F,
+					ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_AFTER_RUN_STOP_F,
+					150,
+					vec2(3, 1),
+					vec2(-8, 1))
+				);
+
+				
+				getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_IDLE] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_CROUCH_IDLE_F,
+			ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_CROUCH_IDLE_F,
+			150,
+			vec2(3, 14),
+			vec2(-5, 14))
+		);
+	
+		getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_WALKING] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_CROUCH_WALKING_F,
+			ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_CROUCH_WALKING_F,
+			150,
+			vec2(3, 14),
+			vec2(-5, 14))
+		);
+
+		getAnimationSets()[PlayerAnimationSet::PAS_JUMP_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(7, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_JUMPUP_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_JUMPUP_BODY,
+				80,
+				vec2(0, -3),
+				vec2(-2, -3))
+			);
+
+			getAnimationSets()[PlayerAnimationSet::PAS_FALLING] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_FALLING_LEGS,
+			ResourceIDFrames::IDF_PLAYER_FALLING_LEGS,
+			100,
+			vec2(7, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_FALLING_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_FALLING_BODY,
+				100,
+				vec2(0, -3),
+				vec2(-2, -3))
+			);
+
+			getAnimationSets()[PlayerAnimationSet::PAS_JUMP_FORWARD] = AnimationSet(
+				2,
+				AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
+					ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
+					100,
+					vec2(0, 18),
+					vec2(-4, 18)),
+					AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_JUMPFORWARD_BODY,
+						ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_JUMPFORWARD_BODY,
+						100,
+						vec2(0, -3),
+						vec2(-4, -3))
+					);
+
+					getAnimationSets()[PlayerAnimationSet::PAS_FALLING_FORWARD] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_FALLINGFORWARD_LEGS,
+			ResourceIDFrames::IDF_PLAYER_FALLINGFORWARD_LEGS,
+			100,
+			vec2(5, 18),
+			vec2(-5, 18)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_FALLINGFORWARD_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_FALLINGFORWARD_BODY,
+				100,
+				vec2(-2, -3),
+				vec2(-4, -3))
+			);
+			
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-7, 9)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_BODY,
+				80,
+				vec2(-1, -2),
+				vec2(-23, 0))
+			);
+	
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-4, 19)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_BODY,
+				80,
+				vec2(0, -4),
+				vec2(-24, -4))
+			);
+	
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-6, 9)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
+				80,
+				vec2(0, -42),
+				vec2(-4, -42))
+			);
+
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK_UP] = AnimationSet(
+				2,
+				AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+					ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+					100,
+					vec2(0, 19),
+					vec2(-5, 19)),
+					AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
+						ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
+						80,
+						vec2(0, -42),
+						vec2(-3, -42))
+					);
+	
+					getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_CROUCH] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_CROUCH_F,
+			ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_CROUCH_F,
+			80,
+			vec2(3, 8),
+			vec2(-22, 8))
+		);
+	
+		getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_BODY,
+				80,
+				vec2(0, -3),
+				vec2(-25, -3))
+			);
+			
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_UP_JUMP_UP] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
+				80,
+				vec2(0, -42),
+				vec2(-4, -42))
+			);
+	getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_FORWARD] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPFORWARD_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPFORWARD_LEGS,
+			100,
+			vec2(0, 18),
+			vec2(-4, 18)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_BODY,
+				80,
+				vec2(-1, -2),
+				vec2(-23, 0))
+			);
+			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_JUMPUP_LEGS,
+			ResourceIDFrames::IDF_PLAYER_JUMPUP_LEGS,
+			80,
+			vec2(6, 20),
+			vec2(0, 20)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_DOWN_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_DOWN_BODY,
+				80,
+				vec2(4, 3),
+				vec2(-2, 3))
+			);
+	
+			getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_IDLE_LEGS,
+			ResourceIDFrames::IDF_PLAYER_IDLE_LEGS,
+			100,
+			vec2(2, 9),
+			vec2(-7, 9)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_MELEE_ATTACK_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_MELEE_ATTACK_BODY,
+				80,
+				vec2(-7, -15),
+				vec2(-10, -15))
+			);
+	
+			getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_WALK] = AnimationSet(
+		2,
+		AnimationLayer(ResourceID::ID_PLAYER_WALK_LEGS,
+			ResourceIDFrames::IDF_PLAYER_WALK_LEGS,
+			100,
+			vec2(0, 19),
+			vec2(-4, 19)),
+			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_MELEE_ATTACK_BODY,
+				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_MELEE_ATTACK_BODY,
+				80,
+				vec2(-7, -15),
+				vec2(-10, -15))
+			);
+	
+		getAnimationSets()[PlayerAnimationSet::PAS_REVIVE] = AnimationSet(
+		1,
+		AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_REVIVE_F,
+			ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_REVIVE_F,
+			100,
+			vec2(0, -205),
+			vec2(-10, -205))
+		);
+	}
+		
 
 	//setCurrentASIndex(PlayerAnimationSet::PAS_SHOOTING_IDLE);
 	//getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], true);
@@ -658,4 +932,9 @@ void Player::setShooting(bool shooting) {
 
 bool Player::isShooting() const{
 	return this->shooting;
+}
+
+void Player::setGunData(GunData newData){
+	this->gun.setGunData(newData);
+	loadGFX();
 }

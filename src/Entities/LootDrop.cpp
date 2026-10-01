@@ -1,8 +1,8 @@
 #include "precomp.h"
 #include "LootDrop.h"
 
-LootDrop::LootDrop(vec2 pos) : 
-    Entity(pos, false, ET_LOOTDROP)
+LootDrop::LootDrop(vec2 pos, EntityType entityType) : 
+    Entity(pos, false, entityType)
 {
 
 }

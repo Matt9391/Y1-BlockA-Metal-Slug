@@ -3,6 +3,7 @@
 #include <Bullet.h>
 #include <RenderSet.h>
 #include <Renderer.h>
+#include <GunType.h>
 
 Gun::Gun(const vec2& pos, vec2 offset, GunData gunData) :
 	pos(pos),
@@ -109,4 +110,14 @@ void Gun::setOffsetY(float offsetY) {
 
 void Gun::setOffsetX(float offsetX) {
 	this->offset.x = offsetX;
+}
+
+void Gun::setGunData(GunData newData) {
+
+	this->gunData = newData;
+
+}
+
+GunType Gun::getGunType() const{
+	return this->gunData.gunType;
 }

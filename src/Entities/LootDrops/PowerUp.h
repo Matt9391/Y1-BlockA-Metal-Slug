@@ -16,6 +16,8 @@ public:
 
     void applyEffect(Player& pl) override;
 
+    void setState(PowerUpState powerUpState);
+
 private:
 
 };

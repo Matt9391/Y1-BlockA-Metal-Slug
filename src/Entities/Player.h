@@ -24,6 +24,7 @@ public:
 
 	Gun& getGun();
 	int getGunBullets();
+	void setGunData(GunData newData);
 
 	void setEnemyInFront(bool enemyInFront);
 	

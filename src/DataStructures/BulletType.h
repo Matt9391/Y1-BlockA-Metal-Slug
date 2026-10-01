@@ -2,6 +2,6 @@
 
 enum BulletType{
         BT_PISTOL,
-        BT_RIFLE,
+        BT_FLAME_THROWER,
         BT_COUNTS
 };
