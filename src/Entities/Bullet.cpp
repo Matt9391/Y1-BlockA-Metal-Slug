@@ -10,11 +10,20 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, f
 	isDisabled(false),
 	bulletType(bulletType)
 { 
-	setCollider(vec2(5, 5), vec2(0, 0));
+	switch (bulletType)
+	{
+		case BulletType::BT_PISTOL:
+			setCollider(vec2(5, 5), vec2(0, 0));
+			break;
+		case BulletType::BT_FLAME_THROWER:
+			setCollider(vec2(50, 30), vec2(0, 0));
+			break;
+	}
+
 	getAnimationSets() = new AnimationSet[2];
 	loadGFX();
 	setCurrentASIndex(0);
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], dir.x < 0);
 	setDir(dir);
 	getRigidBody()->setSpeed(bulletSpeed);
 }
@@ -60,7 +69,7 @@ void Bullet::loadGFX() {
 				1,
 				AnimationLayer(ResourceID::ID_PLAYER_BULLET_FLAME_THROWER_BOOM,
 					ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER_BOOM,
-					50,
+					100,
 					vec2(0, -10),
 					vec2(0, -10))
 			);
@@ -76,6 +85,11 @@ void Bullet::loadGFX() {
 void Bullet::update(float dt) {
 	getAnimator().playAnimation(dt);
 
+	// TODO: should bounce again walls instead of ingoring them
+	if (bulletType == BulletType::BT_FLAME_THROWER && getAnimator().isAnimationEnded() && getCurrentASIndex() == 0) {
+		explode();
+	}
+
 	if (getAnimator().isAnimationEnded() && getCurrentASIndex() == 1) {
 		setFree(true);
 	}
@@ -87,10 +101,19 @@ void Bullet::update(float dt) {
 }
 
 void Bullet::explode() {
-	setCurrentASIndex(1);
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
-	ableMovement = false;
-	isDisabled = true;
+	switch (bulletType)
+	{
+		case BulletType::BT_PISTOL:
+			setCurrentASIndex(1);
+			getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+			ableMovement = false;
+			isDisabled = true;
+			break;
+		case BulletType::BT_FLAME_THROWER:
+			setCurrentASIndex(1);
+			getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+		break;
+	}
 }
 
 bool Bullet::getDisabled() const {

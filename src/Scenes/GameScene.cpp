@@ -216,7 +216,6 @@ void GameScene::update(float dt) {
 				if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider())) {
 					b->explode();
 					powerUp->setState(PowerUpState::PUS_REVEALED);
-					
 				}
 			}
 		}

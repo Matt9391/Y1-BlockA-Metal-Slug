@@ -69,6 +69,8 @@ void Gun::addRenderSets(Renderer& renderer) {
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) continue;
 		renderer.addRenderSet(bullets[i]->getRenderSet());
+		renderer.addCollider(bullets[i]->getCollider());
+
 	}
 }
 
