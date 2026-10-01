@@ -133,6 +133,7 @@
     <ClCompile Include="src\Components\RigidBody.cpp" />
     <ClCompile Include="src\Components\Spawner.cpp" />
     <ClCompile Include="src\Components\Spawners\EnemySpawner.cpp" />
+    <ClCompile Include="src\Components\Spawners\PowerUpSpawner.cpp" />
     <ClCompile Include="src\Components\Spawners\PowSpawner.cpp" />
     <ClCompile Include="src\DataStructures\GunPresets.cpp" />
     <ClCompile Include="src\DataStructures\RebelSoldierPresets.cpp" />
@@ -141,6 +142,8 @@
     <ClCompile Include="src\Entities\Enemy.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
     <ClCompile Include="src\Entities\Granade.cpp" />
+    <ClCompile Include="src\Entities\LootDrop.cpp" />
+    <ClCompile Include="src\Entities\LootDrops\PowerUp.cpp" />
     <ClCompile Include="src\Entities\Player.cpp" />
     <ClCompile Include="src\Entities\Pow.cpp" />
     <ClCompile Include="src\Managers\CollisionManager.cpp" />
@@ -183,7 +186,9 @@
     <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\Components\RigidBody.h" />
     <ClInclude Include="src\Components\Spawner.h" />
+    <ClInclude Include="src\Components\Spawners\PowerUpSpawner.h" />
     <ClInclude Include="src\Components\Spawners\PowSpawner.h" />
+    <ClInclude Include="src\DataStructures\BulletType.h" />
     <ClInclude Include="src\DataStructures\MapLayer.h" />
     <ClInclude Include="src\Components\Spawners\EnemySpawner.h" />
     <ClInclude Include="src\DataStructures\AnimationLayer.h" />
@@ -209,6 +214,8 @@
     <ClInclude Include="src\Entities\Enemy.h" />
     <ClInclude Include="src\Entities\Entity.h" />
     <ClInclude Include="src\Entities\Granade.h" />
+    <ClInclude Include="src\Entities\LootDrop.h" />
+    <ClInclude Include="src\Entities\LootDrops\PowerUp.h" />
     <ClInclude Include="src\Entities\Player.h" />
     <ClInclude Include="src\Entities\Pow.h" />
     <ClInclude Include="src\Managers\CollisionManager.h" />

@@ -62,6 +62,8 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_POW_WALK_WAIT] = new Sprite(new Surface("assets/POWsAnimation/walkWait.png"), ResourceIDFrames::IDF_POW_WALK_WAIT);
 	sprites[ResourceID::ID_POW_PANTS] = new Sprite(new Surface("assets/POWsAnimation/pants.png"), ResourceIDFrames::IDF_POW_PANTS);
 	sprites[ResourceID::ID_POW_BYE] = new Sprite(new Surface("assets/POWsAnimation/bye.png"), ResourceIDFrames::IDF_POW_BYE);
+	sprites[ResourceID::ID_POWERUP_CRATE] = new Sprite(new Surface("assets/LootDrops/crate.png"), ResourceIDFrames::IDF_POWERUP_CRATE);
+	sprites[ResourceID::ID_POWERUP_FLAME] = new Sprite(new Surface("assets/LootDrops/flame.png"), ResourceIDFrames::IDF_POWERUP_FLAME);
 	sprites[ResourceID::ID_POW_RUN_AWAY] = new Sprite(new Surface("assets/POWsAnimation/runAway.png"), ResourceIDFrames::IDF_POW_RUN_AWAY);
 	sprites[ResourceID::ID_MAP_TILESET] = new Sprite(new Surface("assets/bg.png"), ResourceIDFrames::IDF_PLAYER_IDLE_LEGS);
 	sprites[ResourceID::ID_COLLISION_TILESET] = new Sprite(new Surface("assets/collisionTile.png"), ResourceIDFrames::IDF_COLLISION_TILESET);

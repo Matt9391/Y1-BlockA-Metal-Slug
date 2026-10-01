@@ -15,6 +15,7 @@ enum EntityType {
 	ET_POW,
 	ET_GRANADE,
 	ET_BULLET,
+	ET_LOOTDROP,
 	ET_COUNTS
 };
 

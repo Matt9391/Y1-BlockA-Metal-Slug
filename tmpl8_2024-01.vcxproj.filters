@@ -34,6 +34,9 @@
     <Filter Include="src\Components\Spawners">
       <UniqueIdentifier>{fb5fcc25-55ed-4d30-a1f5-30ee8c82fb5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Entities\LootDrops">
+      <UniqueIdentifier>{1b189b07-f94f-4759-a532-e196d1a6b7eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -147,6 +150,15 @@
     </ClCompile>
     <ClCompile Include="src\Components\Spawners\PowSpawner.cpp">
       <Filter>src\Components\Spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Spawners\PowerUpSpawner.cpp">
+      <Filter>src\Components\Spawners</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\LootDrops\PowerUp.cpp">
+      <Filter>src\Entities\LootDrops</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\LootDrop.cpp">
+      <Filter>src\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +334,18 @@
     </ClInclude>
     <ClInclude Include="src\Components\Spawners\PowSpawner.h">
       <Filter>src\Components\Spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\BulletType.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Spawners\PowerUpSpawner.h">
+      <Filter>src\Components\Spawners</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\LootDrop.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\LootDrops\PowerUp.h">
+      <Filter>src\Entities\LootDrops</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

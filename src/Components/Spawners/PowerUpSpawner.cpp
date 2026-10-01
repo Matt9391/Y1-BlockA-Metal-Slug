@@ -1,5 +1,6 @@
 #include "precomp.h"
 #include "PowerUpSpawner.h"
+#include <LootDrops/PowerUp.h>
 
 
 
@@ -27,7 +28,7 @@ Entity* PowerUpSpawner::createEntity() {
 	if (getSpawnedNumber() >= nOfPowerUp) return nullptr;
 	Entity* powerup{ nullptr };
 
-    // powerup = new powerup(getPos());
+    powerup = new PowerUp(getPos(), static_cast<PowerUpState>(spawnState));
 
 	setSpawnEntity(false);
 	addSpawnedNumber();
