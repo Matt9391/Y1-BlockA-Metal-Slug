@@ -78,8 +78,6 @@ bool Map::loadDataFromJson(const char* fileName) {
 	std::ifstream map(fileName);
 	nlohmann::json data = nlohmann::json::parse(map);
 
-	// TODO: fix 3 layer of map
-
 	//filling member variables
 	this->tiles = vec2(data.at("width").get<int>(), data.at("height").get<int>());
 	this->tileSize = data.at("tileheight").get<int>();
@@ -89,7 +87,6 @@ bool Map::loadDataFromJson(const char* fileName) {
 		nlohmann::json layer = data.at("layers").at(i);
 
 		MapLayerNames layerName = static_cast<MapLayerNames>(i);
-		
 		
 		//data (tiles) of current layer
 		nlohmann::json mapData = layer.at("data");
