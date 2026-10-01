@@ -4,9 +4,8 @@
 #include <AnimationSet.h>
 
 
-Animator::Animator(vec2 pos):
+Animator::Animator():
 	animationSet(nullptr),
-	pos(pos),
 	timeElapsed{ 0.f },
 	animationEnded(false)
 	{

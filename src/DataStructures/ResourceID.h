@@ -79,5 +79,6 @@ enum ResourceID {
 	ID_FUEL_BAR,
 	ID_AMMOS,
 	ID_MENU_BG,
+	ID_GAME_OVER_BG,
 	ID_COUNTS
 };

@@ -36,7 +36,7 @@ void MenuScene::update(float dt) {
 		secondsLeft--;
 	}
 
-	if (secondsLeft == 0 || getInputManager().isKeyPressed(' ')) {
+	if (secondsLeft == 0 || getInputManager().isKeyJustPressed(' ')) {
 		setChangeScene(true);
 	}
 

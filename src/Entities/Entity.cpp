@@ -7,7 +7,7 @@ Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
 	pos(pos),
 	dir(0,0),
 	lastDir(0,0),
-	animator(pos),
+	animator(),
 	animationSets(nullptr),
 	currentASIndex(-1),
 	collider(this->pos, vec2(0,0), vec2(0,0)),

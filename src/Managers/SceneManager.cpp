@@ -3,6 +3,7 @@
 #include "TypeScene.h"
 #include <GameScene.h>
 #include <MenuScene.h>
+#include <GameOverScene.h>
 #include <Renderer.h>
 #include <InputManager.h>
 
@@ -37,7 +38,9 @@ void SceneManager::changeScene(TypeScene nextScene,Surface* screen, Renderer& re
 	if (nextScene == TypeScene::MENU) {
 		currentScene = new MenuScene(screen, renderer, inputManager);
 	}
-	else {
+	else if (nextScene == TypeScene::GAME_OVER) {
+		currentScene = new GameOverScene(screen, renderer, inputManager);
+	}else{
 		currentScene = new GameScene(screen, renderer, inputManager);
 	}
 

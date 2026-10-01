@@ -8,7 +8,7 @@ class Tmpl8::Surface;
 class Animator
 {
 public:
-	Animator(vec2 pos);
+	Animator();
 
 	bool setAnimation(AnimationSet* newAnimationSet, bool flipped = false, bool reset = false);
 
@@ -16,7 +16,6 @@ public:
 	void playAnimation(float dt);
 private:
 	AnimationSet* animationSet;
-	vec2 pos;
 
 	float timeElapsed[MAX_LAYERS];
 	bool animationEnded;

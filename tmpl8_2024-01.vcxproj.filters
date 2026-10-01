@@ -160,6 +160,9 @@
     <ClCompile Include="src\Entities\LootDrop.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\GameOverScene.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="src\Entities\LootDrops\PowerUp.h">
       <Filter>src\Entities\LootDrops</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\GameOverScene.h">
+      <Filter>src\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

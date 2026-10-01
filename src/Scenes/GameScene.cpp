@@ -53,7 +53,7 @@ void GameScene::init() {
 	}
 	
 	setChangeScene(false);
-	setNextScene(TypeScene::MENU);
+	setNextScene(TypeScene::GAME_OVER);
 };
 
 void GameScene::exit() {};

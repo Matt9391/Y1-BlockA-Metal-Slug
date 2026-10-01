@@ -150,6 +150,7 @@
     <ClCompile Include="src\Managers\InputManager.cpp" />
     <ClCompile Include="src\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Managers\SceneManager.cpp" />
+    <ClCompile Include="src\Scenes\GameOverScene.cpp" />
     <ClCompile Include="src\Scenes\GameScene.cpp" />
     <ClCompile Include="src\Scenes\CustomScene.cpp" />
     <ClCompile Include="src\Scenes\MenuScene.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="src\Managers\ResourceManager.h" />
     <ClInclude Include="src\Managers\SceneManager.h" />
     <ClInclude Include="src\DataStructures\TypeScene.h" />
+    <ClInclude Include="src\Scenes\GameOverScene.h" />
     <ClInclude Include="src\Scenes\GameScene.h" />
     <ClInclude Include="src\Scenes\CustomScene.h" />
     <ClInclude Include="src\Scenes\MenuScene.h" />

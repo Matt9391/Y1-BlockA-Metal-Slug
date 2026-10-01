@@ -2,5 +2,6 @@
 
 enum TypeScene {
 	MENU,
-	GAMEPLAY
+	GAMEPLAY,
+	GAME_OVER
 };
