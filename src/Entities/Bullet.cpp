@@ -60,7 +60,7 @@ void Bullet::loadGFX() {
 			1,
 			AnimationLayer(ResourceID::ID_PLAYER_BULLET_FLAME_THROWER,
 				ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER,
-				100,
+			100,
 				vec2(0, -10),
 				vec2(0, -10))
 			);

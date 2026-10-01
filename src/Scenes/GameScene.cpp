@@ -262,6 +262,10 @@ void GameScene::update(float dt) {
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, timeLeft, vec2(90, 10),1.f });
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PUSH START", vec2(180, 10),1.f });
 
+			if(getInputManager().isKeyPressed(' ')) {
+				player.fullRevive();
+			}
+
 		}
 		else {
 			char livesText[50];

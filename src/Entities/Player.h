@@ -34,6 +34,7 @@ public:
 	void takeHit();
 
 	void revive();
+	void fullRevive();
 
 	bool getEnabled() const;
 private:

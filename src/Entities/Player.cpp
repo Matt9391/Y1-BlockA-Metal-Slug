@@ -678,6 +678,11 @@ void Player::revive() {
 	setLifeState(true);
 	deadTimeElapsed = 0.f;
 }
+void Player::fullRevive() {
+	canRevive = true; 
+	lives = 3;
+	
+}
 
 bool Player::getEnabled() const {
 	return this->enabled;
