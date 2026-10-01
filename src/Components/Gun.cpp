@@ -10,7 +10,9 @@ Gun::Gun(const vec2& pos, vec2 offset, GunData gunData) :
 	gunData(gunData),
 	shootDir(0,0),
 	bullets{},
-	bulletsCount(0)
+	bulletsCount(0),
+	canShoot(true),
+	shootCooldown(0.f)
 {}
 
 Gun::~Gun() {
@@ -26,9 +28,19 @@ void Gun::update(float dt) {
 		if (bullets[i] == nullptr) continue;
 		bullets[i]->update(dt);
 	}
+
+	if(!canShoot){
+		shootCooldown += dt;
+		if(shootCooldown > gunData.fireRate){
+			shootCooldown = 0.f;
+			canShoot = true;
+		}
+	}
 }
 
 bool Gun::shoot() {
+	if(!canShoot) return false;
+
 	int bIndex = -1;
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) {
@@ -39,11 +51,18 @@ bool Gun::shoot() {
 
 	if (bIndex == -1) return false;
 
-	bullets[bIndex] = new Bullet(this->pos + this->offset, true, this->shootDir);
+	bullets[bIndex] = new Bullet(this->pos + this->offset, true, this->shootDir, gunData.bulletType, gunData.bulletSpeed);
 	bulletsCount++;
+
+	canShoot = false;
 
 	return true;
 }
+
+bool Gun::getCanShoot() const {
+	return this->canShoot;
+}
+
 
 void Gun::addRenderSets(Renderer& renderer) {
 	for (int i = 0; i < MAXBULLETS; i++) {

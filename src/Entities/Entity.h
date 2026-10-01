@@ -72,7 +72,6 @@ protected:
 private:
 
 	vec2 pos;
-	vec2 velocity;
 	vec2 dir;
 	vec2 lastDir;
 	//Collider collider;

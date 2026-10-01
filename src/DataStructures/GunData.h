@@ -1,22 +1,25 @@
 #pragma once
-#include <ResourceID.h>
+#include <BulletType.h>
 
 
 struct GunData {
 
 	GunData() :
-		bulletResourceId(ResourceID::ID_NULL),
+		bulletType(BulletType::BT_COUNTS),
 		fireRate(-1),
-		canShootDiagonally(false)
+		canShootDiagonally(false),
+		bulletSpeed(0.f)
 	{}
 
-	GunData(ResourceID bulletResourceId, float fireRate, bool canShootDiagonally) :
-		bulletResourceId(bulletResourceId),
+	GunData(BulletType bulletType, float fireRate, bool canShootDiagonally, float bulletSpeed) :
+		bulletType(bulletType),
 		fireRate(fireRate),
-		canShootDiagonally(canShootDiagonally)
+		canShootDiagonally(canShootDiagonally),
+		bulletSpeed(bulletSpeed)
 	{}
 
-	ResourceID bulletResourceId;
+	BulletType bulletType;
 	float fireRate; //time between shots
+	float bulletSpeed;
 	bool canShootDiagonally;
 };

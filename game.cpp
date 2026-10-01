@@ -13,7 +13,7 @@ Game::Game() :
 {
 }
 
-
+// TODO: 
 Game::~Game() { 
 	printf("game deconstructor"); 
 }

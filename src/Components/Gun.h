@@ -2,7 +2,6 @@
 #include <vec2.h>
 #include <GunData.h>
 
-enum ResourceId;
 class Bullet;
 struct RenderSet;
 class Renderer;
@@ -24,6 +23,7 @@ public:
 
 	void setShootDir(vec2 shootDir);
 	bool shoot();
+	bool getCanShoot() const;
 
 	void setOffsetX(float offsetX);
 	void setOffsetY(float offsetY);
@@ -38,4 +38,6 @@ private:
 	GunData gunData;
 	Bullet* bullets[MAXBULLETS];
 	int bulletsCount;
+	bool canShoot;
+	float shootCooldown;
 };

@@ -228,5 +228,6 @@ void RebelSoldier::freeGranade(int i) {
 
 Granade* RebelSoldier::getGranade(int i) {
 	if (granades[i]) return granades[i];
+	
 	return nullptr;
 }

@@ -2,7 +2,7 @@
 #include "GunPresets.h"
 
 GunData GunPresets::gunPresets[GunType::COUNTS] = {
-	GunData(ResourceID::ID_BULLET_PISTOL, 100, false) //PISTOL
+	GunData(BulletType::BT_PISTOL, 100, false, 0.5f) //PISTOL
 };
 
 

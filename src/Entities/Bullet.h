@@ -1,11 +1,13 @@
 #pragma once
 #include <Entity.h>
 
+enum BulletType;
+
 class Bullet : public Entity {
 
 public:
 
-	Bullet(vec2 pos, bool needsRigidBody, vec2 dir);
+	Bullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, float bulletSpeed);
 	~Bullet() override;
 
 	void loadGFX() override;
@@ -19,4 +21,5 @@ public:
 private:
 	bool ableMovement;
 	bool isDisabled;
+	BulletType bulletType;
 };

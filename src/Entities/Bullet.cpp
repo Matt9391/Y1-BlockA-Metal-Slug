@@ -2,11 +2,13 @@
 #include "Bullet.h"
 #include <ResourceIDFrames.h>
 #include <RigidBody.h>
+#include <BulletType.h>
 
-Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir) :
+Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, float bulletSpeed) :
 	Entity(pos,needsRigidBody, EntityType::ET_BULLET),
 	ableMovement(true),
-	isDisabled(false)
+	isDisabled(false),
+	bulletType(bulletType)
 { 
 	setCollider(vec2(5, 5), vec2(0, 0));
 	getAnimationSets() = new AnimationSet[2];
@@ -14,7 +16,7 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir) :
 	setCurrentASIndex(0);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 	setDir(dir);
-	getRigidBody()->setSpeed(0.5f);
+	getRigidBody()->setSpeed(bulletSpeed);
 }
 
 Bullet::~Bullet() {
@@ -22,23 +24,34 @@ Bullet::~Bullet() {
 }
 
 void Bullet::loadGFX() {
-	getAnimationSets()[0] = AnimationSet(
-		1,
-		AnimationLayer(ResourceID::ID_BULLET_PISTOL,
-			ResourceIDFrames::IDF_BULLET_PISTOL,
-			100,
-			vec2(0, 0),
-			vec2(0, 0))
-	);
 	
-	getAnimationSets()[1] = AnimationSet(
-		1,
-		AnimationLayer(ResourceID::ID_BULLET_PISTOL_BOOM,
-			ResourceIDFrames::IDF_PLAYER_BULLLET_PISTOL_BOOM,
-			50,
-			vec2(0, 0),
-			vec2(0, 0))
-	);
+	switch (bulletType)
+	{
+		case BulletType::BT_PISTOL:
+			getAnimationSets()[0] = AnimationSet(
+			1,
+			AnimationLayer(ResourceID::ID_BULLET_PISTOL,
+				ResourceIDFrames::IDF_BULLET_PISTOL,
+				100,
+				vec2(0, 0),
+				vec2(0, 0))
+			);
+			
+			getAnimationSets()[1] = AnimationSet(
+				1,
+				AnimationLayer(ResourceID::ID_BULLET_PISTOL_BOOM,
+					ResourceIDFrames::IDF_PLAYER_BULLLET_PISTOL_BOOM,
+					50,
+					vec2(0, 0),
+					vec2(0, 0))
+			);
+		break;
+	
+		default:
+		break;
+	}
+
+	
 }
 
 void Bullet::update(float dt) {

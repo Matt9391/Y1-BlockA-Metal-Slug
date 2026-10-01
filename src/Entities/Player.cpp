@@ -532,7 +532,7 @@ PlayerInput Player::getPlayerInput() {
 	const bool isCrouching = inputDown;
 	const bool isJumping = inputManager.isKeyJustPressed(' ');
 	const bool isGrounded = getRigidBody()->isGrounded();
-	const bool isShooting = inputManager.isKeyJustPressed('F');
+	const bool isShooting = inputManager.isKeyJustPressed('F') && gun.getCanShoot();
 	const bool enemyInFront = getEnemyInFront();
 	const bool dead = !alive;
 	const bool lost = lives < 0;

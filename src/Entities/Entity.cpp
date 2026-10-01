@@ -5,7 +5,6 @@
 Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
 	entityType(entityType),
 	pos(pos),
-	velocity(0,0),
 	dir(0,0),
 	lastDir(0,0),
 	animator(pos),
