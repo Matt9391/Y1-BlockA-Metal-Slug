@@ -15,7 +15,7 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	Entity(pos, true, EntityType::ET_PLAYER),
 	inputManager(inputManager),
 	state(nullptr),
-	gun(this->getPos(), vec2(5, 5), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
+	gun(this->getPos(), vec2(5, 5), GunPresets::getGun(GunType::FLAME_THROWER)), //I need to add gunData templates
 	shooting(false),
 	hasEnemyInFront(false),
 	alive(true),
@@ -47,7 +47,7 @@ void Player::init(vec2 pos_) {
 	this->canRevive = true;
 	this->enabled = false;
 	this->alive = true;
-	this->setGunData(GunPresets::getGun(GunType::PISTOL));
+	this->setGunData(GunPresets::getGun(GunType::FLAME_THROWER));
 
 	setCurrentASIndex(PlayerAnimationSet::PAS_PARACHUTE);
 	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
@@ -378,7 +378,7 @@ void Player::loadGFX() {
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_IDLE_BODY,
 				200,
 				vec2(0, 0),
-				vec2(-6, 0))
+				vec2(-16, 0))
 			);
 
 			getAnimationSets()[PlayerAnimationSet::PAS_WALK] = AnimationSet(
@@ -392,7 +392,7 @@ void Player::loadGFX() {
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_WALK_BODY,
 				90,
 				vec2(2, -2),
-				vec2(-7, -2))
+				vec2(-20, -2))
 			);
 
 			getAnimationSets()[PlayerAnimationSet::PAS_AFTER_RUN_STOP] = AnimationSet(
@@ -401,7 +401,7 @@ void Player::loadGFX() {
 					ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_AFTER_RUN_STOP_F,
 					150,
 					vec2(3, 1),
-					vec2(-8, 1))
+					vec2(-12, 1))
 				);
 
 				
@@ -411,7 +411,7 @@ void Player::loadGFX() {
 			ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_CROUCH_IDLE_F,
 			150,
 			vec2(3, 14),
-			vec2(-5, 14))
+			vec2(-15, 14))
 		);
 	
 		getAnimationSets()[PlayerAnimationSet::PAS_CROUCH_WALKING] = AnimationSet(
@@ -420,7 +420,7 @@ void Player::loadGFX() {
 			ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_CROUCH_WALKING_F,
 			150,
 			vec2(3, 14),
-			vec2(-5, 14))
+			vec2(-15, 14))
 		);
 
 		getAnimationSets()[PlayerAnimationSet::PAS_JUMP_UP] = AnimationSet(
@@ -433,8 +433,8 @@ void Player::loadGFX() {
 			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_JUMPUP_BODY,
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_JUMPUP_BODY,
 				80,
-				vec2(0, -3),
-				vec2(-2, -3))
+				vec2(3, -2),
+				vec2(-14, -2))
 			);
 
 			getAnimationSets()[PlayerAnimationSet::PAS_FALLING] = AnimationSet(
@@ -447,8 +447,8 @@ void Player::loadGFX() {
 			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_FALLING_BODY,
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_FALLING_BODY,
 				100,
-				vec2(0, -3),
-				vec2(-2, -3))
+				vec2(3, -0),
+				vec2(-14, -0))
 			);
 
 			getAnimationSets()[PlayerAnimationSet::PAS_JUMP_FORWARD] = AnimationSet(
@@ -462,7 +462,7 @@ void Player::loadGFX() {
 						ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_JUMPFORWARD_BODY,
 						100,
 						vec2(0, -3),
-						vec2(-4, -3))
+						vec2(-14, -3))
 					);
 
 					getAnimationSets()[PlayerAnimationSet::PAS_FALLING_FORWARD] = AnimationSet(
@@ -475,8 +475,8 @@ void Player::loadGFX() {
 			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_FALLINGFORWARD_BODY,
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_FALLINGFORWARD_BODY,
 				100,
-				vec2(-2, -3),
-				vec2(-4, -3))
+				vec2(0, -3),
+				vec2(-14, -3))
 			);
 			
 			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE] = AnimationSet(
@@ -490,7 +490,7 @@ void Player::loadGFX() {
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_BODY,
 				80,
 				vec2(-1, -2),
-				vec2(-23, 0))
+				vec2(-33, 0))
 			);
 	
 			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK] = AnimationSet(
@@ -504,7 +504,7 @@ void Player::loadGFX() {
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_BODY,
 				80,
 				vec2(0, -4),
-				vec2(-24, -4))
+				vec2(-34, -4))
 			);
 	
 			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_IDLE_UP] = AnimationSet(
@@ -517,8 +517,8 @@ void Player::loadGFX() {
 			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
 				80,
-				vec2(0, -42),
-				vec2(-4, -42))
+				vec2(4, -47),
+				vec2(0, -47))
 			);
 
 			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_WALK_UP] = AnimationSet(
@@ -531,8 +531,8 @@ void Player::loadGFX() {
 					AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
 						ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_UP_BODY,
 						80,
-						vec2(0, -42),
-						vec2(-3, -42))
+						vec2(4, -47),
+						vec2(0, -47))
 					);
 	
 					getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_CROUCH] = AnimationSet(
@@ -541,7 +541,7 @@ void Player::loadGFX() {
 			ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_CROUCH_F,
 			80,
 			vec2(3, 8),
-			vec2(-22, 8))
+			vec2(-42, 8))
 		);
 	
 		getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_UP] = AnimationSet(
@@ -555,7 +555,7 @@ void Player::loadGFX() {
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_BODY,
 				80,
 				vec2(0, -3),
-				vec2(-25, -3))
+				vec2(-35, -3))
 			);
 			
 			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_UP_JUMP_UP] = AnimationSet(
@@ -582,7 +582,7 @@ void Player::loadGFX() {
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_SHOOTING_BODY,
 				80,
 				vec2(-1, -2),
-				vec2(-23, 0))
+				vec2(-33, 0))
 			);
 			getAnimationSets()[PlayerAnimationSet::PAS_SHOOTING_JUMP_DOWN] = AnimationSet(
 		2,
