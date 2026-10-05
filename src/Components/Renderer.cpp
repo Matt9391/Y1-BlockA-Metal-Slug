@@ -91,13 +91,30 @@ void Renderer::clearSpriteSets() {
 	spriteSetCount = 0;
 }
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
-
+	
 	if (mapRenderSet != nullptr) {
+		
 		for (int i = 0; i < mapRenderSet->layerCount; i++) {
 			//for (int i = 0; i < mapRenderSet.layerCount - 2; i++) { //uncomment to remove hitboxes
 			const MapLayer& layer = mapRenderSet->layers[i];
-			for (int y = 0; y < layer.tiles.y; y++) {
-				for (int x = 0; x < layer.tiles.x; x++) {
+			
+			const int& tileSize = mapRenderSet->tileSize;
+
+			int startX = fmaxf(static_cast<int>(cameraOffset.x) / tileSize, 0);
+			int startY = fmaxf(static_cast<int>(cameraOffset.y) / tileSize, 0);
+
+			int endX = startX + (SCRWIDTH / tileSize) + 1;
+			int endY = startY + (SCRHEIGHT / tileSize) + 1;
+
+			//don't go outside the map
+			endX = fminf(endX, static_cast<int>(layer.tiles.x));
+			endY = fminf(endY, static_cast<int>(layer.tiles.y));
+		
+			int count = 0;
+		
+			for (int y = startY; y < endY; y++) {
+				for (int x = startX; x < endX; x++) {
+					count++;
 					int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
 					if (tileId == 0) continue; // empty tile, nothing to draw
 
@@ -113,6 +130,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 				}
 			}
+			printf("%d\n", count);
 		}
 	}
 	for (int i = 0; i < renderSetCount; i++) {

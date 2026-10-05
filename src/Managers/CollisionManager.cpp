@@ -103,29 +103,22 @@ namespace CollisionManager {
 					//std::cout << i * static_cast<int>(layer.tiles.x) + j << std::endl;
 					int tileId = layer.data[i * static_cast<int>(layer.tiles.x) + j] - layer.firstgid;
 					if (tileId == -layer.firstgid) continue;
+					
+					vec2 currentTile = vec2(j * layer.tileSize, i * layer.tileSize);
+					vec2 overlaps = checkOverlapMapCollision(collider, currentTile, layer.tileSize);
 
 					switch (tileId)
 					{
-						case 1:
-						case 3:
+						case TileType::SLOPE_L_TO_R:
+						case TileType::SLOPE_R_TO_L:
 						{
-							int tileX = j * layer.tileSize;
-							int tileY = i * layer.tileSize;
-
-							float leftTile = tileX;
-							float rightTile = tileX + layer.tileSize;
-							float topTile = tileY;
-							float bottomTile = tileY + layer.tileSize;
-
-							float overlapX = fminf(rightTile, colliderPos.x + collider.size.x) - fmaxf(leftTile, colliderPos.x);
-							float overlapY = fminf(bottomTile, colliderPos.y + collider.size.y) - fmaxf(topTile, colliderPos.y);
-
-							if (overlapX > -0.01f && overlapY > -0.01f) { //if colliding
+						
+							if (overlaps.x > -0.01f && overlaps.y > -0.01f) { //if colliding
 								if (e.getVelocity().y < 0) break;
 								collided = true;
 								float sampleX;
 								float max, min;
-								if (tileId == 1) { //left-to-right slope
+								if (tileId ==  TileType::SLOPE_L_TO_R) { //left-to-right slope
 									sampleX = colliderPos.x + collider.size.x;
 									min = 0.f;
 									max = 1.f;
@@ -136,50 +129,37 @@ namespace CollisionManager {
 									max = 0.f;
 								}
 
-								if (sampleX >= tileX && sampleX <= tileX + layer.tileSize) { //check if the sample is in this tile
-									float fraction = myMath::mapValue(sampleX, tileX, tileX + layer.tileSize, min, max);
-									e.setPos(vec2(e.getPos().x, bottomTile - layer.tileSize * fraction - collider.size.y - collider.offset.y));
+								if (sampleX >= currentTile.x && sampleX <= currentTile.x + layer.tileSize) { //check if the sample is in this tile
+									float fraction = myMath::mapValue(sampleX, currentTile.x, currentTile.x + layer.tileSize, min, max);
+									e.setPos(vec2(e.getPos().x, currentTile.y + layer.tileSize - layer.tileSize * fraction - collider.size.y - collider.offset.y));
 									grounded = true;
 								}
 							}	
 						}
 							break;
-						case 0:
-						case 2:
+						case  TileType::BLOCK:
+						case  TileType::PLATFORM:
 						{
-							int tileX = j * layer.tileSize;
-							int tileY = i * layer.tileSize;
-							
-							
-							if (tileId == 0) {
+							if (tileId ==  TileType::PLATFORM) {
 								//if (collider.pos.y + collider.size.y > tileY + layer.tileSize * 0.05f) break;
 								if (e.getVelocity().y < 0.0f) break;
-								if (colliderPos.y + collider.size.y > tileY + layer.tileSize /2.f) break;
+								if (colliderPos.y + collider.size.y > currentTile.y + layer.tileSize /2.f) break;
 							}
 
-
-							float leftTile = tileX;
-							float rightTile = tileX + layer.tileSize;
-							float topTile = tileY;
-							float bottomTile = tileY + layer.tileSize;
-
-							float overlapX = fminf(rightTile, colliderPos.x + collider.size.x) - fmaxf(leftTile, colliderPos.x);
-							float overlapY = fminf(bottomTile, colliderPos.y + collider.size.y) - fmaxf(topTile, colliderPos.y);
-
 							vec2 eCenter = vec2(colliderPos.x  + collider.size.x / 2, colliderPos.y + collider.size.y / 2);
-							vec2 tCenter = vec2(tileX + layer.tileSize / 2, tileY + layer.tileSize / 2); //tile Center
+							vec2 tCenter = vec2(currentTile.x + layer.tileSize / 2, currentTile.y + layer.tileSize / 2); //tile Center
 
 
 							vec2 dir = vec2(eCenter.x < tCenter.x ? -1 : 1, eCenter.y < tCenter.y ? -1 : 1);
 
-							if (overlapX > -0.01f && overlapY > -0.01f) {
+							if (overlaps.x > -0.01f && overlaps.y > -0.01f) {
 								collided = true;
 
-								if (overlapX < overlapY) {
-									e.addToPos(vec2(overlapX * dir.x, 0));
+								if (overlaps.x < overlaps.y) {
+									e.addToPos(vec2(overlaps.x * dir.x, 0));
 								}
 								else {
-									e.addToPos(vec2(0, overlapY * dir.y));
+									e.addToPos(vec2(0, overlaps.y * dir.y));
 									if (dir.y < 0) {
 										grounded = true;
 									}
@@ -204,12 +184,12 @@ namespace CollisionManager {
 
 	bool checkCollision(Collider& a, Collider& b){
 		float leftA = a.pos.x + a.offset.x;
-		float rightA = a.pos.x + + a.offset.x + a.size.x;
+		float rightA = a.pos.x + a.offset.x + a.size.x;
 		float topA = a.pos.y + a.offset.y;
 		float bottomA = a.pos.y + a.offset.y + a.size.y;
 	
 		float leftB = b.pos.x + b.offset.x;
-		float rightB = b.pos.x + +b.offset.x + b.size.x;
+		float rightB = b.pos.x + b.offset.x + b.size.x;
 		float topB = b.pos.y + b.offset.y;
 		float bottomB = b.pos.y + b.offset.y + b.size.y;
 
@@ -222,6 +202,20 @@ namespace CollisionManager {
 		return false;
 	}
 
+
+	vec2 checkOverlapMapCollision(Collider& collider,const vec2& tilePos,const int& tileSize) {
+		const vec2 colliderPos = (collider.pos + collider.offset);
+		float leftTile = tilePos.x;
+		float rightTile = tilePos.x + tileSize;
+		float topTile = tilePos.y;
+		float bottomTile = tilePos.y + tileSize;
+
+		float overlapX = fminf(rightTile, colliderPos.x + collider.size.x) - fmaxf(leftTile, colliderPos.x);
+		float overlapY = fminf(bottomTile, colliderPos.y + collider.size.y) - fmaxf(topTile, colliderPos.y);
+
+		return vec2(overlapX, overlapY);
+
+	}
 
 	bool checkMapCollision(Collider& collider, MapLayer& layer, int axis /* 0 = x, 1 = y, -1 = xy*/) {
 		vec2 startPos = vec2(static_cast<int>((collider.pos.x + collider.offset.x) / layer.tileSize),
@@ -294,4 +288,7 @@ namespace CollisionManager {
 
 		return collided;
 	}
+
+
+	// TODO: PIXEL-PERFECT COLLISION
 } 

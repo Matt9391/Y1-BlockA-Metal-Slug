@@ -312,6 +312,7 @@ void GameScene::addNewEntity(Entity* e) {
 	}
 }
 
+// TODO: shift back entities to minimize looping, also in the other arrays 	
 void GameScene::freeEntity(int index) {
 	if (spawnedEntities[index]) {
 		delete spawnedEntities[index];

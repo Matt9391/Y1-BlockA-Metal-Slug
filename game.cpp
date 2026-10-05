@@ -25,7 +25,8 @@ Game::~Game() {
 void Game::Init()
 {
 	resourceManager.init();
-	sceneManager.init(screen, renderer, inputManager, TypeScene::MENU);
+	sceneManager.init(screen, renderer, inputManager, TypeScene::GAMEPLAY
+	);
 }
 
 

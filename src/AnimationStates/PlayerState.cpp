@@ -159,8 +159,8 @@ PlayerAnimationSet ShootingIdleUpState::handleInput(const PlayerInput& in, Playe
 PlayerAnimationSet ShootingWalkState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
 {
     if (in.dead)                         return PlayerAnimationSet::PAS_DIE;
-    if (!in.isMoving)  return PlayerAnimationSet::PAS_AFTER_RUN_STOP;
     if (!in.isMoving && in.isShooting)  return PlayerAnimationSet::PAS_SHOOTING_IDLE;
+    if (!in.isMoving)  return PlayerAnimationSet::PAS_AFTER_RUN_STOP;
     if (in.inputUp && in.isShooting) return PlayerAnimationSet::PAS_SHOOTING_WALK_UP;
     if (in.enemyInFront && in.isShooting)      return PlayerAnimationSet::PAS_MELEE_ATTACK_WALK;
     if (in.onAnimationEnd)  return PlayerAnimationSet::PAS_IDLE;
