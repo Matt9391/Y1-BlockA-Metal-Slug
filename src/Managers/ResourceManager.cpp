@@ -111,3 +111,7 @@ Sprite* ResourceManager::getSprite(ResourceID resourceId) const {
 	
 	return this->sprites[resourceId];	
 }
+
+const Map& ResourceManager::getMap() const{
+	return this->map;
+}

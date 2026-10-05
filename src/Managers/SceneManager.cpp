@@ -17,10 +17,10 @@ SceneManager::~SceneManager() {
 	delete currentScene;
 }
 
-void SceneManager::init(Surface* screen, Renderer& renderer, InputManager& inputManager, TypeScene firstScene) {
+void SceneManager::init(Surface* screen, Renderer& renderer, InputManager& inputManager, ResourceManager& resourceManager, TypeScene firstScene) {
 	// gameScene = new GameScene(screen, renderer, inputManager);
 	// menuScene = new MenuScene(screen, renderer, inputManager);
-	changeScene(firstScene, screen, renderer, inputManager);
+	changeScene(firstScene, screen, renderer, inputManager, resourceManager);
 }
 
 CustomScene& SceneManager::getCurrentScene() const{
@@ -28,7 +28,7 @@ CustomScene& SceneManager::getCurrentScene() const{
 }
 
 
-void SceneManager::changeScene(TypeScene nextScene,Surface* screen, Renderer& renderer, InputManager& inputManager) {
+void SceneManager::changeScene(TypeScene nextScene,Surface* screen, Renderer& renderer, InputManager& inputManager, ResourceManager& resourceManager) {
 	renderer.reset();
 	delete currentScene;
 	if (nextScene == TypeScene::MENU) {
@@ -37,7 +37,7 @@ void SceneManager::changeScene(TypeScene nextScene,Surface* screen, Renderer& re
 	else if (nextScene == TypeScene::GAME_OVER) {
 		currentScene = new GameOverScene(screen, renderer, inputManager);
 	}else{
-		currentScene = new GameScene(screen, renderer, inputManager);
+		currentScene = new GameScene(screen, renderer, inputManager, resourceManager.getMap());
 	}
 
 	currentScene->init();

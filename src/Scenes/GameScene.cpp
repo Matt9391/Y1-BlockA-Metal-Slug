@@ -13,13 +13,14 @@
 #include <LootDrop.h>
 #include <LootDrops/PowerUp.h>
 
-GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
+GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, const Map& map_) :
 	CustomScene(screen, renderer, inputManager),
 	player(vec2(30, 80), getInputManager()),
 	loseCondition(false),
 	secondsLeft(9),
 	elapsedLoseTime(0.f),
-	spawnedEntities{}
+	spawnedEntities{},
+	map(map_)
 	{
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
 	}

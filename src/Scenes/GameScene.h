@@ -9,7 +9,7 @@
 class GameScene : public CustomScene
 {
 public:
-	GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager);
+	GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager,const Map& map_);
 	~GameScene();
 	
 	void init() override;
@@ -24,7 +24,7 @@ private:
 	static const int MAXENTITIES = 150;
 
 	Entity* spawnedEntities[MAXENTITIES];
-	Map map;
+	const Map& map;
 	bool loseCondition;
 	int secondsLeft;
 	float elapsedLoseTime;

@@ -25,8 +25,7 @@ Game::~Game() {
 void Game::Init()
 {
 	resourceManager.init();
-	sceneManager.init(screen, renderer, inputManager, TypeScene::GAMEPLAY
-	);
+	sceneManager.init(screen, renderer, inputManager, resourceManager, TypeScene::GAMEPLAY);
 }
 
 
@@ -45,7 +44,7 @@ void Game::Tick(float dt)
 	inputManager.updateLastFrameKeys();
 
 	if (sceneManager.getCurrentScene().sceneHasToChange()) {
-		sceneManager.changeScene(sceneManager.getCurrentScene().getNextScene(), screen, renderer, inputManager);
+		sceneManager.changeScene(sceneManager.getCurrentScene().getNextScene(), screen, renderer, inputManager, resourceManager);
 	}
 }
 
