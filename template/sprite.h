@@ -29,7 +29,7 @@ public:
 	uint* GetReverseBuffer() { return reverseSurface->pixels; }
 	unsigned int Frames() { return numFrames; }
 	Surface* GetSurface() { return surface; }
-	void InitializeStartData(unsigned int** start, uint* buffer);
+	void InitializeStartData(unsigned int** start_, uint* buffer);
 private:
 	// attributes
 	int width, height;

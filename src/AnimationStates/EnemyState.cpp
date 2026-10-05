@@ -50,7 +50,7 @@ namespace RebelSoldierStates {
         this->jumpCountdown = 0.f;
         this->flipCountdown = 0.f;
         this->grenadeCountdown = 0.f;
-        e.setDir(vec2(e.getFlip() ? 1 : -1, 0));
+        e.setDir(vec2(e.getFlip() ? 1.f : -1.f, 0.f));
 
     }
 
@@ -69,7 +69,7 @@ namespace RebelSoldierStates {
         if (flipCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - FLIPCHANCE) {
             flipCountdown = 0.f;
             e.setFlip(!e.getFlip());
-            e.setDir(vec2(e.getFlip() ? 1 : -1, e.getDir().y));
+            e.setDir(vec2(e.getFlip() ? 1.f : -1.f, e.getDir().y));
         }
 
         if (e.getSensors().isGrounded) {
@@ -109,12 +109,12 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void AfterRunState::enter(RebelSoldier& e) {
+    void AfterRunState::enter(RebelSoldier&) {
         this->duration = 1000.f;
         this->elapsedTime = 0.f;
     }
 
-    EnemyAnimationSet AfterRunState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    EnemyAnimationSet AfterRunState::update(RebelSoldier& e, float, EnemyAnimationSet current)
     {
         if (!e.getSensors().alive) {
             return   EnemyAnimationSet::EAS_DEATH;
@@ -126,12 +126,12 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void JumpForwardState::enter(RebelSoldier& e) {
+    void JumpForwardState::enter(RebelSoldier&) {
         this->duration = 1000.f;
         this->elapsedTime = 0.f;
     }
 
-    EnemyAnimationSet JumpForwardState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    EnemyAnimationSet JumpForwardState::update(RebelSoldier& e, float, EnemyAnimationSet current)
     {
         if (!e.getSensors().alive) {
             return   EnemyAnimationSet::EAS_DEATH;
@@ -147,12 +147,12 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void ScaredState::enter(RebelSoldier& e) {
+    void ScaredState::enter(RebelSoldier&) {
         this->duration = 1000.f;
         this->elapsedTime = 0.f;
     }
 
-    EnemyAnimationSet ScaredState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    EnemyAnimationSet ScaredState::update(RebelSoldier& e, float, EnemyAnimationSet current)
     {
         if (!e.getSensors().alive) {
             return   EnemyAnimationSet::EAS_DEATH;
@@ -168,12 +168,12 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void FallingState::enter(RebelSoldier& e) {
+    void FallingState::enter(RebelSoldier&) {
         this->duration = 1000.f;
         this->elapsedTime = 0.f;
     }
 
-    EnemyAnimationSet FallingState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    EnemyAnimationSet FallingState::update(RebelSoldier& e, float, EnemyAnimationSet current)
     {
         if (!e.getSensors().alive) {
             return   EnemyAnimationSet::EAS_DEATH;
@@ -185,7 +185,7 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void CoverState::enter(RebelSoldier& e) {
+    void CoverState::enter(RebelSoldier&) {
         this->duration = RandomFloat() * 1000.f + 1500.f;
         this->elapsedTime = 0.f;
     }
@@ -212,7 +212,7 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void MeleeAttackState::enter(RebelSoldier& e) {
+    void MeleeAttackState::enter(RebelSoldier&) {
         this->duration = 1000.f;
         this->elapsedTime = 0.f;
         this->attacked = false;
@@ -253,7 +253,7 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void GrandadeAttackState::enter(RebelSoldier& e) {
+    void GrandadeAttackState::enter(RebelSoldier&) {
         this->duration = 1000.f;
         this->elapsedTime = 0.f;
         this->thrown = false;
@@ -271,7 +271,7 @@ namespace RebelSoldierStates {
         elapsedTime += dt;
         if (!thrown && elapsedTime > MSTRIGGER) {
             thrown = true;
-            static_cast<RebelSoldier&>(e).throwGranade(vec2(e.getSensors().distToPlayer < 0 ? 1 : -1, 0));
+            static_cast<RebelSoldier&>(e).throwGranade(vec2(e.getSensors().distToPlayer < 0 ? 1.f : -1.f, 0.f));
         }
 
         if (!playerVisible && e.getSensors().animationEnded) {
@@ -286,13 +286,13 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void DeathState::enter(RebelSoldier& e) {}
+    void DeathState::enter(RebelSoldier&) {}
 
 
-    EnemyAnimationSet DeathState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    EnemyAnimationSet DeathState::update(RebelSoldier& e, float, EnemyAnimationSet current)
     {
         e.setFlip(e.getSensors().distToPlayer < 0 ? false : true);
-        e.setDir(vec2(e.getSensors().distToPlayer < 0 ? -1 : 1, e.getDir().y));
+        e.setDir(vec2(e.getSensors().distToPlayer < 0.f ? -1.f : 1.f, e.getDir().y));
         e.getRigidBody()->setSpeed(0.05f);
         if (e.getSensors().animationEnded) {
             current = EnemyAnimationSet::EAS_DEATH_STILL;
@@ -301,9 +301,9 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void DeathStillState::enter(RebelSoldier& e) {}
+    void DeathStillState::enter(RebelSoldier&) {}
 
-    EnemyAnimationSet DeathStillState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    EnemyAnimationSet DeathStillState::update(RebelSoldier& e, float, EnemyAnimationSet current)
     {
         e.setDir(vec2(0, e.getDir().y));
         return current;

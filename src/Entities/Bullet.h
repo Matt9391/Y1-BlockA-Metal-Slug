@@ -1,7 +1,7 @@
 #pragma once
 #include <Entity.h>
 
-enum BulletType;
+enum BulletType : int;
 
 class Bullet : public Entity {
 

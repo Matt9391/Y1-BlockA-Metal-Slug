@@ -4,7 +4,7 @@
 #include <MapLayer.h>
 
 class Entity;
-class Collider;
+struct Collider;
 
 namespace CollisionManager {
 

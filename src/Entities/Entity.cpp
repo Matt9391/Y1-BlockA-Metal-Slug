@@ -22,7 +22,7 @@ Entity::~Entity()
 {
 	delete rigidBody;
 }
-void Entity::update(float dt) {
+void Entity::update(float) {
 }
 
 RenderSet Entity::getRenderSet() const { //make it reference
@@ -57,13 +57,13 @@ AnimationSet*& Entity::getAnimationSets() {
 	return this->animationSets;
 }
 
-void Entity::setPos(const vec2& newPos) {
-	this->pos = newPos;
+void Entity::setPos(const vec2& pos_) {
+	this->pos = pos_;
 }
 
 void Entity::setCollider(vec2 size, vec2 offset) {
 	this->collider.offset = offset;
-	this->collider.size= size;
+	this->collider.size = size;
 }
 void Entity::setColliderOffset(vec2 offset) {
 	this->collider.offset = offset;
@@ -76,9 +76,6 @@ void Entity::addToPos(const vec2& newPos) {
 void Entity::setGrounded(bool grounded) {
 	if (rigidBody) {
 		rigidBody->setGrounded(grounded);
-		//if (grounded) {
-		//	rigidBody->setVelocityY(0.f);
-		//}
 	}
 }
 
@@ -97,11 +94,11 @@ vec2 Entity::getLastDir() const {
 	return this->lastDir;
 }
 
-void Entity::setDir(vec2 dir){
-	this->dir = dir;
+void Entity::setDir(vec2 dir_){
+	this->dir = dir_;
 }
-void Entity::setLastDir(vec2 dir) {
-	this->lastDir = dir;
+void Entity::setLastDir(vec2 dir_) {
+	this->lastDir = dir_;
 }
 
 
@@ -113,8 +110,8 @@ RigidBody* Entity::getRigidBody() const {
 	return this->rigidBody;
 }
 
-void Entity::setFree(bool free) {
-	this->free = free;
+void Entity::setFree(bool free_) {
+	this->free = free_;
 }
 
 

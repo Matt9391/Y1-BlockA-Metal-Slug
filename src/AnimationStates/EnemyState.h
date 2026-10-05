@@ -2,7 +2,7 @@
 
 class Enemy;
 class RebelSoldier;
-enum EnemyAnimationSet;
+enum EnemyAnimationSet : int;
 
 namespace RebelSoldierStates {
     class EnemyState
@@ -10,7 +10,7 @@ namespace RebelSoldierStates {
     public:
         virtual ~EnemyState() = default;
         virtual EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current) = 0;
-        virtual void enter(RebelSoldier& e) {}
+        virtual void enter(RebelSoldier&) {}
     protected:
         float duration = 0.f;
         float elapsedTime = 0.f;

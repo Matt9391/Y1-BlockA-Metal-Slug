@@ -8,20 +8,20 @@ class Camera
 public:
 	Camera(vec2 pos, vec2 size);
 
-	void init(vec2 pos);
+	void init(vec2 pos_);
 	void follow(const vec2& target);
 
-	void setPos(vec2 pos);
+	void setPos(vec2 pos_);
 	vec2 getPos() const;
 
-	void setWorldSize(const vec2& worldSize);
+	void setWorldSize(const vec2& worldSize_);
 
 	void enableYFollow(bool enabled);
-	void enableCamera(bool enabled);
+	void enableCamera(bool enabled_);
 
-	void setMinYLimit(float minY);
+	void setMinYLimit(float minY_);
 
-	bool isOutOfView(const vec2& pos) const;
+	bool isOutOfView(const vec2& pos_) const;
 
 private:
 	vec2 pos;

@@ -15,8 +15,8 @@ Camera::Camera(vec2 pos, vec2 size) :
 {
 }
 
-void Camera::init(vec2 pos) {
-	this->pos = pos;
+void Camera::init(vec2 pos_) {
+	this->pos = pos_;
 }
 
 
@@ -53,13 +53,13 @@ vec2 Camera::getPos() const {
 	return enable ? vec2(pos.x, floorf(pos.y)) : vec2(0, 0);
 }
 
-void Camera::setPos(vec2 pos) {
-	this->pos = pos;
+void Camera::setPos(vec2 pos_) {
+	this->pos = pos_;
 }
 
-void Camera::setWorldSize(const vec2& worldSize)
+void Camera::setWorldSize(const vec2& worldSize_)
 {
-	this->worldSize = worldSize;
+	this->worldSize = worldSize_;
 
 	// Default Y limits.
 	this->minY = 0;
@@ -70,18 +70,18 @@ void Camera::enableYFollow(bool enabled)
 {
 	this->followY = enabled;
 }
-void Camera::enableCamera(bool enabled)
+void Camera::enableCamera(bool enabled_)
 {
-	this->enable = enabled;
+	this->enable = enabled_;
 }
 
-void Camera::setMinYLimit(float minY)
+void Camera::setMinYLimit(float minY_)
 {
-	this->minY = minY;
+	this->minY = minY_;
 }
 
-bool Camera::isOutOfView(const vec2& pos) const{
-	vec2 screenPos = pos - this->pos;
+bool Camera::isOutOfView(const vec2& pos_) const{
+	vec2 screenPos = pos_ - this->pos;
 	//trick learnt from Jacco :b
 	if (screenPos.x < -threshold.x || screenPos.x > SCRWIDTH + threshold.x) return true;
 	if (screenPos.y < -threshold.y || screenPos.y > SCRHEIGHT + threshold.y) return true;

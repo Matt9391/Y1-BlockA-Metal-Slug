@@ -52,7 +52,3 @@ void MenuScene::update(float dt) {
 	getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 215),1.f });
 
 }
-
-void MenuScene::display(float dt) {
-
-}

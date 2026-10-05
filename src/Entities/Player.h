@@ -15,7 +15,7 @@ public:
 	Player(vec2 pos, InputManager& inputManager);
 	~Player() override;
 
-	void init(vec2 pos);
+	void init(vec2 pos_);
 	void loadGFX() override;
 
 	void update(float dt) override;
@@ -39,12 +39,12 @@ public:
 	bool getEnabled() const;
 private:
 	bool getEnemyInFront() const;
-	void setShooting(bool shooting);
+	void setShooting(bool shooting_);
 	PlayerInput getPlayerInput();
 	void handleMovement(float dt, const PlayerInput& pInput);
 	void handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded);
 
-	void setLifeState(bool state);
+	void setLifeState(bool state_);
 
 	const InputManager& inputManager; //Const so it can only call const methods
 	Gun gun;

@@ -10,7 +10,7 @@ namespace PowStates {
 		pow.setDir(vec2(0, 0));
 	}
 
-	PowAnimationSet IdleState::update(Pow& pow, float dt, PowAnimationSet current) {
+	PowAnimationSet IdleState::update(Pow& pow, float, PowAnimationSet current) {
 		if (pow.isReleased()) {
 			current = PowAnimationSet::POW_RELEASING;
 		}
@@ -21,7 +21,7 @@ namespace PowStates {
 		pow.setDir(vec2(0, 0));
 	}
 
-	PowAnimationSet ReleasingState::update(Pow& pow, float dt, PowAnimationSet current) {
+	PowAnimationSet ReleasingState::update(Pow& pow, float, PowAnimationSet current) {
 		if (pow.isAnimationEnded()) {
 			current = PowAnimationSet::POW_WALK_WAIT;
 		}
@@ -29,7 +29,7 @@ namespace PowStates {
 	}
 
 	const float WalkWaitState::TRIGGERMINTIME = 1500.f;
-	const int WalkWaitState::FLIPMS = 600.f;
+	const float WalkWaitState::FLIPMS = 600.f;
 
 	void WalkWaitState::enter(Pow& pow) {
 		this->elapsedTime = 0.f;
@@ -58,7 +58,7 @@ namespace PowStates {
 		pow.setDir(vec2(0, 0));
 	}
 
-	PowAnimationSet PantsState::update(Pow& pow, float dt, PowAnimationSet current) {
+	PowAnimationSet PantsState::update(Pow& pow, float, PowAnimationSet current) {
 		if (pow.isAnimationEnded()) {
 			current = PowAnimationSet::POW_BYE;
 		}
@@ -69,7 +69,7 @@ namespace PowStates {
 		pow.setDir(vec2(0, 0));
 	}
 
-	PowAnimationSet ByeState::update(Pow& pow, float dt, PowAnimationSet current) {
+	PowAnimationSet ByeState::update(Pow& pow, float, PowAnimationSet current) {
 		if (pow.isAnimationEnded()) {
 			current = PowAnimationSet::POW_RUN_AWAY;
 		}
@@ -81,7 +81,7 @@ namespace PowStates {
 		pow.getRigidBody()->setSpeed(0.2f);
 	}
 
-	PowAnimationSet RunAwayState::update(Pow& pow, float dt, PowAnimationSet current) {
+	PowAnimationSet RunAwayState::update(Pow&, float, PowAnimationSet current) {
 		return current;
 	}
 

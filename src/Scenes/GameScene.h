@@ -16,7 +16,6 @@ public:
 	void exit() override;
 	
 	void update(float dt) override;
-	void display(float dt) override;
 
 private:
 	void addNewEntity(Entity* e);

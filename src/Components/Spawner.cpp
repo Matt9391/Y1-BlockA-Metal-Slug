@@ -17,7 +17,7 @@ Spawner::~Spawner() {
 
 }
 
-void Spawner::update(float dt) {
+void Spawner::update(float) {
 }
 
 
@@ -33,16 +33,16 @@ float Spawner::getSpawnDelay() const {
     return spawnDelay;
 }
 
-void Spawner::setSpawnDelay(float spawnDelay) {
-    this->spawnDelay = spawnDelay;
+void Spawner::setSpawnDelay(float spawnDelay_) {
+    this->spawnDelay = spawnDelay_;
 }
 
 float Spawner::getTimer() const {
     return timer;
 }
 
-void Spawner::setTimer(float timer) {
-    this->timer = timer;
+void Spawner::setTimer(float timer_) {
+    this->timer = timer_;
 }
 
 void Spawner::addTimer(float dt){
@@ -53,15 +53,15 @@ float Spawner::getDistToPlayer() const {
     return distToPlayer;
 }
 
-void Spawner::setDistToPlayer(float distToPlayer) {
-    this->distToPlayer = distToPlayer;
+void Spawner::setDistToPlayer(float distToPlayer_) {
+    this->distToPlayer = distToPlayer_;
 }
 
 bool Spawner::getSpawnEntity() const {
 	return this->spawnEntity;
 }
-void Spawner::setSpawnEntity(bool spawnEntity) {
-	this->spawnEntity = spawnEntity;
+void Spawner::setSpawnEntity(bool spawnEntity_) {
+	this->spawnEntity = spawnEntity_;
 }
 
 int  Spawner::getSpawnedNumber() const {

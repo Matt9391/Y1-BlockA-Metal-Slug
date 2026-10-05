@@ -1,9 +1,9 @@
 #pragma once
 
-#include "vec2.h"
+#include <vec2.h>
 
-enum ResourceID;
-enum ResourceIDFrames;
+enum ResourceID : int;
+enum ResourceIDFrames : int;
 
 struct SpriteSet {
 	ResourceID resourceId;

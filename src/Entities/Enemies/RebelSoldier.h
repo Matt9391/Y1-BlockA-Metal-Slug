@@ -15,7 +15,7 @@ public:
 
 	void update(float dt) override;
 
-	bool throwGranade(vec2 dir);
+	bool throwGranade(vec2 dir_);
 
 	void addRenderSets(Renderer& renderer);
 

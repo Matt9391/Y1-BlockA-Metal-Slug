@@ -41,8 +41,8 @@ Player::~Player() {
 	delete[] getAnimationSets();
 }
 
-void Player::init(vec2 pos) {
-	this->setPos(pos);
+void Player::init(vec2 pos_) {
+	this->setPos(pos_);
 	this->lives = 3;
 	this->canRevive = true;
 	this->enabled = false;
@@ -677,9 +677,9 @@ void Player::takeHit() {
 	}
 }
 
-void Player::setLifeState(bool state) {
-	alive = state;
-	enabled = state;
+void Player::setLifeState(bool state_) {
+	alive = state_;
+	enabled = state_;
 }
 
 void Player::revive() {
@@ -798,7 +798,7 @@ void Player::update(float dt) {
 			}
 		}
 
-		gun.setShootDir(vec2(x,y));
+		gun.setShootDir(vec2(static_cast<float>(x),static_cast<float>(y)));
 	}
 
 	const bool flip = getLastDir().x < 0;
@@ -939,8 +939,8 @@ void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) 
 	}
 }
 
-void Player::setShooting(bool shooting) {
-	this->shooting = shooting;
+void Player::setShooting(bool shooting_) {
+	this->shooting = shooting_;
 }
 
 bool Player::isShooting() const{

@@ -100,15 +100,15 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			
 			const int& tileSize = mapRenderSet->tileSize;
 
-			int startX = fmaxf(static_cast<int>(cameraOffset.x) / tileSize, 0);
-			int startY = fmaxf(static_cast<int>(cameraOffset.y) / tileSize, 0);
+			int startX = static_cast<int>(fmaxf(floorf(cameraOffset.x) / tileSize, 0.f));
+			int startY = static_cast<int>(fmaxf(floorf(cameraOffset.y) / tileSize, 0.f));
 
 			int endX = startX + (SCRWIDTH / tileSize) + 1;
 			int endY = startY + (SCRHEIGHT / tileSize) + 1;
 
 			//don't go outside the map
-			endX = fminf(endX, static_cast<int>(layer.tiles.x));
-			endY = fminf(endY, static_cast<int>(layer.tiles.y));
+			endX = static_cast<int>(fminf(static_cast<float>(endX),layer.tiles.x));
+			endY = static_cast<int>(fminf(static_cast<float>(endY),layer.tiles.y));
 		
 			int count = 0;
 		
@@ -121,12 +121,18 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 					int localId = tileId - layer.firstgid;
 					int srcCol = localId % static_cast<int>(layer.tiles.x);
-					int srcRow = localId / layer.tiles.x;
+					int srcRow = localId / static_cast<int>(layer.tiles.x);
 
 					int destX = static_cast<int>(mapRenderSet->pos.x + x * 8);
 					int destY = static_cast<int>(mapRenderSet->pos.y + y * 8);
 
-					drawTile(mapRenderSet->tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
+					drawTile(mapRenderSet->tileSize,
+							srcCol,
+							srcRow, 
+							screen, 
+							resourceManager.getSprite(layer.resourceId)->GetSurface(), 
+							static_cast<int>(destX - cameraOffset.x), 
+							static_cast<int>(destY - cameraOffset.y));
 
 				}
 			}
@@ -155,20 +161,25 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	if (mapRenderSet != nullptr) {
 		for (int i = 2; i < mapRenderSet->layerCount - 1; i++) {
 			const MapLayer& layer = mapRenderSet->layers[i];
-			for (int y = 0; y < layer.tiles.y; y++) {
-				for (int x = 0; x < layer.tiles.x; x++) {
+			for (int y = 0; y < static_cast<int>(layer.tiles.y); y++) {
+				for (int x = 0; x < static_cast<int>(layer.tiles.x); x++) {
 					int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
 					if (tileId == 0) continue; // empty tile, nothing to draw
 
 					int localId = tileId - layer.firstgid;
 					int srcCol = localId % static_cast<int>(layer.tiles.x);
-					int srcRow = localId / layer.tiles.x;
+					int srcRow = localId / static_cast<int>(layer.tiles.x);
 
 					int destX = static_cast<int>(mapRenderSet->pos.x + x * 8);
 					int destY = static_cast<int>(mapRenderSet->pos.y + y * 8);
 
-					drawTile(mapRenderSet->tileSize, srcCol, srcRow, screen, resourceManager.getSprite(layer.resourceId)->GetSurface(), destX - cameraOffset.x, destY - cameraOffset.y);
-
+					drawTile(mapRenderSet->tileSize,
+							srcCol,
+							srcRow, 
+							screen, 
+							resourceManager.getSprite(layer.resourceId)->GetSurface(), 
+							static_cast<int>(destX - cameraOffset.x), 
+							static_cast<int>(destY - cameraOffset.y));
 				}
 			}
 		}
@@ -183,8 +194,11 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 				const vec2& pos = spawner->getPos();
 				const vec2& size = spawner->getSize();
 
-				screen->Box(pos.x - cameraOffset.x, pos.y - cameraOffset.y,
-					pos.x - cameraOffset.x + size.x, pos.y - cameraOffset.y + size.y, 0xFFFF00);
+				screen->Box(static_cast<int>(pos.x - cameraOffset.x), 
+							static_cast<int>(pos.y - cameraOffset.y),
+							static_cast<int>(pos.x - cameraOffset.x + size.x), 
+							static_cast<int>(pos.y - cameraOffset.y + size.y), 
+							0xFFFF00);
 			}
 		}
 	}
@@ -192,8 +206,11 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	for (int i = 0; i < collidersCount; i++) {
 		Collider* c = colliders[i];
 		if(!c) continue;
-		screen->Box(c->pos.x + c->offset.x - cameraOffset.x, c->pos.y + c->offset.y - cameraOffset.y,
-			c->pos.x + c->offset.x - cameraOffset.x + c->size.x, c->pos.y + c->offset.y - cameraOffset.y + c->size.y, 0xFF0000);
+		screen->Box(static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x), 
+					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y),
+					static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x + c->size.x), 
+					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y + c->size.y), 
+					0xFF0000);
 	}
 
 	for (int i = 0; i < spriteSetCount; i++) {
@@ -201,7 +218,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		Sprite* sprite = resourceManager.getSprite(ss.resourceId);
 		if (sprite == nullptr) continue;
 
-		sprite->Draw(screen, ss.pos.x, ss.pos.y, 0);
+		sprite->Draw(screen, static_cast<int>(ss.pos.x), static_cast<int>(ss.pos.y), 0);
 	}
 
 	for (int i = 0; i < textsCount; i++) {

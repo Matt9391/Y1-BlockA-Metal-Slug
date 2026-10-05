@@ -1,7 +1,7 @@
 #pragma once
 #include <CustomScene.h>
 
-enum TypeScene;
+enum TypeScene : int;
 class Tmpl8::Surface;
 
 class SceneManager

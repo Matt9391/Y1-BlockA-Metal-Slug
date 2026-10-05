@@ -25,7 +25,7 @@ public:
 
 	const EnemySensor& getSensors() const;
 
-	void setAlive(bool alive);
+	void setAlive(bool alive_);
 	bool getAlive() const;
 
 	

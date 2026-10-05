@@ -29,7 +29,7 @@ class PlayerState
 public:
     virtual ~PlayerState() = default;
     virtual PlayerAnimationSet handleInput(const PlayerInput& in, PlayerAnimationSet current) const = 0;
-    virtual void enter(Player& player) const {}
+    virtual void enter(Player&) const {}
 };
 
 // --- Ground / neutral states ---------------------------------------------

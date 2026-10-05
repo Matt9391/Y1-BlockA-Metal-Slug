@@ -14,7 +14,7 @@ public:
 	const vec2& getSize() const;
 	
 	float getDistToPlayer() const;
-	void setDistToPlayer(float distToPlayer);
+	void setDistToPlayer(float distToPlayer_);
 
 	int  getSpawnedNumber() const;
 	void addSpawnedNumber();
@@ -23,14 +23,14 @@ public:
 protected:
 
 	float getSpawnDelay() const;
-	void setSpawnDelay(float spawnDelay);
+	void setSpawnDelay(float spawnDelay_);
 
 	float getTimer() const;
-	void setTimer(float timer);
+	void setTimer(float timer_);
 	void addTimer(float dt);
 
 	bool getSpawnEntity() const;
-	void setSpawnEntity(bool spawnEntity);
+	void setSpawnEntity(bool spawnEntity_);
 
 private:
 	vec2 pos;

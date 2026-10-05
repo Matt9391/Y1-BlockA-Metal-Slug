@@ -49,7 +49,7 @@ public:
 
 	vec2 getLastDir() const;
 	vec2 getDir() const;
-	void setDir(vec2 dir);
+	void setDir(vec2 dir_);
 
 	RigidBody* getRigidBody() const;
 
@@ -67,9 +67,9 @@ protected:
 	void setCurrentASIndex(int nextASIndex);
 
 	
-	void setLastDir(vec2 dir);
+	void setLastDir(vec2 dir_);
 
-	void setFree(bool free);
+	void setFree(bool free_);
 
 private:
 

@@ -13,15 +13,15 @@ Enemy::Enemy(vec2 pos, EntityType entityType) :
 	sensors.isGrounded = true;
 }
 
-void Enemy::setFlip(bool flip) {
-	this->flip = flip;
+void Enemy::setFlip(bool flip_) {
+	this->flip = flip_;
 }
 bool Enemy::getFlip() const {
 	return this->flip;
 }
 
-void Enemy::setAttacking(bool attacking) {
-	this->attacking = attacking;
+void Enemy::setAttacking(bool attacking_) {
+	this->attacking = attacking_;
 }
 bool Enemy::getAttacking() const {
 	return this->attacking;
@@ -50,10 +50,10 @@ const EnemySensor& Enemy::getSensors() const {
 	return this->sensors;
 }
 
-
-void Enemy::setAlive(bool alive) {
-	this->alive = alive;
+void Enemy::setAlive(bool alive_) {
+	this->alive = alive_;
 }
+
 bool Enemy::getAlive() const {
 
 	return this->alive;

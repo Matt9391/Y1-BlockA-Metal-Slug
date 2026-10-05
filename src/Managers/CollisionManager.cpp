@@ -81,21 +81,21 @@ namespace CollisionManager {
 
 	bool resolveMapCollision(Entity& e, MapLayer& layer) {
 			Collider& collider = e.getCollider();
-			vec2 startPos = vec2(static_cast<int>((e.getPos().x + collider.offset.x) / layer.tileSize),
-								 static_cast<int>((e.getPos().y + collider.offset.y) / layer.tileSize));
+			vec2 startPos = vec2(static_cast<float>(static_cast<int>((e.getPos().x + collider.offset.x) / layer.tileSize)),
+								 static_cast<float>(static_cast<int>((e.getPos().y + collider.offset.y) / layer.tileSize)));
 			//vec2 endPosition = ; //bottom right
-			vec2 endPos = vec2(static_cast<int>((e.getPos().x + collider.offset.x + e.getCollider().size.x) / layer.tileSize),
-							   static_cast<int>((e.getPos().y + collider.offset.y + e.getCollider().size.y) / layer.tileSize)); //bottom right
+			vec2 endPos = vec2(static_cast<float>(static_cast<int>((e.getPos().x + collider.offset.x + e.getCollider().size.x) / layer.tileSize)),
+							   static_cast<float>(static_cast<int>((e.getPos().y + collider.offset.y + e.getCollider().size.y) / layer.tileSize))); //bottom right
 			//std::cout << "startX: " << startPos.x << "endX: " << endPos.x << std::endl;
 			//std::cout << "startY: " << startPos.y << "endY: " << endPos.y << std::endl;
 
 			bool grounded = false;
 			bool collided = false;
 
-			for (int i = startPos.y; i <= endPos.y; i++) {
+			for (int i = static_cast<int>(startPos.y); i <= endPos.y; i++) {
 				if (i < 0 || i >= layer.tiles.y)
 					continue;
-				for (int j = startPos.x; j <= endPos.x; j++) {
+				for (int j = static_cast<int>(startPos.x); j <= endPos.x; j++) {
 					if (j < 0 || j >= layer.tiles.x)
 						continue;
 
@@ -104,7 +104,8 @@ namespace CollisionManager {
 					int tileId = layer.data[i * static_cast<int>(layer.tiles.x) + j] - layer.firstgid;
 					if (tileId == -layer.firstgid) continue;
 					
-					vec2 currentTile = vec2(j * layer.tileSize, i * layer.tileSize);
+					vec2 currentTile = vec2(static_cast<float>(j * layer.tileSize),
+											static_cast<float>( i * layer.tileSize));
 					vec2 overlaps = checkOverlapMapCollision(collider, currentTile, layer.tileSize);
 
 					switch (tileId)
@@ -146,11 +147,11 @@ namespace CollisionManager {
 								if (colliderPos.y + collider.size.y > currentTile.y + layer.tileSize /2.f) break;
 							}
 
-							vec2 eCenter = vec2(colliderPos.x  + collider.size.x / 2, colliderPos.y + collider.size.y / 2);
-							vec2 tCenter = vec2(currentTile.x + layer.tileSize / 2, currentTile.y + layer.tileSize / 2); //tile Center
+							vec2 eCenter = vec2(colliderPos.x  + collider.size.x / 2.f, colliderPos.y + collider.size.y / 2.f);
+							vec2 tCenter = vec2(currentTile.x + layer.tileSize / 2.f, currentTile.y + layer.tileSize / 2.f); //tile Center
 
 
-							vec2 dir = vec2(eCenter.x < tCenter.x ? -1 : 1, eCenter.y < tCenter.y ? -1 : 1);
+							vec2 dir = vec2(eCenter.x < tCenter.x ? -1.f : 1.f, eCenter.y < tCenter.y ? -1.f : 1.f);
 
 							if (overlaps.x > -0.01f && overlaps.y > -0.01f) {
 								collided = true;
@@ -218,18 +219,18 @@ namespace CollisionManager {
 	}
 
 	bool checkMapCollision(Collider& collider, MapLayer& layer, int axis /* 0 = x, 1 = y, -1 = xy*/) {
-		vec2 startPos = vec2(static_cast<int>((collider.pos.x + collider.offset.x) / layer.tileSize),
-			static_cast<int>((collider.pos.y + collider.offset.y) / layer.tileSize));
+		vec2 startPos = vec2(floorf((collider.pos.x + collider.offset.x) / layer.tileSize),
+			floorf((collider.pos.y + collider.offset.y) / layer.tileSize));
 
-		vec2 endPos = vec2(static_cast<int>((collider.pos.x + collider.offset.x + collider.size.x) / layer.tileSize),
-			static_cast<int>((collider.pos.y + collider.offset.y + collider.size.y) / layer.tileSize)); //bottom right
+		vec2 endPos = vec2(floorf((collider.pos.x + collider.offset.x + collider.size.x) / layer.tileSize),
+						   floorf((collider.pos.y + collider.offset.y + collider.size.y) / layer.tileSize)); //bottom right
 
 		bool collided = false;
 
-		for (int i = startPos.y; i <= endPos.y; i++) {
+		for (int i = static_cast<int>(startPos.y); i <= endPos.y; i++) {
 			if (i < 0 || i >= layer.tiles.y)
 				continue;
-			for (int j = startPos.x; j <= endPos.x; j++) {
+			for (int j = static_cast<int>(startPos.x); j <= endPos.x; j++) {
 				if (j < 0 || j >= layer.tiles.x)
 					continue;
 
@@ -245,16 +246,16 @@ namespace CollisionManager {
 						int tileX = j * layer.tileSize;
 						int tileY = i * layer.tileSize;
 
-						float leftTile = tileX;
-						float rightTile = tileX + layer.tileSize;
-						float topTile = tileY;
-						float bottomTile = tileY + layer.tileSize;
+						float leftTile  = static_cast<float>(tileX);
+						float rightTile = static_cast<float>(tileX + layer.tileSize);
+						float topTile   = static_cast<float>(tileY);
+						float bottomTile= static_cast<float>(tileY + layer.tileSize);
 
 						float overlapX = fminf(rightTile, colliderPos.x + collider.size.x) - fmaxf(leftTile, colliderPos.x);
 						float overlapY = fminf(bottomTile, colliderPos.y + collider.size.y) - fmaxf(topTile, colliderPos.y);
 
-						vec2 eCenter = vec2(colliderPos.x + collider.size.x / 2, colliderPos.y + collider.size.y / 2);
-						vec2 tCenter = vec2(tileX + layer.tileSize / 2, tileY + layer.tileSize / 2); //tile Center
+						vec2 eCenter = vec2(colliderPos.x + collider.size.x / 2.f, colliderPos.y + collider.size.y / 2.f);
+						vec2 tCenter = vec2(static_cast<float>(tileX + layer.tileSize / 2.f), static_cast<float>(tileY + layer.tileSize / 2.f)); //tile Center
 
 						if (overlapX > -0.01f && overlapY > -0.01f) {
 

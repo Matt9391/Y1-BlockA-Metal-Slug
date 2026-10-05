@@ -32,7 +32,7 @@ GameScene::~GameScene() {
 
 void GameScene::init() {
 	//* Initialize camera to game scene settings
-	getCamera().init(vec2(0, 10 * map.getTileSize()));
+	getCamera().init(vec2(0.f, 10.f * map.getTileSize()));
 	getCamera().enableCamera(true);
 	// Add renders
 	{
@@ -112,8 +112,8 @@ void GameScene::update(float dt) {
 			}
 			enemy->addRenderSets(getRenderer());
 
-			for (int i = 0; i < enemy->getMaxGranades(); i++) {
-				Granade* g = enemy->getGranade(i);
+			for (int j = 0; j < enemy->getMaxGranades(); j++) {
+				Granade* g = enemy->getGranade(j);
 				if (!g) continue;
 				
 				if (getCamera().isOutOfView(g->getPos())) {
@@ -121,7 +121,7 @@ void GameScene::update(float dt) {
 				}
 				
 				if (g->hasToBeFreed()) {
-					enemy->freeGranade(i);
+					enemy->freeGranade(j);
 					continue;
 				}
 				if(g->getDisabled()) continue;
@@ -184,7 +184,6 @@ void GameScene::update(float dt) {
 	
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);
-		bool free = false;
 		if (!b) continue;
 
 		if (b->hasToBeFreed()) {
@@ -285,11 +284,6 @@ void GameScene::update(float dt) {
 };
 
 
-void GameScene::display(float dt) {
-
-	//player.display(dt, screen); //player which as entity
-
-};
 
 void GameScene::addNewEntity(Entity* e) {
 	if (e == nullptr) return;

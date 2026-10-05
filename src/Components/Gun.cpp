@@ -98,12 +98,12 @@ bool Gun::getCanShootDiagonally() {
 	return gunData.canShootDiagonally;
 }
 
-void Gun::setShootDir(vec2 shootDir) {
-	this->shootDir = shootDir;
+void Gun::setShootDir(vec2 shootDir_) {
+	this->shootDir = shootDir_;
 }
 
-void Gun::setOffset(vec2 offset) {
-	this->offset = offset;
+void Gun::setOffset(vec2 offset_) {
+	this->offset = offset_;
 }
 
 void Gun::setOffsetY(float offsetY) {

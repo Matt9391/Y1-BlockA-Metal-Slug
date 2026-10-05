@@ -40,7 +40,7 @@ public:
 		//delete current data array if allocated before allocate it again
 		delete[] this->data;
 
-		int dataSize = tiles.x * tiles.y;
+		int dataSize = static_cast<int>(tiles.x * tiles.y);
 
 		this->data = new int[dataSize];
 
@@ -59,7 +59,7 @@ public:
 
 		delete[] this->data;
 
-		int dataSize = tiles.x * tiles.y;
+		int dataSize = static_cast<int>(tiles.x * tiles.y);
 
 		this->data = new int[dataSize];
 

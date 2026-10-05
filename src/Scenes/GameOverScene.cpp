@@ -42,7 +42,3 @@ void GameOverScene::update(float dt) {
 
 	getRenderer().clearTexts();
 }
-
-void GameOverScene::display(float dt) {
-
-}

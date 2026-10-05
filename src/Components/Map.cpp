@@ -79,7 +79,8 @@ bool Map::loadDataFromJson(const char* fileName) {
 	nlohmann::json data = nlohmann::json::parse(map);
 
 	//filling member variables
-	this->tiles = vec2(data.at("width").get<int>(), data.at("height").get<int>());
+	this->tiles = vec2(static_cast<float>(data.at("width").get<int>()), 
+					   static_cast<float>(data.at("height").get<int>()));
 	this->tileSize = data.at("tileheight").get<int>();
 	//filling map layers
 	for (int i = 0; i < static_cast<int>(MapLayerNames::MLN_COUNTS); i++) {
@@ -108,8 +109,10 @@ bool Map::loadDataFromJson(const char* fileName) {
 				layerName,
 				layerData,
 				data.at("tilesets").at(1).at("firstgid").get<int>(), //firstGid for collision tileset
-				vec2(layer.value("offsetx", 0), layer.value("offsety", 0)), //return 0 if there's no offset
-				vec2(layer.at("width").get<int>(), layer.at("height").get<int>()),
+				vec2(static_cast<float>(layer.value("offsetx", 0)),
+					 static_cast<float>(layer.value("offsety", 0))), //return 0 if there's no offset
+				vec2(static_cast<float>(layer.at("width").get<int>()), 
+					 static_cast<float>(layer.at("height").get<int>())),
 				this->tileSize
 			);
 		}else {
@@ -118,8 +121,10 @@ bool Map::loadDataFromJson(const char* fileName) {
 				layerName,
 				layerData,
 				data.at("tilesets").at(0).at("firstgid").get<int>(), //firstGid for map tileset
-				vec2(layer.value("offsetx", 0), layer.value("offsety", 0)), //return 0 if there's no offset
-				vec2(layer.at("width").get<int>(), layer.at("height").get<int>()),
+				vec2(static_cast<float>(layer.value("offsetx", 0)),
+					 static_cast<float>(layer.value("offsety", 0))), //return 0 if there's no offset
+				vec2(static_cast<float>(layer.at("width").get<int>()), 
+					 static_cast<float>(layer.at("height").get<int>())),
 				this->tileSize
 			);
 		}
@@ -130,68 +135,68 @@ bool Map::loadDataFromJson(const char* fileName) {
 	for(int i = 0; i< MapObjectLayerNames::MOLN_COUNTS; i++){
 
 		//current layer
-		nlohmann::json layer = data.at("layers").at(MapLayerNames::MLN_COUNTS + i);
+		nlohmann::json layer = data.at("layers").at(static_cast<size_t>(MapLayerNames::MLN_COUNTS + i));
 
 		MapObjectLayerNames layerName = static_cast<MapObjectLayerNames>(i);
 		
 		if (layerName == MapObjectLayerNames::MOLN_ENEMY_SPAWNER_LAYER) {
 			nlohmann::json dataObjects = layer.at("objects");
-			int nOfObjects = layer.at("objects").size();
+			int nOfObjects = static_cast<int>(layer.at("objects").size());
 
 			spawners[MapObjectLayerNames::MOLN_ENEMY_SPAWNER_LAYER] = new Spawner*[nOfObjects];
 			spawnerCounts[MapObjectLayerNames::MOLN_ENEMY_SPAWNER_LAYER] = nOfObjects;
 
-			for (int i = 0; i < nOfObjects; i++) {
-				nlohmann::json eSpawner = dataObjects[i];
-				nlohmann::json properties = eSpawner.at("properties");
+			for (int j = 0; j < nOfObjects; j++) {
+				nlohmann::json spawner = dataObjects[j];
+				nlohmann::json properties = spawner.at("properties");
 
 				int enemyType = properties[0].at("value").get<int>();
 				int nOfEnemy = properties[1].at("value").get<int>();
-				float spawnDelay = properties[2].at("value").get<int>();
-				vec2 pos = vec2(eSpawner.at("x").get<int>(), eSpawner.at("y").get<int>());
-				vec2 size = vec2(eSpawner.at("width").get<int>(), eSpawner.at("height").get<int>());
+				float spawnDelay = static_cast<float>(properties[2].at("value").get<int>());
+				vec2 spPos = vec2(static_cast<float>(spawner.at("x").get<int>()), static_cast<float>(spawner.at("y").get<int>()));
+				vec2 size = vec2(static_cast<float>(spawner.at("width").get<int>()), static_cast<float>(spawner.at("height").get<int>()));
 				
-				spawners[MapObjectLayerNames::MOLN_ENEMY_SPAWNER_LAYER][i] = new EnemySpawner(pos, size, spawnDelay, enemyType, nOfEnemy);
+				spawners[MapObjectLayerNames::MOLN_ENEMY_SPAWNER_LAYER][j] = new EnemySpawner(spPos, size, spawnDelay, enemyType, nOfEnemy);
 			}
 
 
 			continue;
 		}else if (layerName == MapObjectLayerNames::MOLN_POW_SPAWNER_LAYER) {
 			nlohmann::json dataObjects = layer.at("objects");
-			int nOfObjects = layer.at("objects").size();
+			int nOfObjects = static_cast<int>(layer.at("objects").size());
 
 			spawners[MapObjectLayerNames::MOLN_POW_SPAWNER_LAYER] = new Spawner *[nOfObjects];
 			spawnerCounts[MapObjectLayerNames::MOLN_POW_SPAWNER_LAYER] = nOfObjects;
 
-			for (int i = 0; i < nOfObjects; i++) {
-				nlohmann::json spawner = dataObjects[i];
+			for (int j = 0; j < nOfObjects; j++) {
+				nlohmann::json spawner = dataObjects[j];
 				nlohmann::json properties = spawner.at("properties");
 
 				int enemyType = properties[0].at("value").get<int>();
-				vec2 pos = vec2(spawner.at("x").get<int>(), spawner.at("y").get<int>());
-				vec2 size = vec2(spawner.at("width").get<int>(), spawner.at("height").get<int>());
+				vec2 spPos = vec2(static_cast<float>(spawner.at("x").get<int>()), static_cast<float>(spawner.at("y").get<int>()));
+				vec2 size = vec2(static_cast<float>(spawner.at("width").get<int>()), static_cast<float>(spawner.at("height").get<int>()));
 
-				spawners[MapObjectLayerNames::MOLN_POW_SPAWNER_LAYER][i] = new PowSpawner(pos, size, 0, enemyType);
+				spawners[MapObjectLayerNames::MOLN_POW_SPAWNER_LAYER][j] = new PowSpawner(spPos, size, 0, enemyType);
 			}
 
 
 			continue;
 		}else if (layerName == MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER) {
 			nlohmann::json dataObjects = layer.at("objects");
-			int nOfObjects = layer.at("objects").size();
+			int nOfObjects = static_cast<int>(layer.at("objects").size());
 
 			spawners[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER] = new Spawner *[nOfObjects];
 			spawnerCounts[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER] = nOfObjects;
 
-			for (int i = 0; i < nOfObjects; i++) {
-				nlohmann::json spawner = dataObjects[i];
+			for (int j = 0; j < nOfObjects; j++) {
+				nlohmann::json spawner = dataObjects[j];
 				nlohmann::json properties = spawner.at("properties");
 
 				int state = properties[0].at("value").get<int>();
-				vec2 pos = vec2(spawner.at("x").get<int>(), spawner.at("y").get<int>());
-				vec2 size = vec2(spawner.at("width").get<int>(), spawner.at("height").get<int>());
+				vec2 spPos = vec2(static_cast<float>(spawner.at("x").get<int>()), static_cast<float>(spawner.at("y").get<int>()));
+				vec2 size = vec2(static_cast<float>(spawner.at("width").get<int>()), static_cast<float>(spawner.at("height").get<int>()));
 
-				spawners[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER][i] = new PowerUpSpawner(pos, size, 0, state);
+				spawners[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER][j] = new PowerUpSpawner(spPos, size, 0, state);
 			}
 
 
@@ -206,7 +211,7 @@ bool Map::loadDataFromJson(const char* fileName) {
 
 
 void Map::loadMapRenderSet() {
-	//MapRenderSet(this->pos, this->tileSize, this->layers, this->spawners);
+	//MapRenderSet(this->spPos, this->tileSize, this->layers, this->spawners);
 	mapRenderSet = new MapRenderSet(
 		this->pos,
 		this->tileSize, 

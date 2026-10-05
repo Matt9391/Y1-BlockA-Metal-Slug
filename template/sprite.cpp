@@ -20,7 +20,7 @@ Sprite::Sprite( Surface* surface, unsigned int frameCount ) :
 {
 	InitializeStartData(start, GetBuffer());
 
-	for (int f = 0; f < numFrames; f++)
+	for (uint f = 0; f < numFrames; f++)
 	{
 		for (int y = 0; y < height; y++)
 		{
@@ -220,18 +220,18 @@ void Sprite::DrawScaled(int x1, int y1, int w, int h, Surface* target, const uin
 }
 
 // prepare sprite outline data for faster rendering
-void Sprite::InitializeStartData(unsigned int** start, uint* buffer)
+void Sprite::InitializeStartData(unsigned int** start_, uint* buffer)
 {
 	for (unsigned int f = 0; f < numFrames; ++f)
 	{
-		start[f] = new unsigned int[height];
+		start_[f] = new unsigned int[height];
 		for (int y = 0; y < height; ++y)
 		{
-			start[f][y] = width;
+			start_[f][y] = width;
 			uint* addr = buffer + f * width + y * width * numFrames;
 			for (int x = 0; x < width; ++x) if (addr[x])
 			{
-				start[f][y] = x;
+				start_[f][y] = x;
 				break;
 			}
 		}

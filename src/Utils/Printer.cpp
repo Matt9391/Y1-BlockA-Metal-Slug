@@ -17,7 +17,7 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 	char** lines = splitLines(text.text, nLines);
 
 	int size = (text.resourceId == ID_FONT_GREY || text.resourceId == ID_FONT_ORANGE) ? 18 : 9;
-	float4 fontSize(size, size, size, size);
+	float4 fontSize(static_cast<float>(size));
 
 	//check if the text is outside the screen bounds
 	if (text.pos.x + fontSize.x * text.scale < 0 || text.pos.y + fontSize.y * text.scale < 0 || text.pos.x > screen->width|| text.pos.y > screen->height)
@@ -86,14 +86,14 @@ void Printer::drawLine(const HUDText& text, const float4& fontSize, const vec2& 
 }
 
 void Printer::drawChar(const vec2& start,const vec2& end,float scale,uint* source,uint* destination,Surface* font,const int& screenWidth){
-	int destWidth = int(end.x * scale);
-	int destHeight = int(end.y * scale);
+	int destWidth = static_cast<int>((end.x * scale));
+	int destHeight = static_cast<int>((end.y * scale));
 
-	for (int y = 0; y < destHeight; y++)
+	for (int y = static_cast<int>(start.y); y < destHeight; y++)
 	{
 		int sourceY = int(y / scale);
 
-		for (int x = 0; x < destWidth; x++)
+		for (int x = static_cast<int>(start.x); x < destWidth; x++)
 		{
 			int sourceX = int(x / scale);
 

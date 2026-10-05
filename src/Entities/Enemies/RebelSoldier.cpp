@@ -186,7 +186,7 @@ void RebelSoldier::update(float dt) {
 }
 
 
-bool RebelSoldier::throwGranade(vec2 dir) {
+bool RebelSoldier::throwGranade(vec2 dir_) {
 	int bIndex = -1;
 	for (int i = 0; i < MAXGRANADES; i++) {
 		if (granades[i] == nullptr) {
@@ -197,7 +197,7 @@ bool RebelSoldier::throwGranade(vec2 dir) {
 
 	if (bIndex == -1) return false;
 
-	granades[bIndex] = new Granade(this->getPos(), false, dir);
+	granades[bIndex] = new Granade(this->getPos(), false, dir_);
 	granadesCount++;
 
 	return true;

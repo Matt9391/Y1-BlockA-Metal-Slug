@@ -8,7 +8,7 @@
 #pragma once
 
 class Tmpl8::Surface;
-class vec2;
+struct vec2;
 struct HUDText;
 
 typedef unsigned int uint;

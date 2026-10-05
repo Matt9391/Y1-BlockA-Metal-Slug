@@ -125,12 +125,12 @@ bool Pow::isReleased() const {
 	return this->released;
 }
 
-void Pow::setReleased(bool released) {
-	this->released = released;
+void Pow::setReleased(bool released_) {
+	this->released = released_;
 }
 
-void Pow::setPowFree(bool free){
-	this->setFree(free);
+void Pow::setPowFree(bool free_){
+	this->setFree(free_);
 }
 
 bool Pow::isAnimationEnded() {

@@ -4,7 +4,7 @@
 #include <Camera.h>
 
 class Tmpl8::Surface;
-enum TypeScene;
+enum TypeScene : int;
 
 class CustomScene
 {
@@ -16,7 +16,6 @@ public:
 
 	vec2 getCameraPos() const;
 	virtual void update(float dt) = 0;
-	virtual void display(float dt) = 0;
 
 	TypeScene getNextScene() const;
 	bool sceneHasToChange() const;
@@ -27,8 +26,8 @@ protected:
 	InputManager& getInputManager() const;
 	Camera& getCamera();
 
-	void setNextScene(TypeScene nextScene);
-	void setChangeScene(bool changeScene);
+	void setNextScene(TypeScene nextScene_);
+	void setChangeScene(bool changeScene_);
 
 private:
 	Surface* screen;

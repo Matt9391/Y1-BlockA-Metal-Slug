@@ -1,6 +1,6 @@
 #pragma once
 
-enum PowAnimationSet;
+enum PowAnimationSet : int;
 class Pow;
 
 namespace PowStates {
@@ -10,7 +10,7 @@ namespace PowStates {
     public:
         virtual ~PowState() = default;
         virtual PowAnimationSet update(Pow& pow, float dt, PowAnimationSet current) = 0;
-        virtual void enter(Pow& pow) {}
+        virtual void enter(Pow&) {}
     };
 
 
@@ -40,7 +40,7 @@ namespace PowStates {
         float elapsedTime;
         float flipElapsedTime;
         static const float TRIGGERMINTIME;
-        static const int FLIPMS;
+        static const float FLIPMS;
     };
    
     class PantsState final : public PowState

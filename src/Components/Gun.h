@@ -21,13 +21,13 @@ public:
 	void freeBullet(int i);
 	bool getCanShootDiagonally();
 
-	void setShootDir(vec2 shootDir);
+	void setShootDir(vec2 shootDir_);
 	bool shoot();
 	bool getCanShoot() const;
 
 	void setOffsetX(float offsetX);
 	void setOffsetY(float offsetY);
-	void setOffset(vec2 offset);
+	void setOffset(vec2 offset_);
 
 	void setGunData(GunData newData);
 	GunType getGunType() const;

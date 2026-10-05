@@ -13,8 +13,8 @@ public:
 	void update(float dt) override;
 
 	bool isReleased() const;
-	void setReleased(bool released);
-	void setPowFree(bool free);
+	void setReleased(bool released_);
+	void setPowFree(bool free_);
 
 	bool isAnimationEnded();
 	
