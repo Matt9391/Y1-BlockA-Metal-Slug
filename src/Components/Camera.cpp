@@ -53,10 +53,6 @@ vec2 Camera::getPos() const {
 	return enable ? vec2(pos.x, floorf(pos.y)) : vec2(0, 0);
 }
 
-void Camera::setPos(vec2 pos_) {
-	this->pos = pos_;
-}
-
 void Camera::setWorldSize(const vec2& worldSize_)
 {
 	this->worldSize = worldSize_;

@@ -646,7 +646,7 @@ Gun& Player::getGun() {
 	return gun;
 }
 
-int Player::getGunBullets() {
+int Player::getGunBullets() const{
 	return gun.getBulletsCount();
 }
 
@@ -730,7 +730,6 @@ void Player::update(float dt) {
 		state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
 	}
 
-	//handleAnimationSet(isMoving, isJumping, isGrounded);
 	handleMovement(dt, pInput);
 
 	if (enabled && pInput.isShooting && !pInput.dead) {
@@ -810,7 +809,7 @@ void Player::update(float dt) {
 	gun.update(dt);
 }
 
-PlayerInput Player::getPlayerInput() {
+const PlayerInput Player::getPlayerInput() const {
 	const bool inputRight = inputManager.isKeyPressed('D');
 	const bool inputLeft = inputManager.isKeyPressed('A');
 	const bool inputUp = inputManager.isKeyPressed('W');
@@ -832,7 +831,7 @@ PlayerInput Player::getPlayerInput() {
 	//{
 	//	bool inputRight;
 	//	bool inputLeft;
-	//	bool isMoving;
+	//	bool isMovng;
 	//	bool isJumping;
 	//	bool isGrounded;
 	//	bool isCrouching;
@@ -907,37 +906,7 @@ void Player::handleMovement(float dt, const PlayerInput& pInput) {
 	this->addToPos(rb->getVelocity() * dt);
 
 }
-void Player::handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded) {
 
-	//Animations
-	if (isMoving) {
-		if (isGrounded) {
-
-			if (isJumping) {
-				setCurrentASIndex(PlayerAnimationSet::PAS_JUMP_UP);
-			}
-			else {
-				setCurrentASIndex(PlayerAnimationSet::PAS_WALK);
-			}
-
-		}
-	}
-	else if (isGrounded && isJumping) {
-		setCurrentASIndex(PlayerAnimationSet::PAS_JUMP_UP);
-	}
-	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_WALK) {
-		setCurrentASIndex(PlayerAnimationSet::PAS_AFTER_RUN_STOP);
-	}
-	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_AFTER_RUN_STOP && getAnimator().isAnimationEnded()) {
-		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
-	}
-	else if (isGrounded && getCurrentASIndex() == PlayerAnimationSet::PAS_FALLING) {
-		setCurrentASIndex(PlayerAnimationSet::PAS_IDLE);
-	}
-	else if (getCurrentASIndex() == PlayerAnimationSet::PAS_JUMP_UP && getAnimator().isAnimationEnded()) {
-		setCurrentASIndex(PlayerAnimationSet::PAS_FALLING);
-	}
-}
 
 void Player::setShooting(bool shooting_) {
 	this->shooting = shooting_;

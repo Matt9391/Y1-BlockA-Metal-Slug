@@ -60,6 +60,10 @@ MapLayer& Map::getLayer(MapLayerNames layerName) {
 	return this->layers[layerName];
 }
 
+const MapLayer& Map::getLayer(MapLayerNames layerName) const {
+	return this->layers[layerName];
+}
+
 Spawner** Map::getSpawners(int layer) {
 	return spawners[layer];
 }

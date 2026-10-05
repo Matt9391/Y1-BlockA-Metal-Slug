@@ -74,11 +74,11 @@ void Gun::addRenderSets(Renderer& renderer) {
 	}
 }
 
-int Gun::getBulletsCount() {
+int Gun::getBulletsCount() const{
 	return bulletsCount;
 }
 
-Bullet* Gun::getBullet(int i) {
+Bullet* Gun::getBullet(int i) const {
 	return bullets[i];
 }
 
@@ -94,7 +94,7 @@ int Gun::getMaxBullets() const{
 	return MAXBULLETS;
 }
 
-bool Gun::getCanShootDiagonally() {
+bool Gun::getCanShootDiagonally() const {
 	return gunData.canShootDiagonally;
 }
 

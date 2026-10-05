@@ -226,7 +226,7 @@ void RebelSoldier::freeGranade(int i) {
 	}
 }
 
-Granade* RebelSoldier::getGranade(int i) {
+Granade* RebelSoldier::getGranade(int i) const{
 	if (granades[i]) return granades[i];
 	
 	return nullptr;

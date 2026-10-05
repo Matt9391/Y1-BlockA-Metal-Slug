@@ -9,16 +9,12 @@
 
 
 SceneManager::SceneManager() :
-	currentScene(nullptr),
-	menuScene(nullptr),
-	gameScene(nullptr)
+	currentScene(nullptr)
 	{
 	}
 
 SceneManager::~SceneManager() {
-	//delete currentScene;
-	delete menuScene;
-	delete gameScene;
+	delete currentScene;
 }
 
 void SceneManager::init(Surface* screen, Renderer& renderer, InputManager& inputManager, TypeScene firstScene) {

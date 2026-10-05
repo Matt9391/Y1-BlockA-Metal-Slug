@@ -23,7 +23,6 @@ public:
 protected:
 
 	float getSpawnDelay() const;
-	void setSpawnDelay(float spawnDelay_);
 
 	float getTimer() const;
 	void setTimer(float timer_);

@@ -18,7 +18,6 @@ public:
 
 	void setGrounded(bool grounded);
 	bool isGrounded() const;
-	bool hasGravity() const;
 
 	void setSpeed(float s);
 	float getSpeed() const;

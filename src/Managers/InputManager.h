@@ -11,7 +11,6 @@ public:
 	bool isKeyPressed(char key) const;
 	bool isKeyJustPressed(char key) const;
 
-	void getPressedKeys();
 
 private:
 	static const int KEYNUM = 512;

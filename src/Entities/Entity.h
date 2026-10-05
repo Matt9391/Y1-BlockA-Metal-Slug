@@ -30,7 +30,8 @@ public:
 	virtual void loadGFX() = 0;
 
 	const vec2& getPos() const;
-	Collider& getCollider();
+
+	const Collider& getCollider() const;
 	void addToPos(const vec2& newPos);
 	void setPos(const vec2& newPos);
 
@@ -58,6 +59,7 @@ public:
 	EntityType getEntityType() const;
 protected:
 	Animator& getAnimator();
+	const Animator& getAnimator() const;
 	AnimationSet*& getAnimationSets();
 
 	

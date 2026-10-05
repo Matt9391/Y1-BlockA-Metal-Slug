@@ -32,7 +32,7 @@ void Renderer::reset(){
 }
 
 
-void Renderer::addCollider(Collider& c) {
+void Renderer::addCollider(const Collider& c) {
 	if (collidersCount == MAXCOLLIDERS)
 		throw runtime_error("Max colliders reached");
 	colliders[collidersCount++] = &c;
@@ -204,7 +204,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	}
 
 	for (int i = 0; i < collidersCount; i++) {
-		Collider* c = colliders[i];
+		const Collider* c = colliders[i];
 		if(!c) continue;
 		screen->Box(static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x), 
 					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y),

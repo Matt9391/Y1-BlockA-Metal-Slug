@@ -23,7 +23,7 @@ public:
 	bool isShooting() const;
 
 	Gun& getGun();
-	int getGunBullets();
+	int getGunBullets() const;
 	void setGunData(GunData newData);
 
 	void setEnemyInFront(bool enemyInFront);
@@ -40,9 +40,8 @@ public:
 private:
 	bool getEnemyInFront() const;
 	void setShooting(bool shooting_);
-	PlayerInput getPlayerInput();
+	const PlayerInput getPlayerInput() const;
 	void handleMovement(float dt, const PlayerInput& pInput);
-	void handleAnimationSet(bool isMoving, bool isJumping, bool isGrounded);
 
 	void setLifeState(bool state_);
 

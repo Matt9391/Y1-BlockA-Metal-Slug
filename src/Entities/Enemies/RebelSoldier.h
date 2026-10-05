@@ -20,7 +20,7 @@ public:
 	void addRenderSets(Renderer& renderer);
 
 	void freeGranade(int i);
-	Granade* getGranade(int i);
+	Granade* getGranade(int i) const;
 
 	int getMaxGranades() const;
 	const RebelSoldierData& getData() const;

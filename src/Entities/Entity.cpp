@@ -53,6 +53,10 @@ void Entity::setVelocityY(float v) { rigidBody->setVelocityY(v); }
 Animator& Entity::getAnimator(){
 	return this->animator;
 }
+
+const Animator& Entity::getAnimator() const{
+	return this->animator;
+}
 AnimationSet*& Entity::getAnimationSets() {
 	return this->animationSets;
 }
@@ -102,7 +106,9 @@ void Entity::setLastDir(vec2 dir_) {
 }
 
 
-Collider& Entity::getCollider() {
+
+
+const Collider& Entity::getCollider() const {
 	return this->collider;
 }
 

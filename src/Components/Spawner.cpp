@@ -33,9 +33,6 @@ float Spawner::getSpawnDelay() const {
     return spawnDelay;
 }
 
-void Spawner::setSpawnDelay(float spawnDelay_) {
-    this->spawnDelay = spawnDelay_;
-}
 
 float Spawner::getTimer() const {
     return timer;

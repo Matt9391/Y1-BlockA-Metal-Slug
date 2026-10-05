@@ -18,7 +18,8 @@ public:
 	const int* getSpawnersCount() const;
 	const int& getSpawnersLayers() const;
 
-	MapLayer& getLayer(MapLayerNames layerName);
+	MapLayer& getLayer(MapLayerNames layerName) ;
+	const MapLayer& getLayer(MapLayerNames layerName) const;
 
 private:
 	bool loadDataFromJson(const char* fileName);

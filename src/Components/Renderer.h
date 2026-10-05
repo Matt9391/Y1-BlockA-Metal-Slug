@@ -17,7 +17,7 @@ public:
 
 	void reset();
 
-	void addCollider(Collider& c);
+	void addCollider(const Collider& c);
 	void addRenderSet(RenderSet rs);
 	void addHUDText(HUDText t);
 	
@@ -40,7 +40,7 @@ private:
 	
 	RenderSet renderSets[MAXRENDERSETS]; //dont describe it meaning
 	const MapRenderSet* mapRenderSet;
-	Collider* colliders[MAXCOLLIDERS];
+	const Collider* colliders[MAXCOLLIDERS];
 	HUDText texts[MAXTEXTS];
 	SpriteSet spriteSets[MAXSPRITESETS];
 	

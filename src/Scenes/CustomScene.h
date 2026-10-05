@@ -21,7 +21,6 @@ public:
 	bool sceneHasToChange() const;
 
 protected:
-	Surface* getScreen() const;
 	Renderer& getRenderer() const;
 	InputManager& getInputManager() const;
 	Camera& getCamera();
@@ -30,7 +29,6 @@ protected:
 	void setChangeScene(bool changeScene_);
 
 private:
-	Surface* screen;
 	Renderer& renderer;
 	InputManager& inputManager;
 	Camera camera;

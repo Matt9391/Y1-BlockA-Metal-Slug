@@ -11,7 +11,6 @@ public:
 	void init(vec2 pos_);
 	void follow(const vec2& target);
 
-	void setPos(vec2 pos_);
 	vec2 getPos() const;
 
 	void setWorldSize(const vec2& worldSize_);

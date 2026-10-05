@@ -19,7 +19,5 @@ public:
 
 private:
 	CustomScene* currentScene;
-	CustomScene* menuScene;
-	CustomScene* gameScene;
 };
 

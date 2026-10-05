@@ -32,12 +32,3 @@ bool InputManager::isKeyJustPressed(char key) const {
 	return keys[key & 511] == 1 && previousKeys[key & 511] != keys[key & 511];
 }
 
-void InputManager::getPressedKeys() {
-	for (int i = 0; i < KEYNUM; i++) {
-		if (keys[i] == 1) {
-			printf("k: %c\n", i);
-		}
-	}
-
-}
-

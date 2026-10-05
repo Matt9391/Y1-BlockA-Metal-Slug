@@ -1,7 +1,7 @@
 #pragma once
 
 enum PlayerAnimationSet {
-	PAS_PARACHUTE,
+	PAS_PARACHUTE = 0,
 	PAS_PARACHUTE_CLOSE,
 	PAS_IDLE,
 	PAS_WALK,
@@ -27,4 +27,13 @@ enum PlayerAnimationSet {
 	PAS_DIE_STILL,
 	PAS_REVIVE,
 	PAS_COUNTS
+
 };
+
+// int toInt(PlayerAnimationSet pas) {
+//     return static_cast<int>(pas);
+// }
+
+// PlayerAnimationSet toPAS(int index) {
+//     return static_cast<PlayerAnimationSet>(index);
+// }

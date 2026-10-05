@@ -16,7 +16,7 @@ public:
 	void setReleased(bool released_);
 	void setPowFree(bool free_);
 
-	bool isAnimationEnded();
+	bool isAnimationEnded() const;
 	
 	bool isIntersectingPlayer() const;
 	void setIntersectingPlayer(bool intersect);

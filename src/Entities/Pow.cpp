@@ -133,7 +133,7 @@ void Pow::setPowFree(bool free_){
 	this->setFree(free_);
 }
 
-bool Pow::isAnimationEnded() {
+bool Pow::isAnimationEnded() const {
 	return this->getAnimator().isAnimationEnded();
 }
 

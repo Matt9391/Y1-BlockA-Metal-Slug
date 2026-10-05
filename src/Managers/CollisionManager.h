@@ -15,9 +15,9 @@ namespace CollisionManager {
 		SLOPE_R_TO_L,
 	};
 
-	bool resolveMapCollision(Entity& e, MapLayer& layer);
+	bool resolveMapCollision(Entity& e, const MapLayer& layer);
 		
-	bool checkCollision(Collider& a, Collider& b);
-	vec2 checkOverlapMapCollision(Collider& collider,const vec2& tilePos,const int& tileSize);
-	bool checkMapCollision(Collider& collider, MapLayer& layer, int axis /* 0 = x, 1 = y, -1 = xy*/);
+	bool checkCollision(const Collider& a,const Collider& b);
+	vec2 checkOverlapMapCollision(const Collider& collider,const vec2& tilePos,const int& tileSize);
+	bool checkMapCollision(const Collider& collider,const MapLayer& layer,const int axis /* 0 = x, 1 = y, -1 = xy*/);
 };

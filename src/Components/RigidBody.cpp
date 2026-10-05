@@ -47,9 +47,7 @@ void RigidBody::setGrounded(bool grounded) {
 bool RigidBody::isGrounded() const{
 	return this->isGroundedVariable;
 }
-bool RigidBody::hasGravity() const{
-	return this->hasGravityVariable;
-}
+
 
 
 void RigidBody::setSpeed(float s) {

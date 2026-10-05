@@ -14,12 +14,12 @@ public:
 	void update(float dt);
 
 	void addRenderSets(Renderer& renderer);
-	int getBulletsCount();
+	int getBulletsCount() const;
 	int getMaxBullets() const;
-	Bullet* getBullet(int i);
+	Bullet* getBullet(int i) const;
 
 	void freeBullet(int i);
-	bool getCanShootDiagonally();
+	bool getCanShootDiagonally() const;
 
 	void setShootDir(vec2 shootDir_);
 	bool shoot();

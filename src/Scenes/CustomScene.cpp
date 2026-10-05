@@ -5,7 +5,6 @@
 #include <TypeScene.h>
 
 CustomScene::CustomScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
-	screen(screen),
 	renderer(renderer),
 	inputManager(inputManager),
 	camera(vec2(0,0), vec2(static_cast<float>(screen->width), static_cast<float>(screen->height))),
@@ -18,10 +17,6 @@ CustomScene::CustomScene(Surface* screen, Renderer& renderer, InputManager& inpu
 
 vec2 CustomScene::getCameraPos() const {
 	return camera.getPos();
-}
-
-Surface* CustomScene::getScreen() const{
-	return this->screen;
 }
 
 Renderer& CustomScene::getRenderer() const{
