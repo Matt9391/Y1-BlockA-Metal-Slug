@@ -2,7 +2,7 @@
 #include "Map.h"
 #include <lib/json.hpp>
 #include <MapLayer.h>
-#include <MapRenderSet.h>
+#include <MapRenderContainer.h>
 #include <Spawners/EnemySpawner.h>
 #include <Spawners/PowSpawner.h>
 #include <Spawners/PowerUpSpawner.h>
@@ -13,16 +13,16 @@ Map::Map() :
 	tiles(0,0),
 	tileSize(0),
 	pos(0,0),
-	mapRenderSet{nullptr},
+	mapRenderContainer{nullptr},
 	layerCount(MLN_COUNTS),
 	layerObjCount(MOLN_COUNTS)
 	{
 		loadDataFromJson("assets/gameMapV9.tmj");
-		loadMapRenderSet();
+		loadMapRenderContainer();
 	}
 
-const MapRenderSet& Map::getMapRenderSet() const {
-	return *this->mapRenderSet;
+const MapRenderContainer& Map::getMapRenderContainer() const {
+	return *this->mapRenderContainer;
 }
 
 Map::~Map()
@@ -44,8 +44,8 @@ Map::~Map()
 		spawnerCounts[i] = 0;
 	}
 
-	delete mapRenderSet;
-	mapRenderSet = nullptr;
+	delete mapRenderContainer;
+	mapRenderContainer = nullptr;
 }
 
 vec2 Map::getTiles() const {
@@ -214,9 +214,9 @@ bool Map::loadDataFromJson(const char* fileName) {
 
 
 
-void Map::loadMapRenderSet() {
-	//MapRenderSet(this->spPos, this->tileSize, this->layers, this->spawners);
-	mapRenderSet = new MapRenderSet(
+void Map::loadMapRenderContainer() {
+	//MapRenderContainer(this->spPos, this->tileSize, this->layers, this->spawners);
+	mapRenderContainer = new MapRenderContainer(
 		this->pos,
 		this->tileSize, 
 		layerCount,

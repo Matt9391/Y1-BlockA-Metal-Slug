@@ -1,7 +1,7 @@
 #pragma once
 
-#include <RenderSet.h>
-#include <MapRenderSet.h>
+#include <RenderContainer.h>
+#include <MapRenderContainer.h>
 #include <ResourceManager.h>
 #include <Collider.h>
 #include <Printer.h>
@@ -18,13 +18,13 @@ public:
 	void reset();
 
 	void addCollider(const Collider& c);
-	void addRenderSet(RenderSet rs);
+	void addRenderContainer(RenderContainer rs);
 	void addHUDText(HUDText t);
 	
 	void addSpriteSet(SpriteSet ss);
-	void addMapRenderSet(const MapRenderSet& mrs);
+	void addMapRenderContainer(const MapRenderContainer& mrs);
 
-	void clearRenderSets();
+	void clearRenderContainers();
 	void clearColliders();
 	void clearTexts();
 
@@ -38,13 +38,13 @@ private:
 	static const int MAXTEXTS = 100;
 	static const int MAXSPRITESETS = 100;
 	
-	RenderSet renderSets[MAXRENDERSETS]; //dont describe it meaning
-	const MapRenderSet* mapRenderSet;
+	RenderContainer renderContainers[MAXRENDERSETS]; //dont describe it meaning
+	const MapRenderContainer* mapRenderContainer;
 	const Collider* colliders[MAXCOLLIDERS];
 	HUDText texts[MAXTEXTS];
 	SpriteSet spriteSets[MAXSPRITESETS];
 	
-	int renderSetCount;
+	int renderContainerCount;
 	int collidersCount;
 	int textsCount;
 	int spriteSetCount;

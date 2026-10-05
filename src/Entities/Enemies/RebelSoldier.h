@@ -17,7 +17,7 @@ public:
 
 	bool throwGranade(vec2 dir_);
 
-	void addRenderSets(Renderer& renderer);
+	void addRenderContainers(Renderer& renderer);
 
 	void freeGranade(int i);
 	Granade* getGranade(int i) const;

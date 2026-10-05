@@ -4,14 +4,14 @@
 #include <MapLayer.h>
 #include <MapLayerNames.h>
 #include <Spawner.h>
-#include <MapRenderSet.h>
+#include <MapRenderContainer.h>
 
 class Map
 {
 public:
 	Map();
 	~Map();
-	const MapRenderSet& getMapRenderSet() const;
+	const MapRenderContainer& getMapRenderContainer() const;
 	vec2 getTiles() const;
 	int getTileSize() const;
 	Spawner** getSpawners(int layer);
@@ -23,7 +23,7 @@ public:
 
 private:
 	bool loadDataFromJson(const char* fileName);
-	void loadMapRenderSet();
+	void loadMapRenderContainer();
 
 	vec2 pos;
 	vec2 tiles;
@@ -34,6 +34,6 @@ private:
 	int spawnerCounts[MapObjectLayerNames::MOLN_COUNTS];
 	int layerCount;
 	int layerObjCount;
-	MapRenderSet* mapRenderSet;
+	MapRenderContainer* mapRenderContainer;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <vec2.h>
 #include <Animator.h>
-#include <RenderSet.h>
+#include <RenderContainer.h>
 #include <Collider.h>
 
 
@@ -37,7 +37,7 @@ public:
 
 	void setGrounded(bool grounded);
 
-	RenderSet getRenderSet() const;
+	RenderContainer getRenderContainer() const;
 
 	void setVelocity(vec2 v) ;
 	vec2 getVelocity() const;

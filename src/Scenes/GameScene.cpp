@@ -36,7 +36,7 @@ void GameScene::init() {
 	getCamera().enableCamera(true);
 	// Add renders
 	{
-		getRenderer().addMapRenderSet(map.getMapRenderSet());
+		getRenderer().addMapRenderContainer(map.getMapRenderContainer());
 		getRenderer().clearSpriteSets();
 		getRenderer().addSpriteSet(SpriteSet(
 			ResourceID::ID_FUEL_BAR,
@@ -59,7 +59,7 @@ void GameScene::init() {
 void GameScene::exit() {};
 
 void GameScene::update(float dt) {
-	getRenderer().clearRenderSets();
+	getRenderer().clearRenderContainers();
 	getRenderer().clearColliders();
 	getRenderer().clearTexts();
 
@@ -110,7 +110,7 @@ void GameScene::update(float dt) {
 			if (enemy->getAttacking() && CollisionManager::checkCollision(player.getCollider(), enemy->getCollider())) {
 				player.takeHit();
 			}
-			enemy->addRenderSets(getRenderer());
+			enemy->addRenderContainers(getRenderer());
 
 			for (int j = 0; j < enemy->getMaxGranades(); j++) {
 				Granade* g = enemy->getGranade(j);
@@ -164,7 +164,7 @@ void GameScene::update(float dt) {
 			}
 		}
 
-		getRenderer().addRenderSet(e->getRenderSet());
+		getRenderer().addRenderContainer(e->getRenderContainer());
 		getRenderer().addCollider(e->getCollider());
 
 
@@ -225,9 +225,9 @@ void GameScene::update(float dt) {
 	
 
 	
-	getRenderer().addRenderSet(player.getRenderSet());
-	player.getGun().addRenderSets(getRenderer());
-	//getRenderer().addRenderSet(player.getGunRenderSet(), player.getGunBullets());
+	getRenderer().addRenderContainer(player.getRenderContainer());
+	player.getGun().addRenderContainers(getRenderer());
+	//getRenderer().addRenderContainer(player.getGunRenderContainer(), player.getGunBullets());
 
 	getRenderer().addCollider(player.getCollider());
 	//Collider c = player.getCollider();

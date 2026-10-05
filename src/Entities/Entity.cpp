@@ -25,8 +25,8 @@ Entity::~Entity()
 void Entity::update(float) {
 }
 
-RenderSet Entity::getRenderSet() const { //make it reference
-	return RenderSet{ animationSets[currentASIndex], pos };
+RenderContainer Entity::getRenderContainer() const { //make it reference
+	return RenderContainer{ animationSets[currentASIndex], pos };
 }
 
 const vec2& Entity::getPos() const{

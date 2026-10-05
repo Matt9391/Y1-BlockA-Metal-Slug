@@ -1,7 +1,7 @@
 #include "precomp.h"
 #include "Gun.h"
 #include <Bullet.h>
-#include <RenderSet.h>
+#include <RenderContainer.h>
 #include <Renderer.h>
 #include <GunType.h>
 
@@ -65,10 +65,10 @@ bool Gun::getCanShoot() const {
 }
 
 
-void Gun::addRenderSets(Renderer& renderer) {
+void Gun::addRenderContainers(Renderer& renderer) {
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) continue;
-		renderer.addRenderSet(bullets[i]->getRenderSet());
+		renderer.addRenderContainer(bullets[i]->getRenderContainer());
 		renderer.addCollider(bullets[i]->getCollider());
 
 	}
