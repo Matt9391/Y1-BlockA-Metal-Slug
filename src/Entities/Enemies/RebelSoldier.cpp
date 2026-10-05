@@ -203,10 +203,10 @@ bool RebelSoldier::throwGranade(vec2 dir_) {
 	return true;
 }
 
-void RebelSoldier::addRenderContainers(Renderer& renderer) {
+void RebelSoldier::addRenderDatas(Renderer& renderer) {
 	for (int i = 0; i < MAXGRANADES; i++) {
 		if (granades[i] == nullptr) continue;
-		renderer.addRenderContainer(granades[i]->getRenderContainer());
+		renderer.addRenderData(granades[i]->getRenderData());
 	}
 }
 

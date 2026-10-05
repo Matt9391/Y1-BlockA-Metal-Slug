@@ -8,24 +8,24 @@
 void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
 
 Renderer::Renderer() :
-	renderContainerCount(0),
+	renderDataCount(0),
 	collidersCount(0),
 	textsCount(0),
 	spriteSetCount(0),
 	colliders{nullptr},
 	printer(),
-	mapRenderContainer{nullptr}
+	mapRenderData{nullptr}
 	{}
 
 Renderer::~Renderer(){
-	mapRenderContainer = nullptr;
+	mapRenderData = nullptr;
 	for(int i = 0; i < MAXCOLLIDERS; i++){
 		colliders[i] = nullptr;
 	}
 }
 
 void Renderer::reset(){
-	mapRenderContainer = nullptr;
+	mapRenderData = nullptr;
 	for(int i = 0; i < MAXCOLLIDERS; i++){
 		colliders[i] = nullptr;
 	}
@@ -39,15 +39,15 @@ void Renderer::addCollider(const Collider& c) {
 }
 
 
-void Renderer::addRenderContainer(RenderContainer rs) {
-	if (renderContainerCount == MAXRENDERSETS)
+void Renderer::addRenderData(RenderData rs) {
+	if (renderDataCount == MAXRENDERSETS)
 		throw runtime_error("Max render sets reached");
-	renderContainers[renderContainerCount++] = rs;
+	renderDatas[renderDataCount++] = rs;
 	
 }
 
-void Renderer::addMapRenderContainer(const MapRenderContainer& mrs) {
-	mapRenderContainer = &mrs;
+void Renderer::addMapRenderData(const MapRenderData& mrs) {
+	mapRenderData = &mrs;
 }
 
 void Renderer::addHUDText(HUDText t) {
@@ -70,11 +70,11 @@ void Renderer::clearColliders() {
 	collidersCount = 0;
 }
 
-void Renderer::clearRenderContainers() {
+void Renderer::clearRenderDatas() {
 	for (int i = 0; i < MAXRENDERSETS; i++) {
-		renderContainers[i] = RenderContainer();
+		renderDatas[i] = RenderData();
 	}
-	renderContainerCount = 0;
+	renderDataCount = 0;
 }
 
 void Renderer::clearTexts() {
@@ -92,13 +92,13 @@ void Renderer::clearSpriteSets() {
 }
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
 	
-	if (mapRenderContainer != nullptr) {
+	if (mapRenderData != nullptr) {
 		
-		for (int i = 0; i < mapRenderContainer->layerCount; i++) {
-			//for (int i = 0; i < mapRenderContainer.layerCount - 2; i++) { //uncomment to remove hitboxes
-			const MapLayer& layer = mapRenderContainer->layers[i];
+		for (int i = 0; i < mapRenderData->layerCount; i++) {
+			//for (int i = 0; i < mapRenderData.layerCount - 2; i++) { //uncomment to remove hitboxes
+			const MapLayer& layer = mapRenderData->layers[i];
 			
-			const int& tileSize = mapRenderContainer->tileSize;
+			const int& tileSize = mapRenderData->tileSize;
 
 			int startX = static_cast<int>(fmaxf(floorf(cameraOffset.x) / tileSize, 0.f));
 			int startY = static_cast<int>(fmaxf(floorf(cameraOffset.y) / tileSize, 0.f));
@@ -123,10 +123,10 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 					int srcCol = localId % static_cast<int>(layer.tiles.x);
 					int srcRow = localId / static_cast<int>(layer.tiles.x);
 
-					int destX = static_cast<int>(mapRenderContainer->pos.x + x * 8);
-					int destY = static_cast<int>(mapRenderContainer->pos.y + y * 8);
+					int destX = static_cast<int>(mapRenderData->pos.x + x * 8);
+					int destY = static_cast<int>(mapRenderData->pos.y + y * 8);
 
-					drawTile(mapRenderContainer->tileSize,
+					drawTile(mapRenderData->tileSize,
 							srcCol,
 							srcRow, 
 							screen, 
@@ -139,8 +139,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			printf("%d\n", count);
 		}
 	}
-	for (int i = 0; i < renderContainerCount; i++) {
-		RenderContainer& rs = this->renderContainers[i];
+	for (int i = 0; i < renderDataCount; i++) {
+		RenderData& rs = this->renderDatas[i];
 		bool flipped = rs.animationSet.flipped;
 		for (int j = 0; j < rs.animationSet.layerCount; j++) {
 			AnimationLayer& layer = rs.animationSet.layers[j];
@@ -158,9 +158,9 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 	}
 
-	if (mapRenderContainer != nullptr) {
-		for (int i = 2; i < mapRenderContainer->layerCount - 1; i++) {
-			const MapLayer& layer = mapRenderContainer->layers[i];
+	if (mapRenderData != nullptr) {
+		for (int i = 2; i < mapRenderData->layerCount - 1; i++) {
+			const MapLayer& layer = mapRenderData->layers[i];
 			for (int y = 0; y < static_cast<int>(layer.tiles.y); y++) {
 				for (int x = 0; x < static_cast<int>(layer.tiles.x); x++) {
 					int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
@@ -170,10 +170,10 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 					int srcCol = localId % static_cast<int>(layer.tiles.x);
 					int srcRow = localId / static_cast<int>(layer.tiles.x);
 
-					int destX = static_cast<int>(mapRenderContainer->pos.x + x * 8);
-					int destY = static_cast<int>(mapRenderContainer->pos.y + y * 8);
+					int destX = static_cast<int>(mapRenderData->pos.x + x * 8);
+					int destY = static_cast<int>(mapRenderData->pos.y + y * 8);
 
-					drawTile(mapRenderContainer->tileSize,
+					drawTile(mapRenderData->tileSize,
 							srcCol,
 							srcRow, 
 							screen, 
@@ -185,11 +185,11 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		}
 	}
 
-	if (mapRenderContainer != nullptr) {
-		for (int i = 0; i < mapRenderContainer->layerObjCount; i++) {
-			//for (int i = 0; i < mapRenderContainer.layerCount - 1; i++) { //uncomment to remove hitboxes
-			for (int j = 0; j < mapRenderContainer->spawnerCounts[i]; j++) {
-				const Spawner* spawner = mapRenderContainer->spawners[i][j];
+	if (mapRenderData != nullptr) {
+		for (int i = 0; i < mapRenderData->layerObjCount; i++) {
+			//for (int i = 0; i < mapRenderData.layerCount - 1; i++) { //uncomment to remove hitboxes
+			for (int j = 0; j < mapRenderData->spawnerCounts[i]; j++) {
+				const Spawner* spawner = mapRenderData->spawners[i][j];
 
 				const vec2& pos = spawner->getPos();
 				const vec2& size = spawner->getSize();

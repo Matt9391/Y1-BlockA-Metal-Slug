@@ -203,12 +203,12 @@
     <ClInclude Include="src\DataStructures\GunType.h" />
     <ClInclude Include="src\DataStructures\HUDText.h" />
     <ClInclude Include="src\DataStructures\MapLayerNames.h" />
-    <ClInclude Include="src\DataStructures\MapRenderContainer.h" />
+    <ClInclude Include="src\DataStructures\MapRenderData.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimationSet.h" />
     <ClInclude Include="src\DataStructures\PowAnimationSet.h" />
     <ClInclude Include="src\DataStructures\RebelSoldierPresets.h" />
     <ClInclude Include="src\DataStructures\RebelSoldierType.h" />
-    <ClInclude Include="src\DataStructures\RenderContainer.h" />
+    <ClInclude Include="src\DataStructures\RenderData.h" />
     <ClInclude Include="src\DataStructures\ResourceID.h" />
     <ClInclude Include="src\DataStructures\ResourceIDFrames.h" />
     <ClInclude Include="src\DataStructures\SpriteSet.h" />

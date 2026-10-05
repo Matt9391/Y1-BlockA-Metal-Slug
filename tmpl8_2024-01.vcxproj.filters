@@ -239,7 +239,7 @@
     <ClInclude Include="src\DataStructures\PlayerAnimationSet.h">
       <Filter>src\DataStructures</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\RenderContainer.h">
+    <ClInclude Include="src\DataStructures\RenderData.h">
       <Filter>src\DataStructures</Filter>
     </ClInclude>
     <ClInclude Include="src\Components\Renderer.h">
@@ -248,7 +248,7 @@
     <ClInclude Include="src\DataStructures\ResourceIDFrames.h">
       <Filter>src\DataStructures</Filter>
     </ClInclude>
-    <ClInclude Include="src\DataStructures\MapRenderContainer.h">
+    <ClInclude Include="src\DataStructures\MapRenderData.h">
       <Filter>src\DataStructures</Filter>
     </ClInclude>
     <ClInclude Include="src\Components\Camera.h">

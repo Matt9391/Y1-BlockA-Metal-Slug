@@ -3,7 +3,7 @@
 #include <GunData.h>
 
 class Bullet;
-struct RenderContainer;
+struct RenderData;
 class Renderer;
 
 class Gun {
@@ -13,7 +13,7 @@ public:
 	~Gun();
 	void update(float dt);
 
-	void addRenderContainers(Renderer& renderer);
+	void addRenderDatas(Renderer& renderer);
 	int getBulletsCount() const;
 	int getMaxBullets() const;
 	Bullet* getBullet(int i) const;
