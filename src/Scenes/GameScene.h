@@ -26,6 +26,8 @@ private:
 	Entity* spawnedEntities[MAXENTITIES];
 	const Map& map;
 	bool loseCondition;
+	bool winCondition;
+	bool justWin;
 	int secondsLeft;
 	float elapsedLoseTime;
 };

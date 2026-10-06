@@ -17,14 +17,15 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	state(nullptr),
 	gun(this->getPos(), vec2(5, 5), GunPresets::getGun(GunType::FLAME_THROWER)), //I need to add gunData templates
 	shooting(false),
-	hasEnemyInFront(false),
+	hasEntityInFront(false),
 	alive(true),
 	enabled(false),
 	lives(3),
 	score(25001),
 	deadTimeElapsed(0.f),
 	canRevive(true),
-	gravityMultiplier(0.05f)
+	gravityMultiplier(0.05f),
+	powSaved(0)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -651,12 +652,12 @@ int Player::getGunBullets() const{
 }
 
 
-void Player::setEnemyInFront(bool enemyInFront) {
-	this->hasEnemyInFront = enemyInFront;
+void Player::setEntityInFront(bool enemyInFront) {
+	this->hasEntityInFront = enemyInFront;
 }
 
 bool Player::getEnemyInFront() const {
-	return this->hasEnemyInFront;
+	return this->hasEntityInFront;
 }
 
 int Player::getLives() const {
@@ -919,4 +920,12 @@ bool Player::isShooting() const{
 void Player::setGunData(GunData newData){
 	this->gun.setGunData(newData);
 	loadGFX();
+}
+
+void Player::addPowSaved(){
+	powSaved++;
+}
+
+int Player::getPowSaved() const{
+	return this->powSaved;
 }

@@ -26,7 +26,7 @@ public:
 	int getGunBullets() const;
 	void setGunData(GunData newData);
 
-	void setEnemyInFront(bool enemyInFront);
+	void setEntityInFront(bool enemyInFront);
 	
 	int getLives() const;
 	int getScore() const;
@@ -37,6 +37,9 @@ public:
 	void fullRevive();
 
 	bool getEnabled() const;
+
+	void addPowSaved();
+	int getPowSaved() const;
 private:
 	bool getEnemyInFront() const;
 	void setShooting(bool shooting_);
@@ -50,7 +53,7 @@ private:
 	PlayerState* state;
 
 	bool shooting;
-	bool hasEnemyInFront;
+	bool hasEntityInFront;
 	bool alive;
 	bool enabled;
 
@@ -62,5 +65,7 @@ private:
 
 	bool canRevive;
 	float gravityMultiplier;
+
+	int powSaved;
 };
 

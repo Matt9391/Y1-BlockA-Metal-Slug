@@ -147,6 +147,7 @@ namespace RebelSoldierStates {
         return current;
     }
 
+    // TODO: actually make the scaredState happen
     void ScaredState::enter(RebelSoldier&) {
         this->duration = 1000.f;
         this->elapsedTime = 0.f;

@@ -17,6 +17,8 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 	CustomScene(screen, renderer, inputManager),
 	player(vec2(30, 80), getInputManager()),
 	loseCondition(false),
+	winCondition(false),
+	justWin(false),
 	secondsLeft(9),
 	elapsedLoseTime(0.f),
 	spawnedEntities{},
@@ -55,6 +57,8 @@ void GameScene::init() {
 	
 	setChangeScene(false);
 	setNextScene(TypeScene::GAME_OVER);
+
+	//TODO: map init to reset spawners timer since they remain in memory
 };
 
 void GameScene::exit() {};
@@ -92,6 +96,13 @@ void GameScene::update(float dt) {
 			freeEntity(i);
 			continue;
 		}
+
+		Collider c = player.getCollider();
+		c.offset.x += player.getLastDir().x * c.size.x;
+		player.setEntityInFront(
+			CollisionManager::checkCollision(c,e->getCollider()) ||
+			CollisionManager::checkCollision(player.getCollider(), e->getCollider())
+		);
 
 		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 		
@@ -140,8 +151,9 @@ void GameScene::update(float dt) {
 		else if (e->getEntityType() == EntityType::ET_POW) {
 			Pow* pow = static_cast<Pow*>(e);
 			if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider())) {
-				if (player.isShooting()) {
+				if (player.isShooting() && !pow->isReleased()) {
 					pow->setReleased(true);
+					player.addPowSaved();
 				}
 				pow->setIntersectingPlayer(true);
 			}
@@ -173,13 +185,6 @@ void GameScene::update(float dt) {
 	}
 
 
-
-	Collider c = player.getCollider();
-	c.offset.x += player.getLastDir().x * c.size.x;
-	//player.setEnemyInFront(
-	//	CollisionManager::checkCollision(c,soldier.getCollider()) ||
-	//	CollisionManager::checkCollision(player.getCollider(), soldier.getCollider())
-	//);
 
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	
@@ -267,8 +272,31 @@ void GameScene::update(float dt) {
 				player.fullRevive();	
 			}
 
-		}
-		else {
+		}else {
+			if(winCondition){
+				char savedText[4];
+				snprintf(savedText, sizeof(savedText), "%d", player.getPowSaved());
+
+				if(justWin){
+					getRenderer().addSpriteSet(SpriteSet(
+						ResourceID::ID_POW_BYE,
+						ResourceIDFrames::IDF_POW_BYE,
+						vec2(40, 60),
+						10
+					));
+					justWin = false;
+				}
+
+				// TODO: Dark background
+				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "RECAPTURED PRISONER", vec2(45, 40), 1.f });
+				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "P1", vec2(65, 50), 1.f });
+				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, savedText, vec2(80, 82), 1.f });
+				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "x1000", vec2(105, 90), 1.f });
+				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "11000", vec2(60, 110), 1.f });
+				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "MG. Carothers", vec2(30, 145), 1.f });
+				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PLEASE WAIT", vec2(180, 10),1.2f });
+				
+			}
 			char livesText[50];
 			snprintf(livesText, sizeof(livesText), "1UP=%d", player.getLives());
 			char scoreText[50];
@@ -282,6 +310,8 @@ void GameScene::update(float dt) {
 	}
 
 	loseCondition = player.getLives() <= -1;
+	justWin = player.getPos().x > 1000 && !winCondition;
+	winCondition = player.getPos().x > 1000;
 };
 
 

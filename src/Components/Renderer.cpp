@@ -218,6 +218,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		Sprite* sprite = resourceManager.getSprite(ss.resourceId);
 		if (sprite == nullptr) continue;
 
+		sprite->SetFrame(ss.currentFrame);
+
 		sprite->Draw(screen, static_cast<int>(ss.pos.x), static_cast<int>(ss.pos.y), 0);
 	}
 
