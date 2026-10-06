@@ -1,6 +1,7 @@
 #include "precomp.h"
 #include "Gun.h"
-#include <Bullet.h>
+#include <Bullets/PistolBullet.h>
+#include <Bullets/FlameBullet.h>
 #include <RenderData.h>
 #include <Renderer.h>
 #include <GunType.h>
@@ -52,7 +53,19 @@ bool Gun::shoot() {
 
 	if (bIndex == -1) return false;
 
-	bullets[bIndex] = new Bullet(this->pos + this->offset, true, this->shootDir, gunData.bulletType, gunData.bulletSpeed);
+	switch (gunData.gunType)
+	{
+	case GunType::PISTOL:
+		bullets[bIndex] = new PistolBullet(this->pos + this->offset, true, this->shootDir, gunData.bulletType, gunData.bulletSpeed);
+		break;
+	case GunType::FLAME_THROWER:
+		bullets[bIndex] = new FlameBullet(this->pos + this->offset, true, this->shootDir, gunData.bulletType, gunData.bulletSpeed);
+		break;
+	
+	default:
+		throw runtime_error("couldnt find proper bullet for current gunType");
+		break;
+	}
 	bulletsCount++;
 
 	canShoot = false;

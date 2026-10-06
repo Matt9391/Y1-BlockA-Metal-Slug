@@ -37,6 +37,9 @@
     <Filter Include="src\Entities\LootDrops">
       <UniqueIdentifier>{1b189b07-f94f-4759-a532-e196d1a6b7eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Entities\Bullets">
+      <UniqueIdentifier>{cdaca0fc-b0ef-4e52-a959-41d4e5fd77d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -162,6 +165,12 @@
     </ClCompile>
     <ClCompile Include="src\Scenes\GameOverScene.cpp">
       <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Bullets\FlameBullet.cpp">
+      <Filter>src\Entities\Bullets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Bullets\PistolBullet.cpp">
+      <Filter>src\Entities\Bullets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +364,12 @@
     </ClInclude>
     <ClInclude Include="src\DataStructures\ParallaxRenderData.h">
       <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Bullets\FlameBullet.h">
+      <Filter>src\Entities\Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Bullets\PistolBullet.h">
+      <Filter>src\Entities\Bullets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

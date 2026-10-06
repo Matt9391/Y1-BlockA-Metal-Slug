@@ -8,16 +8,19 @@ class Bullet : public Entity {
 public:
 
 	Bullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, float bulletSpeed);
-	~Bullet() override;
+	virtual ~Bullet() {};
 
-	void loadGFX() override;
+
+	virtual	void explode() = 0;
+	virtual void explodeMap() = 0;
 	
-	void update(float dt) override;
-
-	void explode();
-	void explodeMap();
 	bool getDisabled() const;
+protected:
 
+	void setDisabled(bool isDisabled_);
+	void setAbleMovement(bool ableMovement_);
+
+	bool getAbleMovement() const;
 
 private:
 	bool ableMovement;
