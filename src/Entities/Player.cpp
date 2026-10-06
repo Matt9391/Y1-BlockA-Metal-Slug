@@ -15,13 +15,13 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	Entity(pos, true, EntityType::ET_PLAYER),
 	inputManager(inputManager),
 	state(nullptr),
-	gun(this->getPos(), vec2(5, 5), GunPresets::getGun(GunType::FLAME_THROWER)), //I need to add gunData templates
+	gun(this->getPos(), vec2(5, 5), GunPresets::getGun(GunType::PISTOL)), //I need to add gunData templates
 	shooting(false),
 	hasEntityInFront(false),
 	alive(true),
 	enabled(false),
 	lives(3),
-	score(25001),
+	score(0),
 	deadTimeElapsed(0.f),
 	canRevive(true),
 	gravityMultiplier(0.05f),
@@ -45,10 +45,11 @@ Player::~Player() {
 void Player::init(vec2 pos_) {
 	this->setPos(pos_);
 	this->lives = 3;
+	this->score = 0;
 	this->canRevive = true;
 	this->enabled = false;
 	this->alive = true;
-	this->setGunData(GunPresets::getGun(GunType::FLAME_THROWER));
+	this->setGunData(GunPresets::getGun(GunType::PISTOL));
 
 	setCurrentASIndex(PlayerAnimationSet::PAS_PARACHUTE);
 	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
@@ -928,4 +929,8 @@ void Player::addPowSaved(){
 
 int Player::getPowSaved() const{
 	return this->powSaved;
+}
+
+void Player::addScore(int score_){
+	this->score += score_;
 }

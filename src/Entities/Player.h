@@ -39,6 +39,7 @@ public:
 	bool getEnabled() const;
 
 	void addPowSaved();
+	void addScore(int score_);
 	int getPowSaved() const;
 private:
 	bool getEnemyInFront() const;

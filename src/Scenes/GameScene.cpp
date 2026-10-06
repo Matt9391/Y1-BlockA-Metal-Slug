@@ -34,6 +34,8 @@ GameScene::~GameScene() {
 }
 
 void GameScene::init() {
+	player.init(vec2(30,80));
+
 	//* Initialize camera to game scene settings
 	getCamera().init(vec2(0.f, 10.f * map.getTileSize()));
 	getCamera().enableCamera(true);
@@ -215,6 +217,7 @@ void GameScene::update(float dt) {
 				if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider())) {
 					b->explode();
 					enemy->setAlive(false);
+					player.addScore(100);
 				}
 				
 			}else if(e->getEntityType() == EntityType::ET_POWERUP){
