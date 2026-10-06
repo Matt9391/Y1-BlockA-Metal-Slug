@@ -52,7 +52,7 @@ void Player::init(vec2 pos_) {
 	this->canRevive = true;
 	this->enabled = false;
 	this->alive = true;
-	this->setGunData(GunPresets::getGun(GunType::PISTOL));
+	this->setGunData(GunPresets::getGun(GunType::FLAME_THROWER));
 
 	setCurrentASIndex(PlayerAnimationSet::PAS_PARACHUTE);
 	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));
@@ -808,18 +808,19 @@ void Player::update(float dt) {
 		float x = 1;
 		float y = 0;
 		
+		if (getLastDir().x < 0) {
+				x = -1;
+		}
+
 		if(gun.getCanShootDiagonally()){
 			if(pInput.inputUp) angle += angleIncr * dt;
 			else angle -= angleIncr * dt;
 
 			angle = myMath::constrain(angle,0,90);
 
-			x = cos(angle * (PI / 180.f));
+			x = x > 0 ? cos(angle * (PI / 180.f)) : -cos(angle * (PI / 180.f));
 			y = -sin(angle * (PI / 180.f));
 		}else{
-			if (getLastDir().x < 0) {
-				x = -1;
-			}
 
 			if(pInput.inputUp){
 				y = -1;
@@ -835,6 +836,7 @@ void Player::update(float dt) {
 
 		}
 		
+		gun.setGunAngle(angle);
 		gun.setShootDir(vec2(static_cast<float>(x),static_cast<float>(y)));
 	}
 

@@ -32,6 +32,8 @@ public:
 	void setGunData(GunData newData);
 	GunType getGunType() const;
 
+	void setGunAngle(float gunAngle_);
+
 private:
 	static const int MAXBULLETS = 50;
 
@@ -43,4 +45,5 @@ private:
 	int bulletsCount;
 	bool canShoot;
 	float shootCooldown;
+	float gunAngle;
 };

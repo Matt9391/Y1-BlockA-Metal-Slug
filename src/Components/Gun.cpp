@@ -14,7 +14,8 @@ Gun::Gun(const vec2& pos, vec2 offset, GunData gunData) :
 	bullets{},
 	bulletsCount(0),
 	canShoot(true),
-	shootCooldown(0.f)
+	shootCooldown(0.f),
+	gunAngle(0)
 {}
 
 Gun::~Gun() {
@@ -59,7 +60,7 @@ bool Gun::shoot() {
 		bullets[bIndex] = new PistolBullet(this->pos + this->offset, true, this->shootDir, gunData.bulletType, gunData.bulletSpeed);
 		break;
 	case GunType::FLAME_THROWER:
-		bullets[bIndex] = new FlameBullet(this->pos + this->offset, true, this->shootDir, gunData.bulletType, gunData.bulletSpeed);
+		bullets[bIndex] = new FlameBullet(this->pos + this->offset, true, this->shootDir, gunData.bulletType, gunData.bulletSpeed, gunAngle);
 		break;
 	
 	default:
@@ -135,4 +136,9 @@ void Gun::setGunData(GunData newData) {
 
 GunType Gun::getGunType() const{
 	return this->gunData.gunType;
+}
+
+
+void Gun::setGunAngle(float gunAngle_){
+	this->gunAngle = gunAngle_;
 }
