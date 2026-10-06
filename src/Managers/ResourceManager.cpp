@@ -97,6 +97,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_AMMOS] = new Sprite(new Surface("assets/ammos.png"), ResourceIDFrames::IDF_AMMOS);
 	sprites[ResourceID::ID_MENU_BG] = new Sprite(new Surface("assets/menuBg.png"), ResourceIDFrames::IDF_MENU_BG);
 	sprites[ResourceID::ID_GAME_OVER_BG] = new Sprite(new Surface("assets/gameOverBg.png"), ResourceIDFrames::IDF_GAME_OVER_BG);
+	sprites[ResourceID::ID_PARALLAX_BG] = new Sprite(new Surface("assets/parallaxBg.png"), ResourceIDFrames::IDF_PARALLAX_BG);
 
 	initalized = true;
 }

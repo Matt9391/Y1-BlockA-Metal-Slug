@@ -12,6 +12,7 @@
 #include <Enemies/RebelSoldier.h>
 #include <LootDrop.h>
 #include <LootDrops/PowerUp.h>
+#include <ParallaxRenderData.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, const Map& map_) :
 	CustomScene(screen, renderer, inputManager),
@@ -22,7 +23,13 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 	secondsLeft(9),
 	elapsedLoseTime(0.f),
 	spawnedEntities{},
-	map(map_)
+	map(map_),
+	parallaxRenderData(
+			ResourceID::ID_PARALLAX_BG,
+			ResourceIDFrames::IDF_PARALLAX_BG,
+			0.2f,
+			vec2(0,-30)
+		)
 	{
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
 	}
@@ -55,6 +62,7 @@ void GameScene::init() {
 			vec2(90, 2)
 		)); 
 
+		getRenderer().addParallaxRenderData(parallaxRenderData);
 	}
 	
 	setChangeScene(false);

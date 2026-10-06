@@ -2,6 +2,7 @@
 
 #include <RenderData.h>
 #include <MapRenderData.h>
+#include <ParallaxRenderData.h>
 #include <ResourceManager.h>
 #include <Collider.h>
 #include <Printer.h>
@@ -22,7 +23,8 @@ public:
 	void addHUDText(HUDText t);
 	
 	void addSpriteSet(SpriteSet ss);
-	void addMapRenderData(const MapRenderData& mrs);
+	void addMapRenderData(const MapRenderData& mrd);
+	void addParallaxRenderData(const ParallaxRenderData& prd);
 
 	void clearRenderDatas();
 	void clearColliders();
@@ -40,6 +42,7 @@ private:
 	
 	RenderData renderDatas[MAXRENDERSETS]; //dont describe it meaning
 	const MapRenderData* mapRenderData;
+	const ParallaxRenderData* parallaxRenderData;
 	const Collider* colliders[MAXCOLLIDERS];
 	HUDText texts[MAXTEXTS];
 	SpriteSet spriteSets[MAXSPRITESETS];

@@ -25,6 +25,7 @@ private:
 
 	Entity* spawnedEntities[MAXENTITIES];
 	const Map& map;
+	const ParallaxRenderData parallaxRenderData;
 	bool loseCondition;
 	bool winCondition;
 	bool justWin;

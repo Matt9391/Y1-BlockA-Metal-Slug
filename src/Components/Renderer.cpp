@@ -14,7 +14,8 @@ Renderer::Renderer() :
 	spriteSetCount(0),
 	colliders{nullptr},
 	printer(),
-	mapRenderData{nullptr}
+	mapRenderData{nullptr},
+	parallaxRenderData{nullptr}
 	{}
 
 Renderer::~Renderer(){
@@ -46,9 +47,14 @@ void Renderer::addRenderData(RenderData rs) {
 	
 }
 
-void Renderer::addMapRenderData(const MapRenderData& mrs) {
-	mapRenderData = &mrs;
+void Renderer::addMapRenderData(const MapRenderData& mrd) {
+	mapRenderData = &mrd;
 }
+
+void Renderer::addParallaxRenderData(const ParallaxRenderData& prd){
+	parallaxRenderData = &prd;
+}
+
 
 void Renderer::addHUDText(HUDText t) {
 	if (textsCount == MAXTEXTS)
@@ -91,7 +97,21 @@ void Renderer::clearSpriteSets() {
 	spriteSetCount = 0;
 }
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
-	
+	if(parallaxRenderData != nullptr){
+		const ParallaxRenderData& p = *parallaxRenderData;
+		Sprite* sprite = resourceManager.getSprite(p.resourceId);
+		if (sprite){
+			sprite->Draw(screen, 
+						 static_cast<int>(p.pos.x - cameraOffset.x * p.parallaxFactor),
+						 static_cast<int>(p.pos.y - cameraOffset.y * p.parallaxFactor), 
+						 0);
+			
+			
+			
+		}
+	}
+
+
 	if (mapRenderData != nullptr) {
 		
 		for (int i = 0; i < mapRenderData->layerCount; i++) {
