@@ -4,12 +4,14 @@
 #include <RigidBody.h>
 #include <BulletType.h>
 
+// TODO: divide bullet in subclasses
 Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, float bulletSpeed) :
 	Entity(pos,needsRigidBody, EntityType::ET_BULLET),
 	ableMovement(true),
 	isDisabled(false),
 	bulletType(bulletType)
 { 
+	setDir(dir);
 	switch (bulletType)
 	{
 		case BulletType::BT_PISTOL:
@@ -17,14 +19,14 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, f
 			break;
 		case BulletType::BT_FLAME_THROWER:
 			setCollider(vec2(50, 30), vec2(0, 0));
+			setDir(vec2(getDir().x, -0.1f));
 			break;
 	}
 
-	getAnimationSets() = new AnimationSet[2];
+	getAnimationSets() = new AnimationSet[3];
 	loadGFX();
 	setCurrentASIndex(0);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], dir.x < 0);
-	setDir(dir);
 	getRigidBody()->setSpeed(bulletSpeed);
 }
 
@@ -60,7 +62,7 @@ void Bullet::loadGFX() {
 			1,
 			AnimationLayer(ResourceID::ID_PLAYER_BULLET_FLAME_THROWER,
 				ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER,
-			100,
+			40,
 				vec2(0, -10),
 				vec2(0, -10))
 			);
@@ -69,7 +71,15 @@ void Bullet::loadGFX() {
 				1,
 				AnimationLayer(ResourceID::ID_PLAYER_BULLET_FLAME_THROWER_BOOM,
 					ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER_BOOM,
-					100,
+					50,
+					vec2(0, -10),
+					vec2(0, -10))
+			);
+			getAnimationSets()[2] = AnimationSet(
+				1,
+				AnimationLayer(ResourceID::ID_PLAYER_BULLET_FLAME_THROWER_BOOM_STILL,
+					ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER_BOOM_STILL,
+					70,
 					vec2(0, -10),
 					vec2(0, -10))
 			);
@@ -90,7 +100,7 @@ void Bullet::update(float dt) {
 		explode();
 	}
 
-	if (getAnimator().isAnimationEnded() && getCurrentASIndex() == 1) {
+	if (getAnimator().isAnimationEnded() && (getCurrentASIndex() == 1 || getCurrentASIndex() == 2)) {
 		setFree(true);
 	}
 
@@ -98,6 +108,21 @@ void Bullet::update(float dt) {
 
 	this->addToPos(getDir() * dt * getRigidBody()->getSpeed());
 
+}
+
+void Bullet::explodeMap(){
+	switch (bulletType)
+	{
+		case BulletType::BT_PISTOL:
+			explode();
+			break;
+		case BulletType::BT_FLAME_THROWER:
+			isDisabled = true;
+			setDir(vec2(-0.01f, 0.f));
+			setCurrentASIndex(2);
+			getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+		break;
+	}
 }
 
 void Bullet::explode() {

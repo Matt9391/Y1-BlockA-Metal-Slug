@@ -205,7 +205,7 @@ void GameScene::update(float dt) {
 		}
 		
 		if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
-			b->explode();
+			b->explodeMap();
 		}
 		for (Entity* e : this->spawnedEntities) {
 			if (!e) continue;

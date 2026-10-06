@@ -15,6 +15,7 @@ public:
 	void update(float dt) override;
 
 	void explode();
+	void explodeMap();
 	bool getDisabled() const;
 
 
