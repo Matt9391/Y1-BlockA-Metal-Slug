@@ -9,6 +9,7 @@
 #include <InputManager.h>
 #include <GunPresets.h>
 #include <PlayerState.h>
+#include <myMath.h>
 
 
 Player::Player(vec2 pos, InputManager& inputManager) :
@@ -25,7 +26,9 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	deadTimeElapsed(0.f),
 	canRevive(true),
 	gravityMultiplier(0.05f),
-	powSaved(0)
+	powSaved(0),
+	angle(0.f),
+	angleIncr(.5f)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -755,50 +758,83 @@ void Player::update(float dt) {
 	}
 
 	//set gun shooting direction
-	{
-		int x = 1;
-		int y = 0;
+	// {
+	// 	int x = 1;
+	// 	int y = 0;
 		
 	
 		
-		{
+	// 	{
 
 
+	// 		if (getLastDir().x < 0) {
+	// 			x = -1;
+	// 		}
+
+	// 		if (pInput.inputUp) {
+	// 			if (!gun.getCanShootDiagonally()) {
+	// 				x = 0;
+	// 			}
+
+	// 			y = -1;
+	// 		}
+
+	// 		if (!pInput.isGrounded) {
+	// 			if (pInput.inputDown) {
+	// 				y = 1;
+	// 				x = 0;
+	// 			}
+	// 		}
+	// 	}
+	// 	if (gun.getCanShootDiagonally()) {
+
+	// 		if (pInput.inputLeft && pInput.inputUp) {
+	// 			x = -1;
+	// 			y = -1;
+	// 		}
+	// 		else if (pInput.inputRight && pInput.inputUp) {
+	// 			x = 1;
+	// 			y = -1;
+	// 		}
+	// 		else if (pInput.inputUp) {
+	// 			x = 0;
+	// 			y = -1;
+	// 		}
+	// 	}
+
+	// 	gun.setShootDir(vec2(static_cast<float>(x),static_cast<float>(y)));
+	// }
+	{
+		float x = 1;
+		float y = 0;
+		
+		if(gun.getCanShootDiagonally()){
+			if(pInput.inputUp) angle += angleIncr * dt;
+			else angle -= angleIncr * dt;
+
+			angle = myMath::constrain(angle,0,90);
+
+			x = cos(angle * (PI / 180.f));
+			y = -sin(angle * (PI / 180.f));
+		}else{
 			if (getLastDir().x < 0) {
 				x = -1;
 			}
 
-			if (pInput.inputUp) {
-				if (!gun.getCanShootDiagonally()) {
-					x = 0;
-				}
-
+			if(pInput.inputUp){
 				y = -1;
+				x = 0;
 			}
-
+			
 			if (!pInput.isGrounded) {
 				if (pInput.inputDown) {
 					y = 1;
 					x = 0;
 				}
 			}
-		}
-		if (gun.getCanShootDiagonally()) {
 
-			if (pInput.inputLeft && pInput.inputUp) {
-				x = -1;
-				y = -1;
-			}
-			else if (pInput.inputRight && pInput.inputUp) {
-				x = 1;
-				y = -1;
-			}
-			else if (pInput.inputUp) {
-				x = 0;
-				y = -1;
-			}
 		}
-
+		
 		gun.setShootDir(vec2(static_cast<float>(x),static_cast<float>(y)));
 	}
 

@@ -68,5 +68,7 @@ private:
 	float gravityMultiplier;
 
 	int powSaved;
+	float angle;
+	float angleIncr;
 };
 

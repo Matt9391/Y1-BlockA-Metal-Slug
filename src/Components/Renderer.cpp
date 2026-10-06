@@ -130,11 +130,9 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			endX = static_cast<int>(fminf(static_cast<float>(endX),layer.tiles.x));
 			endY = static_cast<int>(fminf(static_cast<float>(endY),layer.tiles.y));
 		
-			int count = 0;
 		
 			for (int y = startY; y < endY; y++) {
 				for (int x = startX; x < endX; x++) {
-					count++;
 					int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
 					if (tileId == 0) continue; // empty tile, nothing to draw
 
@@ -156,7 +154,6 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 				}
 			}
-			printf("%d\n", count);
 		}
 	}
 	for (int i = 0; i < renderDataCount; i++) {

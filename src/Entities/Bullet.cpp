@@ -19,7 +19,7 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, f
 			break;
 		case BulletType::BT_FLAME_THROWER:
 			setCollider(vec2(50, 30), vec2(0, 0));
-			setDir(vec2(getDir().x, -0.1f));
+			// setDir(vec2(getDir().x, getDir().y -0.1f));
 			break;
 	}
 
