@@ -204,6 +204,7 @@
     <ClInclude Include="src\DataStructures\HUDText.h" />
     <ClInclude Include="src\DataStructures\MapLayerNames.h" />
     <ClInclude Include="src\DataStructures\MapRenderData.h" />
+    <ClInclude Include="src\DataStructures\ParallaxRenderData.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimationSet.h" />
     <ClInclude Include="src\DataStructures\PowAnimationSet.h" />
     <ClInclude Include="src\DataStructures\RebelSoldierPresets.h" />

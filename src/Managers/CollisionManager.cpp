@@ -132,6 +132,59 @@ namespace CollisionManager {
 		return false;
 	}
 
+	bool resolveCollisionAOverB(Entity& e, const Collider& b){
+		vec2 overlaps = getCollisionOverlap(e.getCollider(), b);
+		bool grounded = false;
+		bool collided = false;
+
+		const vec2 colliderPosA = (e.getCollider().pos + e.getCollider().offset);
+		const vec2 colliderPosB = (b.pos + b.offset);
+		vec2 eCenter = vec2(colliderPosA.x  + e.getCollider().size.x / 2.f, colliderPosA.y + e.getCollider().size.y / 2.f);
+		vec2 bCenter = vec2(colliderPosB.x + b.size.x / 2.f, colliderPosB.y + b.size.y / 2.f); //tile Center
+
+
+		vec2 dir = vec2(eCenter.x < bCenter.x ? -1.f : 1.f, eCenter.y < bCenter.y ? -1.f : 1.f);
+
+
+		if (overlaps.x > -0.01f && overlaps.y > -0.01f) {
+			collided = true;
+			if (overlaps.x < overlaps.y) {
+				e.addToPos(vec2(overlaps.x * dir.x, 0));
+			}
+			else {
+				e.addToPos(vec2(0, overlaps.y * dir.y));
+				if (dir.y < 0) {
+					grounded = true;
+					e.setGrounded(grounded);
+				}
+				else {
+					e.setVelocity(vec2(e.getVelocity().x, 0.01f));
+				}
+			}
+
+		}
+
+
+		return collided;
+	}
+	
+	vec2 getCollisionOverlap(const Collider& a,const Collider& b){
+		float leftA = a.pos.x + a.offset.x;
+		float rightA = a.pos.x + a.offset.x + a.size.x;
+		float topA = a.pos.y + a.offset.y;
+		float bottomA = a.pos.y + a.offset.y + a.size.y;
+	
+		float leftB = b.pos.x + b.offset.x;
+		float rightB = b.pos.x + b.offset.x + b.size.x;
+		float topB = b.pos.y + b.offset.y;
+		float bottomB = b.pos.y + b.offset.y + b.size.y;
+
+		float overlapX = fminf(rightA, rightB) - fmaxf(leftA, leftB);
+		float overlapY = fminf(bottomA, bottomB) - fmaxf(topA, topB);
+
+		return vec2(overlapX,overlapY);
+	}
+
 
 	vec2 checkOverlapMapCollision(const Collider& collider,const vec2& tilePos,const int& tileSize) {
 		const vec2 colliderPos = (collider.pos + collider.offset);

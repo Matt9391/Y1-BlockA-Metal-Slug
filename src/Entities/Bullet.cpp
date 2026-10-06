@@ -95,7 +95,7 @@ void Bullet::loadGFX() {
 void Bullet::update(float dt) {
 	getAnimator().playAnimation(dt);
 
-	// TODO: should bounce again walls instead of ingoring them
+	// DONE: should bounce again walls instead of ingoring them
 	if (bulletType == BulletType::BT_FLAME_THROWER && getAnimator().isAnimationEnded() && getCurrentASIndex() == 0) {
 		explode();
 	}

@@ -79,6 +79,7 @@ void GameScene::update(float dt) {
 	getRenderer().clearTexts();
 
 	player.update(dt);
+	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 
 	if (player.getEnabled()) {
 
@@ -183,6 +184,7 @@ void GameScene::update(float dt) {
 
 			// TODO: Add player colllision resolution on lootdrop, it can walk over it
 			if (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider())) {
+				CollisionManager::resolveCollisionAOverB(player, lootDrop->getCollider());
 				lootDrop->applyEffect(player);
 			}
 		}
@@ -196,7 +198,6 @@ void GameScene::update(float dt) {
 
 
 
-	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 	
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);

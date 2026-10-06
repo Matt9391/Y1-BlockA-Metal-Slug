@@ -353,6 +353,9 @@
     <ClInclude Include="src\DataStructures\MapRenderData.h">
       <Filter>src\DataStructures</Filter>
     </ClInclude>
+    <ClInclude Include="src\DataStructures\ParallaxRenderData.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cl\kernels.cl" />
