@@ -90,5 +90,7 @@ enum ResourceIDFrames : int {
 	IDF_MENU_BG = 1,
 	IDF_GAME_OVER_BG = 1,
 	IDF_PARALLAX_BG = 1,
+	IDF_WATERFALL = 8,
+	IDF_WATERFALL_BOTTOM = 8,
 	IDF_AMMOS = 1,
 };

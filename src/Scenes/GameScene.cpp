@@ -29,7 +29,33 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 			ResourceIDFrames::IDF_PARALLAX_BG,
 			0.2f,
 			vec2(0,-30)
-		)
+		),
+	waterfall(RenderData
+				(AnimationSet(
+					1,
+					AnimationLayer(
+						ResourceID::ID_WATERFALL,
+						ResourceIDFrames::IDF_WATERFALL,
+						10,
+						vec2(0, 0),
+						vec2(0, 0)
+					)
+				),
+				vec2(3337,3.5f))
+			),
+	waterfallBottom(RenderData
+				(AnimationSet(
+					1,
+					AnimationLayer(
+						ResourceID::ID_WATERFALL_BOTTOM,
+						ResourceIDFrames::IDF_WATERFALL_BOTTOM,
+						10,
+						vec2(0, 0),
+						vec2(0, 0)
+					)
+				),
+				vec2(3318, 3.5))
+	)
 	{
 		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
 	}
@@ -41,11 +67,12 @@ GameScene::~GameScene() {
 }
 
 void GameScene::init() {
-	player.init(vec2(30,80));
+	player.init(vec2(3250,80));
 
 	//* Initialize camera to game scene settings
 	getCamera().init(vec2(0.f, 10.f * map.getTileSize()));
 	getCamera().enableCamera(true);
+	
 	// Add renders
 	{
 		getRenderer().addMapRenderData(map.getMapRenderData());
@@ -68,6 +95,9 @@ void GameScene::init() {
 	setChangeScene(false);
 	setNextScene(TypeScene::GAME_OVER);
 
+	anim.setAnimation(&waterfall.animationSet);
+	anim2.setAnimation(&waterfallBottom.animationSet);
+
 	//TODO: map init to reset spawners timer since they remain in memory
 };
 
@@ -78,6 +108,13 @@ void GameScene::update(float dt) {
 	getRenderer().clearRenderDatas();
 	getRenderer().clearColliders();
 	getRenderer().clearTexts();
+
+	anim.playAnimation(dt);
+	anim2.playAnimation(dt);
+
+	// TODO: ADD layers to the renderData
+	getRenderer().addRenderData(waterfall);
+
 
 	player.update(dt);
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
@@ -248,6 +285,7 @@ void GameScene::update(float dt) {
 	getRenderer().addRenderData(player.getRenderData());
 	player.getGun().addRenderDatas(getRenderer());
 	//getRenderer().addRenderData(player.getGunRenderData(), player.getGunBullets());
+	getRenderer().addRenderData(waterfallBottom);
 
 	getRenderer().addCollider(player.getCollider());
 	//Collider c = player.getCollider();

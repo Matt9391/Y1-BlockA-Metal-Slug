@@ -106,6 +106,8 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_MENU_BG] = new Sprite(new Surface("assets/menuBg.png"), ResourceIDFrames::IDF_MENU_BG);
 	sprites[ResourceID::ID_GAME_OVER_BG] = new Sprite(new Surface("assets/gameOverBg.png"), ResourceIDFrames::IDF_GAME_OVER_BG);
 	sprites[ResourceID::ID_PARALLAX_BG] = new Sprite(new Surface("assets/parallaxBg.png"), ResourceIDFrames::IDF_PARALLAX_BG);
+	sprites[ResourceID::ID_WATERFALL] = new Sprite(new Surface("assets/waterfall.png"), ResourceIDFrames::IDF_WATERFALL);
+	sprites[ResourceID::ID_WATERFALL_BOTTOM] = new Sprite(new Surface("assets/waterfallBottom.png"), ResourceIDFrames::IDF_WATERFALL_BOTTOM);
 
 
 

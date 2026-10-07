@@ -31,5 +31,10 @@ private:
 	bool justWin;
 	int secondsLeft;
 	float elapsedLoseTime;
+
+	RenderData waterfall;
+	RenderData waterfallBottom;
+	Animator anim;
+	Animator anim2;
 };
 
