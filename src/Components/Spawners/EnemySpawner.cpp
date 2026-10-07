@@ -1,6 +1,7 @@
 #include "precomp.h"
 #include "EnemySpawner.h"
 #include <Enemies/RebelSoldier.h>
+#include <Enemies/Helicopter.h>
 #include <RebelSoldierType.h>
 
 EnemySpawner::EnemySpawner(vec2 pos, vec2 size, float spawnDelay, int enemyType, int nOfEnemy) :
@@ -36,6 +37,9 @@ Entity* EnemySpawner::createEntity() {
 		break;
 		case RebelSoldierType::RST_MELEE_GRENADE:
 		enemy = new RebelSoldier(getPos(), rsPreset.getRebelSoliderPreset(RebelSoldierType::RST_MELEE_GRENADE));
+		break;
+		case RebelSoldierType::HELICOPTER:
+		enemy = new Helicopter(getPos());
 		break;
 	default:
 		break;

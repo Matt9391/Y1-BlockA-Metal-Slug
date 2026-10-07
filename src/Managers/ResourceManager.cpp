@@ -108,6 +108,10 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_PARALLAX_BG] = new Sprite(new Surface("assets/parallaxBg.png"), ResourceIDFrames::IDF_PARALLAX_BG);
 	sprites[ResourceID::ID_WATERFALL] = new Sprite(new Surface("assets/waterfall.png"), ResourceIDFrames::IDF_WATERFALL);
 	sprites[ResourceID::ID_WATERFALL_BOTTOM] = new Sprite(new Surface("assets/waterfallBottom.png"), ResourceIDFrames::IDF_WATERFALL_BOTTOM);
+	sprites[ResourceID::ID_HELICOPTER_MOVE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/move.png"), ResourceIDFrames::IDF_HELICOPTER_MOVE);
+	sprites[ResourceID::ID_HELICOPTER_BLADE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/blade.png"), ResourceIDFrames::IDF_HELICOPTER_BLADE);
+	sprites[ResourceID::ID_MISSLE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missle.png"), ResourceIDFrames::IDF_MISSLE);
+	sprites[ResourceID::ID_MISSLE_BOOM]	= new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missle.png"), ResourceIDFrames::IDF_MISSLE_BOOM);
 
 
 

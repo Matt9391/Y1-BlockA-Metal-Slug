@@ -10,6 +10,7 @@
 #include <TypeScene.h>
 #include <Pow.h>
 #include <Enemies/RebelSoldier.h>
+#include <Enemies/Helicopter.h>
 #include <LootDrop.h>
 #include <LootDrops/PowerUp.h>
 #include <ParallaxRenderData.h>
@@ -67,7 +68,7 @@ GameScene::~GameScene() {
 }
 
 void GameScene::init() {
-	player.init(vec2(3250,80));
+	player.init(vec2(30,80));
 
 	//* Initialize camera to game scene settings
 	getCamera().init(vec2(0.f, 10.f * map.getTileSize()));
@@ -221,11 +222,47 @@ void GameScene::update(float dt) {
 				e->getEntityType() == EntityType::ET_POWERUP){
 			LootDrop* lootDrop = static_cast<LootDrop*>(e);
 
-			// TODO: Add player colllision resolution on lootdrop, it can walk over it
+			// DONE: Add player colllision resolution on lootdrop, it can walk over it
 			if (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider())) {
 				CollisionManager::resolveCollisionAOverB(player, lootDrop->getCollider());
 				lootDrop->applyEffect(player);
 			}
+		}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
+			Helicopter* h = static_cast<Helicopter*>(e); //static vs dynamic ?
+			
+			
+			h->loadSensors(
+				player.getPos() + player.getCollider().size / 2.f,
+				CollisionManager::checkMapCollision(
+					h->getCollider(),
+					map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
+					0
+				)
+			);
+			
+			for (int j = 0; j < h->getMaxBullets(); j++) {
+				Bullet* b = h->getBullet(j);
+				if (!b) continue;
+
+				if (b->hasToBeFreed()) {
+					h->freeBullet(j);
+					continue;
+				}
+				if (b->getDisabled()) continue;
+
+				if (getCamera().isOutOfView(b->getPos())) {
+					b->explode();
+				}
+				
+				if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
+					b->explodeMap();
+				}
+				
+				
+			}
+			h->addRenderDatas(getRenderer());
+
+			
 		}
 
 		getRenderer().addRenderData(e->getRenderData());
@@ -237,7 +274,7 @@ void GameScene::update(float dt) {
 
 
 
-	
+	// TODO: add entity manager
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);
 		if (!b) continue;

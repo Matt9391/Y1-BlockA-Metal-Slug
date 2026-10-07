@@ -818,7 +818,7 @@ void Player::update(float dt) {
 
 			angle = myMath::constrain(angle,0,90);
 
-			x = x > 0 ? cos(angle * (PI / 180.f)) : -cos(angle * (PI / 180.f));
+		x = x > 0 ? cos(angle * (PI / 180.f)) : -cos(angle * (PI / 180.f));
 			y = -sin(angle * (PI / 180.f));
 		}else{
 

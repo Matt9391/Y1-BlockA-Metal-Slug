@@ -8,7 +8,6 @@ FlameBullet::FlameBullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bul
     Bullet(pos,needsRigidBody,dir,bulletType,bulletSpeed),
     angle(angle)
 { 
-    printf("dir.x %.2f, dir.y %.2f\n", dir.x,dir.y);
 	setDir(dir);
     setCollider(vec2(35, 25), vec2(0, 0));
 

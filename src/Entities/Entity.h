@@ -12,6 +12,7 @@ class RigidBody;
 enum EntityType {
 	ET_PLAYER,
 	ET_REBELSOLDIER,
+	ET_HELICOPTER,
 	ET_POW,
 	ET_GRANADE,
 	ET_BULLET,

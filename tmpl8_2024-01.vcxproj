@@ -142,7 +142,9 @@
     <ClCompile Include="src\DataStructures\RebelSoldierPresets.cpp" />
     <ClCompile Include="src\Entities\Bullet.cpp" />
     <ClCompile Include="src\Entities\Bullets\FlameBullet.cpp" />
+    <ClCompile Include="src\Entities\Bullets\Missle.cpp" />
     <ClCompile Include="src\Entities\Bullets\PistolBullet.cpp" />
+    <ClCompile Include="src\Entities\Enemies\Helicopter.cpp" />
     <ClCompile Include="src\Entities\Enemies\RebelSoldier.cpp" />
     <ClCompile Include="src\Entities\Enemy.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
@@ -221,7 +223,9 @@
     <ClInclude Include="src\DataStructures\vec2.h" />
     <ClInclude Include="src\Entities\Bullet.h" />
     <ClInclude Include="src\Entities\Bullets\FlameBullet.h" />
+    <ClInclude Include="src\Entities\Bullets\Missle.h" />
     <ClInclude Include="src\Entities\Bullets\PistolBullet.h" />
+    <ClInclude Include="src\Entities\Enemies\Helicopter.h" />
     <ClInclude Include="src\Entities\Enemies\RebelSoldier.h" />
     <ClInclude Include="src\Entities\Enemy.h" />
     <ClInclude Include="src\Entities\Entity.h" />
