@@ -6,6 +6,7 @@
 #include "game.h"
 #include <iostream>
 #include <TypeScene.h>
+#include <time.h>
 
 Game::Game() :
 	sceneManager(),
@@ -25,7 +26,7 @@ Game::~Game() {
 void Game::Init()
 {
 	resourceManager.init();
-	sceneManager.init(screen, renderer, inputManager, resourceManager, TypeScene::GAMEPLAY);
+	sceneManager.init(screen, renderer, inputManager, resourceManager, audioManager, TypeScene::GAMEPLAY);
 }
 
 
@@ -37,14 +38,18 @@ void Game::Tick(float dt)
 	//inputManager.getPressedKeys();
 	screen->Clear(0xFFffff00);
 	
+	audioManager.clearSounds();
+
 	sceneManager.getCurrentScene().update(dt);
-	
+
+	audioManager.playSounds(resourceManager);
 	renderer.render(screen, resourceManager, sceneManager.getCurrentScene().getCameraPos());
+
 	//screen->Box(100,100,screen->width,screen->height,0xff0000);
 	inputManager.updateLastFrameKeys();
 
 	if (sceneManager.getCurrentScene().sceneHasToChange()) {
-		sceneManager.changeScene(sceneManager.getCurrentScene().getNextScene(), screen, renderer, inputManager, resourceManager);
+		sceneManager.changeScene(sceneManager.getCurrentScene().getNextScene(), screen, renderer, inputManager, resourceManager, audioManager);
 	}
 }
 

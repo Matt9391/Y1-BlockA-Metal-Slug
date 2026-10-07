@@ -107,6 +107,13 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_GAME_OVER_BG] = new Sprite(new Surface("assets/gameOverBg.png"), ResourceIDFrames::IDF_GAME_OVER_BG);
 	sprites[ResourceID::ID_PARALLAX_BG] = new Sprite(new Surface("assets/parallaxBg.png"), ResourceIDFrames::IDF_PARALLAX_BG);
 
+
+
+
+
+	soundPaths[SoundID::SID_ATTACK] = _strdup("assets/sfx/attack.wav");
+
+
 	initalized = true;
 }
 
@@ -120,6 +127,17 @@ Sprite* ResourceManager::getSprite(ResourceID resourceId) const {
 	}
 	
 	return this->sprites[resourceId];	
+}
+const char* ResourceManager::getSoundPath(SoundID soundId) const {
+	if (!this->initalized) {
+		throw runtime_error("Get sound before initialized it");
+	}
+
+	if (soundId == SoundID::SID_NULL) {
+		return nullptr;
+	}
+	
+	return this->soundPaths[soundId];	
 }
 
 const Map& ResourceManager::getMap() const{

@@ -9,7 +9,7 @@ class Tmpl8::Surface;
 class GameOverScene : public CustomScene
 {
 public:
-	GameOverScene(Surface* screen, Renderer& renderer, InputManager& inputManager);
+	GameOverScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager);
 
 	void init() override;
 	void exit() override;

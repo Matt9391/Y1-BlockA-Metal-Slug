@@ -9,7 +9,7 @@
 class GameScene : public CustomScene
 {
 public:
-	GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager,const Map& map_);
+	GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, const Map& map_);
 	~GameScene();
 	
 	void init() override;

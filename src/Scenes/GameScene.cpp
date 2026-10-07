@@ -14,8 +14,8 @@
 #include <LootDrops/PowerUp.h>
 #include <ParallaxRenderData.h>
 
-GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, const Map& map_) :
-	CustomScene(screen, renderer, inputManager),
+GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, const Map& map_) :
+	CustomScene(screen, renderer, inputManager, audioManager),
 	player(vec2(30, 80), getInputManager()),
 	loseCondition(false),
 	winCondition(false),
@@ -73,6 +73,7 @@ void GameScene::init() {
 
 void GameScene::exit() {};
 
+// TODO: add proper audio to the game
 void GameScene::update(float dt) {
 	getRenderer().clearRenderDatas();
 	getRenderer().clearColliders();
@@ -96,6 +97,7 @@ void GameScene::update(float dt) {
 			}
 		}
 	}
+
 
 
 	for (int i = 0; i < MAXENTITIES; i++) {

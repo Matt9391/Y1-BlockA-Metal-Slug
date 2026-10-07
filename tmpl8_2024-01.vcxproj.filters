@@ -172,6 +172,9 @@
     <ClCompile Include="src\Entities\Bullets\PistolBullet.cpp">
       <Filter>src\Entities\Bullets</Filter>
     </ClCompile>
+    <ClCompile Include="src\Managers\AudioManager.cpp">
+      <Filter>src\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -370,6 +373,15 @@
     </ClInclude>
     <ClInclude Include="src\Entities\Bullets\PistolBullet.h">
       <Filter>src\Entities\Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\miniaudio.h">
+      <Filter>template</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\AudioManager.h">
+      <Filter>src\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\SoundID.h">
+      <Filter>src\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

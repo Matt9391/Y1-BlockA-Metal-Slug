@@ -6,8 +6,8 @@
 #include <ResourceIDFrames.h>
 #include <TypeScene.h>
 
-MenuScene::MenuScene(Surface* screen, Renderer& renderer, InputManager& inputManager) :
-	CustomScene(screen,renderer,inputManager),
+MenuScene::MenuScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager) :
+	CustomScene(screen,renderer,inputManager, audioManager),
 	secondsLeft(60),
 	elapsedTime(0.f)
 {}
