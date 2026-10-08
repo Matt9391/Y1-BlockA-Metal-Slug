@@ -148,7 +148,10 @@ void GameScene::update(float dt) {
 	}
 
 
-
+	
+	Collider playerColliderInFront = player.getCollider();
+	playerColliderInFront.offset.x += player.getLastDir().x * playerColliderInFront.size.x;
+	bool entityInFront = false;
 	for (int i = 0; i < MAXENTITIES; i++) {
 		Entity* e = this->spawnedEntities[i];
 		if (!e) continue;
@@ -158,13 +161,13 @@ void GameScene::update(float dt) {
 			freeEntity(i);
 			continue;
 		}
-
-		Collider c = player.getCollider();
-		c.offset.x += player.getLastDir().x * c.size.x;
-		player.setEntityInFront(
-			CollisionManager::checkCollision(c,e->getCollider()) ||
+		
+		if (!entityInFront && 
+			CollisionManager::checkCollision(playerColliderInFront,e->getCollider()) ||
 			CollisionManager::checkCollision(player.getCollider(), e->getCollider())
-		);
+		){
+			entityInFront = true;
+		}
 
 		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 		
@@ -181,8 +184,15 @@ void GameScene::update(float dt) {
 				)
 			);
 
-			if (enemy->getAttacking() && CollisionManager::checkCollision(player.getCollider(), enemy->getCollider())) {
-				player.takeHit();
+			if (CollisionManager::checkCollision(player.getCollider(), enemy->getCollider())) {
+				if(enemy->getAttacking()){
+					player.takeHit();
+				} 
+
+				if(player.isShooting()){
+					enemy->setAlive(false);
+					player.addScore(100);
+				}
 			}
 			enemy->addRenderDatas(getRenderer());
 
@@ -228,10 +238,22 @@ void GameScene::update(float dt) {
 					pow->setPowFree(true);
 				}
 			}
-			// TODO: think of a better solution for checking entity type of lootdrop
+		
 		}else if(e->getEntityType() == EntityType::ET_LOOTDROP ||
 				e->getEntityType() == EntityType::ET_POWERUP){
 			LootDrop* lootDrop = static_cast<LootDrop*>(e);
+			
+			if(e->getEntityType() == EntityType::ET_POWERUP){
+				PowerUp* powerUp = static_cast<PowerUp*>(e);
+				if(powerUp->getState() == PowerUpState::PUS_CRATE){
+					if(player.isShooting() &&
+					   (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider()) ||
+					   CollisionManager::checkCollision(playerColliderInFront, lootDrop->getCollider()))
+					){
+						powerUp->setState(PowerUpState::PUS_REVEALED);
+					}
+				}
+			}
 
 			// DONE: Add player colllision resolution on lootdrop, it can walk over it
 			if (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider())) {
@@ -287,7 +309,7 @@ void GameScene::update(float dt) {
 		
 	}
 
-
+	player.setEntityInFront(entityInFront);
 
 	// TODO: add entity manager
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
@@ -320,6 +342,12 @@ void GameScene::update(float dt) {
 					player.addScore(100);
 				}
 				
+			}else if (e->getEntityType() == EntityType::ET_POW) {
+				Pow* pow = static_cast<Pow*>(e);
+				if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider())) {
+					b->explode();
+					pow->setReleased(true);
+				}
 			}else if(e->getEntityType() == EntityType::ET_POWERUP){
 				PowerUp* powerUp = static_cast<PowerUp*>(e);
 				if(!powerUp) continue;

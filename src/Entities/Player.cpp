@@ -752,8 +752,8 @@ void Player::update(float dt) {
 	if (enabled && pInput.isShooting && !pInput.dead) {
 		if (!pInput.enemyInFront) {
 			gun.shoot();
-			setShooting(true);
 		}
+		setShooting(true);
 	}
 	else {
 		setShooting(false);
@@ -769,53 +769,6 @@ void Player::update(float dt) {
 		}
 	}
 
-	//set gun shooting direction
-	// {
-	// 	int x = 1;
-	// 	int y = 0;
-		
-	
-		
-	// 	{
-
-
-	// 		if (getLastDir().x < 0) {
-	// 			x = -1;
-	// 		}
-
-	// 		if (pInput.inputUp) {
-	// 			if (!gun.getCanShootDiagonally()) {
-	// 				x = 0;
-	// 			}
-
-	// 			y = -1;
-	// 		}
-
-	// 		if (!pInput.isGrounded) {
-	// 			if (pInput.inputDown) {
-	// 				y = 1;
-	// 				x = 0;
-	// 			}
-	// 		}
-	// 	}
-	// 	if (gun.getCanShootDiagonally()) {
-
-	// 		if (pInput.inputLeft && pInput.inputUp) {
-	// 			x = -1;
-	// 			y = -1;
-	// 		}
-	// 		else if (pInput.inputRight && pInput.inputUp) {
-	// 			x = 1;
-	// 			y = -1;
-	// 		}
-	// 		else if (pInput.inputUp) {
-	// 			x = 0;
-	// 			y = -1;
-	// 		}
-	// 	}
-
-	// 	gun.setShootDir(vec2(static_cast<float>(x),static_cast<float>(y)));
-	// }
 	{
 		float x = 1;
 		float y = 0;
@@ -830,7 +783,7 @@ void Player::update(float dt) {
 
 			angle = myMath::constrain(angle,0,90);
 
-		x = x > 0 ? cos(angle * (PI / 180.f)) : -cos(angle * (PI / 180.f));
+			x = x > 0 ? cos(angle * (PI / 180.f)) : -cos(angle * (PI / 180.f));
 			y = -sin(angle * (PI / 180.f));
 		}else{
 

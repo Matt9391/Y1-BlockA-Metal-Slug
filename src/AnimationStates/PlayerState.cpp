@@ -23,8 +23,8 @@ PlayerAnimationSet IdleState::handleInput(const PlayerInput& in, PlayerAnimation
     if (in.isMoving && in.isCrouching)  return PlayerAnimationSet::PAS_CROUCH_WALKING;
     if (in.isCrouching)                 return PlayerAnimationSet::PAS_CROUCH_IDLE;
     if (in.isMoving)                    return PlayerAnimationSet::PAS_WALK;
-    if (in.isShooting && in.inputUp)    return PlayerAnimationSet::PAS_SHOOTING_IDLE_UP;
     if (in.isShooting && in.enemyInFront)return PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE;
+    if (in.isShooting && in.inputUp)    return PlayerAnimationSet::PAS_SHOOTING_IDLE_UP;
     if (in.isShooting)                  return PlayerAnimationSet::PAS_SHOOTING_IDLE;
     return current;
 }
@@ -37,8 +37,8 @@ PlayerAnimationSet WalkState::handleInput(const PlayerInput& in, PlayerAnimation
     if (in.isJumping)                   return PlayerAnimationSet::PAS_JUMP_FORWARD;
     if (in.isCrouching)                 return PlayerAnimationSet::PAS_CROUCH_WALKING;
     if (!in.isMoving)                   return PlayerAnimationSet::PAS_AFTER_RUN_STOP;
-    if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_WALK_UP;
     if (in.isShooting && in.enemyInFront) return PlayerAnimationSet::PAS_MELEE_ATTACK_WALK;
+    if (in.isShooting && in.inputUp) return PlayerAnimationSet::PAS_SHOOTING_WALK_UP;
     if (in.isShooting)                  return PlayerAnimationSet::PAS_SHOOTING_WALK;
     return current;
 }
@@ -49,8 +49,8 @@ PlayerAnimationSet AfterRunState::handleInput(const PlayerInput& in, PlayerAnima
     if (in.dead)                         return PlayerAnimationSet::PAS_DIE;
     if (in.isJumping)      return PlayerAnimationSet::PAS_JUMP_UP;
     if (in.isMoving)       return PlayerAnimationSet::PAS_WALK;
-    if (in.isShooting)     return PlayerAnimationSet::PAS_SHOOTING_IDLE;
     if (in.isShooting && in.enemyInFront) return PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE;
+    if (in.isShooting)     return PlayerAnimationSet::PAS_SHOOTING_IDLE;
     if (in.onAnimationEnd) return PlayerAnimationSet::PAS_IDLE;
     return current;
 }
@@ -132,12 +132,12 @@ PlayerAnimationSet FallingForwardState::handleInput(const PlayerInput& in, Playe
 PlayerAnimationSet ShootingIdleState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
 {
     if (in.dead)                         return PlayerAnimationSet::PAS_DIE;
+    if (in.enemyInFront && in.isShooting)      return PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE;
     if (in.isMoving && in.isShooting)   return PlayerAnimationSet::PAS_SHOOTING_WALK;
     if (in.isMoving)        return PlayerAnimationSet::PAS_WALK;
     if (in.inputUp && in.isShooting)      return PlayerAnimationSet::PAS_SHOOTING_IDLE_UP;
     if (in.inputDown && in.isShooting)      return PlayerAnimationSet::PAS_SHOOTING_CROUCH;
     if (in.isJumping && in.isShooting)      return PlayerAnimationSet::PAS_SHOOTING_JUMP_UP;
-    if (in.enemyInFront && in.isShooting)      return PlayerAnimationSet::PAS_MELEE_ATTACK_IDLE;
     if (in.isJumping)       return PlayerAnimationSet::PAS_JUMP_UP;
     if (in.onAnimationEnd)  return PlayerAnimationSet::PAS_IDLE;
     return current;
@@ -159,10 +159,10 @@ PlayerAnimationSet ShootingIdleUpState::handleInput(const PlayerInput& in, Playe
 PlayerAnimationSet ShootingWalkState::handleInput(const PlayerInput& in, PlayerAnimationSet current) const
 {
     if (in.dead)                         return PlayerAnimationSet::PAS_DIE;
+    if (in.enemyInFront && in.isShooting)      return PlayerAnimationSet::PAS_MELEE_ATTACK_WALK;
     if (!in.isMoving && in.isShooting)  return PlayerAnimationSet::PAS_SHOOTING_IDLE;
     if (!in.isMoving)  return PlayerAnimationSet::PAS_AFTER_RUN_STOP;
     if (in.inputUp && in.isShooting) return PlayerAnimationSet::PAS_SHOOTING_WALK_UP;
-    if (in.enemyInFront && in.isShooting)      return PlayerAnimationSet::PAS_MELEE_ATTACK_WALK;
     if (in.onAnimationEnd)  return PlayerAnimationSet::PAS_IDLE;
     return current;
 }

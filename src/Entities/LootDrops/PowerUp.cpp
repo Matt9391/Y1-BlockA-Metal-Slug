@@ -8,7 +8,7 @@ PowerUp::PowerUp(vec2 pos, PowerUpState PowerUpState) :
     LootDrop(pos, EntityType::ET_POWERUP)
     {
         
-        setCollider(vec2(32,32), vec2(0,0));
+        setCollider(vec2(16,16), vec2(8,5));
         getAnimationSets() = new AnimationSet[2];
         loadGFX();
         setCurrentASIndex(PowerUpState);
@@ -36,8 +36,8 @@ void PowerUp::loadGFX() {
             ResourceID::ID_POWERUP_FLAME,
             ResourceIDFrames::IDF_POWERUP_FLAME,
             100,
-            vec2(0,0),
-            vec2(0,0)
+            vec2(5,2),
+            vec2(5,2)
         ));
 }
 
