@@ -15,9 +15,9 @@ public:
 	virtual void explodeMap() = 0;
 	
 	bool getDisabled() const;
+	void setDisabled(bool isDisabled_);
 protected:
 
-	void setDisabled(bool isDisabled_);
 	void setAbleMovement(bool ableMovement_);
 
 	bool getAbleMovement() const;

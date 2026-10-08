@@ -21,6 +21,9 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	hasEntityInFront(false),
 	alive(true),
 	enabled(false),
+	invicible(false),
+	invicibleCoolDown(1000.f),
+	invicibleTimeElapsed(0.f),
 	lives(3),
 	score(0),
 	deadTimeElapsed(0.f),
@@ -674,6 +677,7 @@ int Player::getScore() const {
 
 void Player::takeHit() {
 	if (!enabled) return;
+	if (invicible) return;
 
 	this->lives--;
 	setLifeState(false);
@@ -689,9 +693,11 @@ void Player::setLifeState(bool state_) {
 
 void Player::revive() {
 	setLifeState(true);
+	invicible = true;
 	deadTimeElapsed = 0.f;
 }
 void Player::fullRevive() {
+	invicible = true;
 	canRevive = true; 
 	lives = 3;
 	
@@ -703,6 +709,12 @@ bool Player::getEnabled() const {
 
 void Player::update(float dt) {
 	if (!alive) deadTimeElapsed += dt;
+	if (invicible) invicibleTimeElapsed += dt;
+
+	if(invicibleTimeElapsed > invicibleCoolDown){
+		invicible = false;
+		invicibleTimeElapsed = 0.f;
+	}
 
 	getAnimator().playAnimation(dt);
 

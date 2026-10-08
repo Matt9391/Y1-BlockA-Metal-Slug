@@ -57,6 +57,10 @@ private:
 	bool hasEntityInFront;
 	bool alive;
 	bool enabled;
+	bool invicible;
+
+	float invicibleCoolDown;
+	float invicibleTimeElapsed;
 
 	int lives;
 	int score;

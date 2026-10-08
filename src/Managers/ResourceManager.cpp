@@ -113,6 +113,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_HELICOPTER_TRANSITION_FWD] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/transitionFwd.png"), ResourceIDFrames::IDF_HELICOPTER_TRANSITION_FWD);
 	sprites[ResourceID::ID_HELICOPTER_TRANSITION_BWD] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/transitionBwd.png"), ResourceIDFrames::IDF_HELICOPTER_TRANSITION_BWD);
 	sprites[ResourceID::ID_HELICOPTER_BLADE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/blade.png"), ResourceIDFrames::IDF_HELICOPTER_BLADE);
+	sprites[ResourceID::ID_HELICOPTER_BOOM] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/boom.png"), ResourceIDFrames::IDF_HELICOPTER_BOOM);
 	sprites[ResourceID::ID_MISSLE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missle.png"), ResourceIDFrames::IDF_MISSLE);
 	sprites[ResourceID::ID_MISSLE_BOOM]	= new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missleBoom.png"), ResourceIDFrames::IDF_MISSLE_BOOM);
 

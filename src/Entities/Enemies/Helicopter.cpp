@@ -12,7 +12,8 @@ Helicopter::Helicopter(vec2 pos) :
 	elapsedTime(0.f),
 	bulletsCount(0),
 	bulletSpeed(0.2f),
-	bullets{nullptr}
+	bullets{nullptr},
+	lives(10)
 {
     setCollider(vec2(100, 50), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[HelicopterAnimationSet::HAS_COUNTS];
@@ -89,11 +90,23 @@ void Helicopter::loadGFX(){
 			vec2(0, 0),
 			vec2(0, 0))
 	);
+	getAnimationSets()[HelicopterAnimationSet::HAS_BOOM] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_HELICOPTER_BOOM,
+			ResourceIDFrames::IDF_HELICOPTER_BOOM,	
+			200,
+			vec2(0, -10),
+			vec2(0, -10))
+	);
 }
 
 void Helicopter::update(float dt) {
 	getAnimator().playAnimation(dt);
 	
+	
+
+
 	elapsedTime += dt;
 
 	float dirX = getSensors().distToPlayer > 0 ? -1.f : 1.f;
@@ -126,7 +139,15 @@ void Helicopter::update(float dt) {
 			}
 		}
 
+		if(lives < 0){
+			setCurrentASIndex(HAS_BOOM);
+		}	
+
 		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+	}
+
+	if(getCurrentASIndex() == HAS_BOOM && getAnimator().isAnimationEnded()){
+		setFree(true);
 	}
 
 
@@ -194,4 +215,8 @@ int Helicopter::getMaxBullets() const{
 
 Bullet* Helicopter::getBullet(int i) const {
 	return bullets[i];
+}
+
+void Helicopter::takeHit(){
+	this->lives--;
 }

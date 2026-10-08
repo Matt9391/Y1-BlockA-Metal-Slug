@@ -320,6 +320,16 @@ void GameScene::update(float dt) {
 					b->explode();
 					powerUp->setState(PowerUpState::PUS_REVEALED);
 				}
+			}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
+				Helicopter* h = static_cast<Helicopter*>(e); 
+				if (CollisionManager::checkCollision(b->getCollider(), h->getCollider())) {
+					b->explode();
+					h->takeHit();
+					b->setDisabled(true);
+					// getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
+
+				}
+				
 			}
 		}
 	}

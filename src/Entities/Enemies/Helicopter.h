@@ -6,6 +6,7 @@ enum HelicopterAnimationSet{
     HAS_MOVE_BWD,
     HAS_TRANSITION_FWD,
     HAS_TRANSITION_BWD,
+    HAS_BOOM,
     HAS_COUNTS
 };
 
@@ -30,6 +31,7 @@ public:
 
     Bullet* getBullet(int i) const;
 
+    void takeHit();
 private:
     bool shoot();
     float elapsedTime;
@@ -38,4 +40,6 @@ private:
     Bullet* bullets[MAXBULLETS];
     int bulletsCount;
     float bulletSpeed;
+    
+    int lives;
 };
