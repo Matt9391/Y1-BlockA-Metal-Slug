@@ -18,6 +18,7 @@ public:
 
     void setState(PowerUpState powerUpState);
 
+    int getState() const;
 private:
 
 };

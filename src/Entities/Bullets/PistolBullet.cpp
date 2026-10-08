@@ -4,6 +4,7 @@
 #include <RigidBody.h>
 #include <BulletType.h>
 
+// TODO: use correct bullets sprite on tank spritesheet 
 PistolBullet::PistolBullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, float bulletSpeed) :
     Bullet(pos,needsRigidBody,dir,bulletType,bulletSpeed)
 { 

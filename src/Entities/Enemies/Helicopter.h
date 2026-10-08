@@ -2,7 +2,10 @@
 #include <Enemy.h>
 
 enum HelicopterAnimationSet{
-    HAS_MOVE,
+    HAS_MOVE_FWD,
+    HAS_MOVE_BWD,
+    HAS_TRANSITION_FWD,
+    HAS_TRANSITION_BWD,
     HAS_COUNTS
 };
 
@@ -30,7 +33,7 @@ public:
 private:
     bool shoot();
     float elapsedTime;
-    static const int SHOOTCOOLDOWN = 400;
+    static const int SHOOTCOOLDOWN = 800;
 	static const int MAXBULLETS = 50;
     Bullet* bullets[MAXBULLETS];
     int bulletsCount;

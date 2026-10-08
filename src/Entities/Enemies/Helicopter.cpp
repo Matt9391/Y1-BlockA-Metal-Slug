@@ -11,17 +11,17 @@ Helicopter::Helicopter(vec2 pos) :
     Enemy(pos, EntityType::ET_HELICOPTER),
 	elapsedTime(0.f),
 	bulletsCount(0),
-	bulletSpeed(0.5f),
+	bulletSpeed(0.2f),
 	bullets{nullptr}
 {
-    setCollider(vec2(50, 37), vec2(3, 0));
+    setCollider(vec2(100, 50), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[HelicopterAnimationSet::HAS_COUNTS];
 	loadGFX();
-	setCurrentASIndex(HelicopterAnimationSet::HAS_MOVE);
+	setCurrentASIndex(HelicopterAnimationSet::HAS_MOVE_FWD);
 
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 
-	getRigidBody()->setSpeed(0.1f);
+	getRigidBody()->setSpeed(0.03f);
 }
 
 Helicopter::~Helicopter(){
@@ -29,14 +29,59 @@ Helicopter::~Helicopter(){
 }
 
 void Helicopter::loadGFX(){
-	getAnimationSets()[HelicopterAnimationSet::HAS_MOVE] = AnimationSet(
+	getAnimationSets()[HelicopterAnimationSet::HAS_MOVE_FWD] = AnimationSet(
 		2,
 		AnimationLayer(
-			ResourceID::ID_HELICOPTER_MOVE,
-			ResourceIDFrames::IDF_HELICOPTER_MOVE,	
+			ResourceID::ID_HELICOPTER_MOVE_FWD,
+			ResourceIDFrames::IDF_HELICOPTER_MOVE_FWD,	
+			100,
+			vec2(0, -10),
+			vec2(0, -10)),
+		AnimationLayer(
+			ResourceID::ID_HELICOPTER_BLADE,
+			ResourceIDFrames::IDF_HELICOPTER_BLADE,
 			100,
 			vec2(0, 0),
-			vec2(0, 0)),
+			vec2(0, 0))
+	);
+	getAnimationSets()[HelicopterAnimationSet::HAS_MOVE_BWD] = AnimationSet(
+		2,
+		AnimationLayer(
+			ResourceID::ID_HELICOPTER_MOVE_BWD,
+			ResourceIDFrames::IDF_HELICOPTER_MOVE_BWD,	
+			100,
+			vec2(0, -10),
+			vec2(0, -10)),
+		AnimationLayer(
+			ResourceID::ID_HELICOPTER_BLADE,
+			ResourceIDFrames::IDF_HELICOPTER_BLADE,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
+	getAnimationSets()[HelicopterAnimationSet::HAS_TRANSITION_FWD] = AnimationSet(
+		2,
+		AnimationLayer(
+			ResourceID::ID_HELICOPTER_TRANSITION_FWD,
+			ResourceIDFrames::IDF_HELICOPTER_TRANSITION_FWD,	
+			200,
+			vec2(0, -10),
+			vec2(0, -10)),
+		AnimationLayer(
+			ResourceID::ID_HELICOPTER_BLADE,
+			ResourceIDFrames::IDF_HELICOPTER_BLADE,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
+	getAnimationSets()[HelicopterAnimationSet::HAS_TRANSITION_BWD] = AnimationSet(
+		2,
+		AnimationLayer(
+			ResourceID::ID_HELICOPTER_TRANSITION_BWD,
+			ResourceIDFrames::IDF_HELICOPTER_TRANSITION_BWD,	
+			200,
+			vec2(0, -10),
+			vec2(0, -10)),
 		AnimationLayer(
 			ResourceID::ID_HELICOPTER_BLADE,
 			ResourceIDFrames::IDF_HELICOPTER_BLADE,
@@ -48,15 +93,49 @@ void Helicopter::loadGFX(){
 
 void Helicopter::update(float dt) {
 	getAnimator().playAnimation(dt);
-
+	
 	elapsedTime += dt;
 
 	float dirX = getSensors().distToPlayer > 0 ? -1.f : 1.f;
+	//mini state machine
+	{
+
+		if(getCurrentASIndex() == HAS_MOVE_FWD && dirX > 0){
+			setCurrentASIndex(HAS_TRANSITION_BWD);
+		}
+
+		if(getCurrentASIndex() == HAS_TRANSITION_BWD){
+			if(getAnimator().isAnimationEnded()){
+				setCurrentASIndex(HAS_MOVE_BWD);
+			}
+			if(dirX < 0){
+				setCurrentASIndex(HAS_MOVE_FWD);
+			}
+		}
+		
+		if(getCurrentASIndex() == HAS_MOVE_BWD && dirX < 0){
+			setCurrentASIndex(HAS_TRANSITION_FWD);
+		}
+
+		if(getCurrentASIndex() == HAS_TRANSITION_FWD){
+			if(getAnimator().isAnimationEnded()){
+				setCurrentASIndex(HAS_MOVE_FWD);
+			}
+			if(dirX > 0){
+				setCurrentASIndex(HAS_MOVE_BWD);
+			}
+		}
+
+		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+	}
+
+
+
 
 	setDir(vec2(dirX, 0));
 
 	getRigidBody()->setVelocityX(getRigidBody()->getSpeed() * getDir().x);
-	printf("x: %.2f, y: %.2f\n", getPos().x, getPos().y);
+	// printf("x: %.2f, y: %.2f\n", getPos().x, getPos().y);
 
 	addToPos(getRigidBody()->getVelocity() * dt);
 

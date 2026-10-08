@@ -6,4 +6,6 @@ namespace myMath {
 	float constrain(float value, float min, float max);
 
 	float mapValue(float value, float fromMin, float fromMax, float toMin, float toMax);
+
+	float lerp(float a, float b, float t);
 }

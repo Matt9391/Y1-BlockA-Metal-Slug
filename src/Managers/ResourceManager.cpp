@@ -108,10 +108,13 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_PARALLAX_BG] = new Sprite(new Surface("assets/parallaxBg.png"), ResourceIDFrames::IDF_PARALLAX_BG);
 	sprites[ResourceID::ID_WATERFALL] = new Sprite(new Surface("assets/waterfall.png"), ResourceIDFrames::IDF_WATERFALL);
 	sprites[ResourceID::ID_WATERFALL_BOTTOM] = new Sprite(new Surface("assets/waterfallBottom.png"), ResourceIDFrames::IDF_WATERFALL_BOTTOM);
-	sprites[ResourceID::ID_HELICOPTER_MOVE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/move.png"), ResourceIDFrames::IDF_HELICOPTER_MOVE);
+	sprites[ResourceID::ID_HELICOPTER_MOVE_FWD] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/moveFwd.png"), ResourceIDFrames::IDF_HELICOPTER_MOVE_FWD);
+	sprites[ResourceID::ID_HELICOPTER_MOVE_BWD] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/moveBwd.png"), ResourceIDFrames::IDF_HELICOPTER_MOVE_BWD);
+	sprites[ResourceID::ID_HELICOPTER_TRANSITION_FWD] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/transitionFwd.png"), ResourceIDFrames::IDF_HELICOPTER_TRANSITION_FWD);
+	sprites[ResourceID::ID_HELICOPTER_TRANSITION_BWD] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/transitionBwd.png"), ResourceIDFrames::IDF_HELICOPTER_TRANSITION_BWD);
 	sprites[ResourceID::ID_HELICOPTER_BLADE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/blade.png"), ResourceIDFrames::IDF_HELICOPTER_BLADE);
 	sprites[ResourceID::ID_MISSLE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missle.png"), ResourceIDFrames::IDF_MISSLE);
-	sprites[ResourceID::ID_MISSLE_BOOM]	= new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missle.png"), ResourceIDFrames::IDF_MISSLE_BOOM);
+	sprites[ResourceID::ID_MISSLE_BOOM]	= new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missleBoom.png"), ResourceIDFrames::IDF_MISSLE_BOOM);
 
 
 

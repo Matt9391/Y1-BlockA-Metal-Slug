@@ -68,7 +68,7 @@ GameScene::~GameScene() {
 }
 
 void GameScene::init() {
-	player.init(vec2(30,80));
+	player.init(vec2(1500,80));
 
 	//* Initialize camera to game scene settings
 	getCamera().init(vec2(0.f, 10.f * map.getTileSize()));
@@ -91,6 +91,9 @@ void GameScene::init() {
 		)); 
 
 		getRenderer().addParallaxRenderData(parallaxRenderData);
+
+		// TODO: make it a variable limit1
+		getCamera().setWorldSize(vec2(231 * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
 	}
 	
 	setChangeScene(false);
@@ -254,6 +257,10 @@ void GameScene::update(float dt) {
 					b->explode();
 				}
 				
+				if (CollisionManager::checkCollision(b->getCollider(), player.getCollider())) {
+					b->explode();
+					player.takeHit();
+				}
 				if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
 					b->explodeMap();
 				}
@@ -307,7 +314,8 @@ void GameScene::update(float dt) {
 				
 			}else if(e->getEntityType() == EntityType::ET_POWERUP){
 				PowerUp* powerUp = static_cast<PowerUp*>(e);
-				
+				if(!powerUp) continue;
+				if(powerUp->getState() == PowerUpState::PUS_REVEALED) continue;
 				if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider())) {
 					b->explode();
 					powerUp->setState(PowerUpState::PUS_REVEALED);

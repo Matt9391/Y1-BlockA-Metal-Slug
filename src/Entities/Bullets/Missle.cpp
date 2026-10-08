@@ -8,7 +8,7 @@ Missle::Missle(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, f
     Bullet(pos,needsRigidBody,dir,bulletType,bulletSpeed)
 { 
 	setDir(dir);
-    setCollider(vec2(5, 5), vec2(0, 0));
+    setCollider(vec2(10, 25), vec2(0, 0));
 	getAnimationSets() = new AnimationSet[BMissleAnimationSet::BM_COUNTS];
 	loadGFX();
 	setCurrentASIndex(BMissleAnimationSet::BM_SHOOT);
@@ -35,9 +35,9 @@ void Missle::loadGFX() {
         1,
         AnimationLayer(ResourceID::ID_MISSLE_BOOM,
             ResourceIDFrames::IDF_MISSLE_BOOM,
-            10,
-            vec2(0, 0),
-            vec2(0, 0))
+            30,
+            vec2(0, -10),
+            vec2(0, -10))
 			);
 
 }

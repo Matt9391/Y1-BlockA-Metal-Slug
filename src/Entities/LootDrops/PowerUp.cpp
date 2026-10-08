@@ -52,3 +52,7 @@ void PowerUp::applyEffect(Player& pl){
 void PowerUp::setState(PowerUpState powerUpState){
     setCurrentASIndex(powerUpState);
 }
+
+int PowerUp::getState() const{
+    return getCurrentASIndex();
+}

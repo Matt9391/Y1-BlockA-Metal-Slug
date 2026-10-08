@@ -72,8 +72,8 @@ void FlameBullet::loadGFX() {
         AnimationLayer(ResourceID::ID_PLAYER_BULLET_FLAME_THROWER_BOOM,
             ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER_BOOM,
             50,
-            vec2(-15, -25),
-            vec2(-15, -25))
+            vec2(-15, -10),
+            vec2(-15, -10))
     );
     getAnimationSets()[BFlameAnimationSet::BF_BOOM_25] = AnimationSet(
         1,

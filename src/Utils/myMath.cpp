@@ -14,4 +14,8 @@ namespace myMath {
 	float mapValue(float value, float fromMin, float fromMax, float toMin, float toMax) {
 		return (value - fromMin) * (toMax - toMin) / (fromMax - fromMin) + toMin;
 	}
+
+	float lerp(float a, float b, float t){
+		return a + (b - a) * t;
+	}
 }
