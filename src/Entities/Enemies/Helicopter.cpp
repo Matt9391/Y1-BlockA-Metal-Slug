@@ -6,15 +6,20 @@
 #include <Renderer.h>
 #include <BulletType.h>
 #include <Bullets/Missle.h>
+#include <myMath.h>
 
-// TODO: change y position based on direction to give feel, make it spawn higher
+// DONE: change y position based on direction to give feel, make it spawn higher
 Helicopter::Helicopter(vec2 pos) :
     Enemy(pos, EntityType::ET_HELICOPTER),
 	elapsedTime(0.f),
 	bulletsCount(0),
 	bulletSpeed(0.2f),
 	bullets{nullptr},
-	lives(10)
+	startY(pos.y),
+	maxY(pos.y + 25.f),
+	shootOffset(40,20),
+	lives(10),
+	disable(false)
 {
     setCollider(vec2(100, 50), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[HelicopterAnimationSet::HAS_COUNTS];
@@ -113,8 +118,9 @@ void Helicopter::update(float dt) {
 	float dirX = getSensors().distToPlayer > 0 ? -1.f : 1.f;
 	//mini state machine
 	{
-		//TODO: if dist < xValue dont change animation
-		
+		//DONE: if dist < xValue dont change animation
+		int c = getCurrentASIndex();
+
 		if(getCurrentASIndex() == HAS_MOVE_FWD && dirX > 0){
 			setCurrentASIndex(HAS_TRANSITION_BWD);
 		}
@@ -141,10 +147,15 @@ void Helicopter::update(float dt) {
 			}
 		}
 
+		if(abs(getSensors().distToPlayer) < MINDIST){
+			setCurrentASIndex(c);
+		}
+
 		if(lives < 0){
 			setCurrentASIndex(HAS_BOOM);
+			disable = true;
 		}	
-
+		
 		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 	}
 
@@ -152,9 +163,8 @@ void Helicopter::update(float dt) {
 		setFree(true);
 	}
 
-
-
-
+	if(disable) return;
+	
 	setDir(vec2(dirX, 0));
 
 	getRigidBody()->setVelocityX(getRigidBody()->getSpeed() * getDir().x);
@@ -162,7 +172,20 @@ void Helicopter::update(float dt) {
 
 	addToPos(getRigidBody()->getVelocity() * dt);
 
+	if(dirX > 0){
+		addToPos(vec2(0, -getRigidBody()->getSpeed() * dt));
+	}else{
+		addToPos(vec2(0, getRigidBody()->getSpeed() * dt));
+	}
+
+	setPos(vec2(getPos().x,
+			myMath::constrain(getPos().y, startY, maxY)
+		));
+
+
 	if(elapsedTime > SHOOTCOOLDOWN){
+		shoot();
+		shoot();
 		shoot();
 		elapsedTime = 0.f;
 	}
@@ -188,7 +211,7 @@ bool Helicopter::shoot() {
 	if (bIndex == -1) return false;
 
 
-	bullets[bIndex] = new Missle(getPos(), true, vec2(0,1), BulletType::BT_MISSLE,bulletSpeed);
+	bullets[bIndex] = new Missle(getPos() + shootOffset + vec2(Rand(30.f) - 15.f, 0), true, vec2(0,1), BulletType::BT_MISSLE,bulletSpeed * myMath::mapValue(Rand(100.f),0.f, 100.f,0.6f,1.2f));
 	bulletsCount++;
 
 	return true;

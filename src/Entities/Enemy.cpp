@@ -36,7 +36,7 @@ void Enemy::loadSensors(vec2 playerPos, bool wallAhead) {
 	//};
 
 	this->sensors = {
-		this->getPos().x - playerPos.x,
+		this->getPos().x + this->getCollider().size.x / 2 - playerPos.x,
 		wallAhead,
 		false,
 		getRigidBody()->isGrounded(),

@@ -34,12 +34,20 @@ public:
     void takeHit();
 private:
     bool shoot();
+
+    
     float elapsedTime;
     static const int SHOOTCOOLDOWN = 800;
 	static const int MAXBULLETS = 50;
+	static const int MINDIST = 10;
     Bullet* bullets[MAXBULLETS];
     int bulletsCount;
     float bulletSpeed;
     
+    vec2 shootOffset;
+
+    float startY;
+    float maxY;
     int lives;
+    bool disable;
 };
