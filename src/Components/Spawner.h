@@ -8,6 +8,8 @@ public:
 	Spawner(vec2 pos, vec2 size, float spawnDelay);
 	virtual ~Spawner();
 
+	virtual void init();
+
 	virtual void update(float dt);
 
 	const vec2& getPos() const;

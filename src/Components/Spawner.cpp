@@ -20,6 +20,11 @@ Spawner::~Spawner() {
 void Spawner::update(float) {
 }
 
+void Spawner::init(){
+	timer = 0.f;
+	spawnedNumber = 0;
+	spawnEntity = false;
+}
 
 const vec2& Spawner::getPos() const {
 	return this->pos;

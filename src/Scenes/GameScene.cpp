@@ -102,7 +102,15 @@ void GameScene::init() {
 	anim.setAnimation(&waterfall.animationSet);
 	anim2.setAnimation(&waterfallBottom.animationSet);
 
-	//TODO: map init to reset spawners timer since they remain in memory
+	//DONE: map init to reset spawners timer since they remain in memory
+	for (int i = 0; i < map.getSpawnersLayers(); i++) {
+			Spawner** layerSpawners = map.getSpawners(i);
+			for (int j = 0; j < map.getSpawnersCount()[i]; j++) {
+				Spawner& spawner = *layerSpawners[j];
+
+				spawner.init();
+			}
+		}
 };
 
 void GameScene::exit() {};
@@ -444,7 +452,13 @@ void GameScene::addNewEntity(Entity* e) {
 	}
 }
 
-// TODO: shift back entities to minimize looping, also in the other arrays 	
+// Deliberately NOT shifting the array after a free.
+// Shifting every entity after the freed index to close the gap would cost
+// up to O(n) pointer moves on every single despawn 
+// Leaving the slot as nullptr costs O(1)
+// to free, and the per-frame cost of scanning past empty slots it's far
+// cheaper than the shifting we'd be doing to avoid it. Compacting would
+// only pay off if MAXENTITIES were large enough.
 void GameScene::freeEntity(int index) {
 	if (spawnedEntities[index]) {
 		delete spawnedEntities[index];
