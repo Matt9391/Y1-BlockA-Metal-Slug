@@ -40,6 +40,7 @@ namespace RebelSoldierStates {
         static const int JUMPCHANCE = 15;
         static const int GRANADECHANCE = 35;
         static const int MELEECHANCE =  5;
+        static const int SCAREDCHANCE =  50;
         static const float JUMPTIMER;
         static const float FLIPTIMER;
         static const float GRENADETIMER;
@@ -68,6 +69,17 @@ namespace RebelSoldierStates {
     public:
         void enter(RebelSoldier& e) override;
         EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
+    private:
+    };
+    class ScaredRunState final : public EnemyState
+    {
+    public:
+        void enter(RebelSoldier& e) override;
+        EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
+    private:
+        static const int JUMPTIMER = 500;
+        static const int JUMPCHANCE = 30;
+        float jumpCountdown;
     };
     
     class FallingState final : public EnemyState

@@ -31,8 +31,12 @@ namespace RebelSoldierStates {
         if (elapsedTime > duration || playerVisible) {
             current = EnemyAnimationSet::EAS_WALK;
         }
-        if (!playerVisible && e.getSensors().allyDiedNearby) {
-            current = EnemyAnimationSet::EAS_SCARED;
+
+        if(playerVisible && 
+            (!e.getData().canAttackGranade &&
+            !e.getData().canAttackMelee)){
+                current = EnemyAnimationSet::EAS_SCARED;
+
         }
 
 
@@ -104,6 +108,15 @@ namespace RebelSoldierStates {
             playerVisible && abs(e.getSensors().distToPlayer) < MELEERANGE &&
             Rand(100) > MAXCHANCE - MELEECHANCE) {
             current = EnemyAnimationSet::EAS_MELEE_ATTACK;
+        }else if(
+            playerVisible && 
+            (!e.getData().canAttackGranade &&
+            !e.getData().canAttackMelee) &&
+            Rand(100) > MAXCHANCE - SCAREDCHANCE
+            ){
+            
+            current = EnemyAnimationSet::EAS_SCARED;
+                
         }
 
         return current;
@@ -147,23 +160,53 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    // TODO: actually make the scaredState happen
+    // DONE: actually make the scaredState happen
     void ScaredState::enter(RebelSoldier&) {
-        this->duration = 1000.f;
-        this->elapsedTime = 0.f;
     }
 
-    EnemyAnimationSet ScaredState::update(RebelSoldier& e, float, EnemyAnimationSet current)
+    EnemyAnimationSet ScaredState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
     {
+
+
         if (!e.getSensors().alive) {
-            return   EnemyAnimationSet::EAS_DEATH;
-        }
-        if (e.getSensors().isGrounded) {
-            current = EnemyAnimationSet::EAS_IDLE;
+            return EnemyAnimationSet::EAS_DEATH;
         }
 
-        if (e.getSensors().animationEnded) {
-            current = EnemyAnimationSet::EAS_IDLE;
+        if(e.getSensors().animationEnded){
+            current = EnemyAnimationSet::EAS_SCARED_RUN;
+        }
+
+        return current;
+    }
+    void ScaredRunState::enter(RebelSoldier&) {
+        this->duration = 3000.f;
+        this->elapsedTime = 0.f;
+        this->jumpCountdown = 0.f;
+
+    }
+
+    EnemyAnimationSet ScaredRunState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    {
+        elapsedTime += dt;
+        jumpCountdown += dt;
+
+        if (!e.getSensors().alive) {
+            return EnemyAnimationSet::EAS_DEATH;
+        }
+
+        if(elapsedTime < duration){
+            e.setDir(vec2(e.getSensors().distToPlayer < 0.f ? -1.f : 1.f, e.getDir().y));
+            e.setFlip(e.getDir().x > 0 ? 1 : 0);
+            if (e.getSensors().isGrounded) {
+                if (jumpCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - JUMPCHANCE) {
+                    jumpCountdown = 0.f;
+                    e.addVelocity(vec2(0, -e.getRigidBody()->getJumpForce()));
+                    e.setGrounded(false);
+                    current = EnemyAnimationSet::EAS_JUMP_FORWARD;
+                }
+            }
+        }else{
+            current = EnemyAnimationSet::EAS_STOP;
         }
 
         return current;
@@ -317,6 +360,7 @@ namespace RebelSoldierStates {
     AfterRunState            afterRunInstance;
     JumpForwardState         jumpForwardInstance;
     ScaredState              scaredInstance;
+    ScaredRunState           scaredRunInstance;
     FallingState             fallingInstance;
     CoverState               coverInstance;
     MeleeAttackState         meleeAttackInstance;
@@ -350,6 +394,7 @@ namespace RebelSoldierStates {
             &RebelSoldierStates::afterRunInstance,            // PAS_AFTER_RUN_STOP
             &RebelSoldierStates::jumpForwardInstance,         // PAS_JUMP_FORWARD
             &RebelSoldierStates::scaredInstance,             // PAS_FALLING
+            &RebelSoldierStates::scaredRunInstance,             // PAS_FALLING
             &RebelSoldierStates::fallingInstance,             // PAS_FALLING
             &RebelSoldierStates::coverInstance,               // PAS_COVER
             &RebelSoldierStates::meleeAttackInstance,         // PAS_MELEE_ATTACK

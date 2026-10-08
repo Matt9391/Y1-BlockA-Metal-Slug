@@ -3,7 +3,6 @@
 
 struct EnemySensor {
 	float distToPlayer;
-	bool allyDiedNearby;
 	bool wallAhead;
 	bool platformAbove;
 	bool isGrounded;

@@ -83,6 +83,15 @@ void RebelSoldier::loadGFX() {
 			vec2(0, 0),
 			vec2(0, 0))
 	);
+	getAnimationSets()[EnemyAnimationSet::EAS_SCARED_RUN] = AnimationSet(
+		1,
+		AnimationLayer(
+			ResourceID::ID_REBELSOLDIER_SCARED_RUN,
+			ResourceIDFrames::IDF_REBELSOLDIER_SCARED_RUN,
+			100,
+			vec2(0, 0),
+			vec2(0, 0))
+	);
 
 	getAnimationSets()[EnemyAnimationSet::EAS_FALLING] = AnimationSet(
 		1,

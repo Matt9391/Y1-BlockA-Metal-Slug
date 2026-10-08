@@ -11,6 +11,9 @@ ResourceManager::~ResourceManager() {
 	for (int i = 0; i < static_cast<int>(ResourceID::ID_COUNTS); i++) {
 		delete sprites[i];
 	}
+	for (int i = 0; i < static_cast<int>(SoundID::SID_COUNTS); i++){
+		free(soundPaths[i]);
+	}
 }
 
 
@@ -81,6 +84,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_REBELSOLDIER_JUMP_UP] =	new Sprite(new Surface("assets/EnemyAnimation/Rebel/jumpup.png"), ResourceIDFrames::IDF_REBELSOLDIER_JUMP_UP);	
 	sprites[ResourceID::ID_REBELSOLDIER_JUMP_FORWARD] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/jumpforward.png"), ResourceIDFrames::IDF_REBELSOLDIER_JUMP_FORWARD);
 	sprites[ResourceID::ID_REBELSOLDIER_SCARED] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/scared.png"), ResourceIDFrames::IDF_REBELSOLDIER_SCARED);
+	sprites[ResourceID::ID_REBELSOLDIER_SCARED_RUN] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/scaredRun.png"), ResourceIDFrames::IDF_REBELSOLDIER_SCARED_RUN);
 	sprites[ResourceID::ID_REBELSOLDIER_FALLING] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/falling.png"), ResourceIDFrames::IDF_REBELSOLDIER_FALLING);
 	sprites[ResourceID::ID_REBELSOLDIER_COVER] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/cover.png"), ResourceIDFrames::IDF_REBELSOLDIER_COVER);
 	sprites[ResourceID::ID_REBELSOLDIER_MELEE_ATTACK] = new Sprite(new Surface("assets/EnemyAnimation/Rebel/meleeAttack.png"), ResourceIDFrames::IDF_REBELSOLDIER_MELEE_ATTACK);

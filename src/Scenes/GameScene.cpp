@@ -68,7 +68,7 @@ GameScene::~GameScene() {
 }
 
 void GameScene::init() {
-	player.init(vec2(1500,80));
+	player.init(vec2(30,80));
 
 	//* Initialize camera to game scene settings
 	getCamera().init(vec2(0.f, 10.f * map.getTileSize()));
