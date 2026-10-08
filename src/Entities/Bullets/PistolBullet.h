@@ -3,7 +3,10 @@
 
 enum BPistolAnimationSet{
     BP_SHOOT,
+    BP_SHOOT_90,
     BP_BOOM,
+    BP_BOOM_90,
+    BP_BOOM_D90,
     BP_COUNTS
 };
 
@@ -18,4 +21,7 @@ public:
 
 	void explode();
 	void explodeMap(); 
+private:
+	int getAngleAnimationIndex(bool boom = false) const;
+	bool isBoomAnimation() const;
 };

@@ -65,7 +65,10 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_REBELSOLDIER_GRANADE]= new Sprite(new Surface("assets/EnemyAnimation/Rebel/grenade.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE);
 	sprites[ResourceID::ID_REBELSOLDIER_GRANADE_BOOM]= new Sprite(new Surface("assets/EnemyAnimation/Rebel/grenadeBoom.png"), ResourceIDFrames::IDF_REBELSOLDIER_GRANADE_BOOM);
 	sprites[ResourceID::ID_PLAYER_BULLET_PISTOL]= new Sprite(new Surface("assets/playerAnimation/Pistol/bullet.png"), ResourceIDFrames::IDF_PLAYER_BULLET_PISTOL);
+	sprites[ResourceID::ID_PLAYER_BULLET_PISTOL_90]= new Sprite(new Surface("assets/playerAnimation/Pistol/bullet_90.png"), ResourceIDFrames::IDF_PLAYER_BULLET_PISTOL_90);
 	sprites[ResourceID::ID_PLAYER_BULLET_PISTOL_BOOM]= new Sprite(new Surface("assets/playerAnimation/Pistol/bulletBoom.png"), ResourceIDFrames::IDF_PLAYER_BULLET_PISTOL_BOOM);
+	sprites[ResourceID::ID_PLAYER_BULLET_PISTOL_BOOM_90]= new Sprite(new Surface("assets/playerAnimation/Pistol/bulletBoom_90.png"), ResourceIDFrames::IDF_PLAYER_BULLET_PISTOL_BOOM_90);
+	sprites[ResourceID::ID_PLAYER_BULLET_PISTOL_BOOM_D90]= new Sprite(new Surface("assets/playerAnimation/Pistol/bulletBoom_D90.png"), ResourceIDFrames::IDF_PLAYER_BULLET_PISTOL_BOOM_D90);
 	sprites[ResourceID::ID_PLAYER_BULLET_FLAME_THROWER]= new Sprite(new Surface("assets/playerAnimation/FlameThrower/bullet.png"), ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER);
 	sprites[ResourceID::ID_PLAYER_BULLET_FLAME_THROWER_25]= new Sprite(new Surface("assets/playerAnimation/FlameThrower/bullet_25.png"), ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER_25);
 	sprites[ResourceID::ID_PLAYER_BULLET_FLAME_THROWER_45]= new Sprite(new Surface("assets/playerAnimation/FlameThrower/bullet_45.png"), ResourceIDFrames::IDF_PLAYER_BULLET_FLAME_THROWER_45);

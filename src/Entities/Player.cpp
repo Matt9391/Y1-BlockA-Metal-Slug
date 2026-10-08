@@ -55,7 +55,7 @@ void Player::init(vec2 pos_) {
 	this->canRevive = true;
 	this->enabled = false;
 	this->alive = true;
-	this->setGunData(GunPresets::getGun(GunType::FLAME_THROWER));
+	this->setGunData(GunPresets::getGun(GunType::PISTOL));
 
 	setCurrentASIndex(PlayerAnimationSet::PAS_PARACHUTE);
 	state = getPlayerState(static_cast<PlayerAnimationSet>(getCurrentASIndex()));

@@ -161,12 +161,13 @@ namespace RebelSoldierStates {
     }
 
     // DONE: actually make the scaredState happen
-    void ScaredState::enter(RebelSoldier&) {
+    void ScaredState::enter(RebelSoldier& e) {
+        e.setDir(vec2(0.f, e.getDir().y));
+
     }
 
     EnemyAnimationSet ScaredState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
     {
-
 
         if (!e.getSensors().alive) {
             return EnemyAnimationSet::EAS_DEATH;
