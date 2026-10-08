@@ -14,7 +14,8 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 	}
 
 	int nLines = 0;
-	char** lines = splitLines(text.text, nLines);
+	char lines[MAXLINES][MAXLINEWIDTH];
+	splitLines(text.text, lines, nLines);
 
 	int size = (text.resourceId == ID_FONT_GREY || text.resourceId == ID_FONT_ORANGE) ? 18 : 9;
 	float4 fontSize(static_cast<float>(size));
@@ -37,7 +38,11 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 
 
 	for (int i = 0; i < nLines; i++) {
+		float lineY = text.pos.y + size * i * text.scale;
+		if (lineY >= screen->height) break;
+
 		HUDText line;
+
 
 		strcpy(line.text, lines[i]);
 		line.pos = text.pos + vec2(0, float(size * lineCounter * text.scale));
@@ -53,17 +58,16 @@ void Printer::drawText(const HUDText& text, Surface* font, Surface* screen) {
 
 		lineCounter++;
 	}
-
-	for (int i = 0; i < MAXLINES; i++)
-		delete lines[i];
-
-	delete[] lines;
 }
 
 void Printer::drawLine(const HUDText& text, const float4& fontSize, const vec2& clipValue, Surface* font, Surface* screen) {
 	int count = 0;
 
 	for (int i = 0; text.text[i] != '\0'; i++) {
+		
+		if (text.pos.x + count * fontSize.x * text.scale >= screen->width)
+			break;
+		
 		char character = text.text[i];
 		//get character index in the font surface
 		int index = int(character) - 32;
@@ -91,11 +95,17 @@ void Printer::drawChar(const vec2& start,const vec2& end,float scale,uint* sourc
 
 	for (int y = static_cast<int>(start.y); y < destHeight; y++)
 	{
-		int sourceY = int(y / scale);
+		int sourceY = y;
+		if (scale != 1.f) {
+			sourceY = int(y / scale);
+		}
 
 		for (int x = static_cast<int>(start.x); x < destWidth; x++)
 		{
-			int sourceX = int(x / scale);
+			int sourceX = x;
+			if (scale != 1.f) {
+				sourceX = int(x / scale);
+			}
 
 			uint pixel = source[sourceY * font->width + sourceX];
 
@@ -108,39 +118,23 @@ void Printer::drawChar(const vec2& start,const vec2& end,float scale,uint* sourc
 }
 
 //split string into multiple lines based on '\n' character
-char** Printer::splitLines(const char* text, int& lineCount) {
-	char** lines = new char*[MAXLINES];
-
-	for (int i = 0; i < MAXLINES; i++) {
-		lines[i] = new char[MAXLINEWIDTH];
-	}
-
+void Printer::splitLines(const char* text, char lines[][MAXLINEWIDTH], int& lineCount) {
 	char buffer[MAXLINEWIDTH];
 	int j = 0;
 	lineCount = 0;
-
-	for (int i = 0; text[i] != '\0'; i++)
-	{
-		if (text[i] == '\n')
-		{
+	for (int i = 0; text[i] != '\0'; i++) {
+		if (text[i] == '\n') {
 			buffer[j] = '\0';
 			strcpy(lines[lineCount++], buffer);
-
 			j = 0;
 		}
-		else
-		{
-			if (j < MAXLINEWIDTH - 1)
-				buffer[j++] = text[i];
+		else if (j < MAXLINEWIDTH - 1) {
+			buffer[j++] = text[i];
 		}
 	}
-
-	if (j > 0 && lineCount < MAXLINES)
-	{
+	if (j > 0 && lineCount < MAXLINES) {
 		buffer[j] = '\0';
 		strcpy(lines[lineCount++], buffer);
 	}
-
-	return lines;
 }
 

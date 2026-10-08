@@ -7,6 +7,7 @@
 #include <BulletType.h>
 #include <Bullets/Missle.h>
 
+// TODO: change y position based on direction to give feel, make it spawn higher
 Helicopter::Helicopter(vec2 pos) :
     Enemy(pos, EntityType::ET_HELICOPTER),
 	elapsedTime(0.f),
@@ -112,7 +113,8 @@ void Helicopter::update(float dt) {
 	float dirX = getSensors().distToPlayer > 0 ? -1.f : 1.f;
 	//mini state machine
 	{
-
+		//TODO: if dist < xValue dont change animation
+		
 		if(getCurrentASIndex() == HAS_MOVE_FWD && dirX > 0){
 			setCurrentASIndex(HAS_TRANSITION_BWD);
 		}

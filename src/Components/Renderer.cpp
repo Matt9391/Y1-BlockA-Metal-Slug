@@ -70,8 +70,8 @@ void Renderer::addSpriteSet(SpriteSet ss) {
 }
 
 void Renderer::clearColliders() {
-	for (int i = 0; i < MAXCOLLIDERS; i++) {
-		colliders[i] = nullptr;
+	for (int i = 0; i < collidersCount; i++) { 
+		colliders[i] = nullptr; 
 	}
 	collidersCount = 0;
 }
@@ -113,23 +113,25 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 
 
 	if (mapRenderData != nullptr) {
-		
+		const int& tileSize = mapRenderData->tileSize;
+
+		int startX = static_cast<int>(fmaxf(floorf(cameraOffset.x) / tileSize, 0.f));
+		int startY = static_cast<int>(fmaxf(floorf(cameraOffset.y) / tileSize, 0.f));
+
+		int endX = startX + (SCRWIDTH / tileSize) + 1;
+		int endY = startY + (SCRHEIGHT / tileSize) + 1;
+
+		//don't go outside the map													//each layer has the same tile number
+		endX = static_cast<int>(fminf(static_cast<float>(endX), mapRenderData->layers[0].tiles.x));
+		endY = static_cast<int>(fminf(static_cast<float>(endY), mapRenderData->layers[0].tiles.y));
+
 		for (int i = 0; i < mapRenderData->layerCount; i++) {
 			//for (int i = 0; i < mapRenderData.layerCount - 2; i++) { //uncomment to remove hitboxes
 			const MapLayer& layer = mapRenderData->layers[i];
 			
-			const int& tileSize = mapRenderData->tileSize;
-
-			int startX = static_cast<int>(fmaxf(floorf(cameraOffset.x) / tileSize, 0.f));
-			int startY = static_cast<int>(fmaxf(floorf(cameraOffset.y) / tileSize, 0.f));
-
-			int endX = startX + (SCRWIDTH / tileSize) + 1;
-			int endY = startY + (SCRHEIGHT / tileSize) + 1;
-
-			//don't go outside the map
-			endX = static_cast<int>(fminf(static_cast<float>(endX),layer.tiles.x));
-			endY = static_cast<int>(fminf(static_cast<float>(endY),layer.tiles.y));
-		
+			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
+			if (!sprite) continue;
+			Surface* tilesetSurf = sprite->GetSurface();
 		
 			for (int y = startY; y < endY; y++) {
 				for (int x = startX; x < endX; x++) {
@@ -148,7 +150,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 							srcCol,
 							srcRow, 
 							screen, 
-							resourceManager.getSprite(layer.resourceId)->GetSurface(), 
+							tilesetSurf, 
 							static_cast<int>(destX - cameraOffset.x), 
 							static_cast<int>(destY - cameraOffset.y));
 
@@ -176,10 +178,27 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	}
 
 	if (mapRenderData != nullptr) {
+		const int& tileSize = mapRenderData->tileSize;
+
+		int startX = static_cast<int>(fmaxf(floorf(cameraOffset.x) / tileSize, 0.f));
+		int startY = static_cast<int>(fmaxf(floorf(cameraOffset.y) / tileSize, 0.f));
+
+		int endX = startX + (SCRWIDTH / tileSize) + 1;
+		int endY = startY + (SCRHEIGHT / tileSize) + 1;
+
+		//don't go outside the map													//each layer has the same tile number
+		endX = static_cast<int>(fminf(static_cast<float>(endX), mapRenderData->layers[0].tiles.x));
+		endY = static_cast<int>(fminf(static_cast<float>(endY), mapRenderData->layers[0].tiles.y));
+
 		for (int i = 2; i < mapRenderData->layerCount - 1; i++) {
 			const MapLayer& layer = mapRenderData->layers[i];
-			for (int y = 0; y < static_cast<int>(layer.tiles.y); y++) {
-				for (int x = 0; x < static_cast<int>(layer.tiles.x); x++) {
+
+			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
+			if (!sprite) continue;
+			Surface* tilesetSurf = sprite->GetSurface();
+
+			for (int y = startY; y < endY; y++) {
+				for (int x = startX; x < endX; x++) {
 					int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
 					if (tileId == 0) continue; // empty tile, nothing to draw
 
@@ -194,7 +213,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 							srcCol,
 							srcRow, 
 							screen, 
-							resourceManager.getSprite(layer.resourceId)->GetSurface(), 
+							tilesetSurf,
 							static_cast<int>(destX - cameraOffset.x), 
 							static_cast<int>(destY - cameraOffset.y));
 				}

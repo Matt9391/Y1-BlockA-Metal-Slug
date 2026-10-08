@@ -24,11 +24,12 @@ public:
 	void drawText(const HUDText& text, Surface* font, Surface* screen);
 
 private:
+	static const int MAXLINES = 10;
+	static const int MAXLINEWIDTH = 100;
+
 	//split string into multiple lines based on '\n' character
-	char** splitLines(const char* text, int& lineCount);
+	void splitLines(const char* text, char lines[][MAXLINEWIDTH], int& lineCount);
 	void drawLine(const HUDText& text, const float4& fontSize, const vec2& clipValue, Surface* font, Surface* screen);
 	void drawChar(const vec2& start, const vec2& end, float charScale, uint* source, uint* destination, Surface* font, const int& screenWidth);
 
-	const int MAXLINES = 10;
-	static const int MAXLINEWIDTH = 100;
 };
