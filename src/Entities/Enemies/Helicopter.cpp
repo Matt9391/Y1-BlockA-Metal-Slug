@@ -18,9 +18,8 @@ Helicopter::Helicopter(vec2 pos) :
 	startY(pos.y),
 	maxY(pos.y + 25.f),
 	shootOffset(40,20),
-	lives(10),
-	disable(false)
-{
+	lives(10)
+	{
     setCollider(vec2(100, 50), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[HelicopterAnimationSet::HAS_COUNTS];
 	loadGFX();
@@ -153,7 +152,7 @@ void Helicopter::update(float dt) {
 
 		if(lives < 0){
 			setCurrentASIndex(HAS_BOOM);
-			disable = true;
+			setAlive(false);
 		}	
 		
 		getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
@@ -163,8 +162,8 @@ void Helicopter::update(float dt) {
 		setFree(true);
 	}
 
-	if(disable) return;
-	
+	if(!getAlive()) return;
+
 	setDir(vec2(dirX, 0));
 
 	getRigidBody()->setVelocityX(getRigidBody()->getSpeed() * getDir().x);

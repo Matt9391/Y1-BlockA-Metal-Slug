@@ -56,9 +56,10 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 					)
 				),
 				vec2(3318, 3.5))
-	)
+	),
+	nTilesLimit1Camera(231),
+	nTilesLimit2Camera(map.getTiles().x)
 	{
-		getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
 	}
 
 GameScene::~GameScene() {
@@ -93,7 +94,7 @@ void GameScene::init() {
 		getRenderer().addParallaxRenderData(parallaxRenderData);
 
 		// TODO: make it a variable limit1
-		getCamera().setWorldSize(vec2(231 * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
+		getCamera().setWorldSize(vec2(nTilesLimit1Camera * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
 	}
 	
 	setChangeScene(false);
@@ -358,12 +359,16 @@ void GameScene::update(float dt) {
 				}
 			}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
 				Helicopter* h = static_cast<Helicopter*>(e); 
+				if(!h->getAlive()){
+					getCamera().setWorldSize(vec2(nTilesLimit2Camera * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
+
+				}
+
 				if (CollisionManager::checkCollision(b->getCollider(), h->getCollider())) {
 					b->explode();
 					h->takeHit();
 					b->setDisabled(true);
-					// getCamera().setWorldSize(vec2(map.getTiles().x * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));	
-
+					
 				}
 				
 			}

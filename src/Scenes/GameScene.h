@@ -36,5 +36,8 @@ private:
 	RenderData waterfallBottom;
 	Animator anim;
 	Animator anim2;
+
+	int nTilesLimit1Camera;
+	int nTilesLimit2Camera;
 };
 

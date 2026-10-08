@@ -49,5 +49,4 @@ private:
     float startY;
     float maxY;
     int lives;
-    bool disable;
 };
