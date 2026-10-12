@@ -190,6 +190,9 @@
     <ClCompile Include="src\Entities\Enemies\Boss.cpp">
       <Filter>src\Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Bullets\LaserBall.cpp">
+      <Filter>src\Entities\Bullets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -415,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="src\Entities\Enemies\Boss.h">
       <Filter>src\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Bullets\LaserBall.h">
+      <Filter>src\Entities\Bullets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

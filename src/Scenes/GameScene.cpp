@@ -14,6 +14,7 @@
 #include <LootDrop.h>
 #include <LootDrops/PowerUp.h>
 #include <ParallaxRenderData.h>
+#include <Enemies/Boss.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, const Map& map_) :
 	CustomScene(screen, renderer, inputManager, audioManager),
@@ -58,8 +59,7 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 				vec2(3318, 3.5))
 	),
 	nTilesLimit1Camera(231),
-	nTilesLimit2Camera(map.getTiles().x),
-	boss(vec2(3769 + 265, -60 + 100))
+	nTilesLimit2Camera(map.getTiles().x)
 	{
 	}
 
@@ -113,6 +113,8 @@ void GameScene::init() {
 				spawner.init();
 			}
 		}
+	
+	addNewEntity(new Boss(vec2(3769 + 265, -60 + 100)));
 };
 
 void GameScene::exit() {};
@@ -132,45 +134,8 @@ void GameScene::update(float dt) {
 
 	player.update(dt);
 
-	boss.loadSensors(
-				player.getPos() + player.getCollider().size / 2.f,
-				CollisionManager::checkMapCollision(
-					boss.getCollider(),
-					map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
-					0
-				)
-			);
-
-	boss.update(dt);
 	
-	for (int j = 0; j < boss.getMaxBullets(); j++) {
-		Bullet* b = boss.getBullet(j);
-		if (!b) continue;
-
-		if (b->hasToBeFreed()) {
-			boss.freeBullet(j);
-			continue;
-		}
-		if (b->getDisabled()) continue;
-
-		if (getCamera().isOutOfView(b->getPos())) {
-			b->explode();
-		}
-		
-		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider())) {
-			b->explode();
-			player.takeHit();
-		}
-		if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
-			b->explodeMap();
-		}
-				
-				
-	}
-
-
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
-	CollisionManager::resolveMapCollision(boss, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 
 	if (player.getEnabled()) {
 
@@ -317,13 +282,13 @@ void GameScene::update(float dt) {
 			for (int j = 0; j < h->getMaxBullets(); j++) {
 				Bullet* b = h->getBullet(j);
 				if (!b) continue;
-
+				
 				if (b->hasToBeFreed()) {
 					h->freeBullet(j);
 					continue;
 				}
 				if (b->getDisabled()) continue;
-
+				
 				if (getCamera().isOutOfView(b->getPos())) {
 					b->explode();
 				}
@@ -339,17 +304,51 @@ void GameScene::update(float dt) {
 				
 			}
 			h->addRenderDatas(getRenderer());
-
+		}else if(e->getEntityType() == EntityType::ET_BOSS){
+			Boss* bs = static_cast<Boss*>(e); //static vs dynamic ?
 			
-		}
+			bs->loadSensors(
+				player.getPos() + player.getCollider().size / 2.f,
+				CollisionManager::checkMapCollision(
+					bs->getCollider(),
+					map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
+					0
+				)
+			);
 
+			for (int j = 0; j < bs->getMaxBullets(); j++) {
+				Bullet* b = bs->getBullet(j);
+				if (!b) continue;
+
+				if (b->hasToBeFreed()) {
+					bs->freeBullet(j);
+					continue;
+				}
+				if (b->getDisabled()) continue;
+
+				if (getCamera().isOutOfView(b->getPos())) {
+					b->explode();
+				}
+				
+				if (CollisionManager::checkCollision(b->getCollider(), player.getCollider())) {
+					b->explode();
+					player.takeHit();
+				}
+				if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
+					b->explodeMap();
+				}
+			}	
+			bs->addRenderDatas(getRenderer());
+		
+		}
+		
 		getRenderer().addRenderData(e->getRenderData());
 		getRenderer().addCollider(e->getCollider());
-		
-
-		
+			
+	
+			
 	}
-
+	
 	player.setEntityInFront(entityInFront);
 
 	// TODO: add entity manager
@@ -422,11 +421,8 @@ void GameScene::update(float dt) {
 	player.getGun().addRenderDatas(getRenderer());
 	//getRenderer().addRenderData(player.getGunRenderData(), player.getGunBullets());
 	getRenderer().addRenderData(waterfallBottom);
-	getRenderer().addRenderData(boss.getRenderData());
-	boss.addRenderDatas(getRenderer());
 	
 	getRenderer().addCollider(player.getCollider());
-	getRenderer().addCollider(boss.getCollider());
 	//Collider c = player.getCollider();
 	//c.offset.x += player.getLastDir().x * c.size.x;
 	//getRenderer().addCollider(c);

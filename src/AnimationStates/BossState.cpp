@@ -69,6 +69,9 @@ namespace BossStates {
 
     BossAnimationSet AttackTwoHighState::update(Boss& b, float dt, BossAnimationSet current)
     {
+        if(b.getSensors().animationEnded){
+            return BossAnimationSet::BAS_MOVE_DOWN;
+        }
         return current;
     }
 
@@ -79,6 +82,10 @@ namespace BossStates {
 
     BossAnimationSet AttackTwoLowState::update(Boss& b, float dt, BossAnimationSet current)
     {
+        if(b.getSensors().animationEnded){
+            b.shootLaserBall();
+            return BossAnimationSet::BAS_MOVE_UP;
+        }
         return current;
     }
 
@@ -92,6 +99,9 @@ namespace BossStates {
         b.moveShootOffset(vec2(0, -1 * dt * b.getRigidBody()->getSpeed()));
 
         if(b.getSensors().animationEnded){
+            if(b.getLife() < 50){
+                return BossAnimationSet::BAS_ATTACK_TWO_HIGH;
+            }
             return BossAnimationSet::BAS_ATTACK_ONE_HIGH;
         }
         return current;
@@ -107,6 +117,9 @@ namespace BossStates {
         b.moveShootOffset(vec2(0, 1 * dt * b.getRigidBody()->getSpeed()));
 
         if(b.getSensors().animationEnded){
+            if(b.getLife() < 50){
+                return BossAnimationSet::BAS_ATTACK_TWO_LOW;
+            }
             return BossAnimationSet::BAS_ATTACK_ONE_LOW;
         }
         return current;

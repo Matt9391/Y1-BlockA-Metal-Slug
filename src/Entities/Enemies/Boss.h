@@ -28,6 +28,9 @@ public:
 
     void moveShootOffset(vec2 incr);
     bool shootCannon();
+    bool shootLaserBall();
+
+    int getLife() const;
 private:
     BossStates::BossState* state;
 
@@ -37,5 +40,7 @@ private:
     float bulletSpeed;
 
     vec2 shootOffset;
+
+    int life;
 
 };

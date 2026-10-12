@@ -1,7 +1,6 @@
 #pragma once
 #include "CustomScene.h"
 #include <Player.h>
-#include <Enemies/Boss.h>
 
 #include <Map.h>
 #include <Printer.h>
@@ -41,6 +40,5 @@ private:
 	int nTilesLimit1Camera;
 	int nTilesLimit2Camera;
 
-	Boss boss;
 };
 

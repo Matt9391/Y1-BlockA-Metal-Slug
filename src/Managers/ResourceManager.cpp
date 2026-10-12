@@ -136,6 +136,7 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_BOSS_CANNON_DESTROYED]    = new Sprite(new Surface("assets/EnemyAnimation/Boss/cannon/cannon_destroyed.png"), ResourceIDFrames::IDF_BOSS_CANNON_DESTROYED);
 	
 	sprites[ResourceID::ID_CANNON_BALL]    = new Sprite(new Surface("assets/EnemyAnimation/Boss/effects/cannon_ball.png"), ResourceIDFrames::IDF_CANNON_BALL);
+	sprites[ResourceID::ID_LASER_BALL]    = new Sprite(new Surface("assets/EnemyAnimation/Boss/effects/laser_ball.png"), ResourceIDFrames::IDF_LASER_BALL);
 
 
 
