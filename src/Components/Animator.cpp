@@ -52,6 +52,15 @@ bool Animator::isAnimationEnded() const {
 	return this->animationEnded;
 }
 
+void Animator::setFrame(int frame){
+	if (this->animationSet == nullptr) return;
+
+	for (int i = 0; i < animationSet->layerCount; i++) {
+		animationSet->layers[i].currentFrame = frame;
+	}
+}
+
+
 void Animator::playAnimation(float dt) {
 	if (animationSet == nullptr) {
 		throw runtime_error("Impossible to run animation before setting one");

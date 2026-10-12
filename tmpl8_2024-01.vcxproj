@@ -125,6 +125,7 @@
   <!-- Source files -->
   <ItemGroup>
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="src\AnimationStates\BossState.cpp" />
     <ClCompile Include="src\AnimationStates\EnemyState.cpp" />
     <ClCompile Include="src\AnimationStates\PlayerState.cpp" />
     <ClCompile Include="src\AnimationStates\PowState.cpp" />
@@ -141,9 +142,11 @@
     <ClCompile Include="src\DataStructures\GunPresets.cpp" />
     <ClCompile Include="src\DataStructures\RebelSoldierPresets.cpp" />
     <ClCompile Include="src\Entities\Bullet.cpp" />
+    <ClCompile Include="src\Entities\Bullets\CannonBall.cpp" />
     <ClCompile Include="src\Entities\Bullets\FlameBullet.cpp" />
     <ClCompile Include="src\Entities\Bullets\Missle.cpp" />
     <ClCompile Include="src\Entities\Bullets\PistolBullet.cpp" />
+    <ClCompile Include="src\Entities\Enemies\Boss.cpp" />
     <ClCompile Include="src\Entities\Enemies\Helicopter.cpp" />
     <ClCompile Include="src\Entities\Enemies\RebelSoldier.cpp" />
     <ClCompile Include="src\Entities\Enemy.cpp" />
@@ -185,6 +188,7 @@
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="game.h" />
     <ClInclude Include="lib\miniaudio.h" />
+    <ClInclude Include="src\AnimationStates\BossState.h" />
     <ClInclude Include="src\AnimationStates\EnemyState.h" />
     <ClInclude Include="src\AnimationStates\PlayerState.h" />
     <ClInclude Include="src\AnimationStates\PowState.h" />
@@ -198,6 +202,7 @@
     <ClInclude Include="src\Components\Spawner.h" />
     <ClInclude Include="src\Components\Spawners\PowerUpSpawner.h" />
     <ClInclude Include="src\Components\Spawners\PowSpawner.h" />
+    <ClInclude Include="src\DataStructures\BossAnimationSet.h" />
     <ClInclude Include="src\DataStructures\BulletType.h" />
     <ClInclude Include="src\DataStructures\MapLayer.h" />
     <ClInclude Include="src\Components\Spawners\EnemySpawner.h" />
@@ -222,9 +227,11 @@
     <ClInclude Include="src\DataStructures\SpriteSet.h" />
     <ClInclude Include="src\DataStructures\vec2.h" />
     <ClInclude Include="src\Entities\Bullet.h" />
+    <ClInclude Include="src\Entities\Bullets\CannonBall.h" />
     <ClInclude Include="src\Entities\Bullets\FlameBullet.h" />
     <ClInclude Include="src\Entities\Bullets\Missle.h" />
     <ClInclude Include="src\Entities\Bullets\PistolBullet.h" />
+    <ClInclude Include="src\Entities\Enemies\Boss.h" />
     <ClInclude Include="src\Entities\Enemies\Helicopter.h" />
     <ClInclude Include="src\Entities\Enemies\RebelSoldier.h" />
     <ClInclude Include="src\Entities\Enemy.h" />

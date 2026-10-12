@@ -124,7 +124,18 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_MISSLE] = new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missle.png"), ResourceIDFrames::IDF_MISSLE);
 	sprites[ResourceID::ID_MISSLE_BOOM]	= new Sprite(new Surface("assets/EnemyAnimation/Helicopter/missleBoom.png"), ResourceIDFrames::IDF_MISSLE_BOOM);
 
+	sprites[ResourceID::ID_BOSS_BODY]                = new Sprite(new Surface("assets/EnemyAnimation/Boss/body.png"), ResourceIDFrames::IDF_BOSS_BODY);
+	sprites[ResourceID::ID_BOSS_EXPLOSION]           = new Sprite(new Surface("assets/EnemyAnimation/Boss/explosion.png"), ResourceIDFrames::IDF_BOSS_EXPLOSION);
 
+	sprites[ResourceID::ID_BOSS_CANNON_FIRE_HIGH]    = new Sprite(new Surface("assets/EnemyAnimation/Boss/cannon/cannon_fire_high.png"), ResourceIDFrames::IDF_BOSS_CANNON_FIRE_HIGH);
+	sprites[ResourceID::ID_BOSS_CANNON_FIRE_LOW]     = new Sprite(new Surface("assets/EnemyAnimation/Boss/cannon/cannon_fire_low.png"), ResourceIDFrames::IDF_BOSS_CANNON_FIRE_LOW);
+	sprites[ResourceID::ID_BOSS_CANNON_LASER_HIGH]   = new Sprite(new Surface("assets/EnemyAnimation/Boss/cannon/cannon_laser_high.png"), ResourceIDFrames::IDF_BOSS_CANNON_LASER_HIGH);
+	sprites[ResourceID::ID_BOSS_CANNON_LASER_LOW]    = new Sprite(new Surface("assets/EnemyAnimation/Boss/cannon/cannon_laser_low.png"), ResourceIDFrames::IDF_BOSS_CANNON_LASER_LOW);
+	sprites[ResourceID::ID_BOSS_CANNON_MOVING_UP]    = new Sprite(new Surface("assets/EnemyAnimation/Boss/cannon/cannon_moving_up.png"), ResourceIDFrames::IDF_BOSS_CANNON_MOVING_UP);
+	sprites[ResourceID::ID_BOSS_CANNON_MOVING_DOWN]  = new Sprite(new Surface("assets/EnemyAnimation/Boss/cannon/cannon_moving_down.png"), ResourceIDFrames::IDF_BOSS_CANNON_MOVING_DOWN);
+	sprites[ResourceID::ID_BOSS_CANNON_DESTROYED]    = new Sprite(new Surface("assets/EnemyAnimation/Boss/cannon/cannon_destroyed.png"), ResourceIDFrames::IDF_BOSS_CANNON_DESTROYED);
+	
+	sprites[ResourceID::ID_CANNON_BALL]    = new Sprite(new Surface("assets/EnemyAnimation/Boss/effects/cannon_ball.png"), ResourceIDFrames::IDF_CANNON_BALL);
 
 
 

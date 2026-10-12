@@ -58,7 +58,7 @@ void Camera::setWorldSize(const vec2& worldSize_)
 
 	// Default Y limits.
 	this->minY = 0;
-	this->maxY = worldSize.y - this->size.y;
+	this->maxY = worldSize.y - this->size.y - 110.f;
 }
 
 void Camera::enableYFollow(bool enabled)

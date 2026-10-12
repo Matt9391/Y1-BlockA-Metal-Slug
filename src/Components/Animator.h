@@ -13,6 +13,7 @@ public:
 	bool setAnimation(AnimationSet* newAnimationSet, bool flipped = false, bool reset = false);
 
 	bool isAnimationEnded() const;
+	void setFrame(int frame);
 	void playAnimation(float dt);
 private:
 	AnimationSet* animationSet;

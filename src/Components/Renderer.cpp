@@ -130,7 +130,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		endX = static_cast<int>(fminf(static_cast<float>(endX), mapRenderData->layers[0].tiles.x));
 		endY = static_cast<int>(fminf(static_cast<float>(endY), mapRenderData->layers[0].tiles.y));
 
-		for (int i = 0; i < mapRenderData->layerCount - 2; i++) {
+		for (int i = 0; i < mapRenderData->layerCount; i++) {
 			//for (int i = 0; i < mapRenderData.layerCount - 2; i++) { //uncomment to remove hitboxes
 			const MapLayer& layer = mapRenderData->layers[i];
 			
@@ -226,33 +226,33 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		}
 	}
 
-	// if (mapRenderData != nullptr) {
-	// 	for (int i = 0; i < mapRenderData->layerObjCount; i++) {
-	// 		//for (int i = 0; i < mapRenderData.layerCount - 1; i++) { //uncomment to remove hitboxes
-	// 		for (int j = 0; j < mapRenderData->spawnerCounts[i]; j++) {
-	// 			const Spawner* spawner = mapRenderData->spawners[i][j];
+	if (mapRenderData != nullptr) {
+		for (int i = 0; i < mapRenderData->layerObjCount; i++) {
+			//for (int i = 0; i < mapRenderData.layerCount - 1; i++) { //uncomment to remove hitboxes
+			for (int j = 0; j < mapRenderData->spawnerCounts[i]; j++) {
+				const Spawner* spawner = mapRenderData->spawners[i][j];
 
-	// 			const vec2& pos = spawner->getPos();
-	// 			const vec2& size = spawner->getSize();
+				const vec2& pos = spawner->getPos();
+				const vec2& size = spawner->getSize();
 
-	// 			screen->Box(static_cast<int>(pos.x - cameraOffset.x), 
-	// 						static_cast<int>(pos.y - cameraOffset.y),
-	// 						static_cast<int>(pos.x - cameraOffset.x + size.x), 
-	// 						static_cast<int>(pos.y - cameraOffset.y + size.y), 
-	// 						0xFFFF00);
-	// 		}
-	// 	}
-	// }
+				screen->Box(static_cast<int>(pos.x - cameraOffset.x), 
+							static_cast<int>(pos.y - cameraOffset.y),
+							static_cast<int>(pos.x - cameraOffset.x + size.x), 
+							static_cast<int>(pos.y - cameraOffset.y + size.y), 
+							0xFFFF00);
+			}
+		}
+	}
 
-	// for (int i = 0; i < collidersCount; i++) {
-	// 	const Collider* c = colliders[i];
-	// 	if(!c) continue;
-	// 	screen->Box(static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x), 
-	// 				static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y),
-	// 				static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x + c->size.x), 
-	// 				static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y + c->size.y), 
-	// 				0xFF0000);
-	// }
+	for (int i = 0; i < collidersCount; i++) {
+		const Collider* c = colliders[i];
+		if(!c) continue;
+		screen->Box(static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x), 
+					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y),
+					static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x + c->size.x), 
+					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y + c->size.y), 
+					0xFF0000);
+	}
 
 	for (int i = 0; i < spriteSetCount; i++) {
 		SpriteSet& ss = spriteSets[i];

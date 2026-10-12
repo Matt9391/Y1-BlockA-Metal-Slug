@@ -16,14 +16,38 @@ namespace BossStates {
         float elapsedTime = 0.f;
     };
 
-    class AttackOneState final : public BossState
+    class AttackOneHighState final : public BossState
+    {
+    public:
+        void enter(Boss& b) override;
+        BossAnimationSet update(Boss& b, float dt, BossAnimationSet current) override;
+    private:
+        int shootCount;
+        static const int FIRSTSHOOT = 800; 
+        static const int SECONDSHOOT = 1200; 
+        static const int THIRDSHOOT = 1600; 
+    };
+
+    class AttackOneLowState final : public BossState
+    {
+    public:
+        void enter(Boss& b) override;
+        BossAnimationSet update(Boss& b, float dt, BossAnimationSet current) override;
+    private:
+        int shootCount;
+        static const int FIRSTSHOOT = 800; 
+        static const int SECONDSHOOT = 1200; 
+        static const int THIRDSHOOT = 1600;
+    };
+
+    class AttackTwoHighState final : public BossState
     {
     public:
         void enter(Boss& b) override;
         BossAnimationSet update(Boss& b, float dt, BossAnimationSet current) override;
     };
 
-    class AttackTwoState final : public BossState
+    class AttackTwoLowState final : public BossState
     {
     public:
         void enter(Boss& b) override;

@@ -181,6 +181,15 @@
     <ClCompile Include="src\Entities\Bullets\Missle.cpp">
       <Filter>src\Entities\Bullets</Filter>
     </ClCompile>
+    <ClCompile Include="src\AnimationStates\BossState.cpp">
+      <Filter>src\AnimationStates</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Bullets\CannonBall.cpp">
+      <Filter>src\Entities\Bullets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\Enemies\Boss.cpp">
+      <Filter>src\Entities\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -394,6 +403,18 @@
     </ClInclude>
     <ClInclude Include="src\Entities\Bullets\Missle.h">
       <Filter>src\Entities\Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\BossAnimationSet.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationStates\BossState.h">
+      <Filter>src\AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Bullets\CannonBall.h">
+      <Filter>src\Entities\Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Enemies\Boss.h">
+      <Filter>src\Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
