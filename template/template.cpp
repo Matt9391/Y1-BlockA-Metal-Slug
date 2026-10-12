@@ -52,7 +52,8 @@ void InitRenderTarget( int w, int h )
 	scrwidth = w, scrheight = h;
 	renderTarget = new GLTexture( scrwidth, scrheight, GLTexture::INTTARGET );
 }
-//Asked to claude how to keep the aspect ratio but I understoo it.
+
+//Asked to claude how to keep the aspect ratio but I understood it.
 void ReshapeWindowCallback(GLFWwindow*, int w, int h)
 {
 	float targetAspect = (float)SCRWIDTH / (float)SCRHEIGHT; //the aspect of the game I desire
