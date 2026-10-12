@@ -29,7 +29,7 @@ void Camera::follow(const vec2& target)
     {
         float wantedX = target.x - followPointX;
 
-        pos.x = myMath::lerp(pos.x, wantedX, 0.005f);
+        pos.x = myMath::lerp(pos.x, wantedX, 0.005f); // TODO: should need dt
     }
 
 	this->pos.x = myMath::constrain(this->pos.x,0,this->worldSize.x - this->size.x);

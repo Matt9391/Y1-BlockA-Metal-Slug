@@ -16,7 +16,7 @@ class Game : public TheApp
 {
 public:
 	Game();
-	~Game();
+	~Game(); // TODO: add deconstructor print on each deconsturctor to check everything gets deleted at some point
 	// game flow methods
 	void Init();
 	void Tick( float dt );

@@ -93,7 +93,7 @@ void GameScene::init() {
 
 		getRenderer().addParallaxRenderData(parallaxRenderData);
 
-		// TODO: make it a variable limit1
+		// DONE: make it a variable limit1
 		getCamera().setWorldSize(vec2(nTilesLimit1Camera * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
 	}
 	

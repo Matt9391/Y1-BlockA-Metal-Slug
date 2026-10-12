@@ -15,6 +15,7 @@ GameOverScene::GameOverScene(Surface* screen, Renderer& renderer, InputManager& 
 void GameOverScene::init() {
 	getCamera().enableCamera(false);
 	getRenderer().clearSpriteSets();
+	getRenderer().clearParallaxRenderData();
 	getRenderer().addSpriteSet(SpriteSet(
 				ResourceID::ID_GAME_OVER_BG,
 				ResourceIDFrames::IDF_GAME_OVER_BG,

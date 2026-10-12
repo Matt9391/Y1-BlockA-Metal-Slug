@@ -49,7 +49,7 @@ public:
 		}
 	}
 
-	void operator=(const MapLayer& other) {
+	MapLayer& operator=(const MapLayer& other) {
 		this->resourceId = other.resourceId;
 		this->firstgid = other.firstgid;
 		this->offset = other.offset;
@@ -66,6 +66,8 @@ public:
 		for (int i = 0; i < dataSize; i++) {
 			this->data[i] = other.data[i];
 		}
+		
+		return *this;
 	}
 
 };

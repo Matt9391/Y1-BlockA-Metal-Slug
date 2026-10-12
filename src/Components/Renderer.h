@@ -27,6 +27,7 @@ public:
 	void addParallaxRenderData(const ParallaxRenderData& prd);
 
 	void clearRenderDatas();
+	void clearParallaxRenderData();
 	void clearColliders();
 	void clearTexts();
 

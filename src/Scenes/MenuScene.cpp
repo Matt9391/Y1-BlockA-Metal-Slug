@@ -15,6 +15,7 @@ MenuScene::MenuScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 void MenuScene::init() {
 	getCamera().enableCamera(false);
 	getRenderer().clearSpriteSets();
+	getRenderer().clearParallaxRenderData();
 	getRenderer().addSpriteSet(SpriteSet(
 				ResourceID::ID_MENU_BG,
 				ResourceIDFrames::IDF_MENU_BG,

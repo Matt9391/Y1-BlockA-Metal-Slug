@@ -8,7 +8,7 @@ class AudioManager{
 public:
     AudioManager();
     ~AudioManager();
-
+    //TODO: delete copy constructor and assingment constructor
     void clearSounds();
 
     bool addAudioToPlay(SoundID sid);
