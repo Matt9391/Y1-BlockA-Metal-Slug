@@ -193,6 +193,9 @@
     <ClCompile Include="src\Entities\Bullets\LaserBall.cpp">
       <Filter>src\Entities\Bullets</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Bullets\LaserBeam.cpp">
+      <Filter>src\Entities\Bullets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -420,6 +423,9 @@
       <Filter>src\Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="src\Entities\Bullets\LaserBall.h">
+      <Filter>src\Entities\Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Bullets\LaserBeam.h">
       <Filter>src\Entities\Bullets</Filter>
     </ClInclude>
   </ItemGroup>

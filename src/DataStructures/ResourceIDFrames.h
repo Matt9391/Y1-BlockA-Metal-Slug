@@ -115,5 +115,6 @@ enum ResourceIDFrames : int {
 	IDF_BOSS_CANNON_DESTROYED = 1,
 	IDF_CANNON_BALL = 9,
 	IDF_LASER_BALL = 4,
+	IDF_LASER_BEAM = 2,
 	IDF_AMMOS = 1,
 };

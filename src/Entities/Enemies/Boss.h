@@ -24,13 +24,14 @@ public:
 
     Bullet* getBullet(int i) const;
 
-    // void takeHit();
+    void takeHit();
 
     void moveShootOffset(vec2 incr);
+    bool shootBeam(); // TODO: MERGE these function together
     bool shootCannon();
     bool shootLaserBall();
 
-    int getLife() const;
+    int getHP() const;
 private:
     BossStates::BossState* state;
 
@@ -41,6 +42,6 @@ private:
 
     vec2 shootOffset;
 
-    int life;
+    int HP;
 
 };

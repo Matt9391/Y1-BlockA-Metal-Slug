@@ -115,5 +115,6 @@ enum ResourceID : int {
 	ID_BOSS_CANNON_DESTROYED,      
 	ID_CANNON_BALL,      
 	ID_LASER_BALL,      
+	ID_LASER_BEAM,      
 	ID_COUNTS
 };

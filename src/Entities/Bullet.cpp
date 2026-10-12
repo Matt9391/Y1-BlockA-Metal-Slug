@@ -11,7 +11,8 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2, BulletType bulletType, float
 	isDisabled(false),
 	bulletType(bulletType)
 { 
-	getRigidBody()->setSpeed(bulletSpeed);
+	if(needsRigidBody)
+		getRigidBody()->setSpeed(bulletSpeed);
 }
 
 

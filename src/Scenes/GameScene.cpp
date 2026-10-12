@@ -411,11 +411,20 @@ void GameScene::update(float dt) {
 				}
 				
 			}
+			else if(e->getEntityType() == EntityType::ET_BOSS){
+				Boss* bs = static_cast<Boss*>(e); 
+				if (!bs->getAlive()) continue;
+				
+				if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider())) {
+					b->explode();
+					bs->takeHit();
+					// player.addScore(100);
+				}
+			}
 		}
 	}
 
 	
-
 	
 	getRenderer().addRenderData(player.getRenderData());
 	player.getGun().addRenderDatas(getRenderer());

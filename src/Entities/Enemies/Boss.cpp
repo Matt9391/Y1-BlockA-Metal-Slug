@@ -9,6 +9,7 @@
 #include <BulletType.h>
 #include <Bullets/CannonBall.h>
 #include <Bullets/LaserBall.h>
+#include <Bullets/LaserBeam.h>
 #include <myMath.h>
 
 // DONE: change y position based on direction to give feel, make it spawn higher
@@ -18,7 +19,7 @@ Boss::Boss(vec2 pos) :
     bulletsCount(0),
 	bulletSpeed(0.1f),
 	bullets{nullptr},
-    life(100)
+    HP(51)
 	{
     setCollider(vec2(10, 105), vec2(0,0));
 	getAnimationSets() = new AnimationSet[BossAnimationSet::BAS_COUNTS];
@@ -234,6 +235,25 @@ bool Boss::shootLaserBall() {
 	return true;
 }
 
+bool Boss::shootBeam() {
+	int bIndex = -1;
+	for (int i = 0; i < MAXBULLETS; i++) {
+		if (bullets[i] == nullptr) {
+			bIndex = i;
+			break;
+		}
+	}
+
+	if (bIndex == -1) return false;
+
+
+	bullets[bIndex] = new LaserBeam(getPos() + getCollider().offset + shootOffset + vec2(-280, 42),
+									BulletType::BT_LASER_BALL);
+	bulletsCount++;
+
+	return true;
+}
+
 void Boss::freeBullet(int i) {
 	if (bullets[i]) {
 		delete bullets[i];
@@ -259,10 +279,10 @@ Bullet* Boss::getBullet(int i) const {
 	return bullets[i];
 }
 
-int Boss::getLife() const{
-    return this->life;
+int Boss::getHP() const{
+    return this->HP;
 }
 
-// void Boss::takeHit(){
-// 	this->lives--;
-// }
+void Boss::takeHit(){
+	this->HP--;
+}
