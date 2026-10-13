@@ -20,7 +20,7 @@ void Camera::init(vec2 pos_) {
 }
 
 
-void Camera::follow(const vec2& target)
+void Camera::follow(const vec2& target, float dt)
 {
 
 	const float followPointX = this->size.x * 0.20f; // 20% of screen
@@ -29,7 +29,7 @@ void Camera::follow(const vec2& target)
     {
         float wantedX = target.x - followPointX;
 
-        pos.x = myMath::lerp(pos.x, wantedX, 0.005f); // TODO: should need dt
+        pos.x = myMath::lerp(pos.x, wantedX, dt * 0.006f); // DONE: should need dt
     }
 
 	this->pos.x = myMath::constrain(this->pos.x,0,this->worldSize.x - this->size.x);

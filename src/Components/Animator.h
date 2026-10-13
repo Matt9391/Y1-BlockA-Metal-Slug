@@ -20,6 +20,5 @@ private:
 
 	float timeElapsed[MAX_LAYERS];
 	bool animationEnded;
-	int longestLayer;
 };
 

@@ -206,8 +206,9 @@ void Boss::moveShootOffset(vec2 incr){
 	this->shootOffset += incr;	
 }
 
-bool Boss::shootCannon() {
-	int bIndex = -1;
+
+bool Boss::shoot(BulletType bulletType){
+    int bIndex = -1;
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) {
 			bIndex = i;
@@ -217,58 +218,101 @@ bool Boss::shootCannon() {
 
 	if (bIndex == -1) return false;
 
-
-	bullets[bIndex] = new CannonBall(getPos() + getCollider().offset + shootOffset + vec2(Rand(30.f) - 15.f,0),
+    switch (bulletType)
+    {
+    case BT_CANNON_BALL:
+        bullets[bIndex] = new CannonBall(getPos() + getCollider().offset + shootOffset + vec2(Rand(30.f) - 15.f,0),
 									true, 
 									vec2(-1,0), 
 									BulletType::BT_CANNON_BALL,
 									Rand(150.f) + 1500.f,
                                     abs(getSensors().distToPlayer));
-	bulletsCount++;
-
-	return true;
-}
-
-bool Boss::shootLaserBall() {
-	int bIndex = -1;
-	for (int i = 0; i < MAXBULLETS; i++) {
-		if (bullets[i] == nullptr) {
-			bIndex = i;
-			break;
-		}
-	}
-
-	if (bIndex == -1) return false;
-
-
-	bullets[bIndex] = new LaserBall(getPos() + getCollider().offset + shootOffset + vec2(0, 42),
+        break;
+    case BT_LASER_BALL:
+        bullets[bIndex] = new LaserBall(getPos() + getCollider().offset + shootOffset + vec2(0, 42),
 									true, 
 									vec2(-1,0), 
 									BulletType::BT_LASER_BALL, 
                                     0.1f);
-	bulletsCount++;
-
-	return true;
-}
-
-bool Boss::shootBeam() {
-	int bIndex = -1;
-	for (int i = 0; i < MAXBULLETS; i++) {
-		if (bullets[i] == nullptr) {
-			bIndex = i;
-			break;
-		}
-	}
-
-	if (bIndex == -1) return false;
-
-
-	bullets[bIndex] = new LaserBeam(getPos() + getCollider().offset + shootOffset + vec2(-280, 42),
+        break;
+    case BT_LASER:
+        bullets[bIndex] = new LaserBeam(getPos() + getCollider().offset + shootOffset + vec2(-280, 42),
 									BulletType::BT_LASER_BALL);
+        break;
+    
+    default:
+        break;
+    }
+
+	
 	bulletsCount++;
 
 	return true;
 }
+
+// bool Boss::shootCannon() {
+// 	int bIndex = -1;
+// 	for (int i = 0; i < MAXBULLETS; i++) {
+// 		if (bullets[i] == nullptr) {
+// 			bIndex = i;
+// 			break;
+// 		}
+// 	}
+
+// 	if (bIndex == -1) return false;
+
+
+// 	bullets[bIndex] = new CannonBall(getPos() + getCollider().offset + shootOffset + vec2(Rand(30.f) - 15.f,0),
+// 									true, 
+// 									vec2(-1,0), 
+// 									BulletType::BT_CANNON_BALL,
+// 									Rand(150.f) + 1500.f,
+//                                     abs(getSensors().distToPlayer));
+// 	bulletsCount++;
+
+// 	return true;
+// }
+
+// bool Boss::shootLaserBall() {
+// 	int bIndex = -1;
+// 	for (int i = 0; i < MAXBULLETS; i++) {
+// 		if (bullets[i] == nullptr) {
+// 			bIndex = i;
+// 			break;
+// 		}
+// 	}
+
+// 	if (bIndex == -1) return false;
+
+
+// 	bullets[bIndex] = new LaserBall(getPos() + getCollider().offset + shootOffset + vec2(0, 42),
+// 									true, 
+// 									vec2(-1,0), 
+// 									BulletType::BT_LASER_BALL, 
+//                                     0.1f);
+// 	bulletsCount++;
+
+// 	return true;
+// }
+
+// bool Boss::shootBeam() {
+// 	int bIndex = -1;
+// 	for (int i = 0; i < MAXBULLETS; i++) {
+// 		if (bullets[i] == nullptr) {
+// 			bIndex = i;
+// 			break;
+// 		}
+// 	}
+
+// 	if (bIndex == -1) return false;
+
+
+// 	bullets[bIndex] = new LaserBeam(getPos() + getCollider().offset + shootOffset + vec2(-280, 42),
+// 									BulletType::BT_LASER_BALL);
+// 	bulletsCount++;
+
+// 	return true;
+// }
 
 void Boss::freeBullet(int i) {
 	if (bullets[i]) {

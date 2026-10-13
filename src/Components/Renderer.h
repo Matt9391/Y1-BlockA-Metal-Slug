@@ -56,4 +56,7 @@ private:
 
 
 	Printer printer;
+
+	void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
+
 };

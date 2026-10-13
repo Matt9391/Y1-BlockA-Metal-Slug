@@ -5,8 +5,9 @@
 #include <iostream>
 #include <Spawner.h>
 
-void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
 
+
+//TODO: CRT
 Renderer::Renderer() :
 	renderDataCount{0},
 	collidersCount(0),
@@ -279,7 +280,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 }
 
 
-void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y) {
+void Renderer::drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y) {
 
 	//check if the tile is outside the screen
 	if (x + tileSize < 0 || y + tileSize < 0 || x > screen->width || y > screen->height)

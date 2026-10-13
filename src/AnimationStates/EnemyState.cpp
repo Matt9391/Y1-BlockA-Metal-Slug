@@ -166,7 +166,7 @@ namespace RebelSoldierStates {
 
     }
 
-    EnemyAnimationSet ScaredState::update(RebelSoldier& e, float dt, EnemyAnimationSet current)
+    EnemyAnimationSet ScaredState::update(RebelSoldier& e, float, EnemyAnimationSet current)
     {
 
         if (!e.getSensors().alive) {

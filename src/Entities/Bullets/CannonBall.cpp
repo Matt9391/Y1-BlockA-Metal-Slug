@@ -88,10 +88,11 @@ void CannonBall::update(float dt) {
         float angle = atan2f(dy, -abs(dx)) * 180.f / PI; //I just do the arc tan of a vector which return the angle and converto to degrees
                                                          //-abs(dx) because the sprite face left so we work like it's always going left 
         if (angle < 0.f) angle += 360.f;
-        frame = myMath::constrain(static_cast<int>(roundf((270.f - angle) / frameAngle)), 0, ResourceIDFrames::IDF_CANNON_BALL);
+        frame = static_cast<int>(myMath::constrain(
+                                roundf((270.f - angle) / frameAngle), 
+                                0.f, 
+                                static_cast<float>(ResourceIDFrames::IDF_CANNON_BALL)));
     }
-
-    bool flipX = getDir().x > 0.f;   // rightward arc: draw the same frame mirrored
 
     if(frame != -1){
         getAnimator().setFrame(frame);

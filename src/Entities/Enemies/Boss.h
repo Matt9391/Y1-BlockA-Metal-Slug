@@ -5,7 +5,7 @@
 
 class Bullet;
 class Renderer;
-
+enum BulletType : int;
 
 class Boss : public Enemy{
 public:
@@ -27,9 +27,10 @@ public:
     void takeHit();
 
     void moveShootOffset(vec2 incr);
-    bool shootBeam(); // TODO: MERGE these function together
-    bool shootCannon();
-    bool shootLaserBall();
+    // bool shootBeam(); // DONE: MERGE these function together
+    // bool shootCannon();
+    // bool shootLaserBall();
+    bool shoot(BulletType bulletType);
 
     int getHP() const;
 private:

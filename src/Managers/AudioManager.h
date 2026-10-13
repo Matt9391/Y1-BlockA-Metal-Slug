@@ -8,8 +8,11 @@ class AudioManager{
 public:
     AudioManager();
     ~AudioManager();
-    //TODO: delete copy constructor and assingment constructor
     void clearSounds();
+    
+    //DONE: delete copy constructor and assingment constructor
+    AudioManager(const AudioManager& other) = delete;
+    AudioManager& operator=(const AudioManager& other) = delete;
 
     bool addAudioToPlay(SoundID sid);
 

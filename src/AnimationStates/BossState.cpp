@@ -3,11 +3,12 @@
 #include <Enemies/Boss.h> 
 #include <BossAnimationSet.h> 
 #include <RigidBody.h> 
+#include <BulletType.h> 
 
 namespace BossStates {
 
     // ---------- AttackOneHighState ----------
-    void AttackOneHighState::enter(Boss& b)
+    void AttackOneHighState::enter(Boss&)
     {
         this->elapsedTime = 0.f;
         this->shootCount = 1;
@@ -21,13 +22,13 @@ namespace BossStates {
         elapsedTime += dt;
 
         if(elapsedTime > THIRDSHOOT && shootCount == 3){
-            b.shootCannon();
+            b.shoot(BulletType::BT_CANNON_BALL);
             shootCount++;
         }else if(elapsedTime > SECONDSHOOT && shootCount == 2){
-            b.shootCannon();   
+            b.shoot(BulletType::BT_CANNON_BALL);   
             shootCount++;         
         }else if(elapsedTime > FIRSTSHOOT && shootCount == 1){
-            b.shootCannon();
+            b.shoot(BulletType::BT_CANNON_BALL);
             shootCount++;
         }
 
@@ -38,7 +39,7 @@ namespace BossStates {
     }
 
     // ---------- AttackOneLowState ----------
-    void AttackOneLowState::enter(Boss& b)
+    void AttackOneLowState::enter(Boss&)
     {
         this->elapsedTime = 0.f;
         this->shootCount = 1;
@@ -52,13 +53,13 @@ namespace BossStates {
         elapsedTime += dt;
 
         if(elapsedTime > THIRDSHOOT && shootCount == 3){
-            b.shootCannon();
+            b.shoot(BulletType::BT_CANNON_BALL);
             shootCount++;
         }else if(elapsedTime > SECONDSHOOT && shootCount == 2){
-            b.shootCannon();   
+            b.shoot(BulletType::BT_CANNON_BALL);   
             shootCount++;         
         }else if(elapsedTime > FIRSTSHOOT && shootCount == 1){
-            b.shootCannon();
+            b.shoot(BulletType::BT_CANNON_BALL);
             shootCount++;
         }
         if(b.getSensors().animationEnded){
@@ -69,38 +70,38 @@ namespace BossStates {
     }
 
     // ---------- AttackTwoHighState ----------
-    void AttackTwoHighState::enter(Boss& b)
+    void AttackTwoHighState::enter(Boss&)
     {
     }
 
-    BossAnimationSet AttackTwoHighState::update(Boss& b, float dt, BossAnimationSet current)
+    BossAnimationSet AttackTwoHighState::update(Boss& b, float, BossAnimationSet current)
     {
         if(b.getSensors().animationEnded){
-            b.shootBeam();
+            b.shoot(BulletType::BT_LASER);
             return BossAnimationSet::BAS_MOVE_DOWN;
         }
         return current;
     }
 
     // ---------- AttackTwoLowState ----------
-    void AttackTwoLowState::enter(Boss& b)
+    void AttackTwoLowState::enter(Boss&)
     {
     }
 
-    BossAnimationSet AttackTwoLowState::update(Boss& b, float dt, BossAnimationSet current)
+    BossAnimationSet AttackTwoLowState::update(Boss& b, float, BossAnimationSet current)
     {
         if(!b.getSensors().alive){
             return BossAnimationSet::BAS_DEATH;
         }
         if(b.getSensors().animationEnded){
-            b.shootLaserBall();
+            b.shoot(BulletType::BT_LASER_BALL);
             return BossAnimationSet::BAS_MOVE_UP;
         }
         return current;
     }
 
     // ---------- MoveUpState ----------
-    void MoveUpState::enter(Boss& b)
+    void MoveUpState::enter(Boss&)
     {
     }
 
@@ -121,7 +122,7 @@ namespace BossStates {
     }
 
     // ---------- MoveDownState ----------
-    void MoveDownState::enter(Boss& b)
+    void MoveDownState::enter(Boss&)
     {
     }
 
@@ -142,25 +143,23 @@ namespace BossStates {
     }
 
     // ---------- DeathState ----------
-    void DeathState::enter(Boss& b)
+    void DeathState::enter(Boss&)
     {
     }
 
-    BossAnimationSet DeathState::update(Boss& b, float dt, BossAnimationSet current)
+    BossAnimationSet DeathState::update(Boss& b, float, BossAnimationSet current)
     {   
-        printf("anim running\n");
         if(b.getSensors().animationEnded){
-            printf("anim ended\n");
             return BossAnimationSet::BAS_DEATH_STILL;
         }
         return current;
     }
     
-    void DeathStillState::enter(Boss& b)
+    void DeathStillState::enter(Boss&)
     {
     }
 
-    BossAnimationSet DeathStillState::update(Boss& b, float dt, BossAnimationSet current)
+    BossAnimationSet DeathStillState::update(Boss&, float, BossAnimationSet current)
     {
         return current;
     }

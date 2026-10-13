@@ -9,7 +9,7 @@ public:
 	Camera(vec2 pos, vec2 size);
 
 	void init(vec2 pos_);
-	void follow(const vec2& target);
+	void follow(const vec2& target, float dt);
 
 	vec2 getPos() const;
 

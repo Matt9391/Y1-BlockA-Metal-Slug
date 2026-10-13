@@ -8,6 +8,7 @@ struct RenderData {
 	RenderData() {
 		animationSet = AnimationSet();
 		pos = vec2(0, 0);
+		layer = 1;
 	}
 
 	RenderData(AnimationSet animationSet, vec2 pos, int layer = 1) {

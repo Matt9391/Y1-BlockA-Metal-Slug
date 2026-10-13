@@ -59,7 +59,7 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 				vec2(3318, 3.5))
 	),
 	nTilesLimit1Camera(231),
-	nTilesLimit2Camera(map.getTiles().x)
+	nTilesLimit2Camera(static_cast<int>(map.getTiles().x))
 	{
 	}
 
@@ -95,7 +95,9 @@ void GameScene::init() {
 		getRenderer().addParallaxRenderData(parallaxRenderData);
 
 		// DONE: make it a variable limit1
-		getCamera().setWorldSize(vec2(nTilesLimit2Camera * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
+		getCamera().setWorldSize(vec2(static_cast<float>(nTilesLimit1Camera * map.getTileSize()), 
+									  static_cast<float>(map.getTiles().y * map.getTileSize()))
+		);
 	}
 	
 	setChangeScene(false);
@@ -128,7 +130,7 @@ void GameScene::update(float dt) {
 	anim.playAnimation(dt);
 	anim2.playAnimation(dt);
 
-	// TODO: ADD layers to the renderData
+	// DONE: ADD layers to the renderData
 	getRenderer().addRenderData(waterfall);
 
 
@@ -399,7 +401,8 @@ void GameScene::update(float dt) {
 			}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
 				Helicopter* h = static_cast<Helicopter*>(e); 
 				if(!h->getAlive()){
-					getCamera().setWorldSize(vec2(nTilesLimit2Camera * map.getTileSize(), (map.getTiles().y)* map.getTileSize()));
+					getCamera().setWorldSize(vec2(static_cast<float>(nTilesLimit2Camera * map.getTileSize()), 
+												  static_cast<float>(map.getTiles().y * map.getTileSize())));
 
 				}
 
@@ -438,7 +441,7 @@ void GameScene::update(float dt) {
 	//Collider c = player.getCollider();
 	//c.offset.x += player.getLastDir().x * c.size.x;
 	//getRenderer().addCollider(c);
-	getCamera().follow(player.getPos());
+	getCamera().follow(player.getPos(), dt);
 
 	//HUD
 	{
