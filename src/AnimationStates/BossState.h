@@ -74,6 +74,13 @@ namespace BossStates {
         void enter(Boss& b) override;
         BossAnimationSet update(Boss& b, float dt, BossAnimationSet current) override;
     };
+    
+    class DeathStillState final : public BossState
+    {
+    public:
+        void enter(Boss& b) override;
+        BossAnimationSet update(Boss& b, float dt, BossAnimationSet current) override;
+    };
 
     BossState* getBossState(BossAnimationSet index);
 

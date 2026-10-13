@@ -7,7 +7,8 @@
 Animator::Animator():
 	animationSet(nullptr),
 	timeElapsed{ 0.f },
-	animationEnded(false)
+	animationEnded(false),
+	longestLayer(0)
 	{
 
 	}
@@ -45,6 +46,15 @@ bool Animator::setAnimation(AnimationSet* newAnimationSet, bool flipped,  bool r
 	}
 	this->animationSet->flipped = flipped;
 
+	if (result) {
+		longestLayer = 0;
+		for (int i = 1; i < animationSet->layerCount; i++) {
+			if (animationSet->layers[i].nFrames > animationSet->layers[longestLayer].nFrames) {
+				longestLayer = i;
+			}
+		}
+	}
+
 	return result;
 }
 
@@ -74,8 +84,9 @@ void Animator::playAnimation(float dt) {
 			this->timeElapsed[i] = 0.f;
 			l.currentFrame = ++l.currentFrame % l.nFrames;
 		}
-
-		this->animationEnded = l.currentFrame == (l.nFrames -1);
-
 	}
+	
+	this->animationEnded = animationSet->layers[longestLayer].currentFrame == (animationSet->layers[longestLayer].nFrames - 1);
+
+	
 }

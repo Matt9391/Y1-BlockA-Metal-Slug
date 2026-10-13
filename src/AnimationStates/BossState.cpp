@@ -15,6 +15,9 @@ namespace BossStates {
 
     BossAnimationSet AttackOneHighState::update(Boss& b, float dt, BossAnimationSet current)
     {
+        if(!b.getSensors().alive){
+            return BossAnimationSet::BAS_DEATH;
+        }
         elapsedTime += dt;
 
         if(elapsedTime > THIRDSHOOT && shootCount == 3){
@@ -43,6 +46,9 @@ namespace BossStates {
 
     BossAnimationSet AttackOneLowState::update(Boss& b, float dt, BossAnimationSet current)
     {
+        if(!b.getSensors().alive){
+            return BossAnimationSet::BAS_DEATH;
+        }
         elapsedTime += dt;
 
         if(elapsedTime > THIRDSHOOT && shootCount == 3){
@@ -83,6 +89,9 @@ namespace BossStates {
 
     BossAnimationSet AttackTwoLowState::update(Boss& b, float dt, BossAnimationSet current)
     {
+        if(!b.getSensors().alive){
+            return BossAnimationSet::BAS_DEATH;
+        }
         if(b.getSensors().animationEnded){
             b.shootLaserBall();
             return BossAnimationSet::BAS_MOVE_UP;
@@ -97,6 +106,9 @@ namespace BossStates {
 
     BossAnimationSet MoveUpState::update(Boss& b, float dt, BossAnimationSet current)
     {
+        if(!b.getSensors().alive){
+            return BossAnimationSet::BAS_DEATH;
+        }
         b.moveShootOffset(vec2(0, -1 * dt * b.getRigidBody()->getSpeed()));
 
         if(b.getSensors().animationEnded){
@@ -115,6 +127,9 @@ namespace BossStates {
 
     BossAnimationSet MoveDownState::update(Boss& b, float dt, BossAnimationSet current)
     {
+        if(!b.getSensors().alive){
+            return BossAnimationSet::BAS_DEATH;
+        }
         b.moveShootOffset(vec2(0, 1 * dt * b.getRigidBody()->getSpeed()));
 
         if(b.getSensors().animationEnded){
@@ -132,6 +147,20 @@ namespace BossStates {
     }
 
     BossAnimationSet DeathState::update(Boss& b, float dt, BossAnimationSet current)
+    {   
+        printf("anim running\n");
+        if(b.getSensors().animationEnded){
+            printf("anim ended\n");
+            return BossAnimationSet::BAS_DEATH_STILL;
+        }
+        return current;
+    }
+    
+    void DeathStillState::enter(Boss& b)
+    {
+    }
+
+    BossAnimationSet DeathStillState::update(Boss& b, float dt, BossAnimationSet current)
     {
         return current;
     }
@@ -144,6 +173,7 @@ namespace BossStates {
     MoveUpState              moveUpInstance;
     MoveDownState            moveDownInstance;
     DeathState               deathInstance;
+    DeathStillState          deathStillInstance;
 
     BossState* getBossState(BossAnimationSet index)
     {
@@ -155,7 +185,8 @@ namespace BossStates {
             &BossStates::attackTwoLowInstance,   // BAS_ATTACK_TWO_LOW
             &BossStates::moveUpInstance,   // BAS_MOVE_UP
             &BossStates::moveDownInstance,   // BAS_MOVE_DOWN
-            &BossStates::deathInstance    // BAS_DEATH
+            &BossStates::deathInstance,    // BAS_DEATH
+            &BossStates::deathStillInstance    // BAS_DEATH_STILL
         };
         return table[index];
     }

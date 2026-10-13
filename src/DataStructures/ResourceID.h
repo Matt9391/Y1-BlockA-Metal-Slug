@@ -106,6 +106,7 @@ enum ResourceID : int {
 	ID_MISSLE_BOOM,
 	ID_BOSS_BODY,                  
 	ID_BOSS_EXPLOSION,             
+	ID_BOSS_EXPLOSION_STILL,      
 	ID_BOSS_CANNON_FIRE_HIGH,      
 	ID_BOSS_CANNON_FIRE_LOW,       
 	ID_BOSS_CANNON_LASER_HIGH,     

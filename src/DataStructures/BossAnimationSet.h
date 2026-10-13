@@ -9,5 +9,6 @@ enum BossAnimationSet : int
     BAS_MOVE_UP,
     BAS_MOVE_DOWN,
     BAS_DEATH,
+    BAS_DEATH_STILL,
     BAS_COUNTS
 };

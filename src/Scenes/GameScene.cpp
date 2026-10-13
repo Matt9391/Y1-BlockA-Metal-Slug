@@ -305,7 +305,7 @@ void GameScene::update(float dt) {
 			}
 			h->addRenderDatas(getRenderer());
 		}else if(e->getEntityType() == EntityType::ET_BOSS){
-			Boss* bs = static_cast<Boss*>(e); //static vs dynamic ?
+			Boss* bs = static_cast<Boss*>(e);
 			
 			bs->loadSensors(
 				player.getPos() + player.getCollider().size / 2.f,
@@ -413,8 +413,11 @@ void GameScene::update(float dt) {
 			}
 			else if(e->getEntityType() == EntityType::ET_BOSS){
 				Boss* bs = static_cast<Boss*>(e); 
-				if (!bs->getAlive()) continue;
-				
+				if (!bs->getAlive()) {
+					justWin = !winCondition;
+					winCondition = true;
+				}
+
 				if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider())) {
 					b->explode();
 					bs->takeHit();
@@ -506,8 +509,6 @@ void GameScene::update(float dt) {
 	}
 
 	loseCondition = player.getLives() <= -1;
-	justWin = player.getPos().x > 1000 && !winCondition;
-	winCondition = player.getPos().x > 1000;
 };
 
 

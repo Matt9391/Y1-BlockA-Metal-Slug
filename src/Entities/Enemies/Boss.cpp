@@ -19,7 +19,7 @@ Boss::Boss(vec2 pos) :
     bulletsCount(0),
 	bulletSpeed(0.1f),
 	bullets{nullptr},
-    HP(51)
+    HP(10)
 	{
     setCollider(vec2(10, 105), vec2(0,0));
 	getAnimationSets() = new AnimationSet[BossAnimationSet::BAS_COUNTS];
@@ -145,6 +145,22 @@ void Boss::loadGFX() {
         AnimationLayer(
             ResourceID::ID_BOSS_EXPLOSION,
             ResourceIDFrames::IDF_BOSS_EXPLOSION,
+            300,
+            vec2(-265, -100),
+            vec2(0, 0)),
+        AnimationLayer(
+            ResourceID::ID_BOSS_CANNON_DESTROYED,
+            ResourceIDFrames::IDF_BOSS_CANNON_DESTROYED,
+            50,
+            vec2(-36, 31),
+            vec2(0, 0))        
+    );
+    
+    getAnimationSets()[BossAnimationSet::BAS_DEATH_STILL] = AnimationSet(
+        2,
+        AnimationLayer(
+            ResourceID::ID_BOSS_EXPLOSION_STILL,
+            ResourceIDFrames::IDF_BOSS_EXPLOSION_STILL,
             100,
             vec2(-265, -100),
             vec2(0, 0)),
@@ -285,4 +301,7 @@ int Boss::getHP() const{
 
 void Boss::takeHit(){
 	this->HP--;
+    if(this->HP < 0){
+        setAlive(false);
+    }
 }
