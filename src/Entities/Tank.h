@@ -14,15 +14,22 @@ public:
 
 	void update(float dt) override;
 
-    void enterPlayer(const Player* player_);
+    void enterPlayer(Player* player_);
 
     const TankStates::TankInput getTankInput() const;
+
+    bool hasPlayer() const;
+
+    void takeHit();
 private:
+    void ejectPlayer();
+    
 	const InputManager& inputManager; //Const so it can only call const methods
     TankStates::TankState* state;
 
-    const Player* player;
+    Player* player;
 
     bool gotHit;
     bool dead;
+    int hp;
 };

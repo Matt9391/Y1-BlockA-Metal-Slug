@@ -12,9 +12,10 @@ Tank::Tank(vec2 pos, const InputManager& inputManager_) :
     inputManager(inputManager_),
     player(nullptr),
     gotHit(false),
-    dead(false)
+    dead(false),
+    hp(5)
 {
-    setCollider(vec2(40, 20), vec2(3, 0));
+    setCollider(vec2(60, 50), vec2(15, 10));
 	//setCollider(vec2(20, 7), vec2(3, 30));
 	getAnimationSets() = new AnimationSet[TankAnimationSet::TAS_COUNTS];
 	loadGFX();
@@ -63,6 +64,16 @@ void Tank::loadGFX() {
             vec2(0, 0),
             vec2(0, 0))
     );
+    
+    getAnimationSets()[TankAnimationSet::TAS_HIT] = AnimationSet(
+        1,
+        AnimationLayer(
+            ResourceID::ID_TANK_HIT,
+            ResourceIDFrames::IDF_TANK_HIT,
+            50,
+            vec2(0, 0),
+            vec2(0, 0))
+    );
  
     // TAS_EXPLOSION -> hit.png
     getAnimationSets()[TankAnimationSet::TAS_EXPLOSION] = AnimationSet(
@@ -89,20 +100,61 @@ void Tank::loadGFX() {
 
 void Tank::update(float dt){
     getAnimator().playAnimation(dt);
+    
+    RigidBody* rb = getRigidBody();
 
-    if (!getRigidBody()->isGrounded()) {
-		addVelocity(vec2(0, getRigidBody()->getGravity() * dt));
+    if (!rb->isGrounded()) {
+		addVelocity(vec2(0, rb->getGravity() * dt));
 	}
 	else {
 		setVelocityY(0.f);
 	}
 
-    if(this->player == nullptr);
-    return;
+    if(this->player == nullptr){
+        rb->setVelocityX(0);
+		setDir(vec2(0, 0));
+
+    	this->addToPos(rb->getVelocity() * dt);
+        
+        return;
+
+    }
+
     //SKIP IF NOT OWN
 
-    
+    player->setPos(getPos() + vec2(30,15));
 
+
+    const TankStates::TankInput tInput = getTankInput();
+
+    TankAnimationSet nextState = state->handleInput(tInput, static_cast<TankAnimationSet>(getCurrentASIndex()));
+    setCurrentASIndex(nextState);
+    state = TankStates::getTankState(static_cast<TankAnimationSet>(getCurrentASIndex()));
+
+
+	if (getDir().x != 0)
+		setLastDir(getDir());
+	setDir(vec2(0, 0));
+
+	//Movement
+	if (tInput.inputRight) {
+		setDir(vec2(1, 0));
+	}
+	else if (tInput.inputLeft) {
+		setDir(vec2(-1, 0));
+	}
+
+	rb->setVelocityX(rb->getSpeed() * getDir().x);
+
+	this->addToPos(rb->getVelocity() * dt);
+
+    const bool flip = getLastDir().x < 0;
+	const bool reset = tInput.isShooting && getCurrentASIndex() != TankAnimationSet::TAS_HIT && !tInput.isDead;
+
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip, reset);
+
+    //reset bools
+    gotHit = false;
 }
 
 const TankStates::TankInput Tank::getTankInput() const {
@@ -129,6 +181,24 @@ const TankStates::TankInput Tank::getTankInput() const {
 }
 
 
-void Tank::enterPlayer(const Player* player_){
+void Tank::enterPlayer(Player* player_){
     this->player = player_;
+}
+
+
+bool Tank::hasPlayer() const{
+    return this->player != nullptr;
+}
+
+void Tank::takeHit(){
+    gotHit = true;
+    this->hp--;
+    if(this->hp < 0){
+        ejectPlayer();
+    }
+
+}
+
+void Tank::ejectPlayer(){
+
 }

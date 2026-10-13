@@ -196,6 +196,12 @@
     <ClCompile Include="src\Entities\Bullets\LaserBeam.cpp">
       <Filter>src\Entities\Bullets</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Tank.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimationStates\TankState.cpp">
+      <Filter>src\AnimationStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -427,6 +433,15 @@
     </ClInclude>
     <ClInclude Include="src\Entities\Bullets\LaserBeam.h">
       <Filter>src\Entities\Bullets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Tank.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataStructures\TankAnimationSet.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationStates\TankState.h">
+      <Filter>src\AnimationStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

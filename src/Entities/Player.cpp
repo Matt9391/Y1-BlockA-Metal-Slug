@@ -31,7 +31,8 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	gravityMultiplier(0.05f),
 	powSaved(0),
 	angle(0.f),
-	angleIncr(.5f)
+	angleIncr(.5f),
+	inTank(false)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -708,6 +709,10 @@ bool Player::getEnabled() const {
 }
 
 void Player::update(float dt) {
+	gun.update(dt);
+	
+	if(inTank) return;
+
 	if (!alive) deadTimeElapsed += dt;
 	if (invicible) invicibleTimeElapsed += dt;
 
@@ -769,6 +774,7 @@ void Player::update(float dt) {
 		}
 	}
 
+	//calcualate shoot dir and angle
 	{
 		float x = 1;
 		float y = 0;
@@ -811,7 +817,6 @@ void Player::update(float dt) {
 
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip, reset);
 
-	gun.update(dt);
 }
 
 const PlayerInput Player::getPlayerInput() const {
@@ -828,22 +833,6 @@ const PlayerInput Player::getPlayerInput() const {
 	const bool dead = !alive;
 	const bool lost = lives < 0;
 
-
-
-	//printf("PlayerInput { right=%d, left=%d, moving=%d, jumping=%d, grounded=%d, crouching=%d, shooting=%d, animEnd=%d, dirY=%d }\n", inputRight, inputLeft, isMoving, isJumping, isGrounded, false, isShooting, getAnimator().isAnimationEnded(), getDir().y);
-
-	//struct PlayerInput
-	//{
-	//	bool inputRight;
-	//	bool inputLeft;
-	//	bool isMovng;
-	//	bool isJumping;
-	//	bool isGrounded;
-	//	bool isCrouching;
-	//	bool isShooting;
-	//	bool onAnimationEnd;
-	//	int  dirY; // -1 = aiming up, 0 = neutral, 1 = aiming down
-	//};
 
 	const PlayerInput playerInput = {
 		inputRight,
@@ -936,4 +925,12 @@ int Player::getPowSaved() const{
 
 void Player::addScore(int score_){
 	this->score += score_;
+}
+
+void Player::setInTank(bool in){
+	this->inTank = in;
+}
+
+bool Player::getInTank() const{
+	return this->inTank;
 }

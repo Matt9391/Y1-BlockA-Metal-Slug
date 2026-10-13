@@ -41,6 +41,9 @@ public:
 	void addPowSaved();
 	void addScore(int score_);
 	int getPowSaved() const;
+
+	void setInTank(bool in);
+	bool getInTank() const;
 private:
 	bool getEnemyInFront() const;
 	void setShooting(bool shooting_);
@@ -74,5 +77,7 @@ private:
 	int powSaved;
 	float angle;
 	float angleIncr;
+
+	bool inTank;
 };
 

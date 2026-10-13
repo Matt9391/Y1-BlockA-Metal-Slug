@@ -15,6 +15,7 @@
 #include <LootDrops/PowerUp.h>
 #include <ParallaxRenderData.h>
 #include <Enemies/Boss.h>
+#include <Tank.h>
 
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, const Map& map_) :
 	CustomScene(screen, renderer, inputManager, audioManager),
@@ -116,6 +117,7 @@ void GameScene::init() {
 			}
 		}
 	
+	addNewEntity(new Tank(vec2(700,80), getInputManager()));
 	addNewEntity(new Boss(vec2(3769 + 265, -60 + 100)));
 };
 
@@ -136,6 +138,7 @@ void GameScene::update(float dt) {
 
 	player.update(dt);
 
+	Tank* tankRef = static_cast<Tank*>(spawnedEntities[0]);
 	
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 
@@ -183,18 +186,37 @@ void GameScene::update(float dt) {
 
 			RebelSoldier* enemy = static_cast<RebelSoldier*>(e); //static vs dynamic ?
 				
-			enemy->loadSensors(
-				player.getPos() + player.getCollider().size / 2.f,
-				CollisionManager::checkMapCollision(
-					enemy->getCollider(),
-					map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
-					0
-				)
-			);
+			if(player.getInTank()){
+				enemy->loadSensors(
+					tankRef->getPos() + tankRef->getCollider().size / 2.f,
+					CollisionManager::checkMapCollision(
+						enemy->getCollider(),
+						map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
+						0
+					)
+				);
 
-			if (CollisionManager::checkCollision(player.getCollider(), enemy->getCollider())) {
+			}else{
+
+				enemy->loadSensors(
+					player.getPos() + player.getCollider().size / 2.f,
+					CollisionManager::checkMapCollision(
+						enemy->getCollider(),
+						map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
+						0
+					)
+				);
+			}
+				
+			if (CollisionManager::checkCollision(player.getCollider(), enemy->getCollider()) || (
+				player.getInTank() && CollisionManager::checkCollision(tankRef->getCollider(), enemy->getCollider())
+			)) {
 				if(enemy->getAttacking()){
-					player.takeHit();
+					if(player.getInTank()){
+						tankRef->takeHit();
+					}else{
+						player.takeHit();
+					}
 				} 
 
 				if(player.isShooting()){
@@ -222,9 +244,14 @@ void GameScene::update(float dt) {
 					g->explode();
 				}
 
-				if (CollisionManager::checkCollision(g->getCollider(), player.getCollider())) {
+				if (CollisionManager::checkCollision(g->getCollider(), player.getCollider()) ||
+					(player.getInTank() && CollisionManager::checkCollision(g->getCollider(), tankRef->getCollider()))) {
 					g->explode();
-					player.takeHit();
+					if(player.getInTank()){
+						tankRef->takeHit();
+					}else{
+						player.takeHit();
+					}
 				}
 			}
 		}
@@ -332,9 +359,14 @@ void GameScene::update(float dt) {
 					b->explode();
 				}
 				
-				if (CollisionManager::checkCollision(b->getCollider(), player.getCollider())) {
+				if (CollisionManager::checkCollision(b->getCollider(), player.getCollider()) ||
+					(player.getInTank() && CollisionManager::checkCollision(b->getCollider(), tankRef->getCollider()))) {
 					b->explode();
-					player.takeHit();
+					if(player.getInTank()){
+						tankRef->takeHit();
+					}else{
+						player.takeHit();
+					}
 				}
 				if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
 					b->explodeMap();
@@ -342,12 +374,23 @@ void GameScene::update(float dt) {
 			}	
 			bs->addRenderDatas(getRenderer());
 		
-		}
+		}else if(e->getEntityType() == EntityType::ET_TANK){
+			Tank* tank = static_cast<Tank*>(e);
+
+			if(!tank->hasPlayer() &&
+				CollisionManager::checkCollision(player.getCollider(), tank->getCollider()) && player.getPos().y < tank->getPos().y){
+				tank->enterPlayer(&player);
+				player.setInTank(true);
+			}
+
+			if(!tank->hasPlayer()){
+				CollisionManager::resolveCollisionAOverB(player, tank->getCollider());
+			}	
 		
+		}
+
 		getRenderer().addRenderData(e->getRenderData());
 		getRenderer().addCollider(e->getCollider());
-			
-	
 			
 	}
 	
@@ -431,8 +474,8 @@ void GameScene::update(float dt) {
 	}
 
 	
-	
-	getRenderer().addRenderData(player.getRenderData());
+	if(!player.getInTank())
+		getRenderer().addRenderData(player.getRenderData());
 	player.getGun().addRenderDatas(getRenderer());
 	//getRenderer().addRenderData(player.getGunRenderData(), player.getGunBullets());
 	getRenderer().addRenderData(waterfallBottom);
