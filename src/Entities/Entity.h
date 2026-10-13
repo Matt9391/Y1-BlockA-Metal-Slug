@@ -75,6 +75,7 @@ protected:
 
 	void setFree(bool free_);
 
+	void setRenderLayer(int renderLayer_);
 private:
 
 	vec2 pos;
@@ -92,5 +93,6 @@ private:
 
 	bool free;
 
+	int renderLayer;
 };
 

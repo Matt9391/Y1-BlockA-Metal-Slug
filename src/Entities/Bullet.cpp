@@ -13,6 +13,8 @@ Bullet::Bullet(vec2 pos, bool needsRigidBody, vec2, BulletType bulletType, float
 { 
 	if(needsRigidBody)
 		getRigidBody()->setSpeed(bulletSpeed);
+	
+	setRenderLayer(2);
 }
 
 

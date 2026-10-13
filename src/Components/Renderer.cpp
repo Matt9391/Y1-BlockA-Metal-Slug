@@ -8,7 +8,7 @@
 void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
 
 Renderer::Renderer() :
-	renderDataCount(0),
+	renderDataCount{0},
 	collidersCount(0),
 	textsCount(0),
 	spriteSetCount(0),
@@ -41,9 +41,9 @@ void Renderer::addCollider(const Collider& c) {
 
 
 void Renderer::addRenderData(RenderData rs) {
-	if (renderDataCount == MAXRENDERSETS)
+	if (renderDataCount[rs.layer] == MAXRENDERSETS)
 		throw runtime_error("Max render sets reached");
-	renderDatas[renderDataCount++] = rs;
+	renderDatas[rs.layer][renderDataCount[rs.layer]++] = rs;
 	
 }
 
@@ -77,10 +77,12 @@ void Renderer::clearColliders() {
 }
 
 void Renderer::clearRenderDatas() {
-	for (int i = 0; i < MAXRENDERSETS; i++) {
-		renderDatas[i] = RenderData();
+	for (int j = 0; j < MAXRENDERLAYERS; j++) {
+		for (int i = 0; i < MAXRENDERSETS; i++) {
+			renderDatas[j][i] = RenderData();
+		}
+		renderDataCount[j] = 0;
 	}
-	renderDataCount = 0;
 }
 
 void Renderer::clearParallaxRenderData() {
@@ -163,28 +165,31 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			}
 		}
 	}
-	for (int i = 0; i < renderDataCount; i++) {
-		RenderData& rs = this->renderDatas[i];
-		bool flipped = rs.animationSet.flipped;
-		for (int j = 0; j < rs.animationSet.layerCount; j++) {
-			AnimationLayer& layer = rs.animationSet.layers[j];
-			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
-			if (sprite == nullptr) continue;
-			vec2& offset = flipped ? layer.offsetFlipped : layer.offset;
+	for(int g = 0; g < MAXRENDERLAYERS; g++){
 
-			sprite->SetFrame(layer.currentFrame);
-			//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
-			//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
-			int scale = 1;
-			sprite->DrawScaled(screen, static_cast<int>(rs.pos.x + offset.x * scale - cameraOffset.x), 
+		for (int i = 0; i < renderDataCount[g]; i++) {
+			RenderData& rs = this->renderDatas[g][i];
+			bool flipped = rs.animationSet.flipped;
+			for (int j = 0; j < rs.animationSet.layerCount; j++) {
+				AnimationLayer& layer = rs.animationSet.layers[j];
+				Sprite* sprite = resourceManager.getSprite(layer.resourceId);
+				if (sprite == nullptr) continue;
+				vec2& offset = flipped ? layer.offsetFlipped : layer.offset;
+				
+				sprite->SetFrame(layer.currentFrame);
+				//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
+				//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
+				int scale = 1;
+				sprite->DrawScaled(screen, static_cast<int>(rs.pos.x + offset.x * scale - cameraOffset.x), 
 				static_cast<int>(rs.pos.y + offset.y * scale - cameraOffset.y), scale, flipped);
+			}
+			
 		}
-
 	}
-
+		
 	if (mapRenderData != nullptr) {
 		const int& tileSize = mapRenderData->tileSize;
-
+			
 		int startX = static_cast<int>(fmaxf(floorf(cameraOffset.x) / tileSize, 0.f));
 		int startY = static_cast<int>(fmaxf(floorf(cameraOffset.y) / tileSize, 0.f));
 

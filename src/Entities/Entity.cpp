@@ -12,7 +12,8 @@ Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
 	currentASIndex(-1),
 	collider(this->pos, vec2(0,0), vec2(0,0)),
 	rigidBody(nullptr),
-	free(false)
+	free(false),
+	renderLayer(1)
 	{
 		this->rigidBody = needsRigidBody ? new RigidBody(this->pos, true) : nullptr;
 
@@ -26,7 +27,7 @@ void Entity::update(float) {
 }
 
 RenderData Entity::getRenderData() const { //make it reference
-	return RenderData{ animationSets[currentASIndex], pos };
+	return RenderData{ animationSets[currentASIndex], pos, renderLayer };
 }
 
 const vec2& Entity::getPos() const{
@@ -128,4 +129,8 @@ bool Entity::hasToBeFreed() const {
 
 EntityType Entity::getEntityType() const {
 	return this->entityType;
+}
+
+void Entity::setRenderLayer(int renderLayer_){
+	this->renderLayer = renderLayer_;
 }

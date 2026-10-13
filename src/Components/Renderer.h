@@ -37,18 +37,19 @@ public:
 
 private:
 	static const int MAXRENDERSETS = 100; //REMBEMBER THAT THEY FINISH FAST
+	static const int MAXRENDERLAYERS = 4;
 	static const int MAXCOLLIDERS = 100;
 	static const int MAXTEXTS = 100;
 	static const int MAXSPRITESETS = 100;
 	
-	RenderData renderDatas[MAXRENDERSETS]; //dont describe it meaning
+	RenderData renderDatas[MAXRENDERLAYERS][MAXRENDERSETS]; 
 	const MapRenderData* mapRenderData;
 	const ParallaxRenderData* parallaxRenderData;
 	const Collider* colliders[MAXCOLLIDERS];
 	HUDText texts[MAXTEXTS];
 	SpriteSet spriteSets[MAXSPRITESETS];
 	
-	int renderDataCount;
+	int renderDataCount[MAXRENDERLAYERS];
 	int collidersCount;
 	int textsCount;
 	int spriteSetCount;

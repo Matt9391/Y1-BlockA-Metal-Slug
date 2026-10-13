@@ -10,11 +10,13 @@ struct RenderData {
 		pos = vec2(0, 0);
 	}
 
-	RenderData(AnimationSet animationSet, vec2 pos) {
+	RenderData(AnimationSet animationSet, vec2 pos, int layer = 1) {
 		this->animationSet = animationSet;
 		this->pos = pos;
+		this->layer = layer;
 	}
 
 	AnimationSet animationSet;
 	vec2 pos;
+	int layer;
 };

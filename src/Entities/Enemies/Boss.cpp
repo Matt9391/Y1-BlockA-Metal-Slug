@@ -19,7 +19,7 @@ Boss::Boss(vec2 pos) :
     bulletsCount(0),
 	bulletSpeed(0.1f),
 	bullets{nullptr},
-    HP(10)
+    HP(80)
 	{
     setCollider(vec2(10, 105), vec2(0,0));
 	getAnimationSets() = new AnimationSet[BossAnimationSet::BAS_COUNTS];
