@@ -143,6 +143,7 @@
     <ClCompile Include="src\DataStructures\GunPresets.cpp" />
     <ClCompile Include="src\DataStructures\RebelSoldierPresets.cpp" />
     <ClCompile Include="src\Entities\Bullet.cpp" />
+    <ClCompile Include="src\Entities\Bullets\BombShell.cpp" />
     <ClCompile Include="src\Entities\Bullets\CannonBall.cpp" />
     <ClCompile Include="src\Entities\Bullets\FlameBullet.cpp" />
     <ClCompile Include="src\Entities\Bullets\LaserBall.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="src\DataStructures\TankAnimationSet.h" />
     <ClInclude Include="src\DataStructures\vec2.h" />
     <ClInclude Include="src\Entities\Bullet.h" />
+    <ClInclude Include="src\Entities\Bullets\BombShell.h" />
     <ClInclude Include="src\Entities\Bullets\CannonBall.h" />
     <ClInclude Include="src\Entities\Bullets\FlameBullet.h" />
     <ClInclude Include="src\Entities\Bullets\LaserBall.h" />

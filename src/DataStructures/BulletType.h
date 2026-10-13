@@ -7,5 +7,6 @@ enum BulletType : int {
         BT_CANNON_BALL,
         BT_LASER_BALL,
         BT_LASER,
+        BT_BOMB_SHELL,
         BT_COUNTS
 };

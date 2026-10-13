@@ -4,6 +4,8 @@
 #include <RigidBody.h>
 #include <ResourceIDFrames.h>
 #include <Player.h>
+#include <Renderer.h>
+#include <Bullets/BombShell.h>
 
 
 
@@ -13,7 +15,12 @@ Tank::Tank(vec2 pos, const InputManager& inputManager_) :
     player(nullptr),
     gotHit(false),
     dead(false),
-    hp(5)
+    hp(5),
+    playerOffset(vec2(30,15)),
+    shootOffset{50,10},
+    bulletsCount(0),
+	bulletSpeed(0.1f),
+	bullets{nullptr}
 {
     setCollider(vec2(60, 50), vec2(15, 10));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -110,22 +117,23 @@ void Tank::update(float dt){
 		setVelocityY(0.f);
 	}
 
-    if(this->player == nullptr){
-        rb->setVelocityX(0);
-		setDir(vec2(0, 0));
-
-    	this->addToPos(rb->getVelocity() * dt);
-        
-        return;
-
+    if (player != nullptr) {
+        player->setPos(getPos() + playerOffset);
     }
-
-    //SKIP IF NOT OWN
-
-    player->setPos(getPos() + vec2(30,15));
+    else if (!dead) {
+        gotHit = false;
+        rb->setVelocityX(0);
+        setDir(vec2(0, 0));
+        this->addToPos(rb->getVelocity() * dt);
+        return;
+    }
 
 
     const TankStates::TankInput tInput = getTankInput();
+
+    if(getCurrentASIndex() == TankAnimationSet::TAS_EXPLOSION && tInput.onAnimationEnd){
+        setFree(true);
+    }
 
     TankAnimationSet nextState = state->handleInput(tInput, static_cast<TankAnimationSet>(getCurrentASIndex()));
     setCurrentASIndex(nextState);
@@ -155,16 +163,35 @@ void Tank::update(float dt){
 
     //reset bools
     gotHit = false;
+
+    if (tInput.isShooting && !tInput.isDead) {
+        shoot();
+    }
+
+    for (int i = 0; i < MAXBULLETS; i++) {
+		if (bullets[i] == nullptr) continue;
+		bullets[i]->update(dt);
+	}
 }
 
 const TankStates::TankInput Tank::getTankInput() const {
-	const bool inputRight = inputManager.isKeyPressed('D');
-	const bool inputLeft = inputManager.isKeyPressed('A');
-	const bool isMoving = inputRight || inputLeft;
-	const bool isGrounded = getRigidBody()->isGrounded();
-	const bool isShooting = inputManager.isKeyJustPressed('F');
-	const bool isHit = gotHit;
-	const bool isDead = dead;
+	bool inputRight = inputManager.isKeyPressed('D');
+	bool inputLeft = inputManager.isKeyPressed('A');
+	bool isMoving = inputRight || inputLeft;
+	bool isGrounded = getRigidBody()->isGrounded();
+	bool isShooting = inputManager.isKeyJustPressed('F');
+	bool isHit = gotHit;
+	bool isDead = dead;
+
+    if(player == nullptr){
+        inputRight = false;
+        inputLeft = false;
+        isMoving = false;
+        isGrounded = getRigidBody()->isGrounded();
+        isShooting = false;
+        isHit = false;
+        isDead = dead;
+    }
 
 	const TankStates::TankInput tankInput = {
 		inputRight,
@@ -182,6 +209,7 @@ const TankStates::TankInput Tank::getTankInput() const {
 
 
 void Tank::enterPlayer(Player* player_){
+    if(dead) return;
     this->player = player_;
 }
 
@@ -195,10 +223,63 @@ void Tank::takeHit(){
     this->hp--;
     if(this->hp < 0){
         ejectPlayer();
+        dead = true;
     }
 
 }
 
 void Tank::ejectPlayer(){
+    if(this->player == nullptr) return;
+    player->setPos(getPos() + playerOffset - vec2(0, 80));
+    player->setInTank(false);
+    this->player = nullptr;
+}
 
+void Tank::freeBullet(int i) {
+	if (bullets[i]) {
+		delete bullets[i];
+		bullets[i] = nullptr;
+		bulletsCount--;
+	}
+}
+
+int Tank::getMaxBullets() const{
+	return MAXBULLETS;
+}
+
+Bullet* Tank::getBullet(int i) const {
+	return bullets[i];
+}
+
+bool Tank::shoot() {
+
+	int bIndex = -1;
+	for (int i = 0; i < MAXBULLETS; i++) {
+		if (bullets[i] == nullptr) {
+			bIndex = i;
+			break;
+		}
+	}
+
+	if (bIndex == -1) return false;
+
+
+	bullets[bIndex] = new BombShell(getPos() + getCollider().offset + shootOffset,
+									true, 
+									vec2(1,0), 
+									BulletType::BT_BOMB_SHELL,
+									Rand(150.f) + 1500.f,
+                                    400.f);
+	bulletsCount++;
+
+	return true;
+}
+
+void Tank::addRenderDatas(Renderer& renderer) {
+	for (int i = 0; i < MAXBULLETS; i++) {
+		if (bullets[i] == nullptr) continue;
+		renderer.addRenderData(bullets[i]->getRenderData());
+		renderer.addCollider(bullets[i]->getCollider());
+
+	}
 }

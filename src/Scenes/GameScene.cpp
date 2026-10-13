@@ -169,6 +169,9 @@ void GameScene::update(float dt) {
 		e->update(dt);
 
 		if(e->hasToBeFreed()){
+			if(e->getEntityType() == EntityType::ET_TANK){
+				tankRef = nullptr;
+			}
 			freeEntity(i);
 			continue;
 		}
@@ -473,10 +476,90 @@ void GameScene::update(float dt) {
 		}
 	}
 
+	if(tankRef != nullptr){
+		for (int i = 0; i < tankRef->getMaxBullets(); i++) {
+		Bullet* b = tankRef->getBullet(i);
+		if (!b) continue;
+
+		if (b->hasToBeFreed()) {
+			tankRef->freeBullet(i);
+			continue;
+		}
+		if (b->getDisabled()) continue;
+
+		if (getCamera().isOutOfView(b->getPos())) {
+			b->explode();
+		}
+		
+		if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
+			b->explodeMap();
+		}
+		for (Entity* e : this->spawnedEntities) {
+			if (!e) continue;
+			if (e->getEntityType() == EntityType::ET_REBELSOLDIER){
+
+				RebelSoldier* enemy = static_cast<RebelSoldier*>(e);
+				if (!enemy->getAlive()) continue;
+				
+				if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider())) {
+					b->explode();
+					enemy->setAlive(false);
+					player.addScore(100);
+				}
+				
+			}else if (e->getEntityType() == EntityType::ET_POW) {
+				Pow* pow = static_cast<Pow*>(e);
+				if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider())) {
+					b->explode();
+					pow->setReleased(true);
+				}
+			}else if(e->getEntityType() == EntityType::ET_POWERUP){
+				PowerUp* powerUp = static_cast<PowerUp*>(e);
+				if(!powerUp) continue;
+				if(powerUp->getState() == PowerUpState::PUS_REVEALED) continue;
+				if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider())) {
+					b->explode();
+					powerUp->setState(PowerUpState::PUS_REVEALED);
+				}
+			}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
+				Helicopter* h = static_cast<Helicopter*>(e); 
+				if(!h->getAlive()){
+					getCamera().setWorldSize(vec2(static_cast<float>(nTilesLimit2Camera * map.getTileSize()), 
+												  static_cast<float>(map.getTiles().y * map.getTileSize())));
+
+				}
+
+				if (CollisionManager::checkCollision(b->getCollider(), h->getCollider())) {
+					b->explode();
+					h->takeHit();
+					b->setDisabled(true);
+					
+				}
+				
+			}
+			else if(e->getEntityType() == EntityType::ET_BOSS){
+				Boss* bs = static_cast<Boss*>(e); 
+				if (!bs->getAlive()) {
+					justWin = !winCondition;
+					winCondition = true;
+				}
+
+				if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider())) {
+					b->explode();
+					bs->takeHit();
+					// player.addScore(100);
+				}
+			}
+		}
+	}
+	}
 	
 	if(!player.getInTank())
 		getRenderer().addRenderData(player.getRenderData());
 	player.getGun().addRenderDatas(getRenderer());
+	if(tankRef){
+		tankRef->addRenderDatas(getRenderer());
+	}
 	//getRenderer().addRenderData(player.getGunRenderData(), player.getGunBullets());
 	getRenderer().addRenderData(waterfallBottom);
 	

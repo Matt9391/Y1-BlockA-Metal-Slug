@@ -202,6 +202,9 @@
     <ClCompile Include="src\AnimationStates\TankState.cpp">
       <Filter>src\AnimationStates</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Bullets\BombShell.cpp">
+      <Filter>src\Entities\Bullets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -442,6 +445,9 @@
     </ClInclude>
     <ClInclude Include="src\AnimationStates\TankState.h">
       <Filter>src\AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Bullets\BombShell.h">
+      <Filter>src\Entities\Bullets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
