@@ -1,0 +1,11 @@
+#pragma once
+
+enum TankAnimationSet {
+	TAS_IDLE,
+	TAS_WALK,
+	TAS_SHOOT,
+	TAS_HIT,
+	TAS_EXPLOSION,
+	TAS_EXPLOSION_STILL,
+	TAS_COUNTS
+};

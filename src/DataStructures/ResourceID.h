@@ -117,5 +117,11 @@ enum ResourceID : int {
 	ID_CANNON_BALL,      
 	ID_LASER_BALL,      
 	ID_LASER_BEAM,      
+	ID_TANK_IDLE,              // TankAnimation/idle.png
+	ID_TANK_WALK,              // TankAnimation/walk.png
+	ID_TANK_SHOOT,             // TankAnimation/shoot.png
+	ID_TANK_HIT,               // TankAnimation/hit.png
+	ID_TANK_EXPLOSION,         // TankAnimation/hit.png
+	ID_TANK_EXPLOSION_STILL,   // TankAnimation/hit_still.png (to be created)
 	ID_COUNTS
 };
