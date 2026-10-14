@@ -145,8 +145,12 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_TANK_SHOOT]            = new Sprite(new Surface("assets/TankAnimation/shoot.png"), ResourceIDFrames::IDF_TANK_SHOOT);
 	sprites[ResourceID::ID_TANK_HIT]              = new Sprite(new Surface("assets/TankAnimation/hit.png"), ResourceIDFrames::IDF_TANK_HIT);
 	sprites[ResourceID::ID_TANK_EXPLOSION]        = new Sprite(new Surface("assets/TankAnimation/explosion.png"), ResourceIDFrames::IDF_TANK_EXPLOSION);
+	sprites[ResourceID::ID_TANK_SHOOTER_IDLE]        = new Sprite(new Surface("assets/TankAnimation/shooter_idle.png"), ResourceIDFrames::IDF_TANK_SHOOTER_IDLE);
+	sprites[ResourceID::ID_TANK_SHOOTER_SHOOT]        = new Sprite(new Surface("assets/TankAnimation/shooter_shoot.png"), ResourceIDFrames::IDF_TANK_SHOOTER_SHOOT);
 	
 	sprites[ResourceID::ID_BOMB_SHELL]        = new Sprite(new Surface("assets/TankAnimation/bomb.png"), ResourceIDFrames::IDF_BOMB_SHELL);
+	sprites[ResourceID::ID_SLUG_BULLET]        = new Sprite(new Surface("assets/TankAnimation/bullet.png"), ResourceIDFrames::IDF_SLUG_BULLET);
+	sprites[ResourceID::ID_SLUG_BULLET_BOOM]        = new Sprite(new Surface("assets/TankAnimation/bulletBoom.png"), ResourceIDFrames::IDF_SLUG_BULLET_BOOM);
 
 	soundPaths[SoundID::SID_ATTACK] = _strdup("assets/sfx/attack.wav");
 

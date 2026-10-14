@@ -9,8 +9,11 @@ namespace TankStates{
     {
         bool inputRight = false;
         bool inputLeft = false;
+        bool inputUp = false;
+        bool inputDown = false;
         bool isMoving = false;
         bool isGrounded = false;
+        bool isShootingBullet = false;
         bool isShooting = false;
         bool onAnimationEnd = false;
         bool isHit = false;

@@ -3,10 +3,12 @@
 #include <Entity.h>
 #include <InputManager.h>
 #include <TankState.h>
+#include <RenderData.h>
 
 class Player;
 class Bullet;
 class Renderer;
+enum BulletType : int;
 
 class Tank : public Entity{
 public:
@@ -31,7 +33,7 @@ public:
     void addRenderDatas(Renderer& renderer);
 
 private:
-    bool shoot();
+    bool shoot(BulletType bulletType);
     void ejectPlayer();
     
 	const InputManager& inputManager; //Const so it can only call const methods
@@ -50,4 +52,14 @@ private:
     float bulletSpeed;
 
     vec2 shootOffset;
+    vec2 shootBulletOffset;
+    vec2 shootDir;
+
+    float angle;
+    float angleIncr;
+    float angleFrame;
+
+    RenderData shooterRs;
+
+    bool aimUp;
 };

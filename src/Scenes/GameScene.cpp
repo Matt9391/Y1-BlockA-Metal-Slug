@@ -124,6 +124,34 @@ void GameScene::init() {
 void GameScene::exit() {};
 
 // TODO: add proper audio to the game
+// TODO: Refactor GameScene::update — it's grown into an unmanageable single function.
+// Priority order for tomorrow:
+//
+// 1. BUG, fix first: tankRef is re-derived from spawnedEntities[0] every frame.
+//    If the tank dies and something else later spawns into slot 0, tankRef will
+//    silently point at the wrong entity type (e.g. a RebelSoldier cast as a Tank).
+//    Fix: make tankRef a real GameScene member, set once at creation
+//    (tankRef = new Tank(...); addNewEntity(tankRef);), nulled only on free.
+//    Never derive it from an array index again.
+//
+// 2. Extract the three near-identical "bullet vs every entity type" loops
+//    (player gun bullets, tank bullets, [+ missing: boss/heli bullets vs player])
+//    into one function: resolveBulletVsEntities(Bullet* b).
+//
+// 3. Extract the repeated loadSensors(...) setup duplicated across
+//    RebelSoldier / Helicopter / Boss into one helper.
+//
+// 4. Extract the repeated "if player.getInTank() -> hit tank, else -> hit player"
+//    branch (appears 3+ times) into one helper, e.g. damagePlayerOrTank().
+//
+// 5. Split the big per-EntityType if/else chain into named methods
+//    (handleRebelSoldier, handleHelicopter, handleBoss, handleTank...),
+//    called from a slimmer dispatch loop in update().
+//
+// 6. Easy/safe first win: pull the whole HUD block (already its own {} scope)
+//    into GameScene::renderHUD(dt).
+//
+// Do these one at a time, not all at once — that's how this got messy in the first place.
 void GameScene::update(float dt) {
 	getRenderer().clearRenderDatas();
 	getRenderer().clearColliders();
@@ -138,7 +166,9 @@ void GameScene::update(float dt) {
 
 	player.update(dt);
 
-	Tank* tankRef = static_cast<Tank*>(spawnedEntities[0]);
+
+	// TODO: get called even after free, to change.
+	Tank* tankRef = dynamic_cast<Tank*>(spawnedEntities[0]);
 	
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 
@@ -383,7 +413,6 @@ void GameScene::update(float dt) {
 			if(!tank->hasPlayer() &&
 				CollisionManager::checkCollision(player.getCollider(), tank->getCollider()) && player.getPos().y < tank->getPos().y){
 				tank->enterPlayer(&player);
-				player.setInTank(true);
 			}
 
 			if(!tank->hasPlayer()){

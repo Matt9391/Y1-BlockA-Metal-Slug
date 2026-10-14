@@ -6,6 +6,9 @@
 #include <Player.h>
 #include <Renderer.h>
 #include <Bullets/BombShell.h>
+#include <Bullets/SlugBullet.h>
+#include <myMath.h>
+
 
 
 
@@ -18,9 +21,24 @@ Tank::Tank(vec2 pos, const InputManager& inputManager_) :
     hp(5),
     playerOffset(vec2(30,15)),
     shootOffset{50,10},
+    shootBulletOffset{5,10},
     bulletsCount(0),
-	bulletSpeed(0.1f),
-	bullets{nullptr}
+	bulletSpeed(0.5f),
+    shootDir(0,0),
+    angle(0),
+    angleFrame((360.f / static_cast<float>(ResourceIDFrames::IDF_TANK_SHOOTER_IDLE))),
+    angleIncr(0.5f),
+	bullets{nullptr},
+    shooterRs{RenderData(AnimationSet(
+        1,
+        AnimationLayer(
+            ResourceID::ID_TANK_SHOOTER_IDLE,
+            ResourceIDFrames::IDF_TANK_SHOOTER_IDLE,
+            150,
+            vec2(0, 0),
+            vec2(0, 0))
+    ), pos + shootBulletOffset, 2)},
+    aimUp(true)
 {
     setCollider(vec2(60, 50), vec2(15, 10));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -117,6 +135,9 @@ void Tank::update(float dt){
 		setVelocityY(0.f);
 	}
 
+    shooterRs.pos = getPos() + shootBulletOffset;
+
+
     if (player != nullptr) {
         player->setPos(getPos() + playerOffset);
     }
@@ -156,38 +177,88 @@ void Tank::update(float dt){
 
 	this->addToPos(rb->getVelocity() * dt);
 
-    const bool flip = getLastDir().x < 0;
 	const bool reset = tInput.isShooting && getCurrentASIndex() != TankAnimationSet::TAS_HIT && !tInput.isDead;
 
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip, reset);
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], false, reset);
 
     //reset bools
     gotHit = false;
 
     if (tInput.isShooting && !tInput.isDead) {
-        shoot();
+        shoot(BulletType::BT_BOMB_SHELL);
+    }else if(tInput.isShootingBullet && !tInput.isDead){
+        shoot(BulletType::BT_SLUG_BULLET);
     }
 
     for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) continue;
 		bullets[i]->update(dt);
 	}
+
+     if(tInput.isShootingBullet){
+         shooterRs.animationSet.layers[0] = AnimationLayer(
+             ResourceID::ID_TANK_SHOOTER_SHOOT,
+             ResourceIDFrames::IDF_TANK_SHOOTER_SHOOT,
+             150,
+             vec2(0, 0),
+             vec2(0, 0));
+     }else{
+        shooterRs.animationSet.layers[0] = AnimationLayer(
+            ResourceID::ID_TANK_SHOOTER_IDLE,
+            ResourceIDFrames::IDF_TANK_SHOOTER_IDLE,
+            150,
+            vec2(0, 0),
+            vec2(0, 0));
+     }
+
+
+    if (player != nullptr) {
+        if (tInput.inputUp && !aimUp) { aimUp = true;  angle = 360.f - angle; }
+        if (tInput.inputDown &&  aimUp) { aimUp = false; angle = 360.f - angle; }
+    }
+
+    float rot = 0.f;
+    if (tInput.inputRight)     rot = -1.f;
+    else if (tInput.inputLeft) rot =  1.f;
+    if (!aimUp) rot = -rot;      // lower half runs 180 -> 360, so D must increase the angle
+
+    angle += rot * angleIncr * dt;
+
+    const float minAngle = aimUp ? 0.f   : 180.f;
+    const float maxAngle = aimUp ? 180.f : 360.f;
+    angle = myMath::constrain(angle, minAngle, maxAngle);
+    float x = cos(angle * (PI / 180.f));
+    float y = -sin(angle * (PI / 180.f));
+
+    shootDir = vec2(x,y);
+
+    int frame = static_cast<int>(roundf(angle / angleFrame)) % static_cast<int>(ResourceIDFrames::IDF_TANK_SHOOTER_IDLE); // 360 deg wraps to frame 0
+
+    shooterRs.animationSet.layers[0].currentFrame = frame;
+
+    
 }
 
 const TankStates::TankInput Tank::getTankInput() const {
 	bool inputRight = inputManager.isKeyPressed('D');
 	bool inputLeft = inputManager.isKeyPressed('A');
+	bool inputUp = inputManager.isKeyPressed('W');
+	bool inputDown = inputManager.isKeyPressed('S');
 	bool isMoving = inputRight || inputLeft;
 	bool isGrounded = getRigidBody()->isGrounded();
-	bool isShooting = inputManager.isKeyJustPressed('F');
+	bool isShootingBullet = inputManager.isKeyJustPressed('F');
+	bool isShooting = inputManager.isKeyJustPressed('G');
 	bool isHit = gotHit;
 	bool isDead = dead;
 
     if(player == nullptr){
         inputRight = false;
         inputLeft = false;
+        inputUp = false;
+        inputDown = false;
         isMoving = false;
         isGrounded = getRigidBody()->isGrounded();
+        isShootingBullet = false;
         isShooting = false;
         isHit = false;
         isDead = dead;
@@ -196,8 +267,11 @@ const TankStates::TankInput Tank::getTankInput() const {
 	const TankStates::TankInput tankInput = {
 		inputRight,
 		inputLeft,
+		inputUp,
+		inputDown,
 		isMoving,
 		isGrounded,
+		isShootingBullet,
 		isShooting,
 		getAnimator().isAnimationEnded(),
 		isHit,
@@ -211,6 +285,7 @@ const TankStates::TankInput Tank::getTankInput() const {
 void Tank::enterPlayer(Player* player_){
     if(dead) return;
     this->player = player_;
+    this->player->setInTank(true);
 }
 
 
@@ -251,7 +326,7 @@ Bullet* Tank::getBullet(int i) const {
 	return bullets[i];
 }
 
-bool Tank::shoot() {
+bool Tank::shoot(BulletType bulletType) {
 
 	int bIndex = -1;
 	for (int i = 0; i < MAXBULLETS; i++) {
@@ -263,19 +338,30 @@ bool Tank::shoot() {
 
 	if (bIndex == -1) return false;
 
-
-	bullets[bIndex] = new BombShell(getPos() + getCollider().offset + shootOffset,
-									true, 
-									vec2(1,0), 
-									BulletType::BT_BOMB_SHELL,
-									Rand(150.f) + 1500.f,
-                                    400.f);
+    switch (bulletType)
+    {
+    case BT_BOMB_SHELL:
+        bullets[bIndex] = new BombShell(getPos() + getCollider().offset + shootOffset,
+                                        true, 
+                                        vec2(1,0), 
+                                        BulletType::BT_BOMB_SHELL,
+                                        Rand(150.f) + 1500.f,
+                                        400.f);
+        break;
+    case BT_SLUG_BULLET:
+        bullets[bIndex] = new SlugBullet(getPos() + shootBulletOffset, true, shootDir, BT_SLUG_BULLET, bulletSpeed);
+        break;
+    
+    default:
+        break;
+    }
 	bulletsCount++;
 
 	return true;
 }
 
 void Tank::addRenderDatas(Renderer& renderer) {
+    renderer.addRenderData(shooterRs);
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) continue;
 		renderer.addRenderData(bullets[i]->getRenderData());

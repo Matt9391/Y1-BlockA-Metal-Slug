@@ -150,6 +150,7 @@
     <ClCompile Include="src\Entities\Bullets\LaserBeam.cpp" />
     <ClCompile Include="src\Entities\Bullets\Missle.cpp" />
     <ClCompile Include="src\Entities\Bullets\PistolBullet.cpp" />
+    <ClCompile Include="src\Entities\Bullets\SlugBullet.cpp" />
     <ClCompile Include="src\Entities\Enemies\Boss.cpp" />
     <ClCompile Include="src\Entities\Enemies\Helicopter.cpp" />
     <ClCompile Include="src\Entities\Enemies\RebelSoldier.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="src\Entities\Bullets\LaserBeam.h" />
     <ClInclude Include="src\Entities\Bullets\Missle.h" />
     <ClInclude Include="src\Entities\Bullets\PistolBullet.h" />
+    <ClInclude Include="src\Entities\Bullets\SlugBullet.h" />
     <ClInclude Include="src\Entities\Enemies\Boss.h" />
     <ClInclude Include="src\Entities\Enemies\Helicopter.h" />
     <ClInclude Include="src\Entities\Enemies\RebelSoldier.h" />
