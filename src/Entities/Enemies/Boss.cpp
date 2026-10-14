@@ -35,6 +35,10 @@ Boss::Boss(vec2 pos) :
 
 Boss::~Boss(){
 	delete[] getAnimationSets();
+    for (int i = 0; i < MAXBULLETS; i++) {
+		delete bullets[i];
+		bullets[i] = nullptr;
+	}
 }
 void Boss::loadGFX() {
     // BAS_ATTACK_ONE_HIGH -> cannon fire, high (cannon_fire_high.png)

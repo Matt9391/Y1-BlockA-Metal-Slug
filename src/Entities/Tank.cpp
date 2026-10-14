@@ -54,6 +54,10 @@ Tank::Tank(vec2 pos, const InputManager& inputManager_) :
 
 Tank::~Tank(){
 	delete[] getAnimationSets();
+    for (int i = 0; i < MAXBULLETS; i++) {
+		delete bullets[i];
+		bullets[i] = nullptr;
+	}
 }
 
 void Tank::loadGFX() {
@@ -195,7 +199,7 @@ void Tank::update(float dt){
 		bullets[i]->update(dt);
 	}
 
-     if(tInput.isShootingBullet){
+     if(tInput.isShootingBullet){ // TODO: fix tank shooter sprite
          shooterRs.animationSet.layers[0] = AnimationLayer(
              ResourceID::ID_TANK_SHOOTER_SHOOT,
              ResourceIDFrames::IDF_TANK_SHOOTER_SHOOT,

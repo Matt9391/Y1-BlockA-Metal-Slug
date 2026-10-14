@@ -23,6 +23,7 @@ private:
 	Player player;
 	static const int MAXENTITIES = 150;
 
+	//TODO: move grenade and bullets to gamescene array
 	Entity* spawnedEntities[MAXENTITIES];
 	const Map& map;
 	const ParallaxRenderData parallaxRenderData;

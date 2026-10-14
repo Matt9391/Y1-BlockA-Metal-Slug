@@ -8,20 +8,14 @@ SlugBullet::SlugBullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulle
     Bullet(pos, needsRigidBody, dir, bulletType, speed_),
     frameAngle(360.f / static_cast<float>(ResourceIDFrames::IDF_SLUG_BULLET)) // 64 frames -> 5.625, 16 frames -> 22.5
 {
-    // make dir length 1 so the speed is the same in every direction
-    //float len = sqrtf(dir.x * dir.x + dir.y * dir.y);
-    //if (len > 0.f) dir = vec2(dir.x / len, dir.y / len);
     setDir(dir);
 
-    setCollider(vec2(8, 4), vec2(0, 0));   // small box on the bullet head (the sprite pivot)
+    setCollider(vec2(8, 4), vec2(0, 0));   
     getAnimationSets() = new AnimationSet[BSB_COUNTS];
     loadGFX();
     setCurrentASIndex(BSB_SHOOT);
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 
-    // --- frame selection ---
-    // the direction never changes, so the frame is picked once here
-    // 0 = right, 90 = down, 180 = left, 270 = up (screen y points down)
     float angle = atan2f(dir.y, dir.x) * 180.f / PI;
     if (angle < 0.f) angle += 360.f;
 

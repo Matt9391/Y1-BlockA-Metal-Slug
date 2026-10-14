@@ -32,6 +32,10 @@ Helicopter::Helicopter(vec2 pos) :
 
 Helicopter::~Helicopter(){
 	delete[] getAnimationSets();
+	for (int i = 0; i < MAXBULLETS; i++) {
+		delete bullets[i];
+		bullets[i] = nullptr;
+	}
 }
 
 void Helicopter::loadGFX(){
