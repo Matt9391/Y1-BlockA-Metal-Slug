@@ -55,6 +55,7 @@ void SlugBullet::loadGFX() {
 void SlugBullet::update(float dt) {
     // no playAnimation() while flying: the frames are directions, playing them would spin the bullet
     if (getCurrentASIndex() == BSB_BOOM) getAnimator().playAnimation(dt);
+	setColliderSprite();
 
 
     if (getAnimator().isAnimationEnded() && getCurrentASIndex() == BSB_BOOM) {

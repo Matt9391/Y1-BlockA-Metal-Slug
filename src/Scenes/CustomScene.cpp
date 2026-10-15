@@ -4,10 +4,11 @@
 #include <Renderer.h>
 #include <TypeScene.h>
 
-CustomScene::CustomScene(Surface* screen, Renderer& renderer_, InputManager& inputManager_, AudioManager& audioManager_) :
+CustomScene::CustomScene(Surface* screen, Renderer& renderer_, InputManager& inputManager_, AudioManager& audioManager_, ResourceManager& resourceManager_) :
 	renderer(renderer_),
 	inputManager(inputManager_),
 	audioManager(audioManager_),
+	resourceManager(resourceManager_),
 	camera(vec2(0,0), vec2(static_cast<float>(screen->width), static_cast<float>(screen->height))),
 	changeScene(false),
 	nextScene(TypeScene::MENU)
@@ -22,6 +23,9 @@ vec2 CustomScene::getCameraPos() const {
 
 Renderer& CustomScene::getRenderer() const{
 	return this->renderer;
+}
+ResourceManager& CustomScene::getResourceManager() const{
+	return this->resourceManager;
 }
 
 InputManager& CustomScene::getInputManager() const{

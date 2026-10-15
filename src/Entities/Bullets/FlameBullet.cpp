@@ -120,6 +120,7 @@ void FlameBullet::loadGFX() {
 
 void FlameBullet::update(float dt) {
 	getAnimator().playAnimation(dt);
+	setColliderSprite();
 
 	if (getAnimator().isAnimationEnded() && isShootAnimation()) {
 		explode();

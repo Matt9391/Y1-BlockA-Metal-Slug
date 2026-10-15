@@ -722,7 +722,8 @@ void Player::update(float dt) {
 	}
 
 	getAnimator().playAnimation(dt);
-
+	setColliderSprite();
+	
 	if (getCurrentASIndex() == PlayerAnimationSet::PAS_PARACHUTE_CLOSE && getAnimator().isAnimationEnded()) {
 		this->gravityMultiplier = 1.f;
 		enabled = true;

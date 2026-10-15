@@ -44,6 +44,7 @@ void Missle::loadGFX() {
 
 void Missle::update(float dt) {
 	getAnimator().playAnimation(dt);
+	setColliderSprite();
 
 
 	if (getAnimator().isAnimationEnded() && (getCurrentASIndex() == BMissleAnimationSet::BM_BOOM)) {

@@ -32,12 +32,12 @@ void SceneManager::changeScene(TypeScene nextScene,Surface* screen, Renderer& re
 	renderer.reset();
 	delete currentScene;
 	if (nextScene == TypeScene::MENU) {
-		currentScene = new MenuScene(screen, renderer, inputManager, audioManager);
+		currentScene = new MenuScene(screen, renderer, inputManager, audioManager, resourceManager);
 	}
 	else if (nextScene == TypeScene::GAME_OVER) {
-		currentScene = new GameOverScene(screen, renderer, inputManager, audioManager);
+		currentScene = new GameOverScene(screen, renderer, inputManager, audioManager, resourceManager);
 	}else{
-		currentScene = new GameScene(screen, renderer, inputManager, audioManager, resourceManager.getMap());
+		currentScene = new GameScene(screen, renderer, inputManager, audioManager,resourceManager, resourceManager.getMap());
 	}
 
 	currentScene->init();

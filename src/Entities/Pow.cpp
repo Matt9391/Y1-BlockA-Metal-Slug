@@ -93,6 +93,7 @@ void Pow::loadGFX() {
 
 void Pow::update(float dt) {
 	getAnimator().playAnimation(dt);
+	setColliderSprite();
 
 
 	PowAnimationSet nextState = state->update(*this, dt, static_cast<PowAnimationSet>(getCurrentASIndex()));

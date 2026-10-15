@@ -77,6 +77,8 @@ protected:
 	void setFree(bool free_);
 
 	void setRenderLayer(int renderLayer_);
+
+	void setColliderSprite();
 private:
 
 	vec2 pos;

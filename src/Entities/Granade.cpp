@@ -45,6 +45,7 @@ void Granade::loadGFX() {
 
 void Granade::update(float dt) {
 	getAnimator().playAnimation(dt);
+	setColliderSprite();
 
 	if (getAnimator().isAnimationEnded() && getCurrentASIndex() == 1) {
 		setFree(true);

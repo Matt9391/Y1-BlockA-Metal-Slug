@@ -4,6 +4,7 @@
 #include <MapLayer.h>
 
 class Entity;
+class ResourceManager;
 struct Collider;
 
 namespace CollisionManager {
@@ -22,4 +23,6 @@ namespace CollisionManager {
 	vec2 getCollisionOverlap(const Collider& a,const Collider& b);
 	vec2 checkOverlapMapCollision(const Collider& collider,const vec2& tilePos,const int& tileSize);
 	bool checkMapCollision(const Collider& collider,const MapLayer& layer,const int axis /* 0 = x, 1 = y, -1 = xy*/);
+	bool checkPixelPerfectCollision(const Collider& a, const Collider& b, const ResourceManager& rsm);
+
 };

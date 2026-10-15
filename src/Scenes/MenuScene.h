@@ -6,7 +6,7 @@ class Tmpl8::Surface;
 class MenuScene : public CustomScene
 {
 public:
-	MenuScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager);
+	MenuScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, ResourceManager& resourceManager_);
 
 	void init() override;
 	void exit() override;

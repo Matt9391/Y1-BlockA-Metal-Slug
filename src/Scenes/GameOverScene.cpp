@@ -6,8 +6,8 @@
 #include <ResourceIDFrames.h>
 #include <TypeScene.h>
 
-GameOverScene::GameOverScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager) :
-	CustomScene(screen,renderer,inputManager, audioManager),
+GameOverScene::GameOverScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, ResourceManager& resourceManager_) :
+	CustomScene(screen,renderer,inputManager, audioManager, resourceManager_),
 	secondsLeft(60),
 	elapsedTime(0.f)
 {}

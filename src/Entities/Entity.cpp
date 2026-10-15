@@ -1,6 +1,7 @@
 #include "precomp.h"
 #include "Entity.h"
 #include <RigidBody.h>
+#include <ResourceID.h>
 
 Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
 	entityType(entityType),
@@ -133,4 +134,16 @@ EntityType Entity::getEntityType() const {
 
 void Entity::setRenderLayer(int renderLayer_){
 	this->renderLayer = renderLayer_;
+}
+
+void Entity::setColliderSprite(){
+	if(animationSets == nullptr) return;
+	const AnimationSet& as = animationSets[currentASIndex];
+	collider.layerCount = as.layerCount;
+	collider.flipped = as.flipped;
+	for(int i = 0; i < as.layerCount; i++){
+		collider.id[i] = as.layers[i].resourceId;
+		collider.frame[i] = as.layers[i].currentFrame;
+		collider.spriteOffset[i] = as.flipped ? as.layers[i].offsetFlipped : as.layers[i].offset;
+	}
 }

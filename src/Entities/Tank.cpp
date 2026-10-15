@@ -129,6 +129,7 @@ void Tank::loadGFX() {
 
 void Tank::update(float dt){
     getAnimator().playAnimation(dt);
+	setColliderSprite();
     
     RigidBody* rb = getRigidBody();
 

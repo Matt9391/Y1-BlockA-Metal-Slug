@@ -48,6 +48,7 @@ void BombShell::loadGFX() {
 }
 
 void BombShell::update(float dt) {
+	setColliderSprite();
 
     if (getAnimator().isAnimationEnded() && getCurrentASIndex() == BBS_BOOM) {
         setFree(true);

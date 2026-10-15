@@ -50,6 +50,7 @@ void CannonBall::loadGFX() {
 }
 
 void CannonBall::update(float dt) {
+	setColliderSprite();
 	
 
 	if (getAnimator().isAnimationEnded() && getCurrentASIndex() == BCB_BOOM) {

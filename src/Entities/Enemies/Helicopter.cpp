@@ -112,9 +112,7 @@ void Helicopter::loadGFX(){
 
 void Helicopter::update(float dt) {
 	getAnimator().playAnimation(dt);
-	
-	
-
+	setColliderSprite();
 
 	elapsedTime += dt;
 

@@ -44,6 +44,7 @@ void LaserBall::loadGFX() {
 
 void LaserBall::update(float dt) {
 	getAnimator().playAnimation(dt);
+	setColliderSprite();
 
 
 	if (getAnimator().isAnimationEnded() && (getCurrentASIndex() == BLaserBallAnimationSet::BLB_BOOM)) {

@@ -9,4 +9,6 @@ LootDrop::LootDrop(vec2 pos, EntityType entityType) :
 
 void LootDrop::update(float dt) {
     getAnimator().playAnimation(dt);
+	setColliderSprite();
+
 }

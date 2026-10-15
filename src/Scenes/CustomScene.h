@@ -2,6 +2,7 @@
 #include <Renderer.h>
 #include <InputManager.h>
 #include <AudioManager.h>
+#include <ResourceManager.h>
 #include <Camera.h>
 
 class Tmpl8::Surface;
@@ -10,7 +11,7 @@ enum TypeScene : int;
 class CustomScene
 {
 public:
-	CustomScene(Surface* screen, Renderer& renderer_, InputManager& inputManager_, AudioManager& audioManager_);
+	CustomScene(Surface* screen, Renderer& renderer_, InputManager& inputManager_, AudioManager& audioManager_, ResourceManager& resourceManager_);
 	virtual ~CustomScene() {};
 	virtual void init() = 0;
 	virtual void exit() = 0;
@@ -23,6 +24,7 @@ public:
 
 protected:
 	Renderer& getRenderer() const;
+	ResourceManager& getResourceManager() const;
 	InputManager& getInputManager() const;
 	AudioManager& getAudioManager() const;
 	Camera& getCamera();
@@ -34,6 +36,7 @@ private:
 	Renderer& renderer;
 	InputManager& inputManager;
 	AudioManager& audioManager;
+	ResourceManager& resourceManager;
 	Camera camera;
 
 	bool changeScene;

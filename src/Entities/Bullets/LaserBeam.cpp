@@ -35,6 +35,7 @@ void LaserBeam::loadGFX() {
 
 void LaserBeam::update(float dt) {
 	getAnimator().playAnimation(dt);
+	setColliderSprite();
     
     elapsedTime += dt;   
     

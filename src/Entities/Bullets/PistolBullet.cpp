@@ -73,6 +73,7 @@ void PistolBullet::loadGFX() {
 
 void PistolBullet::update(float dt) {
 	getAnimator().playAnimation(dt);
+	setColliderSprite();
 
 
 	if (getAnimator().isAnimationEnded() && isBoomAnimation()) {

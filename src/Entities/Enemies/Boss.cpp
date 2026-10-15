@@ -179,7 +179,8 @@ void Boss::loadGFX() {
 
 void Boss::update(float dt) {
 	getAnimator().playAnimation(dt);
-
+	setColliderSprite();
+    
 	if (!getSensors().isGrounded) {
 		addVelocity(vec2(0, getRigidBody()->getGravity() * dt));
 	}

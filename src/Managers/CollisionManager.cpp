@@ -3,6 +3,7 @@
 #include <iostream>
 #include <Entity.h>
 #include <Collider.h>
+#include <ResourceManager.h>
 #include <myMath.h>
 
 
@@ -112,21 +113,10 @@ namespace CollisionManager {
 		return collided;
 	}
 
+
 	bool checkCollision(const Collider& a,const Collider& b){
-		float leftA = a.pos.x + a.offset.x;
-		float rightA = a.pos.x + a.offset.x + a.size.x;
-		float topA = a.pos.y + a.offset.y;
-		float bottomA = a.pos.y + a.offset.y + a.size.y;
-	
-		float leftB = b.pos.x + b.offset.x;
-		float rightB = b.pos.x + b.offset.x + b.size.x;
-		float topB = b.pos.y + b.offset.y;
-		float bottomB = b.pos.y + b.offset.y + b.size.y;
-
-		float overlapX = fminf(rightA, rightB) - fmaxf(leftA, leftB);
-		float overlapY = fminf(bottomA, bottomB) - fmaxf(topA, topB);
-
-		if (overlapX > -0.01f && overlapY > -0.01f) { //if colliding
+		const vec2 overlaps = getCollisionOverlap(a,b);
+		if (overlaps.x > -0.01f && overlaps.y > -0.01f) { //if colliding
 			return true;
 		}
 		return false;
@@ -272,6 +262,73 @@ namespace CollisionManager {
 		return collided;
 	}
 
+	bool checkPixelPerfectCollision(const Collider& a, const Collider& b, const ResourceManager& rsm){
+		const vec2 overlaps = getCollisionOverlap(a,b);
+		const int ow = (int)overlaps.x;
+		const int oh = (int)overlaps.y;
+		if (ow <= 0 || oh <= 0) return false;
 
+		// world-space top-left of each collider
+		const int aL = (int)(a.pos.x + a.offset.x), aT = (int)(a.pos.y + a.offset.y);
+		const int bL = (int)(b.pos.x + b.offset.x), bT = (int)(b.pos.y + b.offset.y);
+		const int startX = max(aL, bL);
+		const int startY = max(aT, bT);
+
+		for(int i = 0; i < a.layerCount; i++){
+			const int aSpriteX = (int)(a.pos.x + a.spriteOffset[i].x);
+			const int aSpriteY = (int)(a.pos.y + a.spriteOffset[i].y);
+			
+			for(int j = 0; j < b.layerCount; j++){
+				const int bSpriteX = (int)(b.pos.x + b.spriteOffset[j].x);
+				const int bSpriteY = (int)(b.pos.y + b.spriteOffset[j].y);
+
+				Sprite* sA = rsm.getSprite(a.id[i]);
+				Sprite* sB = rsm.getSprite(b.id[j]);
+
+				if(sA == nullptr || sB == nullptr) continue;
+
+				const int aStartX = startX - aSpriteX, aStartY = startY - aSpriteY;
+				const int bStartX = startX - bSpriteX, bStartY = startY - bSpriteY;
+
+
+				const int wA = sA->GetWidth(), wB = sB->GetWidth();
+				const int hA = sA->GetHeight(), hB = sB->GetHeight();
+				const int pitchA = wA * sA->Frames(); // frames are laid out side by side
+				const int pitchB = wB * sB->Frames();
+
+				// move to the right frame once, outside the pixel loops
+				const uint* bufA = a.flipped ? sA->GetReverseBuffer() : sA->GetBuffer();
+				const uint* bufB = b.flipped ? sB->GetReverseBuffer() : sB->GetBuffer();
+
+				const uint* pxA = bufA + a.frame[i] * wA;
+				const uint* pxB = bufB + b.frame[j] * wB;
+
+				// loop from 0 to the overlap value
+				for (int y = 0; y < oh; y++) {
+					const int ay = aStartY + y;
+					const int by = bStartY + y;
+					if (ay < 0 || ay >= hA || by < 0 || by >= hB) continue;
+
+					// loop from 0 to the overlap value	
+					for (int x = 0; x < ow; x++) {
+						const int ax = aStartX + x;
+						const int bx = bStartX + x;
+						if (ax < 0 || ax >= wA || bx < 0 || bx >= wB) continue;
+
+						const uint pA = pxA[ax + ay * pitchA];
+						const uint pB = pxB[bx + by * pitchB];
+
+						if ((pA & 0xffffff) && (pB & 0xffffff)) return true; // both non-transparent
+					}
+				}
+
+			}
+		}
+
+		return false;
+	}
+
+	
 	// TODO: PIXEL-PERFECT COLLISION
+	// add resourceId AND current Frame to collider so I can then ask from the resourceManager for the sprite and then do the collision
 } 
