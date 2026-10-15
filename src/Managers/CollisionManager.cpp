@@ -114,12 +114,19 @@ namespace CollisionManager {
 	}
 
 
-	bool checkCollision(const Collider& a,const Collider& b){
+	bool checkCollision(const Collider& a,const Collider& b, const ResourceManager& rsm, int depth){
+		bool result = false;
+
 		const vec2 overlaps = getCollisionOverlap(a,b);
 		if (overlaps.x > -0.01f && overlaps.y > -0.01f) { //if colliding
-			return true;
+			result = true;
 		}
-		return false;
+
+		if(depth == 0) return result;
+
+		result = checkPixelPerfectCollision(a,b,rsm);
+		
+		return result;
 	}
 
 	bool resolveCollisionAOverB(Entity& e, const Collider& b){
@@ -174,7 +181,6 @@ namespace CollisionManager {
 
 		return vec2(overlapX,overlapY);
 	}
-
 
 	vec2 checkOverlapMapCollision(const Collider& collider,const vec2& tilePos,const int& tileSize) {
 		const vec2 colliderPos = (collider.pos + collider.offset);
@@ -262,6 +268,8 @@ namespace CollisionManager {
 		return collided;
 	}
 
+	// DONE: PIXEL-PERFECT COLLISION
+	// add resourceId AND current Frame to collider so I can then ask from the resourceManager for the sprite and then do the collision
 	bool checkPixelPerfectCollision(const Collider& a, const Collider& b, const ResourceManager& rsm){
 		const vec2 overlaps = getCollisionOverlap(a,b);
 		const int ow = (int)overlaps.x;
@@ -327,8 +335,7 @@ namespace CollisionManager {
 
 		return false;
 	}
+	
 
 	
-	// TODO: PIXEL-PERFECT COLLISION
-	// add resourceId AND current Frame to collider so I can then ask from the resourceManager for the sprite and then do the collision
 } 
