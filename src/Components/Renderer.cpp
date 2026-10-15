@@ -4,6 +4,7 @@
 #include <HUDText.h>
 #include <iostream>
 #include <Spawner.h>
+#include <myMath.h>
 
 
 
@@ -16,7 +17,9 @@ Renderer::Renderer() :
 	colliders{nullptr},
 	printer(),
 	mapRenderData{nullptr},
-	parallaxRenderData{nullptr}
+	parallaxRenderData{nullptr},
+	darkOverlay(false),
+	crtEffect(true)
 	{}
 
 Renderer::~Renderer(){
@@ -103,6 +106,10 @@ void Renderer::clearSpriteSets() {
 		spriteSets[i] = SpriteSet();
 	}
 	spriteSetCount = 0;
+}
+
+void Renderer::setDarkOverlay(bool darkOverlay_){
+	this->darkOverlay = darkOverlay_;
 }
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
 	if(parallaxRenderData != nullptr){
@@ -260,6 +267,21 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 					0xFF0000);
 	}
 
+
+	if(darkOverlay){
+		int end = screen->width * screen->height;
+		for(int i = 0; i < end; i++){
+			uint pixel = screen->pixels[i];
+
+			uint alpha = pixel & 0xFF000000;
+			uint red   = ((pixel & 0x00FF0000) >> 16) / 2;
+			uint green = ((pixel & 0x0000FF00) >> 8) / 2;
+	        uint blue  = (pixel & 0x000000FF) / 2;
+
+			screen->pixels[i] = alpha | (red << 16) | (green << 8) | blue;
+		}
+	}
+
 	for (int i = 0; i < spriteSetCount; i++) {
 		SpriteSet& ss = spriteSets[i];
 		Sprite* sprite = resourceManager.getSprite(ss.resourceId);
@@ -276,7 +298,58 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		printer.drawText(t, s, screen);
 	}
 
-	
+	if (crtEffect) {
+		for (int y = 0; y < screen->height; y++) {
+			// Darken every other row
+			if (y % 2 == 0) {
+				for (int x = 0; x < screen->width; x++) {
+					int i = y * screen->width + x;
+
+					uint pixel = screen->pixels[i];
+
+					uint alpha = pixel & 0xFF000000;
+					uint red   = ((pixel & 0x00FF0000) >> 16) * 14 / 16;
+					uint green = ((pixel & 0x0000FF00) >> 8) * 14 / 16;
+					uint blue  = (pixel & 0x000000FF) * 14 / 16;
+
+					screen->pixels[i] = alpha | (red << 16)| (green << 8) | blue;
+				}
+			}
+		}
+
+		uint newPixels[ SCRWIDTH * SCRHEIGHT];
+		for (int y = 0; y < screen->height; y++) {
+			// Darken every other row
+			for (int x = 0; x < screen->width; x++) {
+				int shift = 1; // how many pixels to offset — tune this, even 1 is often visible at this resolution
+
+				int xRed  = myMath::constrain(x - shift, 0.f, screen->width);  // sample red from slightly left
+				int xBlue = myMath::constrain(x + shift, 0.f, screen->width);  // sample blue from slightly right
+				// int yRed  = myMath::constrain(y - shift, 0.f, screen->height);  // sample red from slightly left
+				// int yBlue = myMath::constrain(y + shift, 0.f, screen->height);  // sample blue from slightly right
+				int yRed  = y;  
+				int yBlue = y;
+
+				uint redPixel   = screen->pixels[yRed * screen->width + xRed];
+				uint greenPixel = screen->pixels[y * screen->width + x];       // unshifted
+				uint bluePixel  = screen->pixels[yBlue * screen->width + xBlue];
+
+				uint red   = (redPixel   & 0x00FF0000);  // keep red's red channel only
+				uint green = (greenPixel & 0x0000FF00);  // keep green's green channel only
+				uint blue  = (bluePixel  & 0x000000FF);  // keep blue's blue channel only
+				uint alpha = (greenPixel & 0xFF000000);  // alpha from center sample is fine
+				
+				newPixels[y * screen->width + x] = alpha | red | green | blue;
+			}
+		}
+
+		for (int y = 0; y < screen->height; y++)
+			for (int x = 0; x < screen->width; x++)
+				screen->pixels[y * screen->width + x] = newPixels[y * screen->width + x];
+
+		
+	}	
+
 }
 
 

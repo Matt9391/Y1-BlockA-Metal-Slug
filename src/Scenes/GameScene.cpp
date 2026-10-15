@@ -73,6 +73,8 @@ GameScene::~GameScene() {
 void GameScene::init() {
 	player.init(vec2(30,80));
 
+	getRenderer().setDarkOverlay(false);
+
 	//* Initialize camera to game scene settings
 	getCamera().init(vec2(0.f, 10.f * map.getTileSize()));
 	getCamera().enableCamera(true);
@@ -327,6 +329,7 @@ void GameScene::renderHUD(float dt) {
 					10
 				));
 				justWin = false;
+				getRenderer().setDarkOverlay(true);
 			}
 
 			// TODO: Dark background

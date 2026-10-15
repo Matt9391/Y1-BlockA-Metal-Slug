@@ -35,6 +35,7 @@ public:
 
 	void render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset);
 
+	void setDarkOverlay(bool darkOverlay_);
 private:
 	static const int MAXRENDERSETS = 100; //REMBEMBER THAT THEY FINISH FAST
 	static const int MAXRENDERLAYERS = 4;
@@ -54,6 +55,8 @@ private:
 	int textsCount;
 	int spriteSetCount;
 
+	bool darkOverlay;
+	bool crtEffect;
 
 	Printer printer;
 
