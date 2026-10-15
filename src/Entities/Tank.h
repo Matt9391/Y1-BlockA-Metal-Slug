@@ -52,8 +52,17 @@ private:
     float bulletSpeed;
 
     vec2 shootOffset;
+    vec2 shooterOffset;
     vec2 shootBulletOffset;
     vec2 shootDir;
+
+    float shootBulletTimer;
+    float shootMuzzleTimer;
+    float shootBombTimer;
+
+    static const int SHOOTMUZZLETIMER = 200;
+    static const int SHOOTBULLETCOUNTDOWN = 200;
+    static const int SHOOTBOMBCOUNTDOWN = 300;
 
     float angle;
     float angleIncr;

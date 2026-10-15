@@ -21,7 +21,8 @@ Tank::Tank(vec2 pos, const InputManager& inputManager_) :
     hp(5),
     playerOffset(vec2(30,15)),
     shootOffset{50,10},
-    shootBulletOffset{5,10},
+    shooterOffset{10,5},
+    shootBulletOffset{25,25},
     bulletsCount(0),
 	bulletSpeed(0.5f),
     shootDir(0,0),
@@ -37,8 +38,11 @@ Tank::Tank(vec2 pos, const InputManager& inputManager_) :
             150,
             vec2(0, 0),
             vec2(0, 0))
-    ), pos + shootBulletOffset, 2)},
-    aimUp(true)
+    ), pos + shooterOffset, 2)},
+    aimUp(true),
+    shootBulletTimer(0.f),
+    shootBombTimer(0.f),
+    shootMuzzleTimer(0.f)
 {
     setCollider(vec2(60, 50), vec2(15, 10));
 	//setCollider(vec2(20, 7), vec2(3, 30));
@@ -140,7 +144,7 @@ void Tank::update(float dt){
 		setVelocityY(0.f);
 	}
 
-    shooterRs.pos = getPos() + shootBulletOffset;
+    shooterRs.pos = getPos() + shooterOffset;
 
 
     if (player != nullptr) {
@@ -154,6 +158,9 @@ void Tank::update(float dt){
         return;
     }
 
+    shootBombTimer += dt;
+    shootBulletTimer += dt;
+    shootMuzzleTimer += dt;
 
     const TankStates::TankInput tInput = getTankInput();
 
@@ -189,9 +196,9 @@ void Tank::update(float dt){
     //reset bools
     gotHit = false;
 
-    if (tInput.isShooting && !tInput.isDead) {
+    if (tInput.isShooting && !tInput.isDead && shootBombTimer > SHOOTBOMBCOUNTDOWN) {
         shoot(BulletType::BT_BOMB_SHELL);
-    }else if(tInput.isShootingBullet && !tInput.isDead){
+    }else if(tInput.isShootingBullet && !tInput.isDead && shootBulletTimer > SHOOTBULLETCOUNTDOWN){
         shoot(BulletType::BT_SLUG_BULLET);
     }
 
@@ -205,9 +212,9 @@ void Tank::update(float dt){
              ResourceID::ID_TANK_SHOOTER_SHOOT,
              ResourceIDFrames::IDF_TANK_SHOOTER_SHOOT,
              150,
-             vec2(0, 0),
-             vec2(0, 0));
-     }else{
+             vec2(-31, -31),
+             vec2(-31, -31));
+     }else if(shootMuzzleTimer > SHOOTMUZZLETIMER){
         shooterRs.animationSet.layers[0] = AnimationLayer(
             ResourceID::ID_TANK_SHOOTER_IDLE,
             ResourceIDFrames::IDF_TANK_SHOOTER_IDLE,
@@ -352,9 +359,12 @@ bool Tank::shoot(BulletType bulletType) {
                                         BulletType::BT_BOMB_SHELL,
                                         Rand(150.f) + 1500.f,
                                         400.f);
+        shootBombTimer = 0.f;
         break;
     case BT_SLUG_BULLET:
         bullets[bIndex] = new SlugBullet(getPos() + shootBulletOffset, true, shootDir, BT_SLUG_BULLET, bulletSpeed);
+        shootMuzzleTimer = 0.f;
+        shootBulletTimer = 0.f;
         break;
     
     default:
@@ -362,6 +372,7 @@ bool Tank::shoot(BulletType bulletType) {
     }
 	bulletsCount++;
 
+    
 	return true;
 }
 

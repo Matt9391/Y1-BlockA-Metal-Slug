@@ -10,18 +10,24 @@ SlugBullet::SlugBullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulle
 {
     setDir(dir);
 
-    setCollider(vec2(8, 4), vec2(0, 0));   
     getAnimationSets() = new AnimationSet[BSB_COUNTS];
     loadGFX();
     setCurrentASIndex(BSB_SHOOT);
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
-
+    
     float angle = atan2f(dir.y, dir.x) * 180.f / PI;
     if (angle < 0.f) angle += 360.f;
 
     int frame = static_cast<int>(roundf(angle / frameAngle)) % static_cast<int>(ResourceIDFrames::IDF_SLUG_BULLET); // 360 deg wraps to frame 0
 
     getAnimator().setFrame(frame);
+
+    // collider on the head of the bullet 
+    const float headDist = 25.5f;                               // spike to head, in px
+    float snapped = (frame * frameAngle) * (PI / 180.f);          // angle
+    vec2 head = vec2(cosf(snapped), sinf(snapped)) * headDist;
+    vec2 size = vec2(8, 8);                                    
+    setCollider(size, head - size / 2.f);
 
     getRigidBody()->setSpeed(speed_);
 }
@@ -39,8 +45,8 @@ void SlugBullet::loadGFX() {
         AnimationLayer(ResourceID::ID_SLUG_BULLET,
             ResourceIDFrames::IDF_SLUG_BULLET,   // 64
             100,
-            vec2(-24, -24),
-            vec2(-24, -24))
+            vec2(-27, -27),
+            vec2(-27, -27))
     );
     getAnimationSets()[BSB_BOOM] = AnimationSet(
         1,
