@@ -44,7 +44,7 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 						vec2(0, 0)
 					)
 				),
-				vec2(3337,3.5f))
+				vec2(3337,3.5f), 0)
 			),
 	waterfallBottom(RenderData
 				(AnimationSet(
@@ -117,41 +117,14 @@ void GameScene::init() {
 			}
 		}
 	
-	addNewEntity(new Tank(vec2(700,80), getInputManager()));
+	tankRef = new Tank(vec2(700,80), getInputManager());
+	addNewEntity(tankRef);
 	addNewEntity(new Boss(vec2(3769 + 265, -60 + 100)));
 };
 
 void GameScene::exit() {};
 
 // TODO: add proper audio to the game
-// TODO: Refactor GameScene::update — it's grown into an unmanageable single function.
-// Priority order for tomorrow:
-//
-// 1. BUG, fix first: tankRef is re-derived from spawnedEntities[0] every frame.
-//    If the tank dies and something else later spawns into slot 0, tankRef will
-//    silently point at the wrong entity type (e.g. a RebelSoldier cast as a Tank).
-//    Fix: make tankRef a real GameScene member, set once at creation
-//    (tankRef = new Tank(...); addNewEntity(tankRef);), nulled only on free.
-//    Never derive it from an array index again.
-//
-// 2. Extract the three near-identical "bullet vs every entity type" loops
-//    (player gun bullets, tank bullets, [+ missing: boss/heli bullets vs player])
-//    into one function: resolveBulletVsEntities(Bullet* b).
-//
-// 3. Extract the repeated loadSensors(...) setup duplicated across
-//    RebelSoldier / Helicopter / Boss into one helper.
-//
-// 4. Extract the repeated "if player.getInTank() -> hit tank, else -> hit player"
-//    branch (appears 3+ times) into one helper, e.g. damagePlayerOrTank().
-//
-// 5. Split the big per-EntityType if/else chain into named methods
-//    (handleRebelSoldier, handleHelicopter, handleBoss, handleTank...),
-//    called from a slimmer dispatch loop in update().
-//
-// 6. Easy/safe first win: pull the whole HUD block (already its own {} scope)
-//    into GameScene::renderHUD(dt).
-//
-// Do these one at a time, not all at once — that's how this got messy in the first place.
 void GameScene::update(float dt) {
 	getRenderer().clearRenderDatas();
 	getRenderer().clearColliders();
@@ -160,15 +133,7 @@ void GameScene::update(float dt) {
 	anim.playAnimation(dt);
 	anim2.playAnimation(dt);
 
-	// DONE: ADD layers to the renderData
-	getRenderer().addRenderData(waterfall);
-
-
 	player.update(dt);
-
-
-	// TODO: get called even after free, to change.
-	Tank* tankRef = dynamic_cast<Tank*>(spawnedEntities[0]);
 	
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 
@@ -199,9 +164,6 @@ void GameScene::update(float dt) {
 		e->update(dt);
 
 		if(e->hasToBeFreed()){
-			if(e->getEntityType() == EntityType::ET_TANK){
-				tankRef = nullptr;
-			}
 			freeEntity(i);
 			continue;
 		}
@@ -214,211 +176,34 @@ void GameScene::update(float dt) {
 
 		CollisionManager::resolveMapCollision(*e, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 		
-		if (e->getEntityType() == EntityType::ET_REBELSOLDIER) {
+		switch (e->getEntityType()) {
+			case EntityType::ET_REBELSOLDIER:
+				handleRebelSoldier(static_cast<RebelSoldier*>(e)); 
+				break;
 
-			RebelSoldier* enemy = static_cast<RebelSoldier*>(e); //static vs dynamic ?
-				
-			if(player.getInTank()){
-				enemy->loadSensors(
-					tankRef->getPos() + tankRef->getCollider().size / 2.f,
-					CollisionManager::checkMapCollision(
-						enemy->getCollider(),
-						map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
-						0
-					)
-				);
+			case EntityType::ET_POW:
+				handlePow(static_cast<Pow*>(e));
+				break;
 
-			}else{
+			case EntityType::ET_LOOTDROP:
+			case EntityType::ET_POWERUP:
+				handleLootDrop(e, playerColliderInFront);
+				break;
 
-				enemy->loadSensors(
-					player.getPos() + player.getCollider().size / 2.f,
-					CollisionManager::checkMapCollision(
-						enemy->getCollider(),
-						map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
-						0
-					)
-				);
-			}
-				
-			if (CollisionManager::checkCollision(player.getCollider(), enemy->getCollider(), getResourceManager())|| (
-				player.getInTank() && CollisionManager::checkCollision(tankRef->getCollider(), enemy->getCollider(), getResourceManager()))
-			) {
-				if(enemy->getAttacking()){
-					if(player.getInTank()){
-						tankRef->takeHit();
-					}else{
-						player.takeHit();
-					}
-				} 
+			case EntityType::ET_HELICOPTER:
+				handleHelicopter(static_cast<Helicopter*>(e)); 
+				break;
 
-				if(player.isShooting()){
-					enemy->setAlive(false);
-					player.addScore(100);
-				}
-			}
-			enemy->addRenderDatas(getRenderer());
+			case EntityType::ET_BOSS:
+				handleBoss(static_cast<Boss*>(e));
+				break;
 
-			for (int j = 0; j < enemy->getMaxGranades(); j++) {
-				Granade* g = enemy->getGranade(j);
-				if (!g) continue;
-				
-				if (getCamera().isOutOfView(g->getPos())) {
-					g->explode();
-				}
-				
-				if (g->hasToBeFreed()) {
-					enemy->freeGranade(j);
-					continue;
-				}
-				if(g->getDisabled()) continue;
+			case EntityType::ET_TANK:
+				handleTank(static_cast<Tank*>(e));
+				break;
 
-				if (CollisionManager::checkMapCollision(g->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
-					g->explode();
-				}
-
-				if (CollisionManager::checkCollision(g->getCollider(), player.getCollider(), getResourceManager(), 1)||
-					(player.getInTank() && CollisionManager::checkCollision(g->getCollider(), tankRef->getCollider(), getResourceManager(),1))) {
-					g->explode();
-					if(player.getInTank()){
-						tankRef->takeHit();
-					}else{
-						player.takeHit();
-					}
-				}
-			}
-		}
-		else if (e->getEntityType() == EntityType::ET_POW) {
-			Pow* pow = static_cast<Pow*>(e);
-			if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider(), getResourceManager(),1)) {
-				if (player.isShooting() && !pow->isReleased()) {
-					pow->setReleased(true);
-					player.addPowSaved();
-				}
-				pow->setIntersectingPlayer(true);
-			}
-			else {
-				pow->setIntersectingPlayer(false);
-			}
-
-			if (getCamera().isOutOfView(pow->getPos())) {
-				if (pow->isReleased()) {
-					pow->setPowFree(true);
-				}
-			}
-		
-		}else if(e->getEntityType() == EntityType::ET_LOOTDROP ||
-				e->getEntityType() == EntityType::ET_POWERUP){
-			LootDrop* lootDrop = static_cast<LootDrop*>(e);
-			
-			if(e->getEntityType() == EntityType::ET_POWERUP){
-				PowerUp* powerUp = static_cast<PowerUp*>(e);
-				if(powerUp->getState() == PowerUpState::PUS_CRATE){
-					if(player.isShooting() &&
-					   (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider(), getResourceManager(),1)||
-					   CollisionManager::checkCollision(playerColliderInFront, lootDrop->getCollider(), getResourceManager()))
-					){
-						powerUp->setState(PowerUpState::PUS_REVEALED);
-					}
-				}
-			}
-
-			// DONE: Add player colllision resolution on lootdrop, it can walk over it
-			if (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider(), getResourceManager())) {
-				CollisionManager::resolveCollisionAOverB(player, lootDrop->getCollider());
-				lootDrop->applyEffect(player);
-			}
-		}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
-			Helicopter* h = static_cast<Helicopter*>(e); //static vs dynamic ?
-			
-			
-			h->loadSensors(
-				player.getPos() + player.getCollider().size / 2.f,
-				CollisionManager::checkMapCollision(
-					h->getCollider(),
-					map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
-					0
-				)
-			);
-			
-			for (int j = 0; j < h->getMaxBullets(); j++) {
-				Bullet* b = h->getBullet(j);
-				if (!b) continue;
-				
-				if (b->hasToBeFreed()) {
-					h->freeBullet(j);
-					continue;
-				}
-				if (b->getDisabled()) continue;
-				
-				if (getCamera().isOutOfView(b->getPos())) {
-					b->explode();
-				}
-				
-				if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(),1)) {
-					b->explode();
-					player.takeHit();
-				}
-				if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
-					b->explodeMap();
-				}
-				
-				
-			}
-			h->addRenderDatas(getRenderer());
-		}else if(e->getEntityType() == EntityType::ET_BOSS){
-			Boss* bs = static_cast<Boss*>(e);
-			
-			bs->loadSensors(
-				player.getPos() + player.getCollider().size / 2.f,
-				CollisionManager::checkMapCollision(
-					bs->getCollider(),
-					map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
-					0
-				)
-			);
-
-			for (int j = 0; j < bs->getMaxBullets(); j++) {
-				Bullet* b = bs->getBullet(j);
-				if (!b) continue;
-
-				if (b->hasToBeFreed()) {
-					bs->freeBullet(j);
-					continue;
-				}
-				if (b->getDisabled()) continue;
-
-				if (getCamera().isOutOfView(b->getPos())) {
-					b->explode();
-				}
-				
-				if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(), 1) ||
-					(player.getInTank() && CollisionManager::checkCollision(b->getCollider(), tankRef->getCollider(), getResourceManager(), 1))) {
-					b->explode();
-					if(player.getInTank()){
-						tankRef->takeHit();
-					}else{
-						player.takeHit();
-					}
-				}
-				if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
-					b->explodeMap();
-				}
-			}	
-			bs->addRenderDatas(getRenderer());
-		
-		}else if(e->getEntityType() == EntityType::ET_TANK){
-			Tank* tank = static_cast<Tank*>(e);
-
-			if(!tank->hasPlayer() &&
-				CollisionManager::checkCollision(player.getCollider(), tank->getCollider(), getResourceManager()) && player.getPos().y < tank->getPos().y){
-				tank->enterPlayer(&player);
-				printf("aaaa");
-			}
-
-			if(!tank->hasPlayer()){
-				CollisionManager::resolveCollisionAOverB(player, tank->getCollider());
-			}	
-		
+			default:
+				break;
 		}
 
 		getRenderer().addRenderData(e->getRenderData());
@@ -446,141 +231,31 @@ void GameScene::update(float dt) {
 		if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
 			b->explodeMap();
 		}
-		for (Entity* e : this->spawnedEntities) {
-			if (!e) continue;
-			if (e->getEntityType() == EntityType::ET_REBELSOLDIER){
 
-				RebelSoldier* enemy = static_cast<RebelSoldier*>(e);
-				if (!enemy->getAlive()) continue;
-				
-				if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					enemy->setAlive(false);
-					player.addScore(100);
-				}
-				
-			}else if (e->getEntityType() == EntityType::ET_POW) {
-				Pow* pow = static_cast<Pow*>(e);
-				if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					pow->setReleased(true);
-				}
-			}else if(e->getEntityType() == EntityType::ET_POWERUP){
-				PowerUp* powerUp = static_cast<PowerUp*>(e);
-				if(!powerUp) continue;
-				if(powerUp->getState() == PowerUpState::PUS_REVEALED) continue;
-				if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					powerUp->setState(PowerUpState::PUS_REVEALED);
-				}
-			}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
-				Helicopter* h = static_cast<Helicopter*>(e); 
-				if(!h->getAlive()){
-					getCamera().setWorldSize(vec2(static_cast<float>(nTilesLimit2Camera * map.getTileSize()), 
-												  static_cast<float>(map.getTiles().y * map.getTileSize())));
-
-				}
-
-				if (CollisionManager::checkCollision(b->getCollider(), h->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					h->takeHit();
-					b->setDisabled(true);
-					
-				}
-				
-			}
-			else if(e->getEntityType() == EntityType::ET_BOSS){
-				Boss* bs = static_cast<Boss*>(e); 
-				if (!bs->getAlive()) {
-					justWin = !winCondition;
-					winCondition = true;
-				}
-
-				if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					bs->takeHit();
-					// player.addScore(100);
-				}
-			}
-		}
+		resolveBulletVsEntities(b);
 	}
 
 	if(tankRef != nullptr){
 		for (int i = 0; i < tankRef->getMaxBullets(); i++) {
-		Bullet* b = tankRef->getBullet(i);
-		if (!b) continue;
+			Bullet* b = tankRef->getBullet(i);
+			if (!b) continue;
 
-		if (b->hasToBeFreed()) {
-			tankRef->freeBullet(i);
-			continue;
-		}
-		if (b->getDisabled()) continue;
-
-		if (getCamera().isOutOfView(b->getPos())) {
-			b->explode();
-		}
-		
-		if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
-			b->explodeMap();
-		}
-		for (Entity* e : this->spawnedEntities) {
-			if (!e) continue;
-			if (e->getEntityType() == EntityType::ET_REBELSOLDIER){
-
-				RebelSoldier* enemy = static_cast<RebelSoldier*>(e);
-				if (!enemy->getAlive()) continue;
-				
-				if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					enemy->setAlive(false);
-					player.addScore(100);
-				}
-				
-			}else if (e->getEntityType() == EntityType::ET_POW) {
-				Pow* pow = static_cast<Pow*>(e);
-				if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					pow->setReleased(true);
-				}
-			}else if(e->getEntityType() == EntityType::ET_POWERUP){
-				PowerUp* powerUp = static_cast<PowerUp*>(e);
-				if(!powerUp) continue;
-				if(powerUp->getState() == PowerUpState::PUS_REVEALED) continue;
-				if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					powerUp->setState(PowerUpState::PUS_REVEALED);
-				}
-			}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
-				Helicopter* h = static_cast<Helicopter*>(e); 
-				if(!h->getAlive()){
-					getCamera().setWorldSize(vec2(static_cast<float>(nTilesLimit2Camera * map.getTileSize()), 
-												  static_cast<float>(map.getTiles().y * map.getTileSize())));
-
-				}
-
-				if (CollisionManager::checkCollision(b->getCollider(), h->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					h->takeHit();
-					b->setDisabled(true);
-					
-				}
-				
+			if (b->hasToBeFreed()) {
+				tankRef->freeBullet(i);
+				continue;
 			}
-			else if(e->getEntityType() == EntityType::ET_BOSS){
-				Boss* bs = static_cast<Boss*>(e); 
-				if (!bs->getAlive()) {
-					justWin = !winCondition;
-					winCondition = true;
-				}
+			if (b->getDisabled()) continue;
 
-				if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),1)) {
-					b->explode();
-					bs->takeHit();
-					// player.addScore(100);
-				}
+			if (getCamera().isOutOfView(b->getPos())) {
+				b->explode();
 			}
+			
+			if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
+				b->explodeMap();
+			}
+
+			resolveBulletVsEntities(b);
 		}
-	}
 	}
 	
 	if(!player.getInTank())
@@ -590,6 +265,8 @@ void GameScene::update(float dt) {
 		tankRef->addRenderDatas(getRenderer());
 	}
 	//getRenderer().addRenderData(player.getGunRenderData(), player.getGunBullets());
+	// DONE: ADD layers to the renderData
+	getRenderer().addRenderData(waterfall);
 	getRenderer().addRenderData(waterfallBottom);
 	
 	getRenderer().addCollider(player.getCollider());
@@ -598,79 +275,334 @@ void GameScene::update(float dt) {
 	//getRenderer().addCollider(c);
 	getCamera().follow(player.getPos(), dt);
 
-	//HUD
-	{
-
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "LEVEL-4", vec2(150, 215),1.f});
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 215),1.f});
-
-		if (loseCondition) {
-			elapsedLoseTime += dt;
-
-			if (elapsedLoseTime > 1000) {
-				elapsedLoseTime = 0.f;
-				secondsLeft--;
-				secondsLeft = secondsLeft < 0 ? 0 : secondsLeft;
-			}
-
-			if (secondsLeft == 0) {
-				setChangeScene(true);
-			}
-
-			char timeLeft[50];
-			snprintf(timeLeft, sizeof(timeLeft), "%d", secondsLeft);
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "CONTINUE?", vec2(80, 80),1.f });
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, timeLeft, vec2(130, 100),2.f });
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CONTINUE ", vec2(10, 10),1.f });
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, timeLeft, vec2(90, 10),1.f });
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PUSH START", vec2(180, 10),1.f });
-
-			if(getInputManager().isKeyPressed(' ')) {
-				player.fullRevive();	
-			}
-
-		}else {
-			if(winCondition){
-				char savedText[4];
-				snprintf(savedText, sizeof(savedText), "%d", player.getPowSaved());
-
-				if(justWin){
-					getRenderer().addSpriteSet(SpriteSet(
-						ResourceID::ID_POW_BYE,
-						ResourceIDFrames::IDF_POW_BYE,
-						vec2(40, 60),
-						10
-					));
-					justWin = false;
-				}
-
-				// TODO: Dark background
-				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "RECAPTURED PRISONER", vec2(45, 40), 1.f });
-				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "P1", vec2(65, 50), 1.f });
-				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, savedText, vec2(80, 82), 1.f });
-				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "x1000", vec2(105, 90), 1.f });
-				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "11000", vec2(60, 110), 1.f });
-				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "MG. Carothers", vec2(30, 145), 1.f });
-				getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PLEASE WAIT", vec2(180, 10),1.2f });
-				
-			}
-			char livesText[50];
-			snprintf(livesText, sizeof(livesText), "1UP=%d", player.getLives());
-			char scoreText[50];
-			snprintf(scoreText, sizeof(scoreText), "%d", player.getScore());
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, scoreText, vec2(38, 2),0.5f });
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, livesText, vec2(10, 20),0.8f });
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "200", vec2(95, 10),1.f });
-			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "10", vec2(130, 10),1.f });
-		}
-
-	}
+	renderHUD(dt);
 
 	loseCondition = player.getLives() <= -1;
 };
 
 
+// ---------------------------------------------------------------------------
+// HUD
+// ---------------------------------------------------------------------------
+void GameScene::renderHUD(float dt) {
 
+	getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "LEVEL-4", vec2(150, 215),1.f});
+	getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CREDIT 01", vec2(220, 215),1.f});
+
+	if (loseCondition) {
+		elapsedLoseTime += dt;
+
+		if (elapsedLoseTime > 1000) {
+			elapsedLoseTime = 0.f;
+			secondsLeft--;
+			secondsLeft = secondsLeft < 0 ? 0 : secondsLeft;
+		}
+
+		if (secondsLeft == 0) {
+			setChangeScene(true);
+		}
+
+		char timeLeft[50];
+		snprintf(timeLeft, sizeof(timeLeft), "%d", secondsLeft);
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "CONTINUE?", vec2(80, 80),1.f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, timeLeft, vec2(130, 100),2.f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "CONTINUE ", vec2(10, 10),1.f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, timeLeft, vec2(90, 10),1.f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PUSH START", vec2(180, 10),1.f });
+
+		if(getInputManager().isKeyPressed(' ')) {
+			player.fullRevive();	
+		}
+
+	}else {
+		if(winCondition){
+			char savedText[4];
+			snprintf(savedText, sizeof(savedText), "%d", player.getPowSaved());
+
+			if(justWin){
+				getRenderer().addSpriteSet(SpriteSet(
+					ResourceID::ID_POW_BYE,
+					ResourceIDFrames::IDF_POW_BYE,
+					vec2(40, 60),
+					10
+				));
+				justWin = false;
+			}
+
+			// TODO: Dark background
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "RECAPTURED PRISONER", vec2(45, 40), 1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "P1", vec2(65, 50), 1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, savedText, vec2(80, 82), 1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "x1000", vec2(105, 90), 1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "11000", vec2(60, 110), 1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "MG. Carothers", vec2(30, 145), 1.f });
+			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PLEASE WAIT", vec2(180, 10),1.2f });
+			
+		}
+		char livesText[50];
+		snprintf(livesText, sizeof(livesText), "1UP=%d", player.getLives());
+		char scoreText[50];
+		snprintf(scoreText, sizeof(scoreText), "%d", player.getScore());
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, scoreText, vec2(38, 2),0.5f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, livesText, vec2(10, 20),0.8f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "200", vec2(95, 10),1.f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "10", vec2(130, 10),1.f });
+	}
+
+}
+
+
+// ---------------------------------------------------------------------------
+// Shared helpers
+// ---------------------------------------------------------------------------
+
+// A bullet fired by the player or the tank, checked against every entity type.
+void GameScene::resolveBulletVsEntities(Bullet* b) {
+	for (Entity* e : this->spawnedEntities) {
+		if (!e) continue;
+		if (e->getEntityType() == EntityType::ET_REBELSOLDIER){
+
+			RebelSoldier* enemy = static_cast<RebelSoldier*>(e);
+			if (!enemy->getAlive()) continue;
+			
+			if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider(), getResourceManager(),1)) {
+				b->explode();
+				enemy->setAlive(false);
+				player.addScore(100);
+			}
+			
+		}else if (e->getEntityType() == EntityType::ET_POW) {
+			Pow* pow = static_cast<Pow*>(e);
+			if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider(), getResourceManager(),1)) {
+				b->explode();
+				pow->setReleased(true);
+			}
+		}else if(e->getEntityType() == EntityType::ET_POWERUP){
+			PowerUp* powerUp = static_cast<PowerUp*>(e);
+			if(!powerUp) continue;
+			if(powerUp->getState() == PowerUpState::PUS_REVEALED) continue;
+			if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider(), getResourceManager(),1)) {
+				b->explode();
+				powerUp->setState(PowerUpState::PUS_REVEALED);
+			}
+		}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
+			Helicopter* h = static_cast<Helicopter*>(e); 
+			if(!h->getAlive()){
+				getCamera().setWorldSize(vec2(static_cast<float>(nTilesLimit2Camera * map.getTileSize()), 
+											  static_cast<float>(map.getTiles().y * map.getTileSize())));
+
+			}
+
+			if (CollisionManager::checkCollision(b->getCollider(), h->getCollider(), getResourceManager(),1)) {
+				b->explode();
+				h->takeHit();
+				b->setDisabled(true);
+				
+			}
+			
+		}
+		else if(e->getEntityType() == EntityType::ET_BOSS){
+			Boss* bs = static_cast<Boss*>(e); 
+			if (!bs->getAlive()) {
+				justWin = !winCondition;
+				winCondition = true;
+			}
+
+			if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),1)) {
+				b->explode();
+				bs->takeHit();
+				// player.addScore(100);
+			}
+		}
+	}
+}
+
+// Hits the tank if the player is riding it, otherwise hits the player.
+void GameScene::damagePlayerOrTank() {
+	if(player.getInTank()){
+		tankRef->takeHit();
+	}else{
+		player.takeHit();
+	}
+}
+
+// Feeds an enemy its target position and whether it is touching the map.
+void GameScene::loadEnemySensors(Enemy* enemy, vec2 targetPos) {
+	enemy->loadSensors(
+		targetPos,
+		CollisionManager::checkMapCollision(
+			enemy->getCollider(),
+			map.getLayer(MapLayerNames::MLN_COLLISION_LAYER),
+			0
+		)
+	);
+}
+
+
+// entity-type handlers
+void GameScene::handleRebelSoldier(RebelSoldier* enemy) {
+	if(player.getInTank()){
+		loadEnemySensors(enemy, tankRef->getPos() + tankRef->getCollider().size / 2.f);
+	}else{
+		loadEnemySensors(enemy, player.getPos() + player.getCollider().size / 2.f);
+	}
+		
+	if (CollisionManager::checkCollision(player.getCollider(), enemy->getCollider(), getResourceManager()) || (
+		player.getInTank() && CollisionManager::checkCollision(tankRef->getCollider(), enemy->getCollider(), getResourceManager()))
+	) {
+		if(enemy->getAttacking()){
+			damagePlayerOrTank();
+		} 
+
+		if(player.isShooting()){
+			enemy->setAlive(false);
+			player.addScore(100);
+		}
+	}
+	enemy->addRenderDatas(getRenderer());
+
+	for (int j = 0; j < enemy->getMaxGranades(); j++) {
+		Granade* g = enemy->getGranade(j);
+		if (!g) continue;
+		
+		if (getCamera().isOutOfView(g->getPos())) {
+			g->explode();
+		}
+		
+		if (g->hasToBeFreed()) {
+			enemy->freeGranade(j);
+			continue;
+		}
+		if(g->getDisabled()) continue;
+
+		if (CollisionManager::checkMapCollision(g->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
+			g->explode();
+		}
+
+		if (CollisionManager::checkCollision(g->getCollider(), player.getCollider(), getResourceManager(), 1)||
+			(player.getInTank() && CollisionManager::checkCollision(g->getCollider(), tankRef->getCollider(), getResourceManager(),1))) {
+			g->explode();
+			damagePlayerOrTank();
+		}
+	}
+}
+
+void GameScene::handlePow(Pow* pow) {
+	if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider(), getResourceManager(),1)) {
+		if (player.isShooting() && !pow->isReleased()) {
+			pow->setReleased(true);
+			player.addPowSaved();
+		}
+		pow->setIntersectingPlayer(true);
+	}
+	else {
+		pow->setIntersectingPlayer(false);
+	}
+
+	if (getCamera().isOutOfView(pow->getPos())) {
+		if (pow->isReleased()) {
+			pow->setPowFree(true);
+		}
+	}
+}
+
+void GameScene::handleLootDrop(Entity* e, const Collider& playerColliderInFront) {
+	LootDrop* lootDrop = static_cast<LootDrop*>(e);
+	
+	if(e->getEntityType() == EntityType::ET_POWERUP){
+		PowerUp* powerUp = static_cast<PowerUp*>(e);
+		if(powerUp->getState() == PowerUpState::PUS_CRATE){
+			if(player.isShooting() &&
+			   (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider(), getResourceManager(),1)||
+			   CollisionManager::checkCollision(playerColliderInFront, lootDrop->getCollider(), getResourceManager()))
+			){
+				powerUp->setState(PowerUpState::PUS_REVEALED);
+			}
+		}
+	}
+
+	// DONE: Add player colllision resolution on lootdrop, it can walk over it
+	if (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider(), getResourceManager())) {
+		CollisionManager::resolveCollisionAOverB(player, lootDrop->getCollider());
+		lootDrop->applyEffect(player);
+	}
+}
+
+void GameScene::handleHelicopter(Helicopter* h) {
+	loadEnemySensors(h, player.getPos() + player.getCollider().size / 2.f);
+	
+	for (int j = 0; j < h->getMaxBullets(); j++) {
+		Bullet* b = h->getBullet(j);
+		if (!b) continue;
+		
+		if (b->hasToBeFreed()) {
+			h->freeBullet(j);
+			continue;
+		}
+		if (b->getDisabled()) continue;
+		
+		if (getCamera().isOutOfView(b->getPos())) {
+			b->explode();
+		}
+		
+		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(),1)) {
+			b->explode();
+			player.takeHit();
+		}
+		if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
+			b->explodeMap();
+		}
+		
+		
+	}
+	h->addRenderDatas(getRenderer());
+}
+
+void GameScene::handleBoss(Boss* bs) {
+	loadEnemySensors(bs, player.getPos() + player.getCollider().size / 2.f);
+
+	for (int j = 0; j < bs->getMaxBullets(); j++) {
+		Bullet* b = bs->getBullet(j);
+		if (!b) continue;
+
+		if (b->hasToBeFreed()) {
+			bs->freeBullet(j);
+			continue;
+		}
+		if (b->getDisabled()) continue;
+
+		if (getCamera().isOutOfView(b->getPos())) {
+			b->explode();
+		}
+		
+		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(), 1) ||
+			(player.getInTank() && CollisionManager::checkCollision(b->getCollider(), tankRef->getCollider(), getResourceManager(), 1))) {
+			b->explode();
+			damagePlayerOrTank();
+		}
+		if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
+			b->explodeMap();
+		}
+	}	
+	bs->addRenderDatas(getRenderer());
+}
+
+void GameScene::handleTank(Tank* tank) {
+	if(!tank->hasPlayer() &&
+		CollisionManager::checkCollision(player.getCollider(), tank->getCollider(), getResourceManager()) && player.getPos().y < tank->getPos().y){
+		tank->enterPlayer(&player);
+		printf("aaaa");
+	}
+
+	if(!tank->hasPlayer()){
+		CollisionManager::resolveCollisionAOverB(player, tank->getCollider());
+	}	
+}
+
+
+// ---------------------------------------------------------------------------
+// Entity storage
+// ---------------------------------------------------------------------------
 void GameScene::addNewEntity(Entity* e) {
 	if (e == nullptr) return;
 
@@ -701,6 +633,9 @@ void GameScene::addNewEntity(Entity* e) {
 // only pay off if MAXENTITIES were large enough.
 void GameScene::freeEntity(int index) {
 	if (spawnedEntities[index]) {
+		if (spawnedEntities[index] == tankRef) {
+			tankRef = nullptr;
+		}
 		delete spawnedEntities[index];
 		spawnedEntities[index] = nullptr;
 	}
