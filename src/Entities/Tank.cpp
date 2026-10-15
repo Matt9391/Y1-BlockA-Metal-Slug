@@ -207,7 +207,7 @@ void Tank::update(float dt){
 		bullets[i]->update(dt);
 	}
 
-     if(tInput.isShootingBullet){ // TODO: fix tank shooter sprite
+     if(tInput.isShootingBullet){ // DONE: fix tank shooter sprite
          shooterRs.animationSet.layers[0] = AnimationLayer(
              ResourceID::ID_TANK_SHOOTER_SHOOT,
              ResourceIDFrames::IDF_TANK_SHOOTER_SHOOT,

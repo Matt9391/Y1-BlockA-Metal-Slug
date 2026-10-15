@@ -387,12 +387,7 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 			}
 		}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
 			Helicopter* h = static_cast<Helicopter*>(e); 
-			if(!h->getAlive()){
-				getCamera().setWorldSize(vec2(static_cast<float>(nTilesLimit2Camera * map.getTileSize()), 
-											  static_cast<float>(map.getTiles().y * map.getTileSize())));
-
-			}
-
+			
 			if (CollisionManager::checkCollision(b->getCollider(), h->getCollider(), getResourceManager(),1)) {
 				b->explode();
 				h->takeHit();
@@ -531,6 +526,12 @@ void GameScene::handleLootDrop(Entity* e, const Collider& playerColliderInFront)
 void GameScene::handleHelicopter(Helicopter* h) {
 	loadEnemySensors(h, player.getPos() + player.getCollider().size / 2.f);
 	
+	if(!h->getAlive()){
+				getCamera().setWorldSize(vec2(static_cast<float>(nTilesLimit2Camera * map.getTileSize()), 
+											  static_cast<float>(map.getTiles().y * map.getTileSize())));
+
+	}
+
 	for (int j = 0; j < h->getMaxBullets(); j++) {
 		Bullet* b = h->getBullet(j);
 		if (!b) continue;

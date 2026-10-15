@@ -164,12 +164,16 @@ void Helicopter::update(float dt) {
 		setFree(true);
 	}
 
+	for (int i = 0; i < MAXBULLETS; i++) {
+		if (bullets[i] == nullptr) continue;
+		bullets[i]->update(dt);
+	}
+
 	if(!getAlive()) return;
 
 	setDir(vec2(dirX, 0));
 
 	getRigidBody()->setVelocityX(getRigidBody()->getSpeed() * getDir().x);
-	// printf("x: %.2f, y: %.2f\n", getPos().x, getPos().y);
 
 	addToPos(getRigidBody()->getVelocity() * dt);
 
@@ -191,10 +195,7 @@ void Helicopter::update(float dt) {
 		elapsedTime = 0.f;
 	}
 
-	for (int i = 0; i < MAXBULLETS; i++) {
-		if (bullets[i] == nullptr) continue;
-		bullets[i]->update(dt);
-	}
+	
 
 }
 
