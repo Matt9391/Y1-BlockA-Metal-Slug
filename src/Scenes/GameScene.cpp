@@ -15,8 +15,10 @@
 #include <LootDrops/PowerUp.h>
 #include <ParallaxRenderData.h>
 #include <Enemies/Boss.h>
+#include <GunPresets.h>
 #include <Tank.h>
 
+//TODO: add player change gun after tot shoots
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, ResourceManager& resourceManager, const Map& map_) :
 	CustomScene(screen, renderer, inputManager, audioManager, resourceManager),
 	player(vec2(30, 80), getInputManager()),
@@ -74,6 +76,7 @@ void GameScene::init() {
 	player.init(vec2(30,80));
 
 	getRenderer().setDarkOverlay(false);
+	
 
 	//* Initialize camera to game scene settings
 	getCamera().init(vec2(0.f, 10.f * map.getTileSize()));
@@ -130,12 +133,16 @@ void GameScene::exit() {};
 void GameScene::update(float dt) {
 	getRenderer().clearRenderDatas();
 	getRenderer().clearColliders();
+	getRenderer().clearRadiusData();
 	getRenderer().clearTexts();
 
 	anim.playAnimation(dt);
 	anim2.playAnimation(dt);
 
 	player.update(dt);
+	if(player.getGun().getBulletShot() > 15){
+		player.setGunData(GunPresets::getGun(GunType::PISTOL));
+	}
 	
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 
@@ -210,6 +217,7 @@ void GameScene::update(float dt) {
 
 		getRenderer().addRenderData(e->getRenderData());
 		getRenderer().addCollider(e->getCollider());
+		getRenderer().addRadiusData(e->getRadiusData());
 			
 	}
 	
@@ -251,18 +259,19 @@ void GameScene::update(float dt) {
 			if (getCamera().isOutOfView(b->getPos())) {
 				b->explode();
 			}
-			
+
 			if (CollisionManager::checkMapCollision(b->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
 				b->explodeMap();
 			}
-
+			
+			// TODO: add collision on correct bullet  
 			resolveBulletVsEntities(b);
 		}
 	}
 	
 	if(!player.getInTank())
 		getRenderer().addRenderData(player.getRenderData());
-	player.getGun().addRenderDatas(getRenderer());
+		player.getGun().addRenderDatas(getRenderer());
 	if(tankRef){
 		tankRef->addRenderDatas(getRenderer());
 	}
@@ -272,6 +281,7 @@ void GameScene::update(float dt) {
 	getRenderer().addRenderData(waterfallBottom);
 	
 	getRenderer().addCollider(player.getCollider());
+	getRenderer().addRadiusData(player.getRadiusData());
 	//Collider c = player.getCollider();
 	//c.offset.x += player.getLastDir().x * c.size.x;
 	//getRenderer().addCollider(c);

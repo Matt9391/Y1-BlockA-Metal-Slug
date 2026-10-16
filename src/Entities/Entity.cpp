@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include <RigidBody.h>
 #include <ResourceID.h>
+#include <RadiusData.h>
 
 Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
 	entityType(entityType),
@@ -70,6 +71,8 @@ void Entity::setPos(const vec2& pos_) {
 void Entity::setCollider(vec2 size, vec2 offset) {
 	this->collider.offset = offset;
 	this->collider.size = size;
+	this->collider.radius = (fmaxf(size.x, size.y));
+	
 }
 void Entity::setColliderOffset(vec2 offset) {
 	this->collider.offset = offset;
@@ -146,4 +149,13 @@ void Entity::setColliderSprite(){
 		collider.frame[i] = as.layers[i].currentFrame;
 		collider.spriteOffset[i] = as.flipped ? as.layers[i].offsetFlipped : as.layers[i].offset;
 	}
+}
+
+
+void Entity::setRadius(float radius_){
+	this->collider.radius = radius_;
+}
+
+RadiusData Entity::getRadiusData(){
+	return RadiusData{collider.pos + collider.offset + (collider.size / 2.f), this->collider.radius};
 }

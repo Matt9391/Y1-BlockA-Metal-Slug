@@ -3,6 +3,8 @@
 #include <vec2.h>
 #include <ResourceID.h>
 
+#define MAXLAYER 2
+
 struct Collider {
 
 	Collider() :
@@ -26,16 +28,18 @@ struct Collider {
 		frame{0},
 		spriteOffset{vec2(0,0)},
 		layerCount(0),
-		flipped(false)
+		flipped(false),
+		radius(500.f)
 	{ }
 
 	vec2 offset;
 	const vec2& pos;
 	vec2 size;
 	bool overlap;
-	ResourceID id[2];
-	int frame[2];
-	vec2 spriteOffset[2];
+	float radius;
+	ResourceID id[MAXLAYER];
+	int frame[MAXLAYER];
+	vec2 spriteOffset[MAXLAYER];
 	int layerCount;
 	bool flipped;
 	

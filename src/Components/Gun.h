@@ -24,6 +24,7 @@ public:
 	void setShootDir(vec2 shootDir_);
 	bool shoot();
 	bool getCanShoot() const;
+	int getBulletShot() const;
 
 	void setOffsetX(float offsetX);
 	void setOffsetY(float offsetY);
@@ -34,6 +35,8 @@ public:
 
 	void setGunAngle(float gunAngle_);
 
+	void resetBulletShot();
+
 private:
 	static const int MAXBULLETS = 50;
 
@@ -43,6 +46,7 @@ private:
 	GunData gunData;
 	Bullet* bullets[MAXBULLETS];
 	int bulletsCount;
+	int bulletShot;
 	bool canShoot;
 	float shootCooldown;
 	float gunAngle;

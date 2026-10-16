@@ -1,5 +1,6 @@
 #include "precomp.h"
 #include "myMath.h"
+#include "vec2.h"
 
 namespace myMath {
 	//constrain the 'value' between min and max values
@@ -17,5 +18,11 @@ namespace myMath {
 
 	float lerp(float a, float b, float t){
 		return a + (b - a) * t;
+	}
+
+	float DistanceSquared(const vec2& a, const vec2& b) {
+		float dx = a.x - b.x;
+		float dy = a.y - b.y;
+		return dx * dx + dy * dy;
 	}
 }

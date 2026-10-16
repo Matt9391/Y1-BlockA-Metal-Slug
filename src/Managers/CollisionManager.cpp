@@ -113,18 +113,24 @@ namespace CollisionManager {
 		return collided;
 	}
 
-
-	bool checkCollision(const Collider& a,const Collider& b, const ResourceManager& rsm, int depth){
+	bool checkCollision(const Collider& a,const Collider& b, const ResourceManager& rsm, int depth){ //TODO: add enum to show actualy collision type
 		bool result = false;
 
-		const vec2 overlaps = getCollisionOverlap(a,b);
+		result = checkRadiusCollision(a,b); //* Distance Squared check BROAD BROAD PHASE
+
+		if(!result) return result;
+		if(depth == 0) return result;
+
+		result = false;
+		const vec2 overlaps = getCollisionOverlap(a,b); //* AABB BROAD PHASE
 		if (overlaps.x > -0.01f && overlaps.y > -0.01f) { //if colliding
 			result = true;
 		}
-
-		if(depth == 0) return result;
-
-		result = checkPixelPerfectCollision(a,b,rsm);
+		
+		if(!result) return result;
+		if(depth == 1) return result;
+		
+		result = checkPixelPerfectCollision(a,b,rsm); //* NARROW PHASE
 		
 		return result;
 	}
@@ -164,6 +170,16 @@ namespace CollisionManager {
 
 		return collided;
 	}
+	
+	bool checkRadiusCollision(const Collider& a, const Collider& b){
+		const vec2 aPos = a.pos + a.offset + (a.size / 2.f);
+		const vec2 bPos = b.pos + b.offset + (b.size / 2.f);
+		const float radiusSum = a.radius + b.radius;
+
+		return myMath::DistanceSquared(aPos, bPos) < radiusSum * radiusSum;
+	}
+
+
 	
 	vec2 getCollisionOverlap(const Collider& a,const Collider& b){
 		float leftA = a.pos.x + a.offset.x;

@@ -8,6 +8,7 @@
 #include <Printer.h>
 #include <HUDText.h>
 #include <SpriteSet.h>
+#include <RadiusData.h>
 
 class Tmpl8::Surface;
 
@@ -20,6 +21,7 @@ public:
 
 	void addCollider(const Collider& c);
 	void addRenderData(RenderData rs);
+	void addRadiusData(RadiusData rd);
 	void addHUDText(HUDText t);
 	
 	void addSpriteSet(SpriteSet ss);
@@ -29,6 +31,7 @@ public:
 	void clearRenderDatas();
 	void clearParallaxRenderData();
 	void clearColliders();
+	void clearRadiusData();
 	void clearTexts();
 
 	void clearSpriteSets();
@@ -40,6 +43,7 @@ private:
 	static const int MAXRENDERSETS = 100; //REMBEMBER THAT THEY FINISH FAST
 	static const int MAXRENDERLAYERS = 4;
 	static const int MAXCOLLIDERS = 100;
+	static const int MAXRADIUS = 100;
 	static const int MAXTEXTS = 100;
 	static const int MAXSPRITESETS = 100;
 	
@@ -47,11 +51,13 @@ private:
 	const MapRenderData* mapRenderData;
 	const ParallaxRenderData* parallaxRenderData;
 	const Collider* colliders[MAXCOLLIDERS];
+	RadiusData radiusDatas[MAXRADIUS]; 
 	HUDText texts[MAXTEXTS];
 	SpriteSet spriteSets[MAXSPRITESETS];
 	
 	int renderDataCount[MAXRENDERLAYERS];
 	int collidersCount;
+	int radiusCount;
 	int textsCount;
 	int spriteSetCount;
 

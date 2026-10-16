@@ -160,6 +160,7 @@ void ResourceManager::init() {
 
 Sprite* ResourceManager::getSprite(ResourceID resourceId) const {
 	if (!this->initalized) {
+		// TODO: ask lecturer about usage of runtime_error
 		throw runtime_error("Get sprite before initialized it");
 	}
 

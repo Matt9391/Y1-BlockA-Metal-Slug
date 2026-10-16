@@ -913,6 +913,7 @@ bool Player::isShooting() const{
 
 void Player::setGunData(GunData newData){
 	this->gun.setGunData(newData);
+	this->gun.resetBulletShot();
 	loadGFX();
 }
 

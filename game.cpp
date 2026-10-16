@@ -26,7 +26,7 @@ Game::~Game() {
 void Game::Init()
 {
 	resourceManager.init();
-	sceneManager.init(screen, renderer, inputManager, resourceManager, audioManager, TypeScene::GAMEPLAY	);
+	sceneManager.init(screen, renderer, inputManager, resourceManager, audioManager, TypeScene::MENU);
 }
 
 
@@ -45,7 +45,6 @@ void Game::Tick(float dt)
 	audioManager.playSounds(resourceManager);
 	renderer.render(screen, resourceManager, sceneManager.getCurrentScene().getCameraPos());
 
-	//screen->Box(100,100,screen->width,screen->height,0xff0000);
 	inputManager.updateLastFrameKeys();
 
 	if (sceneManager.getCurrentScene().sceneHasToChange()) {

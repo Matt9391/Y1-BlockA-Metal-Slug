@@ -50,6 +50,12 @@ void Renderer::addRenderData(RenderData rs) {
 	renderDatas[rs.layer][renderDataCount[rs.layer]++] = rs;
 	
 }
+void Renderer::addRadiusData(RadiusData rd){
+	if (radiusCount == MAXRADIUS)
+		throw runtime_error("Max radius reached");
+	radiusDatas[radiusCount++] = rd;
+	
+}
 
 void Renderer::addMapRenderData(const MapRenderData& mrd) {
 	mapRenderData = &mrd;
@@ -78,6 +84,13 @@ void Renderer::clearColliders() {
 		colliders[i] = nullptr; 
 	}
 	collidersCount = 0;
+}
+
+void Renderer::clearRadiusData() {
+	for (int i = 0; i < radiusCount; i++) { 
+		radiusDatas[i] = {}; 
+	}
+	radiusCount = 0;
 }
 
 void Renderer::clearRenderDatas() {
@@ -140,8 +153,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		endX = static_cast<int>(fminf(static_cast<float>(endX), mapRenderData->layers[0].tiles.x));
 		endY = static_cast<int>(fminf(static_cast<float>(endY), mapRenderData->layers[0].tiles.y));
 
-		for (int i = 0; i < mapRenderData->layerCount; i++) {
-			//for (int i = 0; i < mapRenderData.layerCount - 2; i++) { //uncomment to remove hitboxes
+		// for (int i = 0; i < mapRenderData->layerCount; i++) {
+			for (int i = 0; i < mapRenderData->layerCount - 2; i++) { //uncomment to remove hitboxes
 			const MapLayer& layer = mapRenderData->layers[i];
 			
 			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
@@ -176,20 +189,25 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	for(int g = 0; g < MAXRENDERLAYERS; g++){
 
 		for (int i = 0; i < renderDataCount[g]; i++) {
+			
 			RenderData& rs = this->renderDatas[g][i];
 			bool flipped = rs.animationSet.flipped;
+			
 			for (int j = 0; j < rs.animationSet.layerCount; j++) {
+
 				AnimationLayer& layer = rs.animationSet.layers[j];
 				Sprite* sprite = resourceManager.getSprite(layer.resourceId);
+			
 				if (sprite == nullptr) continue;
 				vec2& offset = flipped ? layer.offsetFlipped : layer.offset;
 				
 				sprite->SetFrame(layer.currentFrame);
-				//sprite->Draw(screen, rs.pos.x + layer.offset.x, rs.pos.y + layer.offset.y);
-				//sprite->Draw(screen, rs.pos.x + layer.offset.x - cameraOffset.x, rs.pos.y + layer.offset.y - cameraOffset.y, true);
 				int scale = 1;
-				sprite->DrawScaled(screen, static_cast<int>(rs.pos.x + offset.x * scale - cameraOffset.x), 
-				static_cast<int>(rs.pos.y + offset.y * scale - cameraOffset.y), scale, flipped);
+				sprite->DrawScaled(screen,
+								  static_cast<int>(rs.pos.x + offset.x * scale - cameraOffset.x), 
+								  static_cast<int>(rs.pos.y + offset.y * scale - cameraOffset.y), 
+								  scale, 
+								  flipped);
 			}
 			
 		}
@@ -265,6 +283,16 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 					static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x + c->size.x), 
 					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y + c->size.y), 
 					0xFF0000);
+	}
+	
+	const float angleIncr = 1;
+	for (int i = 0; i < radiusCount; i++) {
+		float angle = 0;
+		const RadiusData& r = radiusDatas[i];
+		for(int j = 0; j < 360; j++){
+			screen->Plot(r.pos.x + cos(angle) * r.radius - cameraOffset.x, r.pos.y + sin(angle) * r.radius - cameraOffset.y, 0xFFff0000);
+			angle += angleIncr;
+		}
 	}
 
 

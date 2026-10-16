@@ -1,18 +1,13 @@
 #pragma once
 
-// NOTE: rebuilt from what GameScene.cpp uses. Anything marked GUESS was inferred,
-// not copied from your original header. Keep your own version of those parts.
-// Anything marked NEW comes from the refactor.
-
-#include <CustomScene.h>        // GUESS
-#include <Player.h>             // GUESS
-#include <Map.h>                // GUESS
-#include <Entity.h>             // GUESS (also brings in Collider, EntityType)
-#include <RenderData.h>         // GUESS
+#include <CustomScene.h>        
+#include <Player.h>             
+#include <Map.h>                
+#include <Entity.h>              
+#include <RenderData.h>         
 #include <ParallaxRenderData.h>
-#include <Animator.h>           // GUESS: header for the type of anim / anim2
+#include <Animator.h>        
 
-// NEW: only pointers/references to these appear in the header
 class Tank;
 class Enemy;
 class Bullet;

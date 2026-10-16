@@ -8,6 +8,7 @@
 class Tmpl8::Surface;
 class ResourceManager;
 class RigidBody;
+struct RadiusData;
 
 enum EntityType {
 	ET_PLAYER,
@@ -60,6 +61,7 @@ public:
 	bool hasToBeFreed() const;
 
 	EntityType getEntityType() const;
+	RadiusData getRadiusData();
 protected:
 	Animator& getAnimator();
 	const Animator& getAnimator() const;
@@ -79,6 +81,8 @@ protected:
 	void setRenderLayer(int renderLayer_);
 
 	void setColliderSprite();
+
+	void setRadius(float radius_);
 private:
 
 	vec2 pos;
@@ -95,6 +99,7 @@ private:
 	EntityType entityType;
 
 	bool free;
+
 
 	int renderLayer;
 };
