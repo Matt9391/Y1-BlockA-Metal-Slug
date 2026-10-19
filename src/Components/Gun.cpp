@@ -149,6 +149,10 @@ int Gun::getBulletShot() const{
 	return this->bulletShot;
 }
 
+int Gun::getMaxShootBullet() const{
+	return this->gunData.maxShootBullet;
+}
+
 void Gun::resetBulletShot(){
 	this->bulletShot = 0;
 }

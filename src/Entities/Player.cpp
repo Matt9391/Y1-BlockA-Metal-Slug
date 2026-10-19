@@ -818,6 +818,11 @@ void Player::update(float dt) {
 
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], flip, reset);
 
+
+	if(gun.getGunType() != GunType::PISTOL &&
+	  gun.getBulletShot() > gun.getMaxShootBullet()){
+		setGunData(GunPresets::getGun(GunType::PISTOL));
+	}
 }
 
 const PlayerInput Player::getPlayerInput() const {
@@ -935,4 +940,9 @@ void Player::setInTank(bool in){
 
 bool Player::getInTank() const{
 	return this->inTank;
+}
+
+int Player::getBulletsLeft() const{
+	if(this->gun.getMaxShootBullet() == -1) return -1; 
+	return this->gun.getMaxShootBullet() - this->gun.getBulletShot();
 }

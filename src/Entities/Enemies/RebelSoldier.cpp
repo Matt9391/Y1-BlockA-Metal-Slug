@@ -159,6 +159,10 @@ void RebelSoldier::update(float dt) {
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
 
+	if(!this->getAlive()){
+		setPlayerCollisionEnabled(false);
+	}
+
 	if (!getSensors().isGrounded) {
 		addVelocity(vec2(0, getRigidBody()->getGravity() * dt));
 	}

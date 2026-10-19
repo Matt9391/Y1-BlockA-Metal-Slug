@@ -455,6 +455,9 @@
     <ClInclude Include="src\Entities\Bullets\SlugBullet.h">
       <Filter>src\Entities\Bullets</Filter>
     </ClInclude>
+    <ClInclude Include="src\DataStructures\RadiusData.h">
+      <Filter>src\DataStructures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cl\kernels.cl" />

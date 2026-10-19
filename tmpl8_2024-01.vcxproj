@@ -225,6 +225,7 @@
     <ClInclude Include="src\DataStructures\ParallaxRenderData.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimationSet.h" />
     <ClInclude Include="src\DataStructures\PowAnimationSet.h" />
+    <ClInclude Include="src\DataStructures\RadiusData.h" />
     <ClInclude Include="src\DataStructures\RebelSoldierPresets.h" />
     <ClInclude Include="src\DataStructures\RebelSoldierType.h" />
     <ClInclude Include="src\DataStructures\RenderData.h" />

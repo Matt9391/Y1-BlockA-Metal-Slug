@@ -15,6 +15,7 @@ public:
 
 	void addRenderDatas(Renderer& renderer);
 	int getBulletsCount() const;
+	int getMaxShootBullet() const;
 	int getMaxBullets() const;
 	Bullet* getBullet(int i) const;
 

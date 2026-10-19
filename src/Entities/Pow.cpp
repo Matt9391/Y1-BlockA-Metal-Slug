@@ -95,6 +95,10 @@ void Pow::update(float dt) {
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
 
+	
+	if(this->released){
+		setPlayerCollisionEnabled(false);
+	}
 
 	PowAnimationSet nextState = state->update(*this, dt, static_cast<PowAnimationSet>(getCurrentASIndex()));
 	if (nextState != getCurrentASIndex()) {

@@ -10,15 +10,17 @@ struct GunData {
 		bulletType(BulletType::BT_COUNTS),
 		fireRate(-1),
 		canShootDiagonally(false),
-		bulletSpeed(0.f)
+		bulletSpeed(0.f),
+		maxShootBullet(0)
 	{}
 
-	GunData(GunType gunType, BulletType bulletType, float fireRate, bool canShootDiagonally, float bulletSpeed) :
+	GunData(GunType gunType, BulletType bulletType, float fireRate, bool canShootDiagonally, float bulletSpeed, int maxShootBullet) :
 		gunType(gunType),
 		bulletType(bulletType),
 		fireRate(fireRate),
 		canShootDiagonally(canShootDiagonally),
-		bulletSpeed(bulletSpeed)
+		bulletSpeed(bulletSpeed),
+		maxShootBullet(maxShootBullet)
 	{}
 
 	GunType gunType;
@@ -26,4 +28,5 @@ struct GunData {
 	float fireRate; //time between shots
 	float bulletSpeed;
 	bool canShootDiagonally;
+	int maxShootBullet;
 };

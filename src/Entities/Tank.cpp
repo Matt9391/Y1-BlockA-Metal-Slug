@@ -54,6 +54,8 @@ Tank::Tank(vec2 pos, const InputManager& inputManager_) :
 
 	getRigidBody()->setSpeed(0.05f);
 
+    setPlayerCollisionEnabled(false);
+
 }
 
 Tank::~Tank(){

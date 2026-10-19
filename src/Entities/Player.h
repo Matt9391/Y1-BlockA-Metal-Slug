@@ -44,6 +44,8 @@ public:
 
 	void setInTank(bool in);
 	bool getInTank() const;
+
+	int getBulletsLeft() const;
 private:
 	bool getEnemyInFront() const;
 	void setShooting(bool shooting_);

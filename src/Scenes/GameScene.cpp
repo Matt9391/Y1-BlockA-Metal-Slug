@@ -18,7 +18,7 @@
 #include <GunPresets.h>
 #include <Tank.h>
 
-//TODO: add player change gun after tot shoots
+//Done: add player change gun after tot shoots
 GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, ResourceManager& resourceManager, const Map& map_) :
 	CustomScene(screen, renderer, inputManager, audioManager, resourceManager),
 	player(vec2(30, 80), getInputManager()),
@@ -133,16 +133,13 @@ void GameScene::exit() {};
 void GameScene::update(float dt) {
 	getRenderer().clearRenderDatas();
 	getRenderer().clearColliders();
-	getRenderer().clearRadiusData();
 	getRenderer().clearTexts();
 
 	anim.playAnimation(dt);
 	anim2.playAnimation(dt);
 
 	player.update(dt);
-	if(player.getGun().getBulletShot() > 15){
-		player.setGunData(GunPresets::getGun(GunType::PISTOL));
-	}
+	
 	
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 
@@ -177,9 +174,10 @@ void GameScene::update(float dt) {
 			continue;
 		}
 		
-		if (!entityInFront && 
-			CollisionManager::checkCollision(playerColliderInFront,e->getCollider(), getResourceManager()) ||
-			CollisionManager::checkCollision(player.getCollider(), e->getCollider(), getResourceManager())){
+		if (e->getPlayerCollisionEnabled() &&
+			!entityInFront && 
+			CollisionManager::checkCollision(playerColliderInFront,e->getCollider(), getResourceManager(),1) ||
+			CollisionManager::checkCollision(player.getCollider(), e->getCollider(), getResourceManager(),1)){
 			entityInFront = true;
 		}
 
@@ -217,7 +215,6 @@ void GameScene::update(float dt) {
 
 		getRenderer().addRenderData(e->getRenderData());
 		getRenderer().addCollider(e->getCollider());
-		getRenderer().addRadiusData(e->getRadiusData());
 			
 	}
 	
@@ -264,7 +261,7 @@ void GameScene::update(float dt) {
 				b->explodeMap();
 			}
 			
-			// TODO: add collision on correct bullet  
+			// TODO: add collision on correct bullet flame/pistol and death animation 
 			resolveBulletVsEntities(b);
 		}
 	}
@@ -281,7 +278,6 @@ void GameScene::update(float dt) {
 	getRenderer().addRenderData(waterfallBottom);
 	
 	getRenderer().addCollider(player.getCollider());
-	getRenderer().addRadiusData(player.getRadiusData());
 	//Collider c = player.getCollider();
 	//c.offset.x += player.getLastDir().x * c.size.x;
 	//getRenderer().addCollider(c);
@@ -342,7 +338,7 @@ void GameScene::renderHUD(float dt) {
 				getRenderer().setDarkOverlay(true);
 			}
 
-			// TODO: Dark background
+			// DONE: Dark background
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "RECAPTURED PRISONER", vec2(45, 40), 1.f });
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "P1", vec2(65, 50), 1.f });
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, savedText, vec2(80, 82), 1.f });
@@ -356,9 +352,16 @@ void GameScene::renderHUD(float dt) {
 		snprintf(livesText, sizeof(livesText), "1UP=%d", player.getLives());
 		char scoreText[50];
 		snprintf(scoreText, sizeof(scoreText), "%d", player.getScore());
+		char bulletText[50];
+		int bulletsLeft =  player.getBulletsLeft();
+		if(bulletsLeft == -1){
+			snprintf(bulletText, sizeof(bulletText), "INF");
+		}else{
+			snprintf(bulletText, sizeof(bulletText), "%d", bulletsLeft + 1);
+		}
 		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, scoreText, vec2(38, 2),0.5f });
 		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE, livesText, vec2(10, 20),0.8f });
-		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "200", vec2(95, 10),1.f });
+		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, bulletText, vec2(95, 10),1.f });
 		getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_ORANGE_S, "10", vec2(130, 10),1.f });
 	}
 
@@ -378,7 +381,7 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 			RebelSoldier* enemy = static_cast<RebelSoldier*>(e);
 			if (!enemy->getAlive()) continue;
 			
-			if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider(), getResourceManager(),1)) {
+			if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider(), getResourceManager(),2)) {
 				b->explode();
 				enemy->setAlive(false);
 				player.addScore(100);
@@ -386,7 +389,7 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 			
 		}else if (e->getEntityType() == EntityType::ET_POW) {
 			Pow* pow = static_cast<Pow*>(e);
-			if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider(), getResourceManager(),1)) {
+			if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider(), getResourceManager(),2)) {
 				b->explode();
 				pow->setReleased(true);
 			}
@@ -394,14 +397,14 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 			PowerUp* powerUp = static_cast<PowerUp*>(e);
 			if(!powerUp) continue;
 			if(powerUp->getState() == PowerUpState::PUS_REVEALED) continue;
-			if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider(), getResourceManager(),1)) {
+			if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider(), getResourceManager(),2)) {
 				b->explode();
 				powerUp->setState(PowerUpState::PUS_REVEALED);
 			}
 		}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
 			Helicopter* h = static_cast<Helicopter*>(e); 
 			
-			if (CollisionManager::checkCollision(b->getCollider(), h->getCollider(), getResourceManager(),1)) {
+			if (CollisionManager::checkCollision(b->getCollider(), h->getCollider(), getResourceManager(),2)) {
 				b->explode();
 				h->takeHit();
 				b->setDisabled(true);
@@ -416,7 +419,7 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 				winCondition = true;
 			}
 
-			if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),1)) {
+			if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),2)) {
 				b->explode();
 				bs->takeHit();
 				// player.addScore(100);
@@ -487,8 +490,8 @@ void GameScene::handleRebelSoldier(RebelSoldier* enemy) {
 			g->explode();
 		}
 
-		if (CollisionManager::checkCollision(g->getCollider(), player.getCollider(), getResourceManager(), 1)||
-			(player.getInTank() && CollisionManager::checkCollision(g->getCollider(), tankRef->getCollider(), getResourceManager(),1))) {
+		if (CollisionManager::checkCollision(g->getCollider(), player.getCollider(), getResourceManager(), 2)||
+			(player.getInTank() && CollisionManager::checkCollision(g->getCollider(), tankRef->getCollider(), getResourceManager(),2))) {
 			g->explode();
 			damagePlayerOrTank();
 		}
@@ -496,7 +499,7 @@ void GameScene::handleRebelSoldier(RebelSoldier* enemy) {
 }
 
 void GameScene::handlePow(Pow* pow) {
-	if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider(), getResourceManager(),1)) {
+	if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider(), getResourceManager(),2)) {
 		if (player.isShooting() && !pow->isReleased()) {
 			pow->setReleased(true);
 			player.addPowSaved();
@@ -521,7 +524,7 @@ void GameScene::handleLootDrop(Entity* e, const Collider& playerColliderInFront)
 		PowerUp* powerUp = static_cast<PowerUp*>(e);
 		if(powerUp->getState() == PowerUpState::PUS_CRATE){
 			if(player.isShooting() &&
-			   (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider(), getResourceManager(),1)||
+			   (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider(), getResourceManager(),2)||
 			   CollisionManager::checkCollision(playerColliderInFront, lootDrop->getCollider(), getResourceManager()))
 			){
 				powerUp->setState(PowerUpState::PUS_REVEALED);
@@ -559,7 +562,7 @@ void GameScene::handleHelicopter(Helicopter* h) {
 			b->explode();
 		}
 		
-		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(),1)) {
+		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(),2)) {
 			b->explode();
 			player.takeHit();
 		}
@@ -589,8 +592,8 @@ void GameScene::handleBoss(Boss* bs) {
 			b->explode();
 		}
 		
-		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(), 1) ||
-			(player.getInTank() && CollisionManager::checkCollision(b->getCollider(), tankRef->getCollider(), getResourceManager(), 1))) {
+		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(), 2) ||
+			(player.getInTank() && CollisionManager::checkCollision(b->getCollider(), tankRef->getCollider(), getResourceManager(), 2))) {
 			b->explode();
 			damagePlayerOrTank();
 		}

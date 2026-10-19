@@ -61,7 +61,7 @@ public:
 	bool hasToBeFreed() const;
 
 	EntityType getEntityType() const;
-	RadiusData getRadiusData();
+	bool getPlayerCollisionEnabled() const;
 protected:
 	Animator& getAnimator();
 	const Animator& getAnimator() const;
@@ -77,6 +77,7 @@ protected:
 	void setLastDir(vec2 dir_);
 
 	void setFree(bool free_);
+	void setPlayerCollisionEnabled(bool playerCollisionEnabled_);
 
 	void setRenderLayer(int renderLayer_);
 
@@ -99,7 +100,7 @@ private:
 	EntityType entityType;
 
 	bool free;
-
+	bool playerCollisionEnabled;
 
 	int renderLayer;
 };

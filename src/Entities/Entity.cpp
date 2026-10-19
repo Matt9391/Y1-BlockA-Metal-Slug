@@ -15,7 +15,8 @@ Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
 	collider(this->pos, vec2(0,0), vec2(0,0)),
 	rigidBody(nullptr),
 	free(false),
-	renderLayer(1)
+	renderLayer(1),
+	playerCollisionEnabled(true)
 	{
 		this->rigidBody = needsRigidBody ? new RigidBody(this->pos, true) : nullptr;
 
@@ -156,6 +157,10 @@ void Entity::setRadius(float radius_){
 	this->collider.radius = radius_;
 }
 
-RadiusData Entity::getRadiusData(){
-	return RadiusData{collider.pos + collider.offset + (collider.size / 2.f), this->collider.radius};
+void Entity::setPlayerCollisionEnabled(bool playerCollisionEnabled_){
+	this->playerCollisionEnabled = playerCollisionEnabled_;
+}
+
+bool Entity::getPlayerCollisionEnabled() const{
+	return this->playerCollisionEnabled;
 }

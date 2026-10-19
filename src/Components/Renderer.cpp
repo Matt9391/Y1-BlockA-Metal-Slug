@@ -8,7 +8,7 @@
 
 
 
-//TODO: CRT
+//TODO: DONE
 Renderer::Renderer() :
 	renderDataCount{0},
 	collidersCount(0),
@@ -50,12 +50,6 @@ void Renderer::addRenderData(RenderData rs) {
 	renderDatas[rs.layer][renderDataCount[rs.layer]++] = rs;
 	
 }
-void Renderer::addRadiusData(RadiusData rd){
-	if (radiusCount == MAXRADIUS)
-		throw runtime_error("Max radius reached");
-	radiusDatas[radiusCount++] = rd;
-	
-}
 
 void Renderer::addMapRenderData(const MapRenderData& mrd) {
 	mapRenderData = &mrd;
@@ -84,13 +78,6 @@ void Renderer::clearColliders() {
 		colliders[i] = nullptr; 
 	}
 	collidersCount = 0;
-}
-
-void Renderer::clearRadiusData() {
-	for (int i = 0; i < radiusCount; i++) { 
-		radiusDatas[i] = {}; 
-	}
-	radiusCount = 0;
 }
 
 void Renderer::clearRenderDatas() {
@@ -275,6 +262,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		}
 	}
 
+	const float angleIncr = 1;
 	for (int i = 0; i < collidersCount; i++) {
 		const Collider* c = colliders[i];
 		if(!c) continue;
@@ -283,17 +271,19 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 					static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x + c->size.x), 
 					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y + c->size.y), 
 					0xFF0000);
-	}
-	
-	const float angleIncr = 1;
-	for (int i = 0; i < radiusCount; i++) {
+
 		float angle = 0;
-		const RadiusData& r = radiusDatas[i];
 		for(int j = 0; j < 360; j++){
-			screen->Plot(r.pos.x + cos(angle) * r.radius - cameraOffset.x, r.pos.y + sin(angle) * r.radius - cameraOffset.y, 0xFFff0000);
+			vec2 pos = (
+				c->pos + c->offset + c->size / 2
+			);
+			screen->Plot(pos.x + cos(angle) * c->radius - cameraOffset.x, pos.y + sin(angle) * c->radius - cameraOffset.y, 0xFFff0000);
 			angle += angleIncr;
 		}
+
 	}
+	
+		
 
 
 	if(darkOverlay){
