@@ -56,6 +56,7 @@ namespace PowStates {
 
 	void PantsState::enter(Pow& pow) {
 		pow.setDir(vec2(0, 0));
+		pow.addSound(SoundID::SID_PRISONER_THANK);
 	}
 
 	PowAnimationSet PantsState::update(Pow& pow, float, PowAnimationSet current) {

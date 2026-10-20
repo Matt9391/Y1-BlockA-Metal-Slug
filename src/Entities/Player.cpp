@@ -709,6 +709,7 @@ bool Player::getEnabled() const {
 }
 
 void Player::update(float dt) {
+	clearSounds();
 	gun.update(dt);
 	
 	if(inTank) return;
@@ -758,6 +759,9 @@ void Player::update(float dt) {
 	if (enabled && pInput.isShooting && !pInput.dead) {
 		if (!pInput.enemyInFront) {
 			gun.shoot();
+			addSound(SoundID::SID_PISTOL_SHOT);
+		}else{
+			addSound(SoundID::SID_MELEE);
 		}
 		setShooting(true);
 	}

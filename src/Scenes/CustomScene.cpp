@@ -11,7 +11,8 @@ CustomScene::CustomScene(Surface* screen, Renderer& renderer_, InputManager& inp
 	resourceManager(resourceManager_),
 	camera(vec2(0,0), vec2(static_cast<float>(screen->width), static_cast<float>(screen->height))),
 	changeScene(false),
-	nextScene(TypeScene::MENU)
+	nextScene(TypeScene::MENU),
+	firstFrame(true)
 
 {
 
@@ -53,4 +54,12 @@ void CustomScene::setNextScene(TypeScene nextScene_){
 }
 void CustomScene::setChangeScene(bool changeScene_) {
 	this->changeScene = changeScene_;
+}
+
+
+void CustomScene::setFirstFrame(bool firstFrame_){
+	this->firstFrame = firstFrame_;
+}
+bool CustomScene::isFirstFrame() const{
+	return this->firstFrame;
 }

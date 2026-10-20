@@ -122,15 +122,23 @@ void GameScene::init() {
 			}
 		}
 	
-	tankRef = new Tank(vec2(700,80), getInputManager());
+	tankRef = new Tank(vec2(1000,80), getInputManager());
 	addNewEntity(tankRef);
 	addNewEntity(new Boss(vec2(3769 + 265, -60 + 100)));
+
+	getAudioManager().setMusic(SoundID::SID_MAIN_THEME, getResourceManager());
 };
 
 void GameScene::exit() {};
 
 // TODO: add proper audio to the game
 void GameScene::update(float dt) {
+	if(isFirstFrame())
+	{
+		getAudioManager().addAudioToPlay(SoundID::SID_MISSION1);
+		setFirstFrame(false);
+	}
+
 	getRenderer().clearRenderDatas();
 	getRenderer().clearColliders();
 	getRenderer().clearTexts();
@@ -139,7 +147,7 @@ void GameScene::update(float dt) {
 	anim2.playAnimation(dt);
 
 	player.update(dt);
-	
+	player.addSoundToManager(getAudioManager());
 	
 	CollisionManager::resolveMapCollision(player, map.getLayer(MapLayerNames::MLN_COLLISION_LAYER));
 
@@ -215,7 +223,7 @@ void GameScene::update(float dt) {
 
 		getRenderer().addRenderData(e->getRenderData());
 		getRenderer().addCollider(e->getCollider());
-			
+		e->addSoundToManager(getAudioManager());
 	}
 	
 	player.setEntityInFront(entityInFront);
@@ -335,7 +343,7 @@ void GameScene::renderHUD(float dt) {
 					10
 				));
 				justWin = false;
-				getRenderer().setDarkOverlay(true);
+			getRenderer().setDarkOverlay(true);
 			}
 
 			// DONE: Dark background
@@ -480,10 +488,12 @@ void GameScene::handleRebelSoldier(RebelSoldier* enemy) {
 			g->explode();
 		}
 		
+		
 		if (g->hasToBeFreed()) {
 			enemy->freeGranade(j);
 			continue;
 		}
+
 		if(g->getDisabled()) continue;
 
 		if (CollisionManager::checkMapCollision(g->getCollider(), map.getLayer(MapLayerNames::MLN_COLLISION_LAYER), -1)) {
@@ -495,6 +505,8 @@ void GameScene::handleRebelSoldier(RebelSoldier* enemy) {
 			g->explode();
 			damagePlayerOrTank();
 		}
+
+		g->addSoundToManager(getAudioManager());
 	}
 }
 
@@ -570,6 +582,7 @@ void GameScene::handleHelicopter(Helicopter* h) {
 			b->explodeMap();
 		}
 		
+		b->addSoundToManager(getAudioManager());
 		
 	}
 	h->addRenderDatas(getRenderer());

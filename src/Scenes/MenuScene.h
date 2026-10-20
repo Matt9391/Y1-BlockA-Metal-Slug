@@ -16,6 +16,6 @@ public:
 private:
 	int secondsLeft;
 	float elapsedTime;
-
+	
 };
 

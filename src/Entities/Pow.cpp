@@ -92,6 +92,7 @@ void Pow::loadGFX() {
 
 
 void Pow::update(float dt) {
+	clearSounds();
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
 

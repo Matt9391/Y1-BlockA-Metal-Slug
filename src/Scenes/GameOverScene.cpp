@@ -26,11 +26,18 @@ void GameOverScene::init() {
 
 	setNextScene(TypeScene::MENU);
 	setChangeScene(false);
+	getAudioManager().stopMusic();
+
 }
 
 void GameOverScene::exit() {};
 
 void GameOverScene::update(float dt) {
+	if(isFirstFrame())
+	{
+		getAudioManager().addAudioToPlay(SoundID::SID_GAME_OVER);
+		setFirstFrame(false);
+	}
 	elapsedTime += dt;
 	if (elapsedTime > 1000.f) {
 		elapsedTime = 0.f;

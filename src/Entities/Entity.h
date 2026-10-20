@@ -3,11 +3,13 @@
 #include <Animator.h>
 #include <RenderData.h>
 #include <Collider.h>
+#include <SoundID.h>
 
 
 class Tmpl8::Surface;
 class ResourceManager;
 class RigidBody;
+class AudioManager;
 struct RadiusData;
 
 enum EntityType {
@@ -62,6 +64,10 @@ public:
 
 	EntityType getEntityType() const;
 	bool getPlayerCollisionEnabled() const;
+
+	void addSoundToManager(AudioManager& am);
+	void addSound(SoundID sid);
+
 protected:
 	Animator& getAnimator();
 	const Animator& getAnimator() const;
@@ -84,6 +90,9 @@ protected:
 	void setColliderSprite();
 
 	void setRadius(float radius_);
+
+	void clearSounds();
+
 private:
 
 	vec2 pos;
@@ -103,5 +112,9 @@ private:
 	bool playerCollisionEnabled;
 
 	int renderLayer;
+
+	static const int MAXSOUNDS = 10;
+	SoundID sounds[MAXSOUNDS];
+	int soundCount;
 };
 

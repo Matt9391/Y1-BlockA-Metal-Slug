@@ -280,6 +280,7 @@ namespace RebelSoldierStates {
         if (elapsedTime > MSTRIGGER && !attacked) {
             attacked = true;
             e.setAttacking(true);
+            e.addSound(SoundID::SID_MELEE);
         }
 
         if (playerVisible && abs(e.getSensors().distToPlayer) > MELEERANGE && e.getSensors().animationEnded) {
@@ -331,7 +332,9 @@ namespace RebelSoldierStates {
         return current;
     }
 
-    void DeathState::enter(RebelSoldier&) {}
+    void DeathState::enter(RebelSoldier& e) {
+        e.addSound(SoundID::SID_REBEL_DIE);
+    }
 
 
     EnemyAnimationSet DeathState::update(RebelSoldier& e, float, EnemyAnimationSet current)

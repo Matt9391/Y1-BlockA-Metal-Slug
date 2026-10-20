@@ -65,6 +65,7 @@ void Missle::explode() {
 
     setCurrentASIndex(BMissleAnimationSet::BM_BOOM);
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+    addSound(SoundID::SID_HELI_BOMB);
     setAbleMovement(false);
     setDisabled(true);
 

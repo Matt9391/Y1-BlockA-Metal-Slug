@@ -26,11 +26,20 @@ void MenuScene::init() {
 
 	setNextScene(TypeScene::GAMEPLAY);
 	setChangeScene(false);
+
+	getAudioManager().stopMusic();
 }
 
 void MenuScene::exit() {};
 
 void MenuScene::update(float dt) {
+	if(isFirstFrame())
+	{
+		getAudioManager().addAudioToPlay(SoundID::SID_TITLE);
+		setFirstFrame(false);
+	}
+	
+
 	elapsedTime += dt;
 	if (elapsedTime > 1000.f) {
 		elapsedTime = 0.f;

@@ -32,6 +32,8 @@ protected:
 	void setNextScene(TypeScene nextScene_);
 	void setChangeScene(bool changeScene_);
 
+	void setFirstFrame(bool firstFrame_);
+	bool isFirstFrame() const;
 private:
 	Renderer& renderer;
 	InputManager& inputManager;
@@ -40,7 +42,8 @@ private:
 	Camera camera;
 
 	bool changeScene;
-	TypeScene nextScene;
+	TypeScene nextScene;	
+	bool firstFrame;
 
 };
 

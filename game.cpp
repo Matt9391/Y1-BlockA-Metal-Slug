@@ -43,6 +43,10 @@ void Game::Tick(float dt)
 	sceneManager.getCurrentScene().update(dt);
 
 	audioManager.playSounds(resourceManager);
+	audioManager.playMusic();
+
+	audioManager.updateSounds();
+
 	renderer.render(screen, resourceManager, sceneManager.getCurrentScene().getCameraPos());
 
 	inputManager.updateLastFrameKeys();

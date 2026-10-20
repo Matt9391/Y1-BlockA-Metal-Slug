@@ -14,6 +14,7 @@ ResourceManager::~ResourceManager() {
 	for (int i = 0; i < static_cast<int>(SoundID::SID_COUNTS); i++){
 		free(soundPaths[i]);
 	}
+	
 }
 
 
@@ -152,8 +153,35 @@ void ResourceManager::init() {
 	sprites[ResourceID::ID_SLUG_BULLET]        = new Sprite(new Surface("assets/TankAnimation/bullet.png"), ResourceIDFrames::IDF_SLUG_BULLET);
 	sprites[ResourceID::ID_SLUG_BULLET_BOOM]        = new Sprite(new Surface("assets/TankAnimation/bulletBoom.png"), ResourceIDFrames::IDF_SLUG_BULLET_BOOM);
 
-	soundPaths[SoundID::SID_ATTACK] = _strdup("assets/sfx/attack.wav");
-
+	soundPaths[SoundID::SID_EXPLOSION_GRENADE]   = _strdup("assets/sfx/explosion1.wav");
+	soundPaths[SoundID::SID_FLAMETHROWER_PICKUP] = _strdup("assets/sfx/flameThrowerPickup.mp3");
+	soundPaths[SoundID::SID_HELI_BOMB]           = _strdup("assets/sfx/helibomb.wav");
+	soundPaths[SoundID::SID_HELI_EXPLODING]      = _strdup("assets/sfx/heliexploding.wav");
+	soundPaths[SoundID::SID_HELI_FLYING]         = _strdup("assets/sfx/heliflying.mp3");
+	soundPaths[SoundID::SID_MELEE]               = _strdup("assets/sfx/melee.wav");
+	soundPaths[SoundID::SID_MISSION1]            = _strdup("assets/sfx/mission1.mp3");
+	soundPaths[SoundID::SID_PISTOL_SHOT]         = _strdup("assets/sfx/pistolShot.wav");
+	soundPaths[SoundID::SID_PRISONER_THANK]      = _strdup("assets/sfx/prisionerThank.mp3");
+	soundPaths[SoundID::SID_REBEL_DIE]           = _strdup("assets/sfx/rebelDie.wav");
+	soundPaths[SoundID::SID_REBEL_DIE_FIRE]      = _strdup("assets/sfx/rebelDieFire.wav");
+	soundPaths[SoundID::SID_GAME_OVER]           = _strdup("assets/sfx/sgameover.mp3");
+	soundPaths[SoundID::SID_TITLE]               = _strdup("assets/sfx/title.wav");
+	soundPaths[SoundID::SID_MAIN_THEME]          = _strdup("assets/music/maintheme.mp3");
+	
+	soundVolumes[SoundID::SID_EXPLOSION_GRENADE]   = 1.f;
+	soundVolumes[SoundID::SID_FLAMETHROWER_PICKUP] = 1.f;
+	soundVolumes[SoundID::SID_HELI_BOMB]           = 1.f;
+	soundVolumes[SoundID::SID_HELI_EXPLODING]      = 1.f;
+	soundVolumes[SoundID::SID_HELI_FLYING]         = 1.f;
+	soundVolumes[SoundID::SID_MELEE]               = 1.f;
+	soundVolumes[SoundID::SID_MISSION1]            = 1.f;
+	soundVolumes[SoundID::SID_PISTOL_SHOT]         = 1.f;
+	soundVolumes[SoundID::SID_PRISONER_THANK]      = 1.f;
+	soundVolumes[SoundID::SID_REBEL_DIE]           = 1.f;
+	soundVolumes[SoundID::SID_REBEL_DIE_FIRE]      = 1.f;
+	soundVolumes[SoundID::SID_GAME_OVER]           = 1.f;
+	soundVolumes[SoundID::SID_TITLE]               = 1.f;
+	soundVolumes[SoundID::SID_MAIN_THEME]          = 0.2f;
 
 	initalized = true;
 }
@@ -184,4 +212,8 @@ const char* ResourceManager::getSoundPath(SoundID soundId) const {
 
 const Map& ResourceManager::getMap() const{
 	return this->map;
+}
+
+float ResourceManager::getSoundVolume(SoundID soundId) const {
+    return soundVolumes[soundId];
 }

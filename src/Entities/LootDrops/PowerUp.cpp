@@ -46,6 +46,7 @@ void PowerUp::applyEffect(Player& pl){
     if(getCurrentASIndex() == PowerUpState::PUS_CRATE) return;
 
     pl.setGunData(GunPresets::getGun(GunType::FLAME_THROWER));
+    addSound(SoundID::SID_FLAMETHROWER_PICKUP);
     setFree(true);
 }
 

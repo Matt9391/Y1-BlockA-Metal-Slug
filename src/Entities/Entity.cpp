@@ -3,6 +3,7 @@
 #include <RigidBody.h>
 #include <ResourceID.h>
 #include <RadiusData.h>
+#include <AudioManager.h>
 
 Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
 	entityType(entityType),
@@ -16,7 +17,9 @@ Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :
 	rigidBody(nullptr),
 	free(false),
 	renderLayer(1),
-	playerCollisionEnabled(true)
+	playerCollisionEnabled(true),
+	sounds{SoundID::SID_NULL},
+	soundCount(0)
 	{
 		this->rigidBody = needsRigidBody ? new RigidBody(this->pos, true) : nullptr;
 
@@ -163,4 +166,24 @@ void Entity::setPlayerCollisionEnabled(bool playerCollisionEnabled_){
 
 bool Entity::getPlayerCollisionEnabled() const{
 	return this->playerCollisionEnabled;
+}
+
+
+void Entity::addSound(SoundID sid){
+	if(sid == SID_NULL) return;
+    if(soundCount >= MAXSOUNDS) throw runtime_error("MAX SOUNDS REACHED");
+    this->sounds[soundCount++] = sid;
+}
+
+void Entity::clearSounds(){
+	for(int i = 0; i < soundCount; i++){
+		this->sounds[i] = SID_NULL;
+	}
+	soundCount = 0;
+}
+
+void Entity::addSoundToManager(AudioManager& am){
+	for(int i = 0; i < soundCount; i++){
+		am.addAudioToPlay(sounds[i]);
+	}
 }

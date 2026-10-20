@@ -44,6 +44,7 @@ void Granade::loadGFX() {
 }
 
 void Granade::update(float dt) {
+	clearSounds();
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
 
@@ -70,6 +71,7 @@ void Granade::update(float dt) {
 void Granade::explode() {
 	setCurrentASIndex(1);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
+	addSound(SoundID::SID_EXPLOSION_GRENADE);
 	ableMovement = false;
 	isDisabled = true;
 }

@@ -19,10 +19,14 @@ public:
 	Sprite* getSprite(ResourceID resourceId) const;
 	const char* getSoundPath(SoundID soundId) const;
 	const Map& getMap() const; 
+	float getSoundVolume(SoundID soundId) const;
+
 private:
 	bool initalized;
 
 	Sprite* sprites[ResourceID::ID_COUNTS];
 	char* soundPaths[SoundID::SID_COUNTS];
+	float soundVolumes[SoundID::SID_COUNTS];
 	Map map;
+
 };

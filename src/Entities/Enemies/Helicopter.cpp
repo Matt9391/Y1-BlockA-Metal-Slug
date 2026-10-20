@@ -111,6 +111,7 @@ void Helicopter::loadGFX(){
 }
 
 void Helicopter::update(float dt) {
+	clearSounds();
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
 
@@ -152,8 +153,9 @@ void Helicopter::update(float dt) {
 			setCurrentASIndex(c);
 		}
 
-		if(lives < 0){
+		if(lives < 0 && getAlive()){
 			setCurrentASIndex(HAS_BOOM);
+			addSound(SoundID::SID_HELI_EXPLODING);
 			setAlive(false);
 		}	
 		

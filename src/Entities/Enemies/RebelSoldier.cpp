@@ -156,6 +156,7 @@ void RebelSoldier::loadGFX() {
 }
 
 void RebelSoldier::update(float dt) {
+	clearSounds();
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
 
