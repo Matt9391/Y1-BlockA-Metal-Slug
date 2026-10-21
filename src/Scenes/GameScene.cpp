@@ -35,35 +35,66 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 			0.2f,
 			vec2(0,-30)
 		),
-	waterfall(RenderData
-				(AnimationSet(
-					1,
-					AnimationLayer(
-						ResourceID::ID_WATERFALL,
-						ResourceIDFrames::IDF_WATERFALL,
-						10,
-						vec2(0, 0),
-						vec2(0, 0)
-					)
-				),
-				vec2(3337,3.5f), 0)
-			),
-	waterfallBottom(RenderData
-				(AnimationSet(
-					1,
-					AnimationLayer(
-						ResourceID::ID_WATERFALL_BOTTOM,
-						ResourceIDFrames::IDF_WATERFALL_BOTTOM,
-						10,
-						vec2(0, 0),
-						vec2(0, 0)
-					)
-				),
-				vec2(3318, 3.5))
-	),
 	nTilesLimit1Camera(231),
-	nTilesLimit2Camera(static_cast<int>(map.getTiles().x))
+	nTilesLimit2Camera(static_cast<int>(map.getTiles().x) -9)
 	{
+		waterDecorations[0] = AnimatedDecoration(
+			AnimationSet(
+				1,
+				AnimationLayer(
+					ResourceID::ID_WATERFALL,
+					ResourceIDFrames::IDF_WATERFALL,
+					10,
+					vec2(0, 0),
+					vec2(0, 0)
+				)
+			),
+			vec2(3337, 3.5f),
+			1
+		);
+
+		waterDecorations[1] = AnimatedDecoration(
+			AnimationSet(
+				1,
+				AnimationLayer(
+					ResourceID::ID_WATERFALL_BOTTOM,
+					ResourceIDFrames::IDF_WATERFALL_BOTTOM,
+					10,
+					vec2(0, 0),
+					vec2(0, 0)
+				)
+			),
+			vec2(3318, 3.5f),
+			2
+		);
+		waterDecorations[2] = AnimatedDecoration(
+			AnimationSet(
+				1,
+				AnimationLayer(
+					ResourceID::ID_WATER_ANIMATED,
+					ResourceIDFrames::IDF_WATER_ANIMATED,
+					100,
+					vec2(0, 0),
+					vec2(0, 0)
+				)
+			),
+			vec2(1859, 260.5f),
+			0
+		);
+		waterDecorations[3] = AnimatedDecoration(
+			AnimationSet(
+				1,
+				AnimationLayer(
+					ResourceID::ID_WATERFALL_TOP,
+					ResourceIDFrames::IDF_WATERFALL_TOP,
+					10,
+					vec2(0, 0),
+					vec2(0, 0)
+				)
+			),
+			vec2(3760, -42.f),
+			0
+		);
 	}
 
 GameScene::~GameScene() {
@@ -109,9 +140,7 @@ void GameScene::init() {
 	setChangeScene(false);
 	setNextScene(TypeScene::GAME_OVER);
 
-	anim.setAnimation(&waterfall.animationSet);
-	anim2.setAnimation(&waterfallBottom.animationSet);
-
+	
 	//DONE: map init to reset spawners timer since they remain in memory
 	for (int i = 0; i < map.getSpawnersLayers(); i++) {
 			Spawner** layerSpawners = map.getSpawners(i);
@@ -122,7 +151,7 @@ void GameScene::init() {
 			}
 		}
 	
-	tankRef = new Tank(vec2(1000,80), getInputManager());
+	tankRef = new Tank(vec2(2500,80), getInputManager());
 	addNewEntity(tankRef);
 	addNewEntity(new Boss(vec2(3769 + 265, -60 + 100)));
 
@@ -143,8 +172,11 @@ void GameScene::update(float dt) {
 	getRenderer().clearColliders();
 	getRenderer().clearTexts();
 
-	anim.playAnimation(dt);
-	anim2.playAnimation(dt);
+	for(int i = 0; i < MAWWATERDECORATION; i++){
+		waterDecorations[i].update(dt);
+		getRenderer().addRenderData(waterDecorations[i].getRenderData());
+	}
+
 
 	player.update(dt);
 	player.addSoundToManager(getAudioManager());
@@ -183,8 +215,7 @@ void GameScene::update(float dt) {
 		}
 		
 		if (e->getPlayerCollisionEnabled() &&
-			!entityInFront && 
-			CollisionManager::checkCollision(playerColliderInFront,e->getCollider(), getResourceManager(),1) ||
+			!entityInFront && 	
 			CollisionManager::checkCollision(player.getCollider(), e->getCollider(), getResourceManager(),1)){
 			entityInFront = true;
 		}
@@ -282,15 +313,13 @@ void GameScene::update(float dt) {
 	}
 	//getRenderer().addRenderData(player.getGunRenderData(), player.getGunBullets());
 	// DONE: ADD layers to the renderData
-	getRenderer().addRenderData(waterfall);
-	getRenderer().addRenderData(waterfallBottom);
 	
 	getRenderer().addCollider(player.getCollider());
 	//Collider c = player.getCollider();
 	//c.offset.x += player.getLastDir().x * c.size.x;
 	//getRenderer().addCollider(c);
 	getCamera().follow(player.getPos(), dt);
-
+	player.contrainPos(getCamera().getMin(), getCamera().getMax());
 	renderHUD(dt);
 
 	loseCondition = player.getLives() <= -1;
@@ -429,6 +458,7 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 
 			if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),2)) {
 				b->explode();
+				b->setDisabled(true);
 				bs->takeHit();
 				// player.addScore(100);
 			}
@@ -522,6 +552,11 @@ void GameScene::handlePow(Pow* pow) {
 		pow->setIntersectingPlayer(false);
 	}
 
+	if(pow->isDroppingLoot()){
+		addNewEntity(new PowerUp(pow->getPos() + vec2(-5,20), PowerUpState::PUS_REVEALED));
+		pow->setDropLoot(false);
+	}
+
 	if (getCamera().isOutOfView(pow->getPos())) {
 		if (pow->isReleased()) {
 			pow->setPowFree(true);
@@ -590,6 +625,10 @@ void GameScene::handleHelicopter(Helicopter* h) {
 
 void GameScene::handleBoss(Boss* bs) {
 	loadEnemySensors(bs, player.getPos() + player.getCollider().size / 2.f);
+
+	if (CollisionManager::checkCollision(player.getCollider(), bs->getCollider(), getResourceManager(), 1)) {
+		CollisionManager::resolveCollisionAOverB(player, bs->getCollider());
+	}
 
 	for (int j = 0; j < bs->getMaxBullets(); j++) {
 		Bullet* b = bs->getBullet(j);

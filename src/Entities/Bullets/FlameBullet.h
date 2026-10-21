@@ -25,8 +25,8 @@ public:
 	
 	void update(float dt) override;
 
-	void explode();
-	void explodeMap();
+	void explode() override;
+	void explodeMap() override;
 private:
     int getAngleAnimationIndex(bool boom = false) const;
 

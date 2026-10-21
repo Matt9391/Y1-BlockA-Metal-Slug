@@ -2,7 +2,6 @@
 #include "Entity.h"
 #include <RigidBody.h>
 #include <ResourceID.h>
-#include <RadiusData.h>
 #include <AudioManager.h>
 
 Entity::Entity(vec2 pos, bool needsRigidBody, EntityType entityType) :

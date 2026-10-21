@@ -21,8 +21,12 @@ public:
 	bool isIntersectingPlayer() const;
 	void setIntersectingPlayer(bool intersect);
 
+	bool isDroppingLoot() const;
+	void setDropLoot(bool dropLoot_);
+
 private:
 	PowStates::PowState* state;
 	bool released;
 	bool intersectingPlayer;
+	bool dropLoot;
 };

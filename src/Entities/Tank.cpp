@@ -198,6 +198,11 @@ void Tank::update(float dt){
     //reset bools
     gotHit = false;
 
+    if(inputManager.isKeyPressed('Y')){
+        this->hp = -1;
+        takeHit();
+    }
+
     if (tInput.isShooting && !tInput.isDead && shootBombTimer > SHOOTBOMBCOUNTDOWN) {
         shoot(BulletType::BT_BOMB_SHELL);
     }else if(tInput.isShootingBullet && !tInput.isDead && shootBulletTimer > SHOOTBULLETCOUNTDOWN){
@@ -379,7 +384,8 @@ bool Tank::shoot(BulletType bulletType) {
 }
 
 void Tank::addRenderDatas(Renderer& renderer) {
-    renderer.addRenderData(shooterRs);
+    if(!dead)
+        renderer.addRenderData(shooterRs);
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) continue;
 		renderer.addRenderData(bullets[i]->getRenderData());

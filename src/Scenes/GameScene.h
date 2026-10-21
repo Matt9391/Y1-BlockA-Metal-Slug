@@ -6,7 +6,7 @@
 #include <Entity.h>              
 #include <RenderData.h>         
 #include <ParallaxRenderData.h>
-#include <Animator.h>        
+#include <AnimatedDecoration.h>        
 
 class Tank;
 class Enemy;
@@ -62,14 +62,12 @@ private:
 	// NEW: set once in init(), nulled in freeEntity(). Never derived from an array index.
 	Tank* tankRef = nullptr;
 
-	const Map& map;             // GUESS: reference to a Map that outlives the scene
+	const Map& map;             
 
 	ParallaxRenderData parallaxRenderData;
-	RenderData waterfall;
-	RenderData waterfallBottom;
 
-	Animator anim;              // GUESS: type name
-	Animator anim2;             // GUESS: type name
+	static const int MAWWATERDECORATION = 4;
+	AnimatedDecoration waterDecorations[MAWWATERDECORATION];
 
 	int nTilesLimit1Camera;
 	int nTilesLimit2Camera;

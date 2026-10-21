@@ -17,7 +17,7 @@ Map::Map() :
 	layerCount(MLN_COUNTS),
 	layerObjCount(MOLN_COUNTS)
 	{
-		loadDataFromJson("assets/gameMapV9.tmj");
+		loadDataFromJson("assets/gameMapV12.tmj");
 		loadMapRenderData();
 	}
 

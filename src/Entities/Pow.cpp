@@ -10,7 +10,8 @@ Pow::Pow(vec2 pos) :
 	Entity(pos, true, EntityType::ET_POW),
 	state(nullptr),
 	released(false),
-	intersectingPlayer(false)
+	intersectingPlayer(false),
+	dropLoot(false)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[PowAnimationSet::POW_COUNTS];
@@ -35,8 +36,8 @@ void Pow::loadGFX() {
 			ResourceID::ID_POW_IDLE,
 			ResourceIDFrames::IDF_POW_IDLE,
 			150,
-			vec2(0, 0),
-			vec2(0, 0))
+			vec2(0, 5),
+			vec2(0, 5))
 	);
 
 	getAnimationSets()[PowAnimationSet::POW_RELEASING] = AnimationSet(
@@ -55,8 +56,8 @@ void Pow::loadGFX() {
 			ResourceID::ID_POW_WALK_WAIT,
 			ResourceIDFrames::IDF_POW_WALK_WAIT,
 			100,
-			vec2(0, 0),
-			vec2(0, 0))
+			vec2(0, -2),
+			vec2(0, -2))
 	);
 
 	getAnimationSets()[PowAnimationSet::POW_PANTS] = AnimationSet(
@@ -150,3 +151,10 @@ void Pow::setIntersectingPlayer(bool intersect) {
 	this->intersectingPlayer = intersect;
 }
 
+
+bool Pow::isDroppingLoot() const{
+	return this->dropLoot;
+}
+void Pow::setDropLoot(bool dropLoot_){
+	this->dropLoot = dropLoot_;
+}

@@ -950,3 +950,10 @@ int Player::getBulletsLeft() const{
 	if(this->gun.getMaxShootBullet() == -1) return -1; 
 	return this->gun.getMaxShootBullet() - this->gun.getBulletShot();
 }
+
+void Player::contrainPos(vec2 minPos, vec2 maxPos){
+	setPos(vec2(
+		myMath::constrain(getPos().x, minPos.x, maxPos.x - getCollider().size.x),
+		myMath::constrain(getPos().y, minPos.y, maxPos.y - getCollider().size.y)
+	));
+}

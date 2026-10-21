@@ -22,6 +22,9 @@ public:
 
 	bool isOutOfView(const vec2& pos_) const;
 
+	vec2 getMin() const;
+	vec2 getMax() const;
+
 private:
 	vec2 pos;
 	vec2 size;

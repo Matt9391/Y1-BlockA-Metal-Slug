@@ -46,6 +46,7 @@ public:
 	bool getInTank() const;
 
 	int getBulletsLeft() const;
+	void contrainPos(vec2 minPos, vec2 maxPos);
 private:
 	bool getEnemyInFront() const;
 	void setShooting(bool shooting_);

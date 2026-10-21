@@ -27,8 +27,8 @@ void PowerUp::loadGFX() {
             ResourceID::ID_POWERUP_CRATE,
             ResourceIDFrames::IDF_POWERUP_CRATE,
             100,
-            vec2(0,0),
-            vec2(0,0)
+            vec2(0,-8),
+            vec2(0,-8)
         ));
     getAnimationSets()[PowerUpState::PUS_REVEALED] = AnimationSet(
         1,

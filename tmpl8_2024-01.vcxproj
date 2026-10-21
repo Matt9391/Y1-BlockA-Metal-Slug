@@ -130,6 +130,7 @@
     <ClCompile Include="src\AnimationStates\PlayerState.cpp" />
     <ClCompile Include="src\AnimationStates\PowState.cpp" />
     <ClCompile Include="src\AnimationStates\TankState.cpp" />
+    <ClCompile Include="src\Components\AnimatedDecoration.cpp" />
     <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Components\Camera.cpp" />
     <ClCompile Include="src\Components\Gun.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="src\AnimationStates\PlayerState.h" />
     <ClInclude Include="src\AnimationStates\PowState.h" />
     <ClInclude Include="src\AnimationStates\TankState.h" />
+    <ClInclude Include="src\Components\AnimatedDecoration.h" />
     <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\Components\Camera.h" />
     <ClInclude Include="src\Components\Collider.h" />
@@ -225,7 +227,6 @@
     <ClInclude Include="src\DataStructures\ParallaxRenderData.h" />
     <ClInclude Include="src\DataStructures\PlayerAnimationSet.h" />
     <ClInclude Include="src\DataStructures\PowAnimationSet.h" />
-    <ClInclude Include="src\DataStructures\RadiusData.h" />
     <ClInclude Include="src\DataStructures\RebelSoldierPresets.h" />
     <ClInclude Include="src\DataStructures\RebelSoldierType.h" />
     <ClInclude Include="src\DataStructures\RenderData.h" />

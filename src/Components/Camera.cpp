@@ -37,7 +37,7 @@ void Camera::follow(const vec2& target, float dt)
 
 	if (this->pos.x > 800) {
 		enableYFollow(true);
-		setMinYLimit(-300);
+		setMinYLimit(-30);
 	}
 	if (this->pos.x > 3700) {
 		this->maxY = worldSize.y - this->size.y - 110.f;
@@ -86,4 +86,12 @@ bool Camera::isOutOfView(const vec2& pos_) const{
 	if (screenPos.y < -threshold.y || screenPos.y > SCRHEIGHT + threshold.y) return true;
 
 	return false;
+}
+
+
+vec2 Camera::getMin() const{
+	return this->pos;
+}
+vec2 Camera::getMax() const{
+	return this->pos + this->size;
 }

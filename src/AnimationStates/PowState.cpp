@@ -73,6 +73,7 @@ namespace PowStates {
 	PowAnimationSet ByeState::update(Pow& pow, float, PowAnimationSet current) {
 		if (pow.isAnimationEnded()) {
 			current = PowAnimationSet::POW_RUN_AWAY;
+			pow.setDropLoot(true);
 		}
 		return current;
 	}

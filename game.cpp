@@ -42,8 +42,8 @@ void Game::Tick(float dt)
 
 	sceneManager.getCurrentScene().update(dt);
 
-	audioManager.playSounds(resourceManager);
-	audioManager.playMusic();
+	// audioManager.playSounds(resourceManager);
+	// audioManager.playMusic();
 
 	audioManager.updateSounds();
 
