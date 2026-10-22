@@ -66,7 +66,8 @@ bool Gun::shoot() {
 		break;
 	
 	default:
-		throw runtime_error("couldnt find proper bullet for current gunType");
+		printf("couldn't find proper bullet for current gunType");
+		return false;
 		break;
 	}
 	bulletsCount++;

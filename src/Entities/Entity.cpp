@@ -170,8 +170,12 @@ bool Entity::getPlayerCollisionEnabled() const{
 
 void Entity::addSound(SoundID sid){
 	if(sid == SID_NULL) return;
-    if(soundCount >= MAXSOUNDS) throw runtime_error("MAX SOUNDS REACHED");
-    this->sounds[soundCount++] = sid;
+    if(soundCount >= MAXSOUNDS) {
+		printf("MAX SOUNDS REACHED, ENTITY");
+		return;
+    }
+
+	this->sounds[soundCount++] = sid;
 }
 
 void Entity::clearSounds(){

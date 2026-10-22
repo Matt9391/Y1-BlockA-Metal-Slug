@@ -36,7 +36,8 @@ GameScene::GameScene(Surface* screen, Renderer& renderer, InputManager& inputMan
 			vec2(0,-30)
 		),
 	nTilesLimit1Camera(231),
-	nTilesLimit2Camera(static_cast<int>(map.getTiles().x) -9)
+	nTilesLimit2Camera(static_cast<int>(map.getTiles().x) -9),
+	winTimer(0)
 	{
 		waterDecorations[0] = AnimatedDecoration(
 			AnimationSet(
@@ -361,6 +362,8 @@ void GameScene::renderHUD(float dt) {
 
 	}else {
 		if(winCondition){
+			winTimer += dt;
+
 			char savedText[4];
 			snprintf(savedText, sizeof(savedText), "%d", player.getPowSaved());
 
@@ -383,6 +386,11 @@ void GameScene::renderHUD(float dt) {
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY, "11000", vec2(60, 110), 1.f });
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "MG. Carothers", vec2(30, 145), 1.f });
 			getRenderer().addHUDText(HUDText{ ResourceID::ID_FONT_GREY_S, "PLEASE WAIT", vec2(180, 10),1.2f });
+
+			if(winTimer > WINCOUNTDOWN){
+				setNextScene(TypeScene::MENU);
+				setChangeScene(true);
+			}
 			
 		}
 		char livesText[50];
@@ -451,10 +459,6 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 		}
 		else if(e->getEntityType() == EntityType::ET_BOSS){
 			Boss* bs = static_cast<Boss*>(e); 
-			if (!bs->getAlive()) {
-				justWin = !winCondition;
-				winCondition = true;
-			}
 
 			if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),2)) {
 				b->explode();
@@ -626,6 +630,11 @@ void GameScene::handleHelicopter(Helicopter* h) {
 void GameScene::handleBoss(Boss* bs) {
 	loadEnemySensors(bs, player.getPos() + player.getCollider().size / 2.f);
 
+	if (!bs->getAlive()) {
+		justWin = !winCondition;
+		winCondition = true;
+	}
+
 	if (CollisionManager::checkCollision(player.getCollider(), bs->getCollider(), getResourceManager(), 1)) {
 		CollisionManager::resolveCollisionAOverB(player, bs->getCollider());
 	}
@@ -660,7 +669,6 @@ void GameScene::handleTank(Tank* tank) {
 	if(!tank->hasPlayer() &&
 		CollisionManager::checkCollision(player.getCollider(), tank->getCollider(), getResourceManager()) && player.getPos().y < tank->getPos().y){
 		tank->enterPlayer(&player);
-		printf("aaaa");
 	}
 
 	if(!tank->hasPlayer()){
@@ -689,7 +697,7 @@ void GameScene::addNewEntity(Entity* e) {
 		spawnedEntities[spawnIndex] = e;
 	}
 	else {
-		throw runtime_error("Max entities reached");
+		printf("Max entities reached in the pool");
 	}
 }
 	

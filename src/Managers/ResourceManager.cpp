@@ -1,6 +1,9 @@
 #include "precomp.h"
 #include "ResourceManager.h"
 #include <ResourceIDFrames.h>
+#include <cstdio>
+#include <cstdlib>
+
 
 ResourceManager::ResourceManager() :
 	sprites{},
@@ -190,8 +193,8 @@ void ResourceManager::init() {
 
 Sprite* ResourceManager::getSprite(ResourceID resourceId) const {
 	if (!this->initalized) {
-		// TODO: ask lecturer about usage of runtime_error
-		throw runtime_error("Get sprite before initialized it");
+		printf("Get sprite before initialized resource, error");
+		abort();
 	}
 
 	if (resourceId == ResourceID::ID_NULL) {
@@ -202,7 +205,8 @@ Sprite* ResourceManager::getSprite(ResourceID resourceId) const {
 }
 const char* ResourceManager::getSoundPath(SoundID soundId) const {
 	if (!this->initalized) {
-		throw runtime_error("Get sound before initialized it");
+		printf("Get sound before initialized resource, error");
+		abort();
 	}
 
 	if (soundId == SoundID::SID_NULL) {

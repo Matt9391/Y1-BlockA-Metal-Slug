@@ -734,11 +734,9 @@ void Player::update(float dt) {
 
 	PlayerInput pInput = getPlayerInput();
 
-	//std::cout << pInput.inputDown << "and state: " << getDir().y << std::endl;
 
 
 	PlayerAnimationSet nextState = state->handleInput(pInput, static_cast<PlayerAnimationSet>(getCurrentASIndex()));
-	//std::cout << nextState << std::endl;
 	if (nextState == PlayerAnimationSet::PAS_REVIVE) {
 		if (deadTimeElapsed > DEADTIMER && canRevive) {
 			setCurrentASIndex(nextState);

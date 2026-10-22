@@ -2,6 +2,8 @@
 #include "Animator.h"
 
 #include <AnimationSet.h>
+#include <cstdio>
+#include <cstdlib>
 
 
 Animator::Animator():
@@ -63,7 +65,8 @@ void Animator::setFrame(int frame){
 
 void Animator::playAnimation(float dt) {
 	if (animationSet == nullptr) {
-		throw runtime_error("Impossible to run animation before setting one");
+		printf("Impossible to run animation before setting one");
+		abort();
 	}
 	
 	for (int i = 0; i < animationSet->layerCount; i++) {

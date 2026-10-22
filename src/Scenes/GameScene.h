@@ -19,11 +19,11 @@ class Boss;
 class GameScene : public CustomScene {
 public:
 	GameScene(Surface* screen, Renderer& renderer, InputManager& inputManager, AudioManager& audioManager, ResourceManager& resourceManager, const Map& map_);
-	~GameScene();
+	~GameScene() override;
 
-	void init();
-	void exit();
-	void update(float dt);
+	void init() override;
+	void exit() override;
+	void update(float dt) override;
 
 private:
 	// ---- Entity storage ----
@@ -49,12 +49,15 @@ private:
 	// Member order matches the constructor's initializer list in GameScene.cpp.
 	Player player;
 
+	static const int WINCOUNTDOWN = 1000;
+	
 	bool loseCondition;
 	bool winCondition;
 	bool justWin;
 	int secondsLeft;
 	float elapsedLoseTime;
-
+	float winTimer;
+	
 	static const int MAXENTITIES = 150;
 	// MAXENTITIES: keep wherever you already define it
 	Entity* spawnedEntities[MAXENTITIES];

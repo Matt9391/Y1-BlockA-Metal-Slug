@@ -24,7 +24,10 @@ void AudioManager::clearSounds(){
 
 bool AudioManager::addAudioToPlay(SoundID sid) {
     if(sid == SID_NULL) return false;
-    if(soundCount >= MAXSOUNDS) throw runtime_error("MAX SOUNDS REACHED");
+    if(soundCount >= MAXSOUNDS) {
+            printf("MAX SOUNDS REACHED, AUDIOMANAGER");
+            return;
+    }
     this->soundsToPlay[soundCount++] = sid;
 
     return true;
@@ -54,9 +57,6 @@ void AudioManager::playSounds(const ResourceManager& rm) {
             slot.initialized = true;
 
             float volume = rm.getSoundVolume(id);
-            std::cout << "Sound ID: " << static_cast<int>(id)
-                << " | Path: " << rm.getSoundPath(id)
-                << " | Volume: " << volume << '\n';
             ma_sound_set_volume(&slot.sound, volume);
 
 
@@ -85,6 +85,10 @@ AudioManager::~AudioManager() {
             slot.initialized = false;
         }
     }
+
+    ma_sound_stop(&music.sound);
+    ma_sound_uninit(&music.sound);
+    music.initialized = false;
 
     ma_engine_uninit(&engine);
 }

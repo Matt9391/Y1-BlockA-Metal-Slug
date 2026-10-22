@@ -8,7 +8,6 @@
 
 
 
-//TODO: DONE
 Renderer::Renderer() :
 	renderDataCount{0},
 	collidersCount(0),
@@ -38,15 +37,19 @@ void Renderer::reset(){
 
 
 void Renderer::addCollider(const Collider& c) {
-	if (collidersCount == MAXCOLLIDERS)
-		throw runtime_error("Max colliders reached");
+	if (collidersCount == MAXCOLLIDERS){
+		printf("Max colliders reached");
+		return;
+	}
 	colliders[collidersCount++] = &c;
 }
 
 
 void Renderer::addRenderData(RenderData rs) {
-	if (renderDataCount[rs.layer] == MAXRENDERSETS)
-		throw runtime_error("Max render sets reached");
+	if (renderDataCount[rs.layer] == MAXRENDERSETS){
+		printf("Max render sets reache on layer: %d", rs.layer);
+		return;
+	}
 	renderDatas[rs.layer][renderDataCount[rs.layer]++] = rs;
 	
 }
@@ -61,14 +64,18 @@ void Renderer::addParallaxRenderData(const ParallaxRenderData& prd){
 
 
 void Renderer::addHUDText(HUDText t) {
-	if (textsCount == MAXTEXTS)
-		throw runtime_error("Max texts reached");
+	if (textsCount == MAXTEXTS){
+		printf("Max texts reached");
+		return;
+	}
 	texts[textsCount++] = t;
 }
 
 void Renderer::addSpriteSet(SpriteSet ss) {
-	if (spriteSetCount == MAXSPRITESETS)
-		throw runtime_error("Max sprite sets reached");
+	if (spriteSetCount == MAXSPRITESETS){
+		printf("Max sprite sets reached");
+		return;
+	}
 
 	spriteSets[spriteSetCount++] = ss;
 }

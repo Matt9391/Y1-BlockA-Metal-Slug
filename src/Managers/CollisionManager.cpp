@@ -16,8 +16,6 @@ namespace CollisionManager {
 		//vec2 endPosition = ; //bottom right
 		vec2 endPos = vec2(static_cast<float>(static_cast<int>((e.getPos().x + collider.offset.x + e.getCollider().size.x) / layer.tileSize)),
 							static_cast<float>(static_cast<int>((e.getPos().y + collider.offset.y + e.getCollider().size.y) / layer.tileSize))); //bottom right
-		//std::cout << "startX: " << startPos.x << "endX: " << endPos.x << std::endl;
-		//std::cout << "startY: " << startPos.y << "endY: " << endPos.y << std::endl;
 
 		bool grounded = false;
 		bool collided = false;
@@ -30,7 +28,6 @@ namespace CollisionManager {
 					continue;
 
 				const vec2 colliderPos = (collider.pos + collider.offset); //recompile it everytime because it changes but since its not a reference it need to be recompiled
-				//std::cout << i * static_cast<int>(layer.tiles.x) + j << std::endl;
 				int tileId = layer.data[i * static_cast<int>(layer.tiles.x) + j] - layer.firstgid;
 				if (tileId == -layer.firstgid) continue;
 				
@@ -342,7 +339,7 @@ namespace CollisionManager {
 						const uint pA = pxA[ax + ay * pitchA];
 						const uint pB = pxB[bx + by * pitchB];
 
-						if ((pA & 0xffffff) && (pB & 0xffffff)) return true; // both non-transparent
+						if ((pA & 0xFFffffff) && (pB & 0xFFffffff)) return true; // both non-transparent
 					}
 				}
 
