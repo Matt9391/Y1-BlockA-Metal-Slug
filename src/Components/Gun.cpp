@@ -66,7 +66,7 @@ bool Gun::shoot() {
 		break;
 	
 	default:
-		printf("couldn't find proper bullet for current gunType");
+		printf("couldn't find proper bullet for current gunType\n");
 		return false;
 		break;
 	}

@@ -698,6 +698,7 @@ void GameScene::addNewEntity(Entity* e) {
 	}
 	else {
 		printf("Max entities reached in the pool");
+		delete e;
 	}
 }
 	

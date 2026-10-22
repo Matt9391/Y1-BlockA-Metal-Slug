@@ -16,7 +16,8 @@ struct Collider {
 		frame{0},
 		spriteOffset{vec2(0,0)},
 		layerCount(0),
-		flipped(false)
+		flipped(false),
+		radius(500.f)
 	{}
 
 	Collider(const vec2& pos, vec2 size, vec2 offset) :

@@ -290,10 +290,10 @@ namespace CollisionManager {
 		if (ow <= 0 || oh <= 0) return false;
 
 		// world-space top-left of each collider
-		const int aL = (int)(a.pos.x + a.offset.x), aT = (int)(a.pos.y + a.offset.y);
-		const int bL = (int)(b.pos.x + b.offset.x), bT = (int)(b.pos.y + b.offset.y);
-		const int startX = max(aL, bL);
-		const int startY = max(aT, bT);
+		const float aL = (int)(a.pos.x + a.offset.x), aT = (int)(a.pos.y + a.offset.y);
+		const float bL = (int)(b.pos.x + b.offset.x), bT = (int)(b.pos.y + b.offset.y);
+		const int startX = static_cast<int>(fmaxf(aL, bL));
+		const int startY = static_cast<int>(fmaxf(aT, bT));
 
 		for(int i = 0; i < a.layerCount; i++){
 			const int aSpriteX = (int)(a.pos.x + a.spriteOffset[i].x);

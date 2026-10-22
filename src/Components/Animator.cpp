@@ -65,7 +65,7 @@ void Animator::setFrame(int frame){
 
 void Animator::playAnimation(float dt) {
 	if (animationSet == nullptr) {
-		printf("Impossible to run animation before setting one");
+		printf("Impossible to run animation before setting one\n");
 		abort();
 	}
 	

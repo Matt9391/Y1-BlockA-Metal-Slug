@@ -33,6 +33,9 @@ public:
 	Entity(vec2 pos, bool needsRigidBody, EntityType entityType);
 	virtual ~Entity();
 
+	Entity(const Entity& other) = delete;
+    Entity& operator=(const Entity& other) = delete;
+
 	virtual void loadGFX() = 0;
 
 	const vec2& getPos() const;

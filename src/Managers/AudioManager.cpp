@@ -86,9 +86,11 @@ AudioManager::~AudioManager() {
         }
     }
 
-    ma_sound_stop(&music.sound);
-    ma_sound_uninit(&music.sound);
-    music.initialized = false;
+    if(music.initialized){
+        ma_sound_stop(&music.sound);
+        ma_sound_uninit(&music.sound);
+        music.initialized = false;
+    }
 
     ma_engine_uninit(&engine);
 }

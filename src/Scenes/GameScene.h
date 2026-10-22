@@ -49,7 +49,7 @@ private:
 	// Member order matches the constructor's initializer list in GameScene.cpp.
 	Player player;
 
-	static const int WINCOUNTDOWN = 1000;
+	static const int WINCOUNTDOWN = 5000;
 	
 	bool loseCondition;
 	bool winCondition;

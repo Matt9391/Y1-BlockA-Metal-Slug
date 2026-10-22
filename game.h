@@ -20,7 +20,7 @@ public:
 	// game flow methods
 	void Init();
 	void Tick( float dt );
-	void Shutdown() { printf("shutdown");/* implement if you want to do something on exit */ }
+	void Shutdown() { }
 	// input handling
 	void MouseUp( int ) { /* implement if you want to detect mouse button presses */ }
 	void MouseDown( int ) { /* implement if you want to detect mouse button presses */ }
