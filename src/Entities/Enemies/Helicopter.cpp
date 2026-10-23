@@ -51,7 +51,7 @@ void Helicopter::loadGFX(){
 			ResourceID::ID_HELICOPTER_BLADE,
 			ResourceIDFrames::IDF_HELICOPTER_BLADE,
 			100,
-			vec2(0, 0),
+			vec2(0, -4),
 			vec2(0, 0))
 	);
 	getAnimationSets()[HelicopterAnimationSet::HAS_MOVE_BWD] = AnimationSet(
@@ -81,7 +81,7 @@ void Helicopter::loadGFX(){
 			ResourceID::ID_HELICOPTER_BLADE,
 			ResourceIDFrames::IDF_HELICOPTER_BLADE,
 			100,
-			vec2(0, 0),
+			vec2(0, -4),
 			vec2(0, 0))
 	);
 	getAnimationSets()[HelicopterAnimationSet::HAS_TRANSITION_BWD] = AnimationSet(

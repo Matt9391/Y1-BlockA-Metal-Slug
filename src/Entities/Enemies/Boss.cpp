@@ -207,9 +207,7 @@ void Boss::update(float dt) {
 
 }
 
-void Boss::moveShootOffset(vec2 incr){
-	this->shootOffset += incr;	
-}
+
 
 
 bool Boss::shoot(BulletType bulletType){
@@ -290,4 +288,8 @@ void Boss::takeHit(){
     if(this->HP < 0){
         setAlive(false);
     }
+}
+
+void Boss::setShootOffsetY(float offset){
+    this->shootOffset.y = offset;
 }

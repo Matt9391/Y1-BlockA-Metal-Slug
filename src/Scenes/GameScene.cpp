@@ -316,9 +316,7 @@ void GameScene::update(float dt) {
 	// DONE: ADD layers to the renderData
 	
 	getRenderer().addCollider(player.getCollider());
-	//Collider c = player.getCollider();
-	//c.offset.x += player.getLastDir().x * c.size.x;
-	//getRenderer().addCollider(c);
+	
 	getCamera().follow(player.getPos(), dt);
 	player.contrainPos(getCamera().getMin(), getCamera().getMax());
 	renderHUD(dt);
@@ -671,7 +669,7 @@ void GameScene::handleTank(Tank* tank) {
 		tank->enterPlayer(&player);
 	}
 
-	if(!tank->hasPlayer()){
+	if(!tank->hasPlayer() && !tank->isDead()){
 		CollisionManager::resolveCollisionAOverB(player, tank->getCollider());
 	}	
 }

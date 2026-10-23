@@ -26,13 +26,18 @@ public:
 
     void takeHit();
 
-    void moveShootOffset(vec2 incr);
     // bool shootBeam(); // DONE: MERGE these function together
     // bool shootCannon();
     // bool shootLaserBall();
     bool shoot(BulletType bulletType);
 
     int getHP() const;
+
+    void setShootOffsetY(float offset);
+
+    static constexpr float HIGH_SHOOT_OFFSET = 10;
+    static constexpr float LOW_SHOOT_OFFSET = 41.5f;
+
 private:
     BossStates::BossState* state;
 
@@ -43,6 +48,6 @@ private:
 
     vec2 shootOffset;
 
-    int HP;
 
+    int HP;
 };

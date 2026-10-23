@@ -32,6 +32,8 @@ public:
     
     void addRenderDatas(Renderer& renderer);
 
+    bool isDead() const;
+
 private:
     bool shoot(BulletType bulletType);
     void ejectPlayer();

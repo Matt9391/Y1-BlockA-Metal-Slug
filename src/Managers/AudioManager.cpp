@@ -25,8 +25,8 @@ void AudioManager::clearSounds(){
 bool AudioManager::addAudioToPlay(SoundID sid) {
     if(sid == SID_NULL) return false;
     if(soundCount >= MAXSOUNDS) {
-            printf("MAX SOUNDS REACHED, AUDIOMANAGER");
-            return;
+        printf("MAX SOUNDS REACHED, AUDIOMANAGER");
+        return false;
     }
     this->soundsToPlay[soundCount++] = sid;
 

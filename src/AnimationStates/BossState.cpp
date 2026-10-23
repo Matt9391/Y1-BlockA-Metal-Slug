@@ -8,10 +8,12 @@
 namespace BossStates {
 
     // ---------- AttackOneHighState ----------
-    void AttackOneHighState::enter(Boss&)
+    void AttackOneHighState::enter(Boss& b)
     {
         this->elapsedTime = 0.f;
         this->shootCount = 1;
+        b.setShootOffsetY(Boss::HIGH_SHOOT_OFFSET);
+
     }
 
     BossAnimationSet AttackOneHighState::update(Boss& b, float dt, BossAnimationSet current)
@@ -39,10 +41,12 @@ namespace BossStates {
     }
 
     // ---------- AttackOneLowState ----------
-    void AttackOneLowState::enter(Boss&)
+    void AttackOneLowState::enter(Boss& b)
     {
         this->elapsedTime = 0.f;
         this->shootCount = 1;
+
+        b.setShootOffsetY(Boss::LOW_SHOOT_OFFSET);
     }
 
     BossAnimationSet AttackOneLowState::update(Boss& b, float dt, BossAnimationSet current)
@@ -70,8 +74,10 @@ namespace BossStates {
     }
 
     // ---------- AttackTwoHighState ----------
-    void AttackTwoHighState::enter(Boss&)
+    void AttackTwoHighState::enter(Boss& b)
     {
+        b.setShootOffsetY(Boss::HIGH_SHOOT_OFFSET);
+
     }
 
     BossAnimationSet AttackTwoHighState::update(Boss& b, float, BossAnimationSet current)
@@ -84,8 +90,9 @@ namespace BossStates {
     }
 
     // ---------- AttackTwoLowState ----------
-    void AttackTwoLowState::enter(Boss&)
+    void AttackTwoLowState::enter(Boss& b)
     {
+        b.setShootOffsetY(Boss::LOW_SHOOT_OFFSET);
     }
 
     BossAnimationSet AttackTwoLowState::update(Boss& b, float, BossAnimationSet current)
@@ -110,7 +117,6 @@ namespace BossStates {
         if(!b.getSensors().alive){
             return BossAnimationSet::BAS_DEATH;
         }
-        b.moveShootOffset(vec2(0, -1 * dt * b.getRigidBody()->getSpeed()));
 
         if(b.getSensors().animationEnded){
             if(b.getHP() < 50){
@@ -131,8 +137,6 @@ namespace BossStates {
         if(!b.getSensors().alive){
             return BossAnimationSet::BAS_DEATH;
         }
-        b.moveShootOffset(vec2(0, 1 * dt * b.getRigidBody()->getSpeed()));
-
         if(b.getSensors().animationEnded){
             if(b.getHP() < 50){
                 return BossAnimationSet::BAS_ATTACK_TWO_LOW;

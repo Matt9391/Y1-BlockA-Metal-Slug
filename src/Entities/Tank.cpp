@@ -393,3 +393,7 @@ void Tank::addRenderDatas(Renderer& renderer) {
 
 	}
 }
+
+bool Tank::isDead() const{
+    return this->dead;
+}

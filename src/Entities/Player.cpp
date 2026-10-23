@@ -768,14 +768,7 @@ void Player::update(float dt) {
 	}
 
 	//update gun offset
-	{
-		if (pInput.inputDown) {
-			gun.setOffsetY(20.f);
-		}
-		else {
-			gun.setOffsetY(5.f);
-		}
-	}
+	gun.setOffsetY(pInput.inputDown ? gun.getCrouchOffsetY() : pInput.inputUp ? gun.getLookUpOffsetY() : gun.getStandOffsetY());
 
 	//calcualate shoot dir and angle
 	{

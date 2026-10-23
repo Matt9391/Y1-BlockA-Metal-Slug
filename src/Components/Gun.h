@@ -38,6 +38,10 @@ public:
 
 	void resetBulletShot();
 
+	float getStandOffsetY()  const;
+	float getCrouchOffsetY() const;
+	float getLookUpOffsetY() const;
+
 private:
 	static const int MAXBULLETS = 50;
 

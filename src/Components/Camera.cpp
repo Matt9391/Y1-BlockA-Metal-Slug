@@ -39,16 +39,20 @@ void Camera::follow(const vec2& target, float dt)
 		enableYFollow(true);
 		setMinYLimit(-30);
 	}
-	if (this->pos.x > 3700) {
-		this->maxY = worldSize.y - this->size.y - 110.f;
-	}
-	
+
+	float targetMaxY = (this->pos.x > 3300) ? (worldSize.y - size.y - 110.f) : (worldSize.y - size.y);
+	this->maxY = myMath::lerp(this->maxY, targetMaxY, dt * 0.0008f); // ease the bound itself, same rate as position
+
+	this->pos.y = myMath::constrain(this->pos.y, this->minY, this->maxY);
+
+		
 
 	if (this->followY)
 	{
-		this->pos.y = target.y - this->size.y / 2;
+		float wantedY = target.y - this->size.y / 2;
+		this->pos.y = myMath::lerp(this->pos.y, wantedY, dt * 0.006f);
 
-		this->pos.y = myMath::constrain(this->pos.y,this->minY,this->maxY);
+		this->pos.y = myMath::constrain(this->pos.y, this->minY, this->maxY);
 	}
 }
 

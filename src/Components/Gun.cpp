@@ -157,3 +157,14 @@ int Gun::getMaxShootBullet() const{
 void Gun::resetBulletShot(){
 	this->bulletShot = 0;
 }
+
+float Gun::getStandOffsetY()  const {
+	 return gunData.standOffsetY; 
+}
+float Gun::getCrouchOffsetY() const {
+	 return gunData.crouchOffsetY; 
+}
+
+float Gun::getLookUpOffsetY() const {
+	 return gunData.lookUpOffsetY; 
+}
