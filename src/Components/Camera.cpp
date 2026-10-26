@@ -40,8 +40,18 @@ void Camera::follow(const vec2& target, float dt)
 		setMinYLimit(-30);
 	}
 
-	float targetMaxY = (this->pos.x > 3300) ? (worldSize.y - size.y - 110.f) : (worldSize.y - size.y);
+	const float worldMaxY = this->worldSize.y - this->size.y;
+
+	// How far down the camera is normally allowed to scroll. Past x = 3300 the bound is
+	// lifted by 110 px so the boss stays framed.
+	const float targetMaxY = (this->pos.x > 3300) ? (worldMaxY - 110.f) : worldMaxY;
+
+	
+	const float bottomMargin = 60.f;
+	const float playerMaxY = fminf(target.y + bottomMargin - this->size.y, worldMaxY);
+
 	this->maxY = myMath::lerp(this->maxY, targetMaxY, dt * 0.0008f); // ease the bound itself, same rate as position
+	this->maxY = fmaxf(this->maxY, playerMaxY);                      // hard floor: the ease may lag, the player may not
 
 	this->pos.y = myMath::constrain(this->pos.y, this->minY, this->maxY);
 

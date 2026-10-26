@@ -348,8 +348,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			for (int x = 0; x < screen->width; x++) {
 				int shift = 1; // how many pixels to offset — tune this, even 1 is often visible at this resolution
 
-				int xRed  = myMath::constrain(x - shift, 0.f, screen->width);  // sample red from slightly left
-				int xBlue = myMath::constrain(x + shift, 0.f, screen->width);  // sample blue from slightly right
+				int xRed  = static_cast<int>(myMath::constrain(static_cast<float>(x - shift), 0.f, static_cast<float>(screen->width)));  // sample red from slightly left
+				int xBlue = static_cast<int>(myMath::constrain(static_cast<float>(x + shift), 0.f, static_cast<float>(screen->width)));  // sample blue from slightly right
 				// int yRed  = myMath::constrain(y - shift, 0.f, screen->height);  // sample red from slightly left
 				// int yBlue = myMath::constrain(y + shift, 0.f, screen->height);  // sample blue from slightly right
 				int yRed  = y;  

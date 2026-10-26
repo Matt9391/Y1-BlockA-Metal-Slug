@@ -60,7 +60,7 @@ namespace TankStates{
         return current;
     }
 
-    TankAnimationSet TankExplosionStillState::handleInput(const TankInput& in, TankAnimationSet current) const
+    TankAnimationSet TankExplosionStillState::handleInput(const TankInput&, TankAnimationSet current) const
     {
         return current;
     }

@@ -112,7 +112,7 @@ namespace BossStates {
     {
     }
 
-    BossAnimationSet MoveUpState::update(Boss& b, float dt, BossAnimationSet current)
+    BossAnimationSet MoveUpState::update(Boss& b, float, BossAnimationSet current)
     {
         if(!b.getSensors().alive){
             return BossAnimationSet::BAS_DEATH;
@@ -132,7 +132,7 @@ namespace BossStates {
     {
     }
 
-    BossAnimationSet MoveDownState::update(Boss& b, float dt, BossAnimationSet current)
+    BossAnimationSet MoveDownState::update(Boss& b, float, BossAnimationSet current)
     {
         if(!b.getSensors().alive){
             return BossAnimationSet::BAS_DEATH;

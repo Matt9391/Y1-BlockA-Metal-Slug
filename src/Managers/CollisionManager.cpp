@@ -35,6 +35,7 @@ namespace CollisionManager {
 										static_cast<float>( i * layer.tileSize));
 				vec2 overlaps = checkOverlapMapCollision(collider, currentTile, layer.tileSize);
 
+				//* Tile collision resolution based on tileID
 				switch (tileId)
 				{
 					case TileType::SLOPE_L_TO_R:
@@ -110,13 +111,13 @@ namespace CollisionManager {
 		return collided;
 	}
 
-	bool checkCollision(const Collider& a,const Collider& b, const ResourceManager& rsm, int depth){ //TODO: add enum to show actualy collision type
+	bool checkCollision(const Collider& a,const Collider& b, const ResourceManager& rsm, CollisionLevel collisionLevel){ 
 		bool result = false;
 
 		result = checkRadiusCollision(a,b); //* Distance Squared check BROAD BROAD PHASE
 
 		if(!result) return result;
-		if(depth == 0) return result;
+		if(collisionLevel == CIRCLE_TO_CIRCLE) return result;
 
 		result = false;
 		const vec2 overlaps = getCollisionOverlap(a,b); //* AABB BROAD PHASE
@@ -125,12 +126,13 @@ namespace CollisionManager {
 		}
 		
 		if(!result) return result;
-		if(depth == 1) return result;
+		if(collisionLevel == AABB) return result;
 		
 		result = checkPixelPerfectCollision(a,b,rsm); //* NARROW PHASE
 		
 		return result;
 	}
+
 
 	bool resolveCollisionAOverB(Entity& e, const Collider& b){
 		vec2 overlaps = getCollisionOverlap(e.getCollider(), b);
@@ -280,9 +282,9 @@ namespace CollisionManager {
 
 		return collided;
 	}
-
 	// DONE: PIXEL-PERFECT COLLISION
 	// add resourceId AND current Frame to collider so I can then ask from the resourceManager for the sprite and then do the collision
+
 	bool checkPixelPerfectCollision(const Collider& a, const Collider& b, const ResourceManager& rsm){
 		const vec2 overlaps = getCollisionOverlap(a,b);
 		const int ow = (int)overlaps.x;
@@ -290,14 +292,14 @@ namespace CollisionManager {
 		if (ow <= 0 || oh <= 0) return false;
 
 		// world-space top-left of each collider
-		const float aL = (int)(a.pos.x + a.offset.x), aT = (int)(a.pos.y + a.offset.y);
-		const float bL = (int)(b.pos.x + b.offset.x), bT = (int)(b.pos.y + b.offset.y);
+		const float aL = floorf(a.pos.x + a.offset.x), aT = floorf(a.pos.y + a.offset.y);
+		const float bL = floorf(b.pos.x + b.offset.x), bT = floorf(b.pos.y + b.offset.y);
 		const int startX = static_cast<int>(fmaxf(aL, bL));
 		const int startY = static_cast<int>(fmaxf(aT, bT));
 
 		for(int i = 0; i < a.layerCount; i++){
-			const int aSpriteX = (int)(a.pos.x + a.spriteOffset[i].x);
-			const int aSpriteY = (int)(a.pos.y + a.spriteOffset[i].y);
+			const int aSpriteX = int(a.pos.x + a.spriteOffset[i].x);
+			const int aSpriteY = int(a.pos.y + a.spriteOffset[i].y);
 			
 			for(int j = 0; j < b.layerCount; j++){
 				const int bSpriteX = (int)(b.pos.x + b.spriteOffset[j].x);

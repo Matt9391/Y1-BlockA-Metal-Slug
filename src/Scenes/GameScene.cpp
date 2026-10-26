@@ -152,7 +152,7 @@ void GameScene::init() {
 			}
 		}
 	
-	tankRef = new Tank(vec2(2500,80), getInputManager());
+	tankRef = new Tank(vec2(2500,120), getInputManager());
 	addNewEntity(tankRef);
 	addNewEntity(new Boss(vec2(3769 + 265, -60 + 100)));
 
@@ -217,7 +217,7 @@ void GameScene::update(float dt) {
 		
 		if (e->getPlayerCollisionEnabled() &&
 			!entityInFront && 	
-			CollisionManager::checkCollision(player.getCollider(), e->getCollider(), getResourceManager(),1)){
+			CollisionManager::checkCollision(player.getCollider(), e->getCollider(), getResourceManager())){
 			entityInFront = true;
 		}
 
@@ -424,7 +424,7 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 			RebelSoldier* enemy = static_cast<RebelSoldier*>(e);
 			if (!enemy->getAlive()) continue;
 			
-			if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider(), getResourceManager(),2)) {
+			if (CollisionManager::checkCollision(b->getCollider(), enemy->getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT)) {
 				b->explode();
 				enemy->setAlive(false);
 				player.addScore(100);
@@ -432,7 +432,7 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 			
 		}else if (e->getEntityType() == EntityType::ET_POW) {
 			Pow* pow = static_cast<Pow*>(e);
-			if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider(), getResourceManager(),2)) {
+			if (CollisionManager::checkCollision(b->getCollider(), pow->getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT)) {
 				b->explode();
 				pow->setReleased(true);
 			}
@@ -440,14 +440,14 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 			PowerUp* powerUp = static_cast<PowerUp*>(e);
 			if(!powerUp) continue;
 			if(powerUp->getState() == PowerUpState::PUS_REVEALED) continue;
-			if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider(), getResourceManager(),2)) {
+			if (CollisionManager::checkCollision(b->getCollider(), powerUp->getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT)) {
 				b->explode();
 				powerUp->setState(PowerUpState::PUS_REVEALED);
 			}
 		}else if(e->getEntityType() == EntityType::ET_HELICOPTER){
 			Helicopter* h = static_cast<Helicopter*>(e); 
 			
-			if (CollisionManager::checkCollision(b->getCollider(), h->getCollider(), getResourceManager(),2)) {
+			if (CollisionManager::checkCollision(b->getCollider(), h->getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT)) {
 				b->explode();
 				h->takeHit();
 				b->setDisabled(true);
@@ -458,7 +458,7 @@ void GameScene::resolveBulletVsEntities(Bullet* b) {
 		else if(e->getEntityType() == EntityType::ET_BOSS){
 			Boss* bs = static_cast<Boss*>(e); 
 
-			if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),2)) {
+			if (CollisionManager::checkCollision(b->getCollider(), bs->getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT)) {
 				b->explode();
 				b->setDisabled(true);
 				bs->takeHit();
@@ -532,8 +532,8 @@ void GameScene::handleRebelSoldier(RebelSoldier* enemy) {
 			g->explode();
 		}
 
-		if (CollisionManager::checkCollision(g->getCollider(), player.getCollider(), getResourceManager(), 2)||
-			(player.getInTank() && CollisionManager::checkCollision(g->getCollider(), tankRef->getCollider(), getResourceManager(),2))) {
+		if (CollisionManager::checkCollision(g->getCollider(), player.getCollider(), getResourceManager(), CollisionManager::PIXEL_PERFECT)||
+			(player.getInTank() && CollisionManager::checkCollision(g->getCollider(), tankRef->getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT))) {
 			g->explode();
 			damagePlayerOrTank();
 		}
@@ -543,7 +543,7 @@ void GameScene::handleRebelSoldier(RebelSoldier* enemy) {
 }
 
 void GameScene::handlePow(Pow* pow) {
-	if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider(), getResourceManager(),2)) {
+	if (CollisionManager::checkCollision(player.getCollider(), pow->getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT)) {
 		if (player.isShooting() && !pow->isReleased()) {
 			pow->setReleased(true);
 			player.addPowSaved();
@@ -573,7 +573,7 @@ void GameScene::handleLootDrop(Entity* e, const Collider& playerColliderInFront)
 		PowerUp* powerUp = static_cast<PowerUp*>(e);
 		if(powerUp->getState() == PowerUpState::PUS_CRATE){
 			if(player.isShooting() &&
-			   (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider(), getResourceManager(),2)||
+			   (CollisionManager::checkCollision(player.getCollider(), lootDrop->getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT)||
 			   CollisionManager::checkCollision(playerColliderInFront, lootDrop->getCollider(), getResourceManager()))
 			){
 				powerUp->setState(PowerUpState::PUS_REVEALED);
@@ -611,7 +611,7 @@ void GameScene::handleHelicopter(Helicopter* h) {
 			b->explode();
 		}
 		
-		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(),2)) {
+		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT)) {
 			b->explode();
 			player.takeHit();
 		}
@@ -633,7 +633,7 @@ void GameScene::handleBoss(Boss* bs) {
 		winCondition = true;
 	}
 
-	if (CollisionManager::checkCollision(player.getCollider(), bs->getCollider(), getResourceManager(), 1)) {
+	if (CollisionManager::checkCollision(player.getCollider(), bs->getCollider(), getResourceManager())) {
 		CollisionManager::resolveCollisionAOverB(player, bs->getCollider());
 	}
 
@@ -651,8 +651,8 @@ void GameScene::handleBoss(Boss* bs) {
 			b->explode();
 		}
 		
-		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(), 2) ||
-			(player.getInTank() && CollisionManager::checkCollision(b->getCollider(), tankRef->getCollider(), getResourceManager(), 2))) {
+		if (CollisionManager::checkCollision(b->getCollider(), player.getCollider(), getResourceManager(),CollisionManager::PIXEL_PERFECT) ||
+			(player.getInTank() && CollisionManager::checkCollision(b->getCollider(), tankRef->getCollider(), getResourceManager(), CollisionManager::PIXEL_PERFECT))) {
 			b->explode();
 			damagePlayerOrTank();
 		}

@@ -16,10 +16,16 @@ namespace CollisionManager {
 		SLOPE_R_TO_L,
 	};
 
+	enum CollisionLevel{
+		CIRCLE_TO_CIRCLE,
+		AABB,
+		PIXEL_PERFECT
+	};
+
 	bool resolveMapCollision(Entity& e, const MapLayer& layer);
 	bool resolveCollisionAOverB(Entity& e, const Collider& b);
 
-	bool checkCollision(const Collider& a,const Collider& b, const ResourceManager& rsm, int depth = 1);
+	bool checkCollision(const Collider& a,const Collider& b, const ResourceManager& rsm, CollisionLevel collisionLevel = AABB);
 
 	bool checkRadiusCollision(const Collider& a, const Collider& b);
 	vec2 getCollisionOverlap(const Collider& a,const Collider& b);
