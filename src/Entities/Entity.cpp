@@ -28,6 +28,7 @@ Entity::~Entity()
 {
 	delete rigidBody;
 }
+	
 void Entity::update(float) {
 }
 

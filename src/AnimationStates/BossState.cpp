@@ -77,14 +77,19 @@ namespace BossStates {
     void AttackTwoHighState::enter(Boss& b)
     {
         b.setShootOffsetY(Boss::HIGH_SHOOT_OFFSET);
-
+        elapsedTime = 0.f;
     }
 
-    BossAnimationSet AttackTwoHighState::update(Boss& b, float, BossAnimationSet current)
+    BossAnimationSet AttackTwoHighState::update(Boss& b, float dt, BossAnimationSet current)
     {
-        if(b.getSensors().animationEnded){
-            b.shoot(BulletType::BT_LASER);
-            return BossAnimationSet::BAS_MOVE_DOWN;
+        elapsedTime += dt;
+        if(elapsedTime > WAIT_TIME){
+
+            if(b.getSensors().animationEnded){
+                b.shoot(BulletType::BT_LASER);
+                return BossAnimationSet::BAS_MOVE_DOWN;
+            }
+
         }
         return current;
     }

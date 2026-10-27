@@ -7,6 +7,7 @@
 #include <iostream>
 #include <TypeScene.h>
 #include <time.h>
+#include "vld.h"
 
 Game::Game() :
 	sceneManager(),

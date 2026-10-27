@@ -35,7 +35,6 @@ Player::Player(vec2 pos, InputManager& inputManager) :
 	inTank(false)
 {
 	setCollider(vec2(20, 37), vec2(3, 0));
-	//setCollider(vec2(20, 7), vec2(3, 30));
 	getAnimationSets() = new AnimationSet[PlayerAnimationSet::PAS_COUNTS];
 	loadGFX();
 	setCurrentASIndex(PlayerAnimationSet::PAS_PARACHUTE);
@@ -617,8 +616,8 @@ void Player::loadGFX() {
 			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_MELEE_ATTACK_BODY,
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_MELEE_ATTACK_BODY,
 				80,
-				vec2(-7, -15),
-				vec2(-10, -15))
+				vec2(-15, -10),
+				vec2(-10, -10))
 			);
 	
 			getAnimationSets()[PlayerAnimationSet::PAS_MELEE_ATTACK_WALK] = AnimationSet(
@@ -631,8 +630,8 @@ void Player::loadGFX() {
 			AnimationLayer(ResourceID::ID_PLAYER_FLAME_THROWER_MELEE_ATTACK_BODY,
 				ResourceIDFrames::IDF_PLAYER_FLAME_THROWER_MELEE_ATTACK_BODY,
 				80,
-				vec2(-7, -15),
-				vec2(-10, -15))
+				vec2(-15, -10),
+				vec2(-10, -10))
 			);
 	
 		getAnimationSets()[PlayerAnimationSet::PAS_REVIVE] = AnimationSet(

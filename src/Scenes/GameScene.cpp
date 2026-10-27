@@ -153,7 +153,9 @@ void GameScene::init() {
 		}
 	
 	tankRef = new Tank(vec2(2500,120), getInputManager());
+
 	addNewEntity(tankRef);
+	
 	addNewEntity(new Boss(vec2(3769 + 265, -60 + 100)));
 
 	getAudioManager().setMusic(SoundID::SID_MAIN_THEME, getResourceManager());
@@ -700,13 +702,13 @@ void GameScene::addNewEntity(Entity* e) {
 	}
 }
 	
-// Deliberately NOT shifting the array after a free.
-// Shifting every entity after the freed index to close the gap would cost
-// up to O(n) pointer moves on every single despawn 
-// Leaving the slot as nullptr costs O(1)
-// to free, and the per-frame cost of scanning past empty slots it's far
-// cheaper than the shifting we'd be doing to avoid it. Compacting would
-// only pay off if MAXENTITIES were large enough.
+//* Deliberately NOT shifting the array after a free.
+//* Shifting every entity after the freed index to close the gap would cost
+//* up to O(n) pointer moves on every single despawn 
+//* Leaving the slot as nullptr costs O(1)
+//* to free, and the per-frame cost of scanning past empty slots it's far
+//* cheaper than the shifting we'd be doing to avoid it. Compacting would
+//* only pay off if MAXENTITIES were large enough.
 void GameScene::freeEntity(int index) {
 	if (spawnedEntities[index]) {
 		if (spawnedEntities[index] == tankRef) {
@@ -716,3 +718,4 @@ void GameScene::freeEntity(int index) {
 		spawnedEntities[index] = nullptr;
 	}
 }
+

@@ -37,3 +37,4 @@ private:
 	const float DEATHTIMER = 500.f;
 	RebelSoldierData rsData;
 };
+

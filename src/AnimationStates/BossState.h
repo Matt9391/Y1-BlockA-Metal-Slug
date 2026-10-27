@@ -45,6 +45,8 @@ namespace BossStates {
     public:
         void enter(Boss& b) override;
         BossAnimationSet update(Boss& b, float dt, BossAnimationSet current) override;
+    private:
+        static const int WAIT_TIME = 800;
     };
 
     class AttackTwoLowState final : public BossState

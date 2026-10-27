@@ -9,7 +9,7 @@ class ResourceManager;
 class PlayerState;
 struct PlayerInput;
 
-class Player : public Entity
+class Player : public Entity //* IS-A
 {
 public:
 	Player(vec2 pos, InputManager& inputManager);
@@ -56,6 +56,7 @@ private:
 	void setLifeState(bool state_);
 
 	const InputManager& inputManager; //Const so it can only call const methods
+	
 	Gun gun;
 	PlayerState* state;
 

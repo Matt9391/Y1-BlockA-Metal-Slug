@@ -188,6 +188,13 @@ void Boss::update(float dt) {
 		setVelocityY(0.f);
 	}
 
+    if(!getAlive()){
+        for (int i = 0; i < MAXBULLETS; i++) {
+            delete bullets[i];
+            bullets[i] = nullptr;
+	    }
+    }
+
 	BossAnimationSet nextState = state->update(*this, dt, static_cast<BossAnimationSet>(getCurrentASIndex()));
 	if (nextState != getCurrentASIndex()) {
 		setCurrentASIndex(nextState);

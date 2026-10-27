@@ -117,8 +117,8 @@ void Tank::loadGFX() {
             ResourceID::ID_TANK_EXPLOSION,
             ResourceIDFrames::IDF_TANK_EXPLOSION,
             100,
-            vec2(0, 0),
-            vec2(0, 0))
+            vec2(0, -60),
+            vec2(0, -60))
     );
  
     // TAS_EXPLOSION_STILL -> hit_still.png (single frame, still to be created)
@@ -134,6 +134,7 @@ void Tank::loadGFX() {
 }
 
 void Tank::update(float dt){
+    clearSounds();
     getAnimator().playAnimation(dt);
 	setColliderSprite();
     
@@ -378,6 +379,7 @@ bool Tank::shoot(BulletType bulletType) {
         break;
     }
 	bulletsCount++;
+    addSound(SoundID::SID_PISTOL_SHOT);
 
     
 	return true;

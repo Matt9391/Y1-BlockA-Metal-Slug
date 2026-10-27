@@ -35,7 +35,7 @@ void Camera::follow(const vec2& target, float dt)
 	this->pos.x = myMath::constrain(this->pos.x,0,this->worldSize.x - this->size.x);
 
 
-	if (this->pos.x > 800) {
+	if (this->pos.x > 3300) {
 		enableYFollow(true);
 		setMinYLimit(-30);
 	}

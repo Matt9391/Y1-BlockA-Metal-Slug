@@ -41,3 +41,4 @@ private:
     ActiveSound music;
     SoundID currentMusic;
 };
+

@@ -50,6 +50,7 @@ private:
 	Player player;
 
 	static const int WINCOUNTDOWN = 5000;
+	static const int MAXENTITIES = 150;
 	
 	bool loseCondition;
 	bool winCondition;
@@ -58,8 +59,7 @@ private:
 	float elapsedLoseTime;
 	float winTimer;
 	
-	static const int MAXENTITIES = 150;
-	// MAXENTITIES: keep wherever you already define it
+	
 	Entity* spawnedEntities[MAXENTITIES];
 
 	// NEW: set once in init(), nulled in freeEntity(). Never derived from an array index.

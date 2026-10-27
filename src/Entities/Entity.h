@@ -37,6 +37,7 @@ public:
     Entity& operator=(const Entity& other) = delete;
 
 	virtual void loadGFX() = 0;
+	virtual void update(float dt);
 
 	const vec2& getPos() const;
 
@@ -54,7 +55,6 @@ public:
 	void setVelocityX(float v);
 	void setVelocityY(float v);
 	void addVelocity(vec2 v);
-	virtual void update(float dt);
 
 
 	vec2 getLastDir() const;
@@ -101,14 +101,13 @@ private:
 	vec2 pos;
 	vec2 dir;
 	vec2 lastDir;
-	//Collider collider;
 	Animator animator;
-	AnimationSet* animationSets;
+	AnimationSet* animationSets; //* HAS-A
 	//Current Animation Set Index
 	int currentASIndex;
 
 	Collider collider;
-	RigidBody* rigidBody;
+	RigidBody* rigidBody; //* HAS-A
 	EntityType entityType;
 
 	bool free;

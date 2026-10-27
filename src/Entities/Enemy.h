@@ -11,7 +11,6 @@ struct EnemySensor {
 };
 
 class Enemy : public Entity {
-
 public:
 	Enemy(vec2 pos, EntityType entityType);
 	//~Enemy() override;
@@ -34,7 +33,6 @@ private:
 	bool flip;
 	bool attacking;
 	bool alive;
-	//other stuff
 };
 
 

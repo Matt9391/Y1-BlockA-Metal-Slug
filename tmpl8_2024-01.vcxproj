@@ -67,7 +67,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib-vc2022;lib/zlib;lib/OpenCL/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>lib/glfw/lib-vc2022;lib/zlib;lib/OpenCL/lib;lib/vldX64</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
