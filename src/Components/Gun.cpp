@@ -28,6 +28,7 @@ Gun::~Gun() {
 }
 
 void Gun::update(float dt) {
+	// Move every live bullet, then run the fire-rate cooldown.
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) continue;
 		bullets[i]->update(dt);
@@ -45,6 +46,7 @@ void Gun::update(float dt) {
 bool Gun::shoot() {
 	if(!canShoot) return false;
 
+	// Find a free slot in the bullet pool; if the pool is full, don't shoot.
 	int bIndex = -1;
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) {
@@ -55,6 +57,7 @@ bool Gun::shoot() {
 
 	if (bIndex == -1) return false;
 
+	// Create the bullet class that matches the gun.
 	switch (gunData.gunType)
 	{
 	case GunType::PISTOL:
@@ -62,7 +65,7 @@ bool Gun::shoot() {
 		break;
 	case GunType::FLAME_THROWER:
 		bullets[bIndex] = new FlameBullet(this->pos + this->offset, true, this->shootDir, gunData.bulletType, gunData.bulletSpeed, gunAngle);
-		bulletShot++;
+		bulletShot++; // only the flame thrower counts its shots (it has limited ammo)
 		break;
 	
 	default:

@@ -1,8 +1,8 @@
 #include "precomp.h"
 #include "RigidBody.h"
 
-const float RigidBody::gravity = 0.001f;
-const float RigidBody::jumpForce = 0.32f;
+const float RigidBody::gravity = 0.001f; // px / ms^2
+const float RigidBody::jumpForce = 0.32f; // px / ms (applied upward)
 
 RigidBody::RigidBody(const vec2& pos, bool hasGravity) :
 	pos(pos),
@@ -24,6 +24,7 @@ void RigidBody::setVelocity(vec2 v, bool overwrite) {
 		this->velocity = v;
 	}
 	else {
+		// Only overwrite the components that are not 0 (a 0 means "keep the current value").
 		this->velocity.x = v.x != 0 ? v.x : this->velocity.x;
 		this->velocity.y = v.y != 0 ? v.y : this->velocity.y;
 	}

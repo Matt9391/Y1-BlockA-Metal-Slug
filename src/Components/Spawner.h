@@ -8,20 +8,20 @@ public:
 	Spawner(vec2 pos, vec2 size, float spawnDelay);
 	virtual ~Spawner();
 
-	virtual void init();
+	virtual void init(); // reset the timer and the spawn counter (called when a new game starts)
 
 	virtual void update(float dt);
 
 	const vec2& getPos() const;
 	const vec2& getSize() const;
 	
-	float getDistToPlayer() const;
+	float getDistToPlayer() const; // signed X distance (player.x - spawner.x), set by the GameScene every frame
 	void setDistToPlayer(float distToPlayer_);
 
 	int  getSpawnedNumber() const;
-	void addSpawnedNumber();
+	void addSpawnedNumber(); // count one more spawned entity
 
-	virtual Entity* createEntity() = 0;
+	virtual Entity* createEntity() = 0; // returns a NEW entity (the caller owns it) or nullptr
 protected:
 
 	float getSpawnDelay() const;
@@ -37,9 +37,9 @@ private:
 	vec2 pos;
 	vec2 size;
 
-	float spawnDelay;
+	float spawnDelay; // ms between two spawn checks
 	float timer;
 	float distToPlayer;
-	bool spawnEntity;
-	int spawnedNumber;
+	bool spawnEntity; // "ready to spawn" flag, set by update()
+	int spawnedNumber; // how many entities this spawner already created
 };

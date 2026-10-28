@@ -85,7 +85,7 @@ bool Map::loadDataFromJson(const char* fileName) {
 	//filling member variables
 	this->tiles = vec2(static_cast<float>(data.at("width").get<int>()), 
 					   static_cast<float>(data.at("height").get<int>()));
-	this->tileSize = data.at("tileheight").get<int>();
+	this->tileSize = data.at("tileheight").get<int>(); // tiles are square, so the height is also the width
 	//filling map layers
 	for (int i = 0; i < static_cast<int>(MapLayerNames::MLN_COUNTS); i++) {
 		//current layer
@@ -107,6 +107,7 @@ bool Map::loadDataFromJson(const char* fileName) {
 		}
 
 		//the third layer is always the collison layer, design choice
+		// (In practice it is index MLN_COLLISION_LAYER = 4, the 5th layer in the file.)
 		if (i == MLN_COLLISION_LAYER) {
 			this->layers[i] = MapLayer(
 				ResourceID::ID_COLLISION_TILESET, //collision tileset
@@ -133,9 +134,11 @@ bool Map::loadDataFromJson(const char* fileName) {
 			);
 		}
 
+		// MapLayer made its own copy, so the temporary buffer can go.
 		delete[] layerData;
 	}
 
+	// The object layers (spawners) come right after the tile layers in the file.
 	for(int i = 0; i< MapObjectLayerNames::MOLN_COUNTS; i++){
 
 		//current layer
@@ -154,6 +157,8 @@ bool Map::loadDataFromJson(const char* fileName) {
 				nlohmann::json spawner = dataObjects[j];
 				nlohmann::json properties = spawner.at("properties");
 
+				// Custom properties are read by INDEX. Tiled saves them sorted alphabetically, so:
+				// [0] = enemyType, [1] = numberOfEnemy, [2] = spawnDelay (ms)
 				int enemyType = properties[0].at("value").get<int>();
 				int nOfEnemy = properties[1].at("value").get<int>();
 				float spawnDelay = static_cast<float>(properties[2].at("value").get<int>());
@@ -176,11 +181,12 @@ bool Map::loadDataFromJson(const char* fileName) {
 				nlohmann::json spawner = dataObjects[j];
 				nlohmann::json properties = spawner.at("properties");
 
+				// [0] = powType (both types currently create the same Pow)
 				int enemyType = properties[0].at("value").get<int>();
 				vec2 spPos = vec2(static_cast<float>(spawner.at("x").get<int>()), static_cast<float>(spawner.at("y").get<int>()));
 				vec2 size = vec2(static_cast<float>(spawner.at("width").get<int>()), static_cast<float>(spawner.at("height").get<int>()));
 
-				spawners[MapObjectLayerNames::MOLN_POW_SPAWNER_LAYER][j] = new PowSpawner(spPos, size, 0, enemyType);
+				spawners[MapObjectLayerNames::MOLN_POW_SPAWNER_LAYER][j] = new PowSpawner(spPos, size, 0, enemyType); // spawn delay 0: the prisoner appears as soon as the player is in range
 			}
 
 
@@ -196,11 +202,12 @@ bool Map::loadDataFromJson(const char* fileName) {
 				nlohmann::json spawner = dataObjects[j];
 				nlohmann::json properties = spawner.at("properties");
 
+				// [0] = state: 0 = closed crate, 1 = already revealed (see PowerUpState)
 				int state = properties[0].at("value").get<int>();
 				vec2 spPos = vec2(static_cast<float>(spawner.at("x").get<int>()), static_cast<float>(spawner.at("y").get<int>()));
 				vec2 size = vec2(static_cast<float>(spawner.at("width").get<int>()), static_cast<float>(spawner.at("height").get<int>()));
 
-				spawners[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER][j] = new PowerUpSpawner(spPos, size, 0, state);
+				spawners[MapObjectLayerNames::MOLN_POWERUP_SPAWNER_LAYER][j] = new PowerUpSpawner(spPos, size, 0, state); // spawn delay 0: appears as soon as the player is in range
 			}
 
 

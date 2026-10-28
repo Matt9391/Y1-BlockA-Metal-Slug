@@ -7,6 +7,7 @@ enum BMissleAnimationSet{
     BM_COUNTS
 };
 
+// Missle - helicopter missile: falls straight down and explodes on the map or on the player.
 class Missle : public Bullet{
 public:
     Missle(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, float bulletSpeed);
@@ -18,4 +19,4 @@ public:
 
 	void explode();
 	void explodeMap(); 
-};
+}; 

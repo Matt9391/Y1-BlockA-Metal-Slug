@@ -7,6 +7,7 @@ enum BBombShellAnimationSet {
     BBS_COUNT
 };
 
+// BombShell - tank cannon shell: follows a fixed arc (same idea as the CannonBall) and explodes on contact.
 class BombShell : public Bullet {
 public:
     BombShell(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, float duration_, float width_);
@@ -19,18 +20,14 @@ public:
     void explodeMap() override;
 
 private:
-    vec2 arcPos(float x);                      // position on the arc for x = 0..1
-    int  angleToFrame(float dx, float dy) const;
-
     float elapsedTime;
     float duration;
     vec2  startPos;
     float arcWidth;
     float peakHeight;
-    float dropHeight;
-    bool  exploding;
 
     float frameAngle;
+    // (SHELL_FRAMES and FRAME_ANGLE are not used: the .cpp uses 'frameAngle' and IDF_BOMB_SHELL.)
     static const int   SHELL_FRAMES = 32;     // frames in the shell sheet
     static constexpr float FRAME_ANGLE = 11.25f; // 360 / 32
 };

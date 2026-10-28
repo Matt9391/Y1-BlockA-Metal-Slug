@@ -1,3 +1,5 @@
+// Renderer - collects everything to draw during the frame (render datas, map, parallax, HUD texts,
+// sprite sets) and draws it all in render(). The scenes fill and clear it.
 #pragma once
 
 #include <RenderData.h>
@@ -35,7 +37,7 @@ public:
 
 	void render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset);
 
-	void setDarkOverlay(bool darkOverlay_);
+	void setDarkOverlay(bool darkOverlay_); // halve the brightness of everything drawn before the HUD (used on the win screen)
 private:
 	static const int MAXRENDERSETS = 100; //REMBEMBER THAT THEY FINISH FAST
 	static const int MAXRENDERLAYERS = 4;
@@ -43,10 +45,10 @@ private:
 	static const int MAXTEXTS = 100;
 	static const int MAXSPRITESETS = 100;
 	
-	RenderData renderDatas[MAXRENDERLAYERS][MAXRENDERSETS]; 
+	RenderData renderDatas[MAXRENDERLAYERS][MAXRENDERSETS]; // one list per render layer
 	const MapRenderData* mapRenderData;
 	const ParallaxRenderData* parallaxRenderData;
-	const Collider* colliders[MAXCOLLIDERS];
+	const Collider* colliders[MAXCOLLIDERS]; // pointers only, for debug drawing
 	HUDText texts[MAXTEXTS];
 	SpriteSet spriteSets[MAXSPRITESETS];
 	
@@ -56,10 +58,10 @@ private:
 	int spriteSetCount;
 
 	bool darkOverlay;
-	bool crtEffect;
+	bool crtEffect; // scanlines + a slight colour fringe over the whole screen
 
 	Printer printer;
 
-	void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y);
+	void drawTile(int tileSize, int tx, int ty, Surface* screen, Surface* tileset, int x, int y); // copy one tile from a tileset to the screen, with clipping
 
 };

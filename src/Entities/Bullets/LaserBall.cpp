@@ -58,6 +58,7 @@ void LaserBall::update(float dt) {
 }
 
 void LaserBall::explodeMap(){
+    // Walls are ignored (the explode() call is commented out).
     // explode();
 }
 
@@ -67,5 +68,5 @@ void LaserBall::explode() {
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
     setAbleMovement(false);
     setDisabled(true);
-    setFree(true);
+    setFree(true); // freed right away, so the BOOM animation is never shown
 }

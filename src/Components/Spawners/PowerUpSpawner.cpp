@@ -12,6 +12,7 @@ PowerUpSpawner::PowerUpSpawner(vec2 pos, vec2 size, float spawnDelay, int spawnS
 }
 
 
+// Same timing logic as EnemySpawner (with a 0 ms delay it checks every frame).
 void PowerUpSpawner::update(float dt) {
 	addTimer(dt);
 	if (getTimer() > getSpawnDelay()) {

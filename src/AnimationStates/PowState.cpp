@@ -41,11 +41,13 @@ namespace PowStates {
 	PowAnimationSet WalkWaitState::update(Pow& pow, float dt, PowAnimationSet current) {
 		elapsedTime += dt;
 		flipElapsedTime += dt;
+		// After TRIGGERMINTIME ms, touching the player gives the reward.
 		if (elapsedTime > TRIGGERMINTIME) {
 			if (pow.isIntersectingPlayer())
 				current = PowAnimationSet::POW_PANTS;
 		}
 
+		// Walk back and forth, turning around every FLIPMS ms.
 		if (flipElapsedTime > FLIPMS) {
 			flipElapsedTime = 0.f;
 			pow.setDir(vec2(pow.getDir().x * -1, 0));
@@ -73,7 +75,7 @@ namespace PowStates {
 	PowAnimationSet ByeState::update(Pow& pow, float, PowAnimationSet current) {
 		if (pow.isAnimationEnded()) {
 			current = PowAnimationSet::POW_RUN_AWAY;
-			pow.setDropLoot(true);
+			pow.setDropLoot(true); // the GameScene spawns the power-up this same frame
 		}
 		return current;
 	}

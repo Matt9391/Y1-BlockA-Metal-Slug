@@ -27,7 +27,7 @@ void Missle::loadGFX() {
     AnimationLayer(ResourceID::ID_MISSLE,
         ResourceIDFrames::IDF_MISSLE,
         100,
-        vec2(0, 0),
+        vec2(0, 0), 
         vec2(0, 0))
     );
     
@@ -65,7 +65,7 @@ void Missle::explode() {
 
     setCurrentASIndex(BMissleAnimationSet::BM_BOOM);
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
-    addSound(SoundID::SID_HELI_BOMB);
+    addSound(SoundID::SID_HELI_BOMB); // explosion sound (queued; the GameScene forwards it to the AudioManager)
     setAbleMovement(false);
     setDisabled(true);
 

@@ -29,11 +29,3 @@ enum PlayerAnimationSet {
 	PAS_COUNTS
 
 };
-
-// int toInt(PlayerAnimationSet pas) {
-//     return static_cast<int>(pas);
-// }
-
-// PlayerAnimationSet toPAS(int index) {
-//     return static_cast<PlayerAnimationSet>(index);
-// }

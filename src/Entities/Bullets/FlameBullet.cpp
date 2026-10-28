@@ -122,10 +122,12 @@ void FlameBullet::update(float dt) {
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
 
+	// The flying clip ended -> switch to the dissipating clip (same angle).
 	if (getAnimator().isAnimationEnded() && isShootAnimation()) {
 		explode();
 	}
 
+	// The dissipating clip ended -> delete it.
 	if (getAnimator().isAnimationEnded() && isBoomAnimation()) {
 		setFree(true);
 	}
@@ -137,6 +139,7 @@ void FlameBullet::update(float dt) {
 }
 
 void FlameBullet::explodeMap(){
+    // Hit a wall: stop hurting, almost stop moving (tiny drift back) and play the "still" burning clip.
     setDisabled(true);
     setDir(vec2(-0.01f * getDir().x, 0.f));
     setCurrentASIndex(BFlameAnimationSet::BF_BOOM_STILL);
@@ -145,6 +148,8 @@ void FlameBullet::explodeMap(){
 
 void FlameBullet::explode() {
 
+    // Hit an enemy (or out of view): switch to the dissipating clip. It is NOT disabled, so the flame keeps
+    // burning through other enemies until the clip ends.
     setCurrentASIndex(getAngleAnimationIndex(true));
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], getDir().x < 0);
 
@@ -152,6 +157,7 @@ void FlameBullet::explode() {
 
 int FlameBullet::getAngleAnimationIndex(bool boom) const
 {
+    // Pick the sprite for the angle range: 0, (0-25], (25-45], (45-75], (75-90] degrees.
     if (angle == 0.0f)
     {
         return boom
@@ -207,6 +213,6 @@ bool FlameBullet::isBoomAnimation() const
            index == BFlameAnimationSet::BF_BOOM_25 ||
            index == BFlameAnimationSet::BF_BOOM_45 ||
            index == BFlameAnimationSet::BF_BOOM_75 ||
-           index == BFlameAnimationSet::BF_BOOM_90 ||
+           index == BFlameAnimationSet::BF_BOOM_90 || 
            index == BFlameAnimationSet::BF_BOOM_STILL;
 }

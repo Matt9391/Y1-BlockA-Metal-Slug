@@ -14,7 +14,7 @@ PistolBullet::PistolBullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType b
 	getAnimationSets() = new AnimationSet[BPistolAnimationSet::BP_COUNTS];
 	loadGFX();
 	setCurrentASIndex(getAngleAnimationIndex());
-	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], dir.x < 0);
+	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], dir.x < 0); // mirrored when flying left
 	getRigidBody()->setSpeed(bulletSpeed);
 }
 
@@ -23,7 +23,7 @@ PistolBullet::~PistolBullet() {
 }
 
 void PistolBullet::loadGFX() {
-	
+	 
     getAnimationSets()[BPistolAnimationSet::BP_SHOOT] = AnimationSet(
     1,
     AnimationLayer(ResourceID::ID_PLAYER_BULLET_PISTOL,
@@ -82,6 +82,7 @@ void PistolBullet::update(float dt) {
 
 	if (!getAbleMovement()) return;
 
+	// Straight line: direction * speed (px/ms) * dt (ms).
 	this->addToPos(getDir() * dt * getRigidBody()->getSpeed());
 
 }
@@ -91,6 +92,7 @@ void PistolBullet::explodeMap(){
 }
 
 void PistolBullet::explode() {
+    // Switch to the boom animation for this direction, stop moving and stop hurting (disabled).
     setCollider(vec2(15, 15), vec2(0, 0));
     setCurrentASIndex(getAngleAnimationIndex(true));
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], getDir().x < 0);
@@ -104,7 +106,7 @@ int PistolBullet::getAngleAnimationIndex(bool boom) const
 {
     vec2 direction = getDir();
 
-    bool isVertical = direction.y != 0.f;
+    bool isVertical = direction.y != 0.f; // any vertical component counts (the pistol only shoots in 4 directions)
 
     if (!isVertical)
     {

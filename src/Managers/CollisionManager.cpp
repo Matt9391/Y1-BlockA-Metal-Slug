@@ -341,7 +341,11 @@ namespace CollisionManager {
 						const uint pA = pxA[ax + ay * pitchA];
 						const uint pB = pxB[bx + by * pitchB];
 
-						if ((pA & 0xFFffffff) && (pB & 0xFFffffff)) return true; // both non-transparent
+						if (((pA >> 24) & 0xFF) != 0 &&
+							((pB >> 24) & 0xFF) != 0)
+						{
+							return true; // Both pixels have nonzero alpha
+						}
 					}
 				}
 

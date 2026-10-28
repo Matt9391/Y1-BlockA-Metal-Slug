@@ -163,7 +163,7 @@ void GameScene::init() {
 
 void GameScene::exit() {};
 
-// TODO: add proper audio to the game
+// DONE: add proper audio to the game
 void GameScene::update(float dt) {
 	if(isFirstFrame())
 	{
@@ -262,7 +262,6 @@ void GameScene::update(float dt) {
 	
 	player.setEntityInFront(entityInFront);
 
-	// TODO: add entity manager
 	for (int i = 0; i < player.getGun().getMaxBullets(); i++) {
 		Bullet* b = player.getGun().getBullet(i);
 		if (!b) continue;
@@ -303,7 +302,6 @@ void GameScene::update(float dt) {
 				b->explodeMap();
 			}
 			
-			// TODO: add collision on correct bullet flame/pistol and death animation 
 			resolveBulletVsEntities(b);
 		}
 	}

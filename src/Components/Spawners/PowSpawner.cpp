@@ -10,6 +10,7 @@ PowSpawner::PowSpawner(vec2 pos, vec2 size, float spawnDelay, int powType) :
 }
 
 
+// Same timing logic as EnemySpawner (with a 0 ms delay it checks every frame).
 void PowSpawner::update(float dt) {
 	addTimer(dt);
 	if (getTimer() > getSpawnDelay()) {
@@ -25,18 +26,9 @@ Entity* PowSpawner::createEntity() {
 	if (!getSpawnEntity()) return nullptr;
 	if (getSpawnedNumber() >= nOfPow) return nullptr;
 	Entity* pow{ nullptr };
-	switch (powType)
-	{
-	case 0:
-		pow = new Pow(getPos());
-		break;
-	case 1:
-		pow = new Pow(getPos());
-		break;
-	default:
-		break;
-	}
-
+	
+	pow = new Pow(getPos()); //only one POW
+	
 	setSpawnEntity(false);
 	addSpawnedNumber();
 

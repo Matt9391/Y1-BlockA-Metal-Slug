@@ -6,6 +6,7 @@ namespace TankStates{
     // --- Idle -------------------------------------------------------------------
     TankAnimationSet TankIdleState::handleInput(const TankInput& in, TankAnimationSet current) const
     {
+        // Priority in every state: destroyed > hit > shooting > moving.
         if (in.isDead)       return TankAnimationSet::TAS_EXPLOSION;
         if (in.isHit)      return TankAnimationSet::TAS_HIT;
         if (in.isShooting) return TankAnimationSet::TAS_SHOOT;

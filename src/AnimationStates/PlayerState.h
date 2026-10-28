@@ -18,12 +18,15 @@ struct PlayerInput
     bool isGrounded;
     bool isCrouching;
     bool isShooting;
-    bool enemyInFront;
+    bool enemyInFront; // something touches the player: F = melee instead of a bullet
     bool onAnimationEnd;
     bool dead;
-    bool lost;
+    bool lost; // out of lives
 };
 
+// State pattern: one small class per animation state. handleInput() looks at this frame's input and returns
+// the NEXT animation (or 'current' to stay). The states hold no data, so one shared instance of each is
+// enough (see getPlayerState()).
 class PlayerState
 {
 public:

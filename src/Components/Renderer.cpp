@@ -41,7 +41,7 @@ void Renderer::addCollider(const Collider& c) {
 		printf("Max colliders reached\n");
 		return;
 	}
-	colliders[collidersCount++] = &c;
+	colliders[collidersCount++] = &c; // only the address is stored: the collider must stay alive until the frame is drawn
 }
 
 
@@ -50,7 +50,7 @@ void Renderer::addRenderData(RenderData rs) {
 		printf("Max render sets reached on layer: %d", rs.layer);
 		return;
 	}
-	renderDatas[rs.layer][renderDataCount[rs.layer]++] = rs;
+	renderDatas[rs.layer][renderDataCount[rs.layer]++] = rs; // copied by value into its render layer's list
 	
 }
 
@@ -119,6 +119,7 @@ void Renderer::setDarkOverlay(bool darkOverlay_){
 	this->darkOverlay = darkOverlay_;
 }
 void Renderer::render(Surface* screen, const ResourceManager& resourceManager, const vec2& cameraOffset) {
+	// 1) Parallax background: shifted by the camera offset times the parallax factor.
 	if(parallaxRenderData != nullptr){
 		const ParallaxRenderData& p = *parallaxRenderData;
 		Sprite* sprite = resourceManager.getSprite(p.resourceId);
@@ -134,6 +135,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 	}
 
 
+	// 2) Map layers behind the entities. Only the tiles visible on screen are drawn.
 	if (mapRenderData != nullptr) {
 		const int& tileSize = mapRenderData->tileSize;
 
@@ -161,12 +163,14 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 					if (tileId == 0) continue; // empty tile, nothing to draw
 
 
+					// localId = index of the tile inside its tileset. The level tileset (bg.png) is the whole level image cut into
+					// 8x8 tiles, so it has exactly as many columns as the map (519): that's why layer.tiles.x is used as the column count.
 					int localId = tileId - layer.firstgid;
 					int srcCol = localId % static_cast<int>(layer.tiles.x);
 					int srcRow = localId / static_cast<int>(layer.tiles.x);
 
-					int destX = static_cast<int>(mapRenderData->pos.x + x * 8);
-					int destY = static_cast<int>(mapRenderData->pos.y + y * 8);
+					int destX = static_cast<int>(mapRenderData->pos.x + x * mapRenderData->tileSize);
+					int destY = static_cast<int>(mapRenderData->pos.y + y * mapRenderData->tileSize);
 
 					drawTile(mapRenderData->tileSize,
 							srcCol,
@@ -180,6 +184,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			}
 		}
 	}
+	// 3) Entities, render layer by render layer (0 = back, 3 = front); inside one entity, animation layer 0 is drawn first.
 	for(int g = 0; g < MAXRENDERLAYERS; g++){
 
 		for (int i = 0; i < renderDataCount[g]; i++) {
@@ -193,10 +198,10 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 				Sprite* sprite = resourceManager.getSprite(layer.resourceId);
 			
 				if (sprite == nullptr) continue;
-				vec2& offset = flipped ? layer.offsetFlipped : layer.offset;
+				vec2& offset = flipped ? layer.offsetFlipped : layer.offset; // use the mirrored offset when the sprite is flipped
 				
 				sprite->SetFrame(layer.currentFrame);
-				int scale = 1;
+				int scale = 1; // 1 = native size (kept as a variable to try other scales)
 				sprite->DrawScaled(screen,
 								  static_cast<int>(rs.pos.x + offset.x * scale - cameraOffset.x), 
 								  static_cast<int>(rs.pos.y + offset.y * scale - cameraOffset.y), 
@@ -207,6 +212,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		}
 	}
 		
+	// 4) Foreground map layer (MLN_THIRD_LAYER_OVER_PLAYER): drawn AFTER the entities so it covers them.
 	if (mapRenderData != nullptr) {
 		const int& tileSize = mapRenderData->tileSize;
 			
@@ -251,48 +257,95 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		}
 	}
 
-	// if (mapRenderData != nullptr) {
-	// 	for (int i = 0; i < mapRenderData->layerObjCount - 1; i++) {
-	// 		//for (int i = 0; i < mapRenderData.layerCount - 1; i++) { //uncomment to remove hitboxes
-	// 		for (int j = 0; j < mapRenderData->spawnerCounts[i]; j++) {
-	// 			const Spawner* spawner = mapRenderData->spawners[i][j];
+#ifdef _DEBUG
+	if (mapRenderData != nullptr) {
+		const int& tileSize = mapRenderData->tileSize;
+			
+		int startX = static_cast<int>(fmaxf(floorf(cameraOffset.x) / tileSize, 0.f));
+		int startY = static_cast<int>(fmaxf(floorf(cameraOffset.y) / tileSize, 0.f));
 
-	// 			const vec2& pos = spawner->getPos();
-	// 			const vec2& size = spawner->getSize();
+		int endX = startX + (SCRWIDTH / tileSize) + 1;
+		int endY = startY + (SCRHEIGHT / tileSize) + 1;
 
-	// 			screen->Box(static_cast<int>(pos.x - cameraOffset.x), 
-	// 						static_cast<int>(pos.y - cameraOffset.y),
-	// 						static_cast<int>(pos.x - cameraOffset.x + size.x), 
-	// 						static_cast<int>(pos.y - cameraOffset.y + size.y), 
-	// 						0xFFFF00);
-	// 		}
-	// 	}
-	// }
+		//don't go outside the map													//each layer has the same tile number
+		endX = static_cast<int>(fminf(static_cast<float>(endX), mapRenderData->layers[0].tiles.x));
+		endY = static_cast<int>(fminf(static_cast<float>(endY), mapRenderData->layers[0].tiles.y));
 
-	// const float angleIncr = 1;
-	// for (int i = 0; i < collidersCount; i++) {
-	// 	const Collider* c = colliders[i];
-	// 	if(!c) continue;
-	// 	screen->Box(static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x), 
-	// 				static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y),
-	// 				static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x + c->size.x), 
-	// 				static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y + c->size.y), 
-	// 				0xFF0000);
+		for (int i = 4; i < mapRenderData->layerCount; i++) {
+			const MapLayer& layer = mapRenderData->layers[i];
 
-	// 	float angle = 0;
-	// 	for(int j = 0; j < 360; j++){
-	// 		vec2 pos = (
-	// 			c->pos + c->offset + c->size / 2
-	// 		);
-	// 		screen->Plot(pos.x + cos(angle) * c->radius - cameraOffset.x, pos.y + sin(angle) * c->radius - cameraOffset.y, 0xFFff0000);
-	// 		angle += angleIncr;
-	// 	}
+			Sprite* sprite = resourceManager.getSprite(layer.resourceId);
+			if (!sprite) continue;
+			Surface* tilesetSurf = sprite->GetSurface();
 
-	// }
+			for (int y = startY; y < endY; y++) {
+				for (int x = startX; x < endX; x++) {
+					int tileId = layer.data[y * static_cast<int>(layer.tiles.x) + x];
+					if (tileId == 0) continue; // empty tile, nothing to draw
+
+					int localId = tileId - layer.firstgid;
+					int srcCol = localId % static_cast<int>(layer.tiles.x);
+					int srcRow = localId / static_cast<int>(layer.tiles.x);
+
+					int destX = static_cast<int>(mapRenderData->pos.x + x * 8);
+					int destY = static_cast<int>(mapRenderData->pos.y + y * 8);
+
+					drawTile(mapRenderData->tileSize,
+							srcCol,
+							srcRow, 
+							screen, 
+							tilesetSurf,
+							static_cast<int>(destX - cameraOffset.x), 
+							static_cast<int>(destY - cameraOffset.y));
+				}
+			}
+		}
+	}
+
+	// Debug drawing (commented out): spawner areas, and collider boxes + radius circles.
+	if (mapRenderData != nullptr) {
+		for (int i = 0; i < mapRenderData->layerObjCount - 1; i++) {
+			//for (int i = 0; i < mapRenderData.layerCount - 1; i++) { //uncomment to remove hitboxes
+			for (int j = 0; j < mapRenderData->spawnerCounts[i]; j++) {
+				const Spawner* spawner = mapRenderData->spawners[i][j];
+
+				const vec2& pos = spawner->getPos();
+				const vec2& size = spawner->getSize();
+
+				screen->Box(static_cast<int>(pos.x - cameraOffset.x), 
+							static_cast<int>(pos.y - cameraOffset.y),
+							static_cast<int>(pos.x - cameraOffset.x + size.x), 
+							static_cast<int>(pos.y - cameraOffset.y + size.y), 
+							0xFFFF00);
+			}
+		}
+	}
+
+	const float angleIncr = 1;
+	for (int i = 0; i < collidersCount; i++) {
+		const Collider* c = colliders[i];
+		if(!c) continue;
+		screen->Box(static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x), 
+					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y),
+					static_cast<int>(c->pos.x + c->offset.x - cameraOffset.x + c->size.x), 
+					static_cast<int>(c->pos.y + c->offset.y - cameraOffset.y + c->size.y), 
+					0xFF0000);
+
+		float angle = 0;
+		for(int j = 0; j < 360; j++){
+			vec2 pos = (
+				c->pos + c->offset + c->size / 2
+			);
+			screen->Plot(static_cast<int>(pos.x + cos(angle) * c->radius - cameraOffset.x), static_cast<int>(pos.y + sin(angle) * c->radius - cameraOffset.y), 0xFFff0000);
+			angle += angleIncr;
+		}
+
+	}
 	
-		
+#endif		
 
 
+	// 5) Dark overlay: halves every colour channel of the image drawn so far (win screen).
 	if(darkOverlay){
 		int end = screen->width * screen->height;
 		for(int i = 0; i < end; i++){
@@ -307,6 +360,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		}
 	}
 
+	// 6) Screen-space sprites (backgrounds, HUD icons): not affected by the camera.
 	for (int i = 0; i < spriteSetCount; i++) {
 		SpriteSet& ss = spriteSets[i];
 		Sprite* sprite = resourceManager.getSprite(ss.resourceId);
@@ -317,15 +371,16 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 		sprite->Draw(screen, static_cast<int>(ss.pos.x), static_cast<int>(ss.pos.y), 0);
 	}
 
+	// 7) HUD texts, drawn with the Printer on top of everything.
 	for (int i = 0; i < textsCount; i++) {
 		HUDText& t = texts[i];
 		Surface* s = resourceManager.getSprite(t.resourceId)->GetSurface();
 		printer.drawText(t, s, screen);
 	}
 
+	// 8) CRT effect, in two passes: scanlines (darken even rows to 14/16), then a 1-pixel colour fringe.
 	if (crtEffect) {
 		for (int y = 0; y < screen->height; y++) {
-			// Darken every other row
 			if (y % 2 == 0) {
 				for (int x = 0; x < screen->width; x++) {
 					int i = y * screen->width + x;
@@ -348,8 +403,8 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			for (int x = 0; x < screen->width; x++) {
 				int shift = 1; // how many pixels to offset — tune this, even 1 is often visible at this resolution
 
-				int xRed  = static_cast<int>(myMath::constrain(static_cast<float>(x - shift), 0.f, static_cast<float>(screen->width)));  // sample red from slightly left
-				int xBlue = static_cast<int>(myMath::constrain(static_cast<float>(x + shift), 0.f, static_cast<float>(screen->width)));  // sample blue from slightly right
+				int xRed  = static_cast<int>(myMath::constrain(static_cast<float>(x - shift), 0.f, static_cast<float>(screen->width - 1)));  // sample red from slightly left
+				int xBlue = static_cast<int>(myMath::constrain(static_cast<float>(x + shift), 0.f, static_cast<float>(screen->width - 1)));  // sample blue from slightly right
 				// int yRed  = myMath::constrain(y - shift, 0.f, screen->height);  // sample red from slightly left
 				// int yBlue = myMath::constrain(y + shift, 0.f, screen->height);  // sample blue from slightly right
 				int yRed  = y;  
@@ -368,6 +423,7 @@ void Renderer::render(Surface* screen, const ResourceManager& resourceManager, c
 			}
 		}
 
+		// Copy the result back to the screen.
 		for (int y = 0; y < screen->height; y++)
 			for (int x = 0; x < screen->width; x++)
 				screen->pixels[y * screen->width + x] = newPixels[y * screen->width + x];

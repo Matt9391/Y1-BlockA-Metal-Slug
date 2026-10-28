@@ -15,6 +15,7 @@ SlugBullet::SlugBullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulle
     setCurrentASIndex(BSB_SHOOT);
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
     
+    // Pick the sprite frame that matches the flight direction (frame 0 = pointing right).
     float angle = atan2f(dir.y, dir.x) * 180.f / PI;
     if (angle < 0.f) angle += 360.f;
 
@@ -23,7 +24,7 @@ SlugBullet::SlugBullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulle
     getAnimator().setFrame(frame);
 
     // collider on the head of the bullet 
-    const float headDist = 25.5f;                               // spike to head, in px
+    const float headDist = 25.5f;                               // spike to head, in px 
     float snapped = (frame * frameAngle) * (PI / 180.f);          // angle
     vec2 head = vec2(cosf(snapped), sinf(snapped)) * headDist;
     vec2 size = vec2(8, 8);                                    
@@ -40,6 +41,7 @@ void SlugBullet::loadGFX() {
 
     // bullet_ms2_49x49_64dir.png: 64 frames of 49x49, pivot (24, 24) = bullet head
     // (bullet_ms1_49x49_16dir.png works too: same cell and pivot, set IDF_SLUG_BULLET = 16)
+    // (Note: the sheet loaded now is TankAnimation/bullet.png with 16 frames, and IDF_SLUG_BULLET = 16.)
     getAnimationSets()[BSB_SHOOT] = AnimationSet(
         1,
         AnimationLayer(ResourceID::ID_SLUG_BULLET,
@@ -80,6 +82,7 @@ void SlugBullet::explodeMap() {
 
 void SlugBullet::explode() {
 
+    // Stop and play the boom. Not disabled, so it can still hit things while the boom plays.
     setAbleMovement(false);
     setCurrentASIndex(BSB_BOOM);
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);

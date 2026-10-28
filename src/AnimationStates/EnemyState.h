@@ -4,6 +4,8 @@ class Enemy;
 class RebelSoldier;
 enum EnemyAnimationSet : int;
 
+// State machine of the rebel soldier. Each state's update() returns the next EnemyAnimationSet;
+// RebelSoldier::update calls enter() on the new state when it changes.
 namespace RebelSoldierStates {
     class EnemyState
     {
@@ -14,10 +16,10 @@ namespace RebelSoldierStates {
     protected:
         float duration = 0.f;
         float elapsedTime = 0.f;
-        static const int MELEERANGE = 20;
-        static const int GRANADERANGE = 100;
-        static const int VIEWRANGE = 200;
-        static const int MAXCHANCE = 100;
+        static const int MELEERANGE = 20; // px
+        static const int GRANADERANGE = 100; // px, max distance for a grenade throw
+        static const int VIEWRANGE = 200; // px, the soldier "sees" the player when closer than this
+        static const int MAXCHANCE = 100; // chances are percentages: Rand(100) > MAXCHANCE - CHANCE
     };
 
 
@@ -27,7 +29,7 @@ namespace RebelSoldierStates {
         void enter(RebelSoldier& e) override;
         EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
-        static const int FLIPCHANCE = 25;
+        static const int FLIPCHANCE = 25; // % chance to turn around on a check
     };
 
     class WalkState final : public EnemyState
@@ -102,8 +104,8 @@ namespace RebelSoldierStates {
         void enter(RebelSoldier& e) override;
         EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
-        static const int MSTRIGGER = 500;
-        bool attacked;
+        static const int MSTRIGGER = 500; // ms into the attack when the knife hit lands
+        bool attacked; // the hit already happened during this attack
     };
     
     class GrandadeAttackState final : public EnemyState
@@ -112,7 +114,7 @@ namespace RebelSoldierStates {
         void enter(RebelSoldier& e) override;
         EnemyAnimationSet update(RebelSoldier& e, float dt, EnemyAnimationSet current)  override;
     private:
-        static const int MSTRIGGER = 500;
+        static const int MSTRIGGER = 500; // ms into the attack when the grenade is thrown
         bool thrown;
     };
     

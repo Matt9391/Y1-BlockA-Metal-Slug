@@ -39,8 +39,8 @@ namespace PowStates {
     private:
         float elapsedTime;
         float flipElapsedTime;
-        static const float TRIGGERMINTIME;
-        static const float FLIPMS;
+        static const float TRIGGERMINTIME; // ms of walking before touching the player triggers the reward
+        static const float FLIPMS; // ms between turns while walking back and forth
     };
    
     class PantsState final : public PowState

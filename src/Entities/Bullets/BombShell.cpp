@@ -14,6 +14,7 @@ BombShell::BombShell(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletT
     frameAngle(11.25f)   // 360 / 32 frames
 {
     setDir(dir);
+    // (The sprite is drawn at offset -8,-8, so this 8x8 collider at (0,0) covers its lower-right quarter.)
     setCollider(vec2(8, 8), vec2(0, 0));   // 16x16 shell drawn centred on pos
     getAnimationSets() = new AnimationSet[BBS_COUNT];
     loadGFX();
@@ -37,6 +38,7 @@ void BombShell::loadGFX() {
             vec2(-8, -8))
     );
 
+    // Note: IDF_BOMB_SHELL_BOOM is currently 1 (the "// 30" below is outdated).
     getAnimationSets()[BBS_BOOM] = AnimationSet(
         1,
         AnimationLayer(ResourceID::ID_BOMB_SHELL_BOOM,
@@ -61,6 +63,7 @@ void BombShell::update(float dt) {
 
     if (getDisabled()) return;
 
+    // Same arc as the CannonBall: parabola + "+ 100 * x" drop; x is clamped to 1 at the end of the arc.
     elapsedTime += dt;
 
     float x = fminf(elapsedTime / duration, 1.f);
@@ -77,13 +80,14 @@ void BombShell::update(float dt) {
 
     if (dx != 0.f || dy != 0.f) { // if it has moved
 
+        // Rotate the sprite: 32 frames for 360 degrees, frame 0 = pointing right, going clockwise on screen.
         float angle = atan2f(dy, dx) * 180.f / PI;
         if (angle < 0.f) angle += 360.f;
 
         int frame = static_cast<int>(roundf(angle / frameAngle)) % static_cast<int>(ResourceIDFrames::IDF_BOMB_SHELL); // 360 deg wraps to frame 0
 
         getAnimator().setFrame(frame);
-    }
+    } 
 }
 
 void BombShell::explodeMap() {
@@ -91,6 +95,7 @@ void BombShell::explodeMap() {
 }
 
 void BombShell::explode() {
+    // The shell is not disabled here, so the explosion keeps hitting enemies while it plays.
     setCurrentASIndex(BBS_BOOM);
     getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 }

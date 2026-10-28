@@ -21,7 +21,7 @@ Boss::Boss(vec2 pos) :
 	bullets{nullptr},
     HP(80)
 	{
-    setCollider(vec2(10, 105), vec2(0,0));
+    setCollider(vec2(10, 105), vec2(0,0)); // thin 10x105 hitbox at the boss position: bullets must hit it, and it blocks the player like a wall
 	getAnimationSets() = new AnimationSet[BossAnimationSet::BAS_COUNTS];
 	loadGFX();
 	setCurrentASIndex(BossAnimationSet::BAS_ATTACK_ONE_HIGH);
@@ -40,6 +40,7 @@ Boss::~Boss(){
 		bullets[i] = nullptr;
 	}
 }
+// Every set has 2 layers: the body (layer 0) + the cannon (layer 1). Only the cannon sheet changes between states.
 void Boss::loadGFX() {
     // BAS_ATTACK_ONE_HIGH -> cannon fire, high (cannon_fire_high.png)
     getAnimationSets()[BossAnimationSet::BAS_ATTACK_ONE_HIGH] = AnimationSet(
@@ -181,6 +182,7 @@ void Boss::update(float dt) {
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
     
+	// Gravity (the boss stands on the map).
 	if (!getSensors().isGrounded) {
 		addVelocity(vec2(0, getRigidBody()->getGravity() * dt));
 	}
@@ -188,6 +190,7 @@ void Boss::update(float dt) {
 		setVelocityY(0.f);
 	}
 
+    // Dead: remove every bullet that is still flying.
     if(!getAlive()){
         for (int i = 0; i < MAXBULLETS; i++) {
             delete bullets[i];
@@ -195,6 +198,7 @@ void Boss::update(float dt) {
 	    }
     }
 
+	// Run the state machine; on a state change, call the new state's enter().
 	BossAnimationSet nextState = state->update(*this, dt, static_cast<BossAnimationSet>(getCurrentASIndex()));
 	if (nextState != getCurrentASIndex()) {
 		setCurrentASIndex(nextState);
@@ -230,6 +234,8 @@ bool Boss::shoot(BulletType bulletType){
 
     switch (bulletType)
     {
+    // Cannon ball: arcs to the left from a random +-15 px start, 1500-1650 ms flight, and the arc is as wide
+    // as the distance to the player, so it lands near him.
     case BT_CANNON_BALL:
         bullets[bIndex] = new CannonBall(getPos() + getCollider().offset + shootOffset + vec2(Rand(30.f) - 15.f,0),
 									true, 
@@ -238,6 +244,7 @@ bool Boss::shoot(BulletType bulletType){
 									Rand(150.f) + 1500.f,
                                     abs(getSensors().distToPlayer));
         break;
+    // Laser ball: flies straight to the left at 0.1 px/ms.
     case BT_LASER_BALL:
         bullets[bIndex] = new LaserBall(getPos() + getCollider().offset + shootOffset + vec2(0, 42),
 									true, 
@@ -245,9 +252,10 @@ bool Boss::shoot(BulletType bulletType){
 									BulletType::BT_LASER_BALL, 
                                     0.1f);
         break;
+    // Laser beam: a 300 px wide beam placed to the left of the cannon.
     case BT_LASER:
         bullets[bIndex] = new LaserBeam(getPos() + getCollider().offset + shootOffset + vec2(-280, 42),
-									BulletType::BT_LASER_BALL);
+									BulletType::BT_LASER_BALL); // LaserBeam doesn't use its BulletType, so BT_LASER_BALL here makes no difference
         break;
     
     default:
@@ -255,7 +263,7 @@ bool Boss::shoot(BulletType bulletType){
     }
 
 	
-	bulletsCount++;
+	bulletsCount++; // (also counted when bulletType matched no case)
 
 	return true;
 }
@@ -297,6 +305,6 @@ void Boss::takeHit(){
     }
 }
 
-void Boss::setShootOffsetY(float offset){
+void Boss::setShootOffsetY(float offset){ 
     this->shootOffset.y = offset;
 }

@@ -25,16 +25,19 @@ void Camera::follow(const vec2& target, float dt)
 
 	const float followPointX = this->size.x * 0.20f; // 20% of screen
 
+	// Only scroll when the target walks past that point. There is no "else": the camera never scrolls back left.
 	if (target.x > pos.x + followPointX)
     {
-        float wantedX = target.x - followPointX;
+        float wantedX = target.x - followPointX; // keep the target at 20% of the screen width
 
         pos.x = myMath::lerp(pos.x, wantedX, dt * 0.006f); // DONE: should need dt
     }
 
+	// Never show anything outside the world horizontally.
 	this->pos.x = myMath::constrain(this->pos.x,0,this->worldSize.x - this->size.x);
 
 
+	// Boss area (camera past x = 3300): it also follows vertically and may go 30 px above the top of the map.
 	if (this->pos.x > 3300) {
 		enableYFollow(true);
 		setMinYLimit(-30);
@@ -47,6 +50,7 @@ void Camera::follow(const vec2& target, float dt)
 	const float targetMaxY = (this->pos.x > 3300) ? (worldMaxY - 110.f) : worldMaxY;
 
 	
+	// Safety: the camera must always be allowed to go low enough to show the target with 60 px of space under it.
 	const float bottomMargin = 60.f;
 	const float playerMaxY = fminf(target.y + bottomMargin - this->size.y, worldMaxY);
 
@@ -57,6 +61,7 @@ void Camera::follow(const vec2& target, float dt)
 
 		
 
+	// Vertical follow (only in the boss area): keep the target in the middle of the screen.
 	if (this->followY)
 	{
 		float wantedY = target.y - this->size.y / 2;
@@ -67,7 +72,7 @@ void Camera::follow(const vec2& target, float dt)
 }
 
 vec2 Camera::getPos() const {
-	return enable ? vec2(pos.x, floorf(pos.y)) : vec2(0, 0);
+	return enable ? vec2(pos.x, floorf(pos.y)) : vec2(0, 0); // y is floored to a whole pixel
 }
 
 void Camera::setWorldSize(const vec2& worldSize_)
@@ -94,6 +99,7 @@ void Camera::setMinYLimit(float minY_)
 }
 
 bool Camera::isOutOfView(const vec2& pos_) const{
+	// Convert to screen space and test against the screen rectangle grown by 'threshold' on every side.
 	vec2 screenPos = pos_ - this->pos;
 	//trick learnt from Jacco :b
 	if (screenPos.x < -threshold.x || screenPos.x > SCRWIDTH + threshold.x) return true;

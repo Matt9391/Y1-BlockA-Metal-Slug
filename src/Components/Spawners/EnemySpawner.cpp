@@ -12,6 +12,7 @@ EnemySpawner::EnemySpawner(vec2 pos, vec2 size, float spawnDelay, int enemyType,
 }
 
 
+// Every spawnDelay ms: if the player is within SPAWNRANGE pixels, mark the spawner as ready.
 void EnemySpawner::update(float dt) {
 	addTimer(dt);
 	if (getTimer() > getSpawnDelay()) {
@@ -23,10 +24,12 @@ void EnemySpawner::update(float dt) {
 	}
 }
 
+// One enemy per "ready" tick, until nOfEnemy enemies have been created.
 Entity* EnemySpawner::createEntity() {
 	if (!getSpawnEntity()) return nullptr;
 	if (getSpawnedNumber() >= nOfEnemy) return nullptr;
 	Entity* enemy{ nullptr };
+	// enemyType comes from the Tiled property (see RebelSoldierType).
 	switch (enemyType)
 	{
 		case RebelSoldierType::RST_BASE:

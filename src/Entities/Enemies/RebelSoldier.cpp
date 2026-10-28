@@ -18,7 +18,8 @@ RebelSoldier::RebelSoldier(vec2 pos, const RebelSoldierData& rsData) :
 	getAnimationSets() = new AnimationSet[EnemyAnimationSet::EAS_COUNTS];
 	loadGFX();
 	setCurrentASIndex(EnemyAnimationSet::EAS_IDLE);
-	state = RebelSoldierStates::getEnemyState(EnemyAnimationSet::EAS_IDLE);
+	// The starting state's enter() sets up its (random) duration.
+	state = RebelSoldierStates::getEnemyState(EnemyAnimationSet::EAS_IDLE); 
 	state->enter(*this);
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()]);
 
@@ -160,10 +161,12 @@ void RebelSoldier::update(float dt) {
 	getAnimator().playAnimation(dt);
 	setColliderSprite();
 
+	// Dead soldiers no longer count for the player's melee check.
 	if(!this->getAlive()){
 		setPlayerCollisionEnabled(false);
 	}
 
+	// Gravity. The grounded flag comes from the sensors, filled after last frame's map collision.
 	if (!getSensors().isGrounded) {
 		addVelocity(vec2(0, getRigidBody()->getGravity() * dt));
 	}
@@ -171,6 +174,7 @@ void RebelSoldier::update(float dt) {
 		setVelocityY(0.f);
 	}
 
+	// Corpse: remove it DEATHTIMER ms after the death clip is over.
 	if (getCurrentASIndex() == EnemyAnimationSet::EAS_DEATH_STILL){
 		deathTimeElapsed += dt;
 		if(deathTimeElapsed > DEATHTIMER && getAnimator().isAnimationEnded()) {
@@ -178,6 +182,7 @@ void RebelSoldier::update(float dt) {
 		}
 	}
 
+	// Run the state machine; when it returns a different state, switch to it and call its enter().
 	EnemyAnimationSet nextState = state->update(*this, dt, static_cast<EnemyAnimationSet>(getCurrentASIndex()));
 	if (nextState != getCurrentASIndex()) {
 		setCurrentASIndex(nextState);
@@ -187,12 +192,15 @@ void RebelSoldier::update(float dt) {
 	}
 
 
+	// Apply the animation of the (possibly new) state, mirrored when flip is true.
 	getAnimator().setAnimation(&getAnimationSets()[getCurrentASIndex()], getFlip());
 
+	// Move: horizontal speed from the direction the state chose, vertical from gravity / jumps.
 	setVelocityX(getRigidBody()->getSpeed() * getDir().x);
 	
 	this->addToPos(getRigidBody()->getVelocity() * dt);
 
+	// The soldier owns its grenades, so it updates them too.
 	for (int i = 0; i < MAXGRANADES; i++) {
 		if (granades[i] == nullptr) continue;
 		granades[i]->update(dt);
@@ -211,7 +219,7 @@ bool RebelSoldier::throwGranade(vec2 dir_) {
 
 	if (bIndex == -1) return false;
 
-	granades[bIndex] = new Granade(this->getPos(), false, dir_);
+	granades[bIndex] = new Granade(this->getPos(), false, dir_); // starts at the soldier's position, no RigidBody
 	granadesCount++;
 
 	return true;

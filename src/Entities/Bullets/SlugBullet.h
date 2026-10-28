@@ -7,6 +7,7 @@ enum BSlugBulletAnimationSet {
     BSB_COUNTS
 };
 
+// SlugBullet - tank turret bullet: flies straight in any direction; the sprite frame is chosen from its angle.
 class SlugBullet : public Bullet {
 public:
     SlugBullet(vec2 pos, bool needsRigidBody, vec2 dir, BulletType bulletType, float speed_);
@@ -19,5 +20,5 @@ public:
     void explode();
     void explodeMap();
 private:
-    float frameAngle;
+    float frameAngle; // degrees per sprite frame (360 / IDF_SLUG_BULLET) 
 };

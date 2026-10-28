@@ -56,6 +56,8 @@ namespace BossStates {
         }
         elapsedTime += dt;
 
+        
+        // Three cannon balls, fired at 800, 1200 and 1600 ms into the clip.
         if(elapsedTime > THIRDSHOOT && shootCount == 3){
             b.shoot(BulletType::BT_CANNON_BALL);
             shootCount++;
@@ -82,6 +84,10 @@ namespace BossStates {
 
     BossAnimationSet AttackTwoHighState::update(Boss& b, float dt, BossAnimationSet current)
     {
+        if(!b.getSensors().alive){
+            return BossAnimationSet::BAS_DEATH;
+        }
+
         elapsedTime += dt;
         if(elapsedTime > WAIT_TIME){
 
@@ -123,6 +129,8 @@ namespace BossStates {
             return BossAnimationSet::BAS_DEATH;
         }
 
+        
+        // Arrived at the top: pick the high attack (laser beam when HP < 50).
         if(b.getSensors().animationEnded){
             if(b.getHP() < 50){
                 return BossAnimationSet::BAS_ATTACK_TWO_HIGH;
@@ -142,6 +150,9 @@ namespace BossStates {
         if(!b.getSensors().alive){
             return BossAnimationSet::BAS_DEATH;
         }
+
+        
+        // Arrived at the bottom: pick the low attack (laser ball when HP < 50).
         if(b.getSensors().animationEnded){
             if(b.getHP() < 50){
                 return BossAnimationSet::BAS_ATTACK_TWO_LOW;

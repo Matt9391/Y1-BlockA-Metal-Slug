@@ -9,7 +9,7 @@
 namespace RebelSoldierStates {
 
     void IdleState::enter(RebelSoldier& e) {
-        this->duration = RandomFloat() * 3000.f + 400.f;
+        this->duration = RandomFloat() * 3000.f + 400.f; // random idle time: 0.4 .. 3.4 s
         this->elapsedTime = 0.f;
         e.setVelocityX(0.f);
     }
@@ -32,6 +32,7 @@ namespace RebelSoldierStates {
             current = EnemyAnimationSet::EAS_WALK;
         }
 
+        // Soldiers without attacks panic as soon as they see the player.
         if(playerVisible && 
             (!e.getData().canAttackGranade &&
             !e.getData().canAttackMelee)){
@@ -49,12 +50,12 @@ namespace RebelSoldierStates {
     const float WalkState::GRENADETIMER = 500.f;
 
     void WalkState::enter(RebelSoldier& e) {
-        this->duration = RandomFloat() * 3000.f + 1500.f;
+        this->duration = RandomFloat() * 3000.f + 1500.f; // walk for 1.5 .. 4.5 s
         this->elapsedTime = 0.f;
         this->jumpCountdown = 0.f;
         this->flipCountdown = 0.f;
         this->grenadeCountdown = 0.f;
-        e.setDir(vec2(e.getFlip() ? 1.f : -1.f, 0.f));
+        e.setDir(vec2(e.getFlip() ? 1.f : -1.f, 0.f)); // flip = facing right
 
     }
 
@@ -76,6 +77,7 @@ namespace RebelSoldierStates {
             e.setDir(vec2(e.getFlip() ? 1.f : -1.f, e.getDir().y));
         }
 
+        // Random jump forward while on the ground.
         if (e.getSensors().isGrounded) {
             if (jumpCountdown > JUMPTIMER && Rand(100) > MAXCHANCE - JUMPCHANCE) {
                 jumpCountdown = 0.f;
@@ -85,6 +87,7 @@ namespace RebelSoldierStates {
             }
         }
 
+        // Pick the next action (first match wins): stop, take cover at a wall, throw a grenade, knife attack, or panic.
         if (elapsedTime > duration) {
             current = EnemyAnimationSet::EAS_STOP;
         }
@@ -149,6 +152,7 @@ namespace RebelSoldierStates {
         if (!e.getSensors().alive) {
             return   EnemyAnimationSet::EAS_DEATH;
         }
+        // Landed -> idle; jump clip finished -> falling (checked second, so it wins if both happen on the same frame).
         if (e.getSensors().isGrounded) {
             current = EnemyAnimationSet::EAS_IDLE;
         }
@@ -162,6 +166,7 @@ namespace RebelSoldierStates {
 
     // DONE: actually make the scaredState happen
     void ScaredState::enter(RebelSoldier& e) {
+        // Stop walking and play the scared clip; when it ends, run away.
         e.setDir(vec2(0.f, e.getDir().y));
 
     }
@@ -195,6 +200,7 @@ namespace RebelSoldierStates {
             return EnemyAnimationSet::EAS_DEATH;
         }
 
+        // For 3 s: run AWAY from the player (with random jumps), then stop.
         if(elapsedTime < duration){
             e.setDir(vec2(e.getSensors().distToPlayer < 0.f ? -1.f : 1.f, e.getDir().y));
             e.setFlip(e.getDir().x > 0 ? 1 : 0);
@@ -245,6 +251,7 @@ namespace RebelSoldierStates {
 
 
         elapsedTime += dt;
+        // After the cover time: walk again, in the other direction. Player out of sight: back to idle.
         if (elapsedTime > duration) {
             current = EnemyAnimationSet::EAS_WALK;
             e.setFlip(!e.getFlip());
@@ -271,10 +278,11 @@ namespace RebelSoldierStates {
 
         bool playerVisible = abs(e.getSensors().distToPlayer) < VIEWRANGE;
 
+        // 'attacking' is true only on the single frame the knife hit lands (MSTRIGGER ms into the clip).
         e.setAttacking(false);
         e.setDir(vec2(0, e.getDir().y));
 
-        e.setFlip(e.getSensors().distToPlayer < 0 ? true : false);
+        e.setFlip(e.getSensors().distToPlayer < 0 ? true : false); // face the player
 
         elapsedTime += dt;
         if (elapsedTime > MSTRIGGER && !attacked) {
@@ -317,7 +325,7 @@ namespace RebelSoldierStates {
         elapsedTime += dt;
         if (!thrown && elapsedTime > MSTRIGGER) {
             thrown = true;
-            static_cast<RebelSoldier&>(e).throwGranade(vec2(e.getSensors().distToPlayer < 0 ? 1.f : -1.f, 0.f));
+            e.throwGranade(vec2(e.getSensors().distToPlayer < 0 ? 1.f : -1.f, 0.f)); 
         }
 
         if (!playerVisible && e.getSensors().animationEnded) {
@@ -339,6 +347,7 @@ namespace RebelSoldierStates {
 
     EnemyAnimationSet DeathState::update(RebelSoldier& e, float, EnemyAnimationSet current)
     {
+        // Slowly knocked back, away from the player, while the death clip plays.
         e.setFlip(e.getSensors().distToPlayer < 0 ? false : true);
         e.setDir(vec2(e.getSensors().distToPlayer < 0.f ? -1.f : 1.f, e.getDir().y));
         e.getRigidBody()->setSpeed(0.05f);
@@ -359,6 +368,7 @@ namespace RebelSoldierStates {
 
 
     // --- Static instances + lookup table -----------------------------------
+    // One shared instance per state (see the NOTE in EnemyState.h).
     IdleState                idleInstance;
     WalkState                walkInstance;
     AfterRunState            afterRunInstance;

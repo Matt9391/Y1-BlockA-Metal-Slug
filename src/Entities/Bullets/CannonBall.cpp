@@ -53,6 +53,7 @@ void CannonBall::update(float dt) {
 	setColliderSprite();
 	
 
+	// Note: explode() frees the ball immediately, so the BOOM animation below is never actually shown.
 	if (getAnimator().isAnimationEnded() && getCurrentASIndex() == BCB_BOOM) {
 		setFree(true);
 	}
@@ -61,12 +62,15 @@ void CannonBall::update(float dt) {
 
 	elapsedTime += dt;
 
+    // Same parabola as the grenade, plus "+ 100 * x" so the arc also drops 100 px by the end.
+    // x is clamped to 1, so at the end of the arc the ball stays put until it hits something.
     float x = fminf(elapsedTime / duration, 1.f);
     float y = 1.f - powf(2.f * x - 1.f, 2.f);
 
     float worldX = startPos.x + arcWidth * x * getDir().x;
     float worldY = startPos.y - peakHeight * y + 100.f * x;
    
+    // dx, dy = movement this frame, used to pick the sprite frame.
     float dx = worldX - getPos().x;
     float dy = worldY - getPos().y;
 
@@ -86,7 +90,7 @@ void CannonBall::update(float dt) {
     int frame = -1;
     if (dx != 0.f || dy != 0.f) { //if it has moved
 
-        float angle = atan2f(dy, -abs(dx)) * 180.f / PI; //I just do the arc tan of a vector which return the angle and converto to degrees
+        float angle = atan2f(dy, -abs(dx)) * 180.f / PI; //I just do the arc tan of a vector which return the angle and convert to degrees
                                                          //-abs(dx) because the sprite face left so we work like it's always going left 
         if (angle < 0.f) angle += 360.f;
         frame = static_cast<int>(myMath::constrain(

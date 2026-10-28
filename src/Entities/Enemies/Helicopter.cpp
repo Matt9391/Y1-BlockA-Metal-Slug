@@ -18,7 +18,7 @@ Helicopter::Helicopter(vec2 pos) :
 	startY(pos.y),
 	maxY(pos.y + 25.f),
 	shootOffset(40,20),
-	lives(10)
+	lives(10) 
 	{
     setCollider(vec2(100, 50), vec2(3, 0));
 	getAnimationSets() = new AnimationSet[HelicopterAnimationSet::HAS_COUNTS];
@@ -117,12 +117,14 @@ void Helicopter::update(float dt) {
 
 	elapsedTime += dt;
 
+	// Fly toward the player: distToPlayer > 0 means the player is to the left.
 	float dirX = getSensors().distToPlayer > 0 ? -1.f : 1.f;
 	//mini state machine
 	{
 		//DONE: if dist < xValue dont change animation
-		int c = getCurrentASIndex();
+		int c = getCurrentASIndex(); // remember the animation, to restore it if the player is very close
 
+		// Turning around plays a transition clip; turning back in the middle of it jumps straight to the move clip.
 		if(getCurrentASIndex() == HAS_MOVE_FWD && dirX > 0){
 			setCurrentASIndex(HAS_TRANSITION_BWD);
 		}
@@ -149,10 +151,12 @@ void Helicopter::update(float dt) {
 			}
 		}
 
+		// Right above the player: keep the previous animation (avoids flickering between directions).
 		if(abs(getSensors().distToPlayer) < MINDIST){
 			setCurrentASIndex(c);
 		}
 
+		// Out of lives: explode (only once).
 		if(lives < 0 && getAlive()){
 			setCurrentASIndex(HAS_BOOM);
 			addSound(SoundID::SID_HELI_EXPLODING);
@@ -166,6 +170,7 @@ void Helicopter::update(float dt) {
 		setFree(true);
 	}
 
+	// The missiles keep flying even after the helicopter is destroyed.
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) continue;
 		bullets[i]->update(dt);
@@ -173,6 +178,7 @@ void Helicopter::update(float dt) {
 
 	if(!getAlive()) return;
 
+	// Move toward the player and bob: flying right it rises, flying left it sinks (kept between startY and maxY).
 	setDir(vec2(dirX, 0));
 
 	getRigidBody()->setVelocityX(getRigidBody()->getSpeed() * getDir().x);
@@ -190,6 +196,7 @@ void Helicopter::update(float dt) {
 		));
 
 
+	// A volley = 3 missiles at once.
 	if(elapsedTime > SHOOTCOOLDOWN){
 		shoot();
 		shoot();
@@ -215,7 +222,7 @@ bool Helicopter::shoot() {
 	if (bIndex == -1) return false;
 
 
-	bullets[bIndex] = new Missle(getPos() + shootOffset + vec2(Rand(30.f) - 15.f, 0), true, vec2(0,1), BulletType::BT_MISSLE,bulletSpeed * myMath::mapValue(Rand(100.f),0.f, 100.f,0.6f,1.2f));
+	bullets[bIndex] = new Missle(getPos() + shootOffset + vec2(Rand(30.f) - 15.f, 0), true, vec2(0,1), BulletType::BT_MISSLE,bulletSpeed * myMath::mapValue(Rand(100.f),0.f, 100.f,0.6f,1.2f)); // random x spread of +-15 px, falls straight down at 60% .. 120% of bulletSpeed
 	bulletsCount++;
 
 	return true;

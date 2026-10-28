@@ -4,6 +4,9 @@ class Enemy;
 class Boss;
 enum BossAnimationSet : int;
 
+// State machine of the boss. update() returns the next BossAnimationSet; Boss::update calls enter() on a change.
+// Cycle: ATTACK_ONE_HIGH -> MOVE_DOWN -> ATTACK_ONE_LOW -> MOVE_UP -> ATTACK_ONE_HIGH -> ...
+// Below 50 HP the attacks become ATTACK_TWO_HIGH (laser beam) and ATTACK_TWO_LOW (laser ball).
 namespace BossStates {
     class BossState
     {

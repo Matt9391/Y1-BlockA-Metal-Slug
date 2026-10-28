@@ -30,7 +30,7 @@ void LaserBeam::loadGFX() {
         vec2(0, 0))
     );
 
-
+ 
 }
 
 void LaserBeam::update(float dt) {
@@ -39,6 +39,9 @@ void LaserBeam::update(float dt) {
     
     elapsedTime += dt;   
     
+    // NOTE: the beam is already updated once in the frame it is created (Boss::update updates its bullets right
+    // after shooting), so with dt > 10 ms (below ~100 fps) it is disabled before the GameScene ever tests it
+    // against the player.
     if(elapsedTime > 10.f) //small amount
     {
         setDisabled(true);

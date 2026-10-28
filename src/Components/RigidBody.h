@@ -5,7 +5,7 @@
 class RigidBody {
 public:
 
-	RigidBody(const vec2& pos, bool hasGravity);
+	RigidBody(const vec2& pos, bool hasGravity); // pos is a reference to the owner's position
 
 	vec2 getPos() const;
 
@@ -19,17 +19,17 @@ public:
 	void setGrounded(bool grounded);
 	bool isGrounded() const;
 
-	void setSpeed(float s);
+	void setSpeed(float s); // movement speed in px/ms; entities multiply it by their direction
 	float getSpeed() const;
 	
 	//void setGravity(float g);
-	float getGravity() const;
-	float getJumpForce() const;
+	float getGravity() const; // gravity acceleration in px/ms^2
+	float getJumpForce() const; // upward velocity given when jumping, in px/ms
 
 
 private:
 
-	static const float gravity;
+	static const float gravity; // shared by every RigidBody
 	static const float jumpForce;
 
 	const vec2& pos;
