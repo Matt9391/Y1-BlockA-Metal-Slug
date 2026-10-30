@@ -281,8 +281,9 @@ void Boss::addRenderDatas(Renderer& renderer) {
 	for (int i = 0; i < MAXBULLETS; i++) {
 		if (bullets[i] == nullptr) continue;
 		renderer.addRenderData(bullets[i]->getRenderData());
-		renderer.addCollider(bullets[i]->getCollider());
-
+        #ifdef _DEBUG
+            renderer.addCollider(bullets[i]->getCollider());
+		#endif
 	}
 }
 

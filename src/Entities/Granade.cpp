@@ -12,7 +12,7 @@ Granade::Granade(vec2 pos, bool needsRigidBody, vec2 dir) :
 	ableMovement(true),
 	isDisabled(false)
 {
-	setCollider(vec2(5, 5), vec2(0, 0));
+	setCollider(vec2(15, 15), vec2(0, 0));
 	getAnimationSets() = new AnimationSet[2];
 	loadGFX();
 	setCurrentASIndex(0);

@@ -229,6 +229,7 @@ void RebelSoldier::addRenderDatas(Renderer& renderer) {
 	for (int i = 0; i < MAXGRANADES; i++) {
 		if (granades[i] == nullptr) continue;
 		renderer.addRenderData(granades[i]->getRenderData());
+		
 	}
 }
 

@@ -256,7 +256,9 @@ void GameScene::update(float dt) {
 		}
 
 		getRenderer().addRenderData(e->getRenderData());
+		#ifdef _DEBUG
 		getRenderer().addCollider(e->getCollider());
+		#endif
 		e->addSoundToManager(getAudioManager());
 	}
 	
@@ -315,8 +317,10 @@ void GameScene::update(float dt) {
 	//getRenderer().addRenderData(player.getGunRenderData(), player.getGunBullets());
 	// DONE: ADD layers to the renderData
 	
-	getRenderer().addCollider(player.getCollider());
-	
+	#ifdef _DEBUG
+		getRenderer().addCollider(player.getCollider());
+	#endif
+
 	getCamera().follow(player.getPos(), dt);
 	player.contrainPos(getCamera().getMin(), getCamera().getMax());
 	renderHUD(dt);
